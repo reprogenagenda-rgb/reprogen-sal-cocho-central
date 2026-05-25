@@ -1,80 +1,488 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>REPROGEN SAL COCHO CENTRAL V1.2 FINAL CORRIGIDA</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>REPROGEN Central V4.2 — Gestão + Mapa + Movimentação</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-:root{--verde:#143d2b;--verde2:#1f6b46;--creme:#f5f0e6;--card:#fffdf7;--red:#b42318;--amber:#b7791f;--blue:#1d4ed8;--ok:#15803d;--muted:#666;--shadow:0 8px 22px rgba(0,0,0,.12)}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--creme);color:#1d1d1b}header{background:linear-gradient(135deg,var(--verde),var(--verde2));color:#fff;padding:15px 13px;position:sticky;top:0;z-index:5;box-shadow:0 4px 12px rgba(0,0,0,.2)}
-h1{font-size:24px;margin:0;font-weight:900}header p{margin:4px 0 0;font-size:15px;opacity:.95}.wrap{padding:12px;max-width:1180px;margin:auto}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0}.tabs button{border:0;border-radius:18px;padding:15px 4px;background:#e2d8c4;font-weight:900;font-size:16px}.tabs .active{background:var(--verde);color:#fff}.card{background:var(--card);border:1px solid #eadfca;border-radius:22px;padding:16px;margin:12px 0;box-shadow:var(--shadow)}.card h2{margin:0 0 12px;font-size:25px;color:var(--verde)}
-label{display:block;font-weight:900;font-size:15px;margin:10px 0 5px}input,select,textarea{width:100%;font-size:16px;padding:12px;border:1px solid #cfc7b6;border-radius:14px;background:#fff}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.btn{width:100%;border:0;border-radius:18px;padding:15px;margin-top:10px;background:var(--verde2);color:#fff;font-weight:900;font-size:17px}.btn.light{background:#ede4d3;color:#222}.btn.blue{background:var(--blue)}.btn.secondary{background:#6b5f47}.hidden{display:none!important}.small{font-size:13px;color:var(--muted)}.list .item{padding:11px;border-bottom:1px solid #e6dcc9}.list .item:last-child{border-bottom:0}.tag{display:inline-block;border-radius:99px;padding:5px 9px;font-size:12px;font-weight:900;margin:2px;background:#eee}.ok{background:#dcfce7;color:#166534}.warn{background:#fef3c7;color:#92400e}.bad{background:#fee2e2;color:#991b1b}.info{background:#dbeafe;color:#1e40af}.gray{background:#e5e7eb;color:#374151}.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.kpi{background:#f1eadb;border-radius:16px;padding:13px;border-left:5px solid var(--verde2)}.kpi b{font-size:28px;color:var(--verde);display:block}.mono{font-family:monospace;font-size:13px;background:#f3eadb;border-radius:13px;padding:10px;word-break:break-all;line-height:1.45}.tablewrap{overflow:auto;border-radius:12px;border:1px solid #ddd;background:#fff}table{width:100%;border-collapse:collapse;background:white;font-size:13px;min-width:1050px}th,td{border:1px solid #ddd;padding:7px;text-align:left;white-space:nowrap}th{background:#e8ddc8;color:#143d2b;position:sticky;top:0}#map{height:390px;border-radius:18px;border:1px solid #d8ccb6;background:#eee}@media(min-width:800px){.tabs{grid-template-columns:repeat(8,1fr)}.kpis{grid-template-columns:repeat(4,1fr)}}@media(max-width:720px){.row,.row3{grid-template-columns:1fr}#map{height:340px}}@media print{header,.tabs,.noprint,.btn{display:none!important}.card{box-shadow:none;border:0}}
+:root{--bg:#f4f7f2;--card:#fff;--ink:#1d2b22;--muted:#647067;--green:#0f5132;--green2:#198754;--amber:#ffc107;--red:#dc3545;--blue:#0d6efd;--purple:#6f42c1;--line:#dfe8dd;--shadow:0 8px 22px rgba(22,50,30,.11);--radius:16px}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#eef6ed,#f8faf7);font-family:Arial,sans-serif;color:var(--ink);font-size:15px}
+header{position:sticky;top:0;z-index:30;background:linear-gradient(135deg,#0f5132,#16724a);color:#fff;padding:12px 20px;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+header h1{margin:0;font-size:20px}header p{margin:3px 0 0;font-size:12px;opacity:.9}
+.wrap{max-width:1200px;margin:0 auto;padding:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:15px}
+.card h2{font-size:18px;margin:0 0 12px;color:var(--green)}.card h3{font-size:14px;margin:14px 0 8px;font-weight:bold}
+label{font-weight:700;font-size:12px;color:#26362b;display:block;margin:8px 0 4px}
+input,select,textarea{width:100%;padding:10px;border:1px solid #cfdacf;border-radius:10px;background:#fff;font-size:14px;outline:none;margin-bottom:6px}
+input:focus,select:focus,textarea:focus{border-color:var(--green2)}
+button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;background:#e9f2eb;color:#0d3d27;min-height:40px;margin:3px}
+button.primary{background:linear-gradient(135deg,#0f5132,#198754);color:#fff}button.blue{background:#cfe2ff;color:#084298}button.warn{background:#fff3cd;color:#664d03}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}.row.full{grid-template-columns:1fr}@media(max-width:720px){.row{grid-template-columns:1fr}}
+.pill{display:inline-flex;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:700;background:#eef3ef;margin-right:5px}.ok{background:#d1e7dd;color:#0f5132}.warn{background:#fff3cd;color:#664d03}.err{background:#f8d7da;color:#842029}.blue-pill{background:#cfe2ff;color:#084298}.purple-pill{background:#e2d9f3;color:#3d246b}
+.muted{color:var(--muted);font-size:12px}.big{font-size:22px;font-weight:900}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfdfb;text-align:center}.kpi small{display:block;color:var(--muted);font-weight:700;font-size:11px}
+.list{display:flex;flex-direction:column;gap:8px}.item{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;font-size:13px}.item b{display:block;margin-bottom:3px}
+.hide{display:none!important}
+.nav-tabs{display:flex;gap:6px;margin-bottom:12px;border-bottom:2px solid var(--line);overflow-x:auto;position:sticky;top:68px;background:#f4f7f2;z-index:20;padding:6px 0}
+.nav-tab{padding:10px 14px;cursor:pointer;border:0;background:none;font-weight:700;font-size:13px;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;border-radius:8px 8px 0 0;min-height:auto}
+.nav-tab:hover{background:#e9f2eb;color:var(--green)}.nav-tab.active{color:var(--green);border-bottom-color:var(--green);background:#fff}
+.back-bar{display:flex;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:12px;align-items:center;justify-content:space-between}
+.btn-back{background:#e9f2eb;color:var(--green);border:0;padding:6px 10px;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;min-height:auto;margin:0}
+.section-title{font-weight:800;color:var(--green);font-size:14px}
+.toast{position:fixed;left:15px;right:15px;bottom:15px;background:#173f2b;color:#fff;padding:12px 14px;border-radius:10px;z-index:60;display:none;font-size:13px}.toast.show{display:block}
+.table{width:100%;border-collapse:collapse;font-size:12px}.table th{background:#f4f7f2;padding:8px;text-align:left;font-weight:700;border-bottom:2px solid var(--line)}.table td{padding:8px;border-bottom:1px solid var(--line)}
+.badge{display:inline-block;padding:3px 7px;border-radius:6px;font-size:10px;font-weight:bold;background:#dff4e7;color:#0f5132;margin-left:5px}
+#mapa{width:100%;height:480px;border-radius:12px;border:1px solid var(--line);margin-top:12px}
+.upload-zone{border:2px dashed #cfdacf;border-radius:12px;padding:22px;text-align:center;background:#f9fbfa;cursor:pointer}
+.upload-zone:hover{border-color:var(--green2);background:#eefbf3}
+.timeline{border-left:3px solid var(--green);padding-left:15px;margin:10px 0}
+.timeline-item{position:relative;padding:8px 0 8px 0;margin-bottom:8px}
+.timeline-item::before{content:'';position:absolute;left:-21px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--green);border:2px solid #fff;box-shadow:0 0 0 2px var(--green)}
+.evento-entrada{color:#0f5132}.evento-transferencia{color:#664d03}.evento-saida{color:#842029}
 </style>
 </head>
 <body>
-<header><h1>REPROGEN SAL COCHO CENTRAL V1.2 FINAL</h1><p>Leitor operacional real • tabela completa • mapa GPS • auditoria</p></header>
+<header>
+  <h1>🎯 REPROGEN CENTRAL V4.2</h1>
+  <p>Gestão • Lotes • Produtos • Movimentação • Mapa</p>
+</header>
+
 <div class="wrap">
- <div class="tabs noprint">
-  <button id="tabDash" class="active" onclick="showTab('dash')">Dash</button><button id="tabMapa" onclick="showTab('mapa')">Mapa</button><button id="tabPend" onclick="showTab('pend')">Pend.</button><button id="tabCochos" onclick="showTab('cochos')">Cochos</button><button id="tabRegs" onclick="showTab('regs')">Reg.</button><button id="tabAlertas" onclick="showTab('alertas')">Alertas</button><button id="tabRel" onclick="showTab('rel')">Rel.</button><button id="tabConf" onclick="showTab('conf')">Config</button>
- </div>
- <section id="dash" class="tab"><div class="card"><h2>Dashboard operacional</h2><div class="kpis" id="kpis"></div></div><div class="card"><h2>Resumo por responsável</h2><div id="respResumo" class="list"></div></div><div class="card"><h2>Últimos lançamentos</h2><div id="ultimosList" class="list"></div></div></section>
- <section id="mapa" class="tab hidden"><div class="card noprint"><h2>Mapa GPS</h2><div class="row3"><div><label>Data</label><input type="date" id="fData" onchange="renderAll();carregarMapa();"></div><div><label>Status</label><select id="fStatus" onchange="renderAll();carregarMapa();"><option value="">Todos</option><option>DENTRO_DO_RAIO</option><option>FORA_DO_RAIO</option><option>SEM_GPS_LANCAMENTO</option><option>SEM_GPS_COCHO</option><option>GPS_IMPRECISO</option></select></div><div><label>Responsável</label><input id="fResp" oninput="renderAll();carregarMapa();" placeholder="Filtro"></div></div><button class="btn blue" onclick="carregarMapa()">Atualizar mapa</button></div><div class="card"><div id="map"></div><p class="small">Se o mapa online não carregar, os registros continuam na lista abaixo.</p><div id="geoLista" class="list"></div></div></section>
- <section id="pend" class="tab hidden"><div class="card"><h2>Pendências inteligentes</h2><div id="pendList" class="list"></div></div></section>
- <section id="cochos" class="tab hidden"><div class="card noprint"><h2>Cadastro local de cochos</h2><p class="small">Cadastro local para auditoria visual. A base oficial continua sendo a planilha.</p><div class="row"><div><label>Propriedade</label><input id="cProp" value="Fazenda Pedaço de Chão"></div><div><label>Lote/Pasto</label><input id="cLote"></div></div><div class="row"><div><label>Cocho</label><input id="cNome"></div><div><label>Responsável padrão</label><input id="cResp"></div></div><div class="row3"><div><label>Latitude</label><input id="cLat"></div><div><label>Longitude</label><input id="cLng"></div><div><label>Raio aceito (m)</label><input id="cRaio" type="number" value="100"></div></div><div class="row"><button class="btn blue" onclick="capturarCochoGPS()">Capturar GPS do cocho</button><button class="btn" onclick="salvarCocho()">Salvar cocho local</button></div></div><div class="card"><h2>Cochos oficiais/inferidos</h2><div id="cochoList" class="list"></div></div></section>
- <section id="regs" class="tab hidden"><div class="card"><h2>Registros reais da planilha</h2><div class="tablewrap"><table id="tRegs"></table></div></div></section>
- <section id="alertas" class="tab hidden"><div class="card"><h2>Alertas operacionais</h2><div id="alertaList" class="list"></div></div></section>
- <section id="rel" class="tab hidden"><div class="card noprint"><h2>Relatórios</h2><button class="btn" onclick="exportCSV()">Exportar CSV</button><button class="btn secondary" onclick="exportExcelHtml()">Exportar XLS</button><button class="btn secondary" onclick="exportJSON()">Exportar JSON</button><button class="btn light" onclick="window.print()">Imprimir/PDF</button></div><div class="card"><h2>Auditoria geográfica</h2><div id="relGeo" class="list"></div></div></section>
- <section id="conf" class="tab hidden"><div class="card noprint"><h2>Configuração</h2><label>URL Google Apps Script /exec</label><input id="apiUrl"><button class="btn" onclick="salvarConfig()">Salvar URL</button><button class="btn blue" onclick="baixarDados()">Baixar dados da planilha</button><button class="btn secondary" onclick="criarDadosDemo()">Criar dados de demonstração</button><p class="small">Use demonstração apenas para teste visual. Para dados reais, clique em Baixar dados da planilha.</p></div><div class="card"><h2>Status</h2><div id="statusConf" class="mono"></div></div><div class="card"><h2>Diagnóstico técnico</h2><div id="diagConf" class="mono"></div></div></section>
+  
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-tab="dashboard">📊 Painel</button>
+    <button class="nav-tab" data-tab="produtos">📦 Produtos</button>
+    <button class="nav-tab" data-tab="lotes">📋 Lotes</button>
+    <button class="nav-tab" data-tab="movimentacao">🔄 Movimentação</button>
+    <button class="nav-tab" data-tab="registros">📝 Registros</button>
+    <button class="nav-tab" data-tab="mapa">🗺️ Mapa</button>
+    <button class="nav-tab" data-tab="config">⚙️ Config</button>
+  </nav>
+
+  <div class="back-bar">
+    <span class="section-title" id="sectionTitle">📊 Painel</span>
+    <button class="btn-back" onclick="trocarAba('dashboard')">⬅️ Painel</button>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="contentDashboard" class="content card">
+    <h2>Painel Operacional</h2>
+    <div id="status"></div>
+    <div class="kpis">
+      <div class="kpi"><small>Lotes Ativos</small><div class="big" id="kLotesAtivos">0</div></div>
+      <div class="kpi"><small>Produtos</small><div class="big" id="kProdutos">0</div></div>
+      <div class="kpi"><small>Registros Hoje</small><div class="big" id="kRegistrosHoje">0</div></div>
+      <div class="kpi"><small>Movimentações</small><div class="big" id="kMovimentacoes">0</div></div>
+    </div>
+    <h3>Últimas Movimentações</h3>
+    <div id="ultimasMovimentacoes" class="list"></div>
+    <h3>Últimos Registros</h3>
+    <div id="ultimosRegistros" class="list"></div>
+  </div>
+
+  <!-- PRODUTOS -->
+  <div id="contentProdutos" class="content card hide">
+    <h2>Cadastro de Produtos</h2>
+    <div class="row"><div><label>Nome</label><input id="prodNome" placeholder="Concentrado 28%"></div><div><label>Código</label><input id="prodCodigo" placeholder="CONC_28"></div></div>
+    <div class="row"><div><label>Tipo</label><select id="prodTipo"><option>CONCENTRADO</option><option>FORRAGEM</option><option>SUPLEMENTO</option><option>MINERAL</option><option>OUTRO</option></select></div><div><label>Peso (kg)</label><input id="prodPeso" type="number" placeholder="50"></div></div>
+    <div class="row"><div><label>Custo (R$)</label><input id="prodCusto" type="number" step="0.01"></div><div><label>Validade</label><input id="prodValidade" type="date"></div></div>
+    <div class="row full"><label>Observações</label><textarea id="prodObs"></textarea></div>
+    <button class="primary" onclick="adicionarProduto()">✅ Adicionar</button>
+    <button class="blue" onclick="sincronizarProdutos()">🔄 Sincronizar com Apps Script</button>
+    <h3 style="margin-top:20px">Produtos Cadastrados</h3>
+    <div id="listaProdutos" class="list"></div>
+  </div>
+
+  <!-- LOTES -->
+  <div id="contentLotes" class="content card hide">
+    <h2>Lotes</h2>
+    <div class="row"><div><label>ID Lote</label><input id="lotId" placeholder="LOTE_A_2024"></div><div><label>Data Entrada</label><input id="lotDataEntrada" type="date"></div></div>
+    <div class="row"><div><label>Quantidade</label><input id="lotQtd" type="number"></div><div><label>Propriedade</label><input id="lotProp" placeholder="Rancho..."></div></div>
+    <h4 style="font-size:12px;color:var(--muted);margin:10px 0 5px">Distribuição Categorias</h4>
+    <div class="row"><div><label>Bezerros</label><input id="lotBezerro" type="number" placeholder="0"></div><div><label>Bezerras</label><input id="lotBezerra" type="number" placeholder="0"></div></div>
+    <div class="row"><div><label>Novilhos</label><input id="lotNovilho" type="number" placeholder="0"></div><div><label>Novilhas</label><input id="lotNovilha" type="number" placeholder="0"></div></div>
+    <div class="row"><div><label>Solteiras</label><input id="lotSolteira" type="number" placeholder="0"></div><div><label>Nulíparas</label><input id="lotNulipara" type="number" placeholder="0"></div></div>
+    <div class="row"><div><label>Primíparas</label><input id="lotPrimipara" type="number" placeholder="0"></div><div><label>Multíparas</label><input id="lotMultipara" type="number" placeholder="0"></div></div>
+    <button class="primary" onclick="criarLote()">✅ Criar Lote</button>
+    <button class="blue" onclick="sincronizarLotes()">🔄 Sincronizar com Apps Script</button>
+    <h3 style="margin-top:20px">Lotes Ativos</h3>
+    <div id="listaLotes" class="list"></div>
+  </div>
+
+  <!-- 🔄 MOVIMENTAÇÃO -->
+  <div id="contentMovimentacao" class="content card hide">
+    <h2>🔄 Movimentações de Lotes</h2>
+    <button class="primary" onclick="baixarMovimentacoes()">⬇️ Baixar do Apps Script</button>
+    <button class="blue" onclick="filtrarPorLote()">🔍 Filtrar por Lote</button>
+    
+    <h3 style="margin-top:15px">Resumo</h3>
+    <div class="kpis">
+      <div class="kpi"><small>Total</small><div class="big" id="kTotalMov">0</div></div>
+      <div class="kpi"><small>Entradas</small><div class="big" id="kEntradas" style="color:#0f5132">0</div></div>
+      <div class="kpi"><small>Transferências</small><div class="big" id="kTransferencias" style="color:#664d03">0</div></div>
+      <div class="kpi"><small>Saídas</small><div class="big" id="kSaidas" style="color:#842029">0</div></div>
+    </div>
+    
+    <h3>Filtro</h3>
+    <div class="row">
+      <div><label>Lote</label><select id="filtroLoteMov" onchange="renderMovimentacoes()"><option value="">Todos</option></select></div>
+      <div><label>Evento</label><select id="filtroEvento" onchange="renderMovimentacoes()"><option value="">Todos</option><option value="ENTRADA">Entrada</option><option value="TRANSFERENCIA">Transferência</option><option value="SAIDA">Saída</option></select></div>
+    </div>
+    
+    <h3>Timeline de Movimentações</h3>
+    <div id="timelineMov" class="timeline"></div>
+    
+    <h3>Histórico Completo</h3>
+    <div id="tabelaMovimentacoes"></div>
+  </div>
+
+  <!-- REGISTROS -->
+  <div id="contentRegistros" class="content card hide">
+    <h2>Registros de Abastecimento</h2>
+    <button class="blue" onclick="sincronizarCentral()">🔄 Sincronizar do Campo</button>
+    <button class="blue" onclick="exportarDados()">📥 Exportar</button>
+    <h3 style="margin-top:15px">Últimos Registros</h3>
+    <div id="tabelaRegistros"></div>
+  </div>
+
+  <!-- MAPA -->
+  <div id="contentMapa" class="content card hide">
+    <h2>🗺️ Mapa da Fazenda</h2>
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('mapaFile').click()">
+      <div style="font-size:22px">📂</div>
+      <b>Clique ou arraste arquivo</b><br>
+      <span class="muted">KML | GeoJSON | CSV | GPX</span>
+    </div>
+    <input type="file" id="mapaFile" accept=".kml,.geojson,.json,.csv,.gpx" style="display:none" onchange="processarArquivoMapa(event)">
+    <div style="margin-top:10px">
+      <button class="primary" onclick="centralizarMapa()">🎯 Centralizar</button>
+      <button class="blue" onclick="exportarMapaGeoJSON()">📤 GeoJSON</button>
+      <button class="warn" onclick="limparMapa()">🗑️ Limpar</button>
+    </div>
+    <div id="mapa"></div>
+  </div>
+
+  <!-- CONFIG -->
+  <div id="contentConfig" class="content card hide">
+    <h2>Configuração</h2>
+    <label>URL do Apps Script</label>
+    <input id="configURL" placeholder="https://script.google.com/macros/s/.../exec">
+    <button class="primary" onclick="salvarConfig()">💾 Salvar</button>
+    <button class="blue" onclick="testarConexao()">✅ Testar</button>
+    <h3>Status</h3>
+    <div id="configStatus"></div>
+  </div>
+
 </div>
+
+<div class="toast" id="toast"></div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-var KEY='reprogen_sal_cocho_central_v12_corrigida';
-var CONF='reprogen_sal_cocho_central_conf_v1';
-var mapObj=null;
-function hojeISO(){return new Date().toISOString().slice(0,10)}
-function dataHoraBR(){return new Date().toISOString()}
-function db(){var x=localStorage.getItem(KEY);if(!x){var d={registros:[],cochos:[],cochosInferidos:[],pontos:[],alertas:[],logs:[],configuracoes:[],meta:{origem:'VAZIO',ultimaAtualizacao:''}};localStorage.setItem(KEY,JSON.stringify(d));return d}try{var d=JSON.parse(x);d.registros=d.registros||[];d.cochos=d.cochos||[];d.cochosInferidos=d.cochosInferidos||[];d.pontos=d.pontos||[];d.alertas=d.alertas||[];d.logs=d.logs||[];d.configuracoes=d.configuracoes||[];d.meta=d.meta||{origem:'CACHE',ultimaAtualizacao:''};return d}catch(e){return {registros:[],cochos:[],cochosInferidos:[],pontos:[],alertas:[],logs:[],configuracoes:[],meta:{origem:'ERRO_CACHE',ultimaAtualizacao:''}}}}
-function saveDb(d){localStorage.setItem(KEY,JSON.stringify(d))}
-function cfg(){var x=localStorage.getItem(CONF);return x?JSON.parse(x):{apiUrl:''}}
-function saveCfg(c){localStorage.setItem(CONF,JSON.stringify(c))}
-function canon(k){return String(k||'').toUpperCase().replace(/[ÁÀÂÃÄ]/g,'A').replace(/[ÉÈÊË]/g,'E').replace(/[ÍÌÎÏ]/g,'I').replace(/[ÓÒÔÕÖ]/g,'O').replace(/[ÚÙÛÜ]/g,'U').replace(/[Ç]/g,'C').replace(/[^A-Z0-9]/g,'')}
-function valor(obj){if(!obj)return '';var m={},k;for(k in obj){m[canon(k)]=obj[k]}for(var i=1;i<arguments.length;i++){var c=canon(arguments[i]);if(m[c]!==undefined&&m[c]!==null&&m[c]!=='')return m[c]}return ''}
-function num(v){if(v===undefined||v===null||v==='')return 0;var n=Number(String(v).replace(',','.'));return isNaN(n)?0:n}
-function normalizaData(v){if(!v)return '';if(Object.prototype.toString.call(v)==='[object Date]')return v.toISOString().slice(0,10);var s=String(v);if(/^\d{4}-\d{2}-\d{2}/.test(s))return s.slice(0,10);if(/^\d{2}\/\d{2}\/\d{4}/.test(s)){var p=s.split('/');return p[2].slice(0,4)+'-'+p[1]+'-'+p[0]}return s.slice(0,10)}
-function normalizaRegistro(r){var qtd=valor(r,'QUANTIDADE_SACOS','QTD_SACOS','QUANTIDADE_SACC','QUANTIDADE','SACOS');var peso=valor(r,'PESO_SACO_KG','PESO_SACO','PESO_KG','PESO');var total=valor(r,'TOTAL_KG','KG_TOTAL','TOTAL','KG');if(!total&&qtd&&peso)total=(num(qtd)*num(peso)).toString();return {idRegistro:valor(r,'ID_REGISTRO','ID','IDREGISTRO'),idPonto:valor(r,'ID_PONTO','IDPONTO'),idCocho:valor(r,'ID_COCHO','IDCOCHO','ID_PONTO'),data:normalizaData(valor(r,'DATA','DT')),hora:valor(r,'HORA','HR'),dataHoraISO:valor(r,'DATA_HORA_ISO','DATAHORAISO','DATA_HORA'),propriedade:valor(r,'PROPRIEDADE','FAZENDA'),lote:valor(r,'LOTE_PASTO','LOTE','PASTO'),cocho:valor(r,'COCHO','PONTO','DISPOSITIVO'),tipoSal:valor(r,'TIPO_SAL','SAL','PRODUTO'),responsavel:valor(r,'RESPONSAVEL','OPERADOR','VAQUEIRO'),quantidadeSacos:qtd,pesoSacoKg:peso,totalKg:total,escoreCocho:valor(r,'ESCORE_COCHO','ESCORE','SITUACAO_COCHO'),alertaCocho:valor(r,'ALERTA_COCHO','ALERTA'),observacao:valor(r,'OBSERVACAO','OBS'),latitudeLancamento:valor(r,'LATITUDE_LANCAMENTO','LATITUDE','LAT'),longitudeLancamento:valor(r,'LONGITUDE_LANCAMENTO','LONGITUDE','LNG','LONG'),precisaoGps:valor(r,'PRECISAO_GPS','PRECISAO','PRECISAO_METROS'),statusGps:valor(r,'STATUS_GPS','GPS'),dataHoraGps:valor(r,'DATA_HORA_GPS','DATA_GPS'),linkMaps:valor(r,'LINK_MAPS','MAPS','GOOGLE_MAPS'),distanciaCochoMetros:valor(r,'DISTANCIA_COCHO_METROS','DISTANCIA'),statusDistancia:valor(r,'STATUS_DISTANCIA'),statusSync:valor(r,'STATUS_SYNC','SYNC'),origem:valor(r,'ORIGEM'),versao:valor(r,'VERSAO'),_raw:r}}
-function normalizaCocho(c){return {idCocho:valor(c,'ID_COCHO','ID_PONTO'),propriedade:valor(c,'PROPRIEDADE','FAZENDA'),lote:valor(c,'LOTE_PASTO','LOTE','PASTO'),cocho:valor(c,'COCHO','PONTO','DISPOSITIVO'),responsavelPadrao:valor(c,'RESPONSAVEL_PADRAO','RESPONSAVEL'),telefone:valor(c,'TELEFONE'),email:valor(c,'EMAIL'),ativo:valor(c,'ATIVO','STATUS')||'SIM',obrigatorioDiario:valor(c,'OBRIGATORIO_DIARIO','OBRIGATORIO')||'SIM',horarioLimite:valor(c,'HORARIO_LIMITE')||'19:00',toleranciaMin:valor(c,'TOLERANCIA_MIN','TOLERANCIA')||10,latitudeCocho:valor(c,'LATITUDE_COCHO','LATITUDE','LAT'),longitudeCocho:valor(c,'LONGITUDE_COCHO','LONGITUDE','LNG'),raioAceitoMetros:valor(c,'RAIO_ACEITO_METROS','RAIO')||100,observacao:valor(c,'OBSERVACAO','OBS'),_raw:c}}
-function normalizaAlerta(a){return {data:normalizaData(valor(a,'DATA')),idCocho:valor(a,'ID_COCHO','ID_PONTO'),propriedade:valor(a,'PROPRIEDADE'),lote:valor(a,'LOTE_PASTO','LOTE'),cocho:valor(a,'COCHO'),responsavel:valor(a,'RESPONSAVEL'),status:valor(a,'STATUS'),tipoAlerta:valor(a,'TIPO_ALERTA'),observacao:valor(a,'OBSERVACAO')}}
-function normalizaLog(l){return {dataHora:valor(l,'DATA_HORA'),idRegistro:valor(l,'ID_REGISTRO'),status:valor(l,'STATUS'),origem:valor(l,'ORIGEM'),mensagem:valor(l,'MENSAGEM'),dispositivo:valor(l,'DISPOSITIVO'),versao:valor(l,'VERSAO')}}
-function normalizaConfig(c){return {chave:valor(c,'CHAVE'),valor:valor(c,'VALOR')}}
-function inferirCochos(regs){var mapa={},out=[];for(var i=0;i<regs.length;i++){var r=regs[i];if(!r.cocho)continue;var key=[r.propriedade,r.lote,r.cocho].join('|');if(!mapa[key])mapa[key]={idCocho:'INF_'+(out.length+1),propriedade:r.propriedade,lote:r.lote,cocho:r.cocho,responsavelPadrao:r.responsavel,ativo:'SIM',obrigatorioDiario:'NAO',horarioLimite:'19:00',toleranciaMin:10,latitudeCocho:'',longitudeCocho:'',raioAceitoMetros:100,observacao:'Inferido visualmente dos registros',ultimoLancamento:'',totalKg:0,_inferido:true};mapa[key].totalKg+=num(r.totalKg);var dh=(r.data||'')+' '+(r.hora||'');if(dh>mapa[key].ultimoLancamento){mapa[key].ultimoLancamento=dh;mapa[key].responsavelPadrao=r.responsavel}}for(var k in mapa)out.push(mapa[k]);return out}
-function normalizarPacote(js){var d={registros:[],cochos:[],cochosInferidos:[],pontos:[],alertas:[],logs:[],configuracoes:[],meta:{}};var regs=js.registros||js.REGISTROS||[];var co=js.cochos||js.COCHOS||[];var pts=js.pontos||js.PONTOS_CONTROLE||[];var al=js.alertas||js.ALERTAS_DIARIOS||[];var lg=js.logs||js.log||js.LOG_SYNC||[];var cf=js.configuracoes||js.CONFIGURACOES||[];for(var i=0;i<regs.length;i++)d.registros.push(normalizaRegistro(regs[i]));for(i=0;i<co.length;i++)d.cochos.push(normalizaCocho(co[i]));for(i=0;i<pts.length;i++)d.pontos.push(normalizaCocho(pts[i]));for(i=0;i<al.length;i++)d.alertas.push(normalizaAlerta(al[i]));for(i=0;i<lg.length;i++)d.logs.push(normalizaLog(lg[i]));for(i=0;i<cf.length;i++)d.configuracoes.push(normalizaConfig(cf[i]));d.cochosInferidos=inferirCochos(d.registros);d.meta={origem:'PLANILHA',ultimaAtualizacao:dataHoraBR(),brutos:regs.length,normalizados:d.registros.length};return d}
-function iniciar(){var fd=document.getElementById('fData');if(fd)fd.value=hojeISO();document.getElementById('apiUrl').value=cfg().apiUrl||'';renderAll()}
-function showTab(id){var tabs=document.querySelectorAll('.tab');for(var i=0;i<tabs.length;i++)tabs[i].classList.add('hidden');var el=document.getElementById(id);if(el)el.classList.remove('hidden');var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.remove('active');var map={dash:'tabDash',mapa:'tabMapa',pend:'tabPend',cochos:'tabCochos',regs:'tabRegs',alertas:'tabAlertas',rel:'tabRel',conf:'tabConf'};var b=document.getElementById(map[id]);if(b)b.classList.add('active');renderAll();if(id==='mapa')setTimeout(carregarMapa,250)}
-function tag(s){if(s==='DENTRO_DO_RAIO'||s==='ENVIADO_NO_HORARIO'||s==='ATIVO')return '<span class="tag ok">'+s+'</span>';if(s==='FORA_DO_RAIO'||s==='NAO_ENVIADO'||s==='ERRO_SYNC')return '<span class="tag bad">'+s+'</span>';if(s==='GPS_IMPRECISO'||s==='ENVIADO_ATRASADO'||s==='SEM_GPS_LANCAMENTO')return '<span class="tag warn">'+s+'</span>';return '<span class="tag info">'+(s||'SEM_STATUS')+'</span>'}
-function distM(lat1,lon1,lat2,lon2){if(!lat1||!lon1||!lat2||!lon2)return null;var R=6371000,t=Math.PI/180;var p1=num(lat1)*t,p2=num(lat2)*t;var dp=(num(lat2)-num(lat1))*t,dl=(num(lon2)-num(lon1))*t;var a=Math.sin(dp/2)*Math.sin(dp/2)+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)*Math.sin(dl/2);return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
-function listaCochos(){var d=db();return d.cochos.length?d.cochos:(d.pontos.length?d.pontos:d.cochosInferidos)}
-function acharCocho(id,nome,prop,lote){var c=listaCochos();for(var i=0;i<c.length;i++){if(id&&String(c[i].idCocho)===String(id))return c[i];if(nome&&String(c[i].cocho).toUpperCase()===String(nome).toUpperCase()&&(!lote||String(c[i].lote).toUpperCase()===String(lote).toUpperCase()))return c[i]}return null}
-function auditarRegistro(r){var c=acharCocho(r.idCocho,r.cocho,r.propriedade,r.lote);if(!r.latitudeLancamento||!r.longitudeLancamento)return {status:'SEM_GPS_LANCAMENTO',distancia:''};if(!c||!c.latitudeCocho||!c.longitudeCocho)return {status:'SEM_GPS_COCHO',distancia:''};if(num(r.precisaoGps)>100)return {status:'GPS_IMPRECISO',distancia:''};var d=distM(r.latitudeLancamento,r.longitudeLancamento,c.latitudeCocho,c.longitudeCocho);return {status:d<=num(c.raioAceitoMetros||100)?'DENTRO_DO_RAIO':'FORA_DO_RAIO',distancia:Math.round(d)}}
-function registrosFiltrados(usarData){var d=db(),data=document.getElementById('fData').value,resp=(document.getElementById('fResp').value||'').toUpperCase(),st=document.getElementById('fStatus').value;var arr=[];for(var i=0;i<d.registros.length;i++){var r=d.registros[i],a=auditarRegistro(r);if(usarData&&data&&r.data!==data)continue;if(resp&&String(r.responsavel||'').toUpperCase().indexOf(resp)<0)continue;if(st&&a.status!==st)continue;r._audStatus=a.status;r._audDist=a.distancia;arr.push(r)}return arr}
-function renderAll(){renderDash();renderPend();renderCochos();renderRegs();renderAlertas();renderRel();var d=db();document.getElementById('statusConf').innerHTML='Registros: '+d.registros.length+' | Cochos oficiais: '+d.cochos.length+' | Cochos inferidos: '+d.cochosInferidos.length+' | Pontos: '+d.pontos.length+' | Alertas: '+d.alertas.length+' | Logs: '+d.logs.length;var campos=d.registros.length?Object.keys(d.registros[0]).join(', '):'sem registros';document.getElementById('diagConf').innerHTML='Origem: '+(d.meta.origem||'CACHE')+'<br>Última atualização: '+(d.meta.ultimaAtualizacao||'-')+'<br>Registros brutos: '+(d.meta.brutos!==undefined?d.meta.brutos:'-')+'<br>Registros normalizados: '+d.registros.length+'<br>Campos reconhecidos: '+campos}
-function renderDash(){var d=db(),regs=d.registros,kg=0,sacos=0,gps=0,sem=0,props={},lotes={},cochos={},resp={};for(var i=0;i<regs.length;i++){kg+=num(regs[i].totalKg);sacos+=num(regs[i].quantidadeSacos);if(regs[i].latitudeLancamento&&regs[i].longitudeLancamento)gps++;else sem++;if(regs[i].propriedade)props[regs[i].propriedade]=1;if(regs[i].lote)lotes[regs[i].lote]=1;if(regs[i].cocho)cochos[regs[i].cocho]=1;if(regs[i].responsavel)resp[regs[i].responsavel]=(resp[regs[i].responsavel]||0)+num(regs[i].totalKg)}document.getElementById('kpis').innerHTML='<div class="kpi"><b>'+regs.length+'</b><span>Registros</span></div><div class="kpi"><b>'+kg.toFixed(1)+'</b><span>Kg total</span></div><div class="kpi"><b>'+gps+'</b><span>Com GPS</span></div><div class="kpi"><b>'+Object.keys(cochos).length+'</b><span>Cochos</span></div>';var h='';for(var k in resp)h+='<div class="item"><b>'+k+'</b>: '+resp[k].toFixed(1)+' kg</div>';document.getElementById('respResumo').innerHTML=h||'<p class="small">Sem responsáveis.</p>';var ult=regs.slice(-6).reverse(),u='';for(i=0;i<ult.length;i++){u+='<div class="item"><b>'+ult[i].data+' '+ult[i].hora+'</b><br>'+ult[i].cocho+' • '+(ult[i].totalKg||'-')+' kg • '+(ult[i].responsavel||'-')+'</div>'}document.getElementById('ultimosList').innerHTML=u||'<p class="small">Sem registros.</p>'}
-function renderPend(){var d=db(),lista=listaCochos(),ho=hojeISO(),h='';if(!d.cochos.length&&!d.pontos.length){h+='<div class="item">'+tag('INFO')+' Nenhum cocho obrigatório cadastrado. Usando cochos inferidos dos registros.</div>'}for(var i=0;i<lista.length;i++){var c=lista[i];var regs=d.registros.filter(function(r){return r.cocho===c.cocho&&(!c.lote||r.lote===c.lote)});if(!regs.length){h+='<div class="item">'+tag('NAO_ENVIADO')+' <b>'+c.cocho+'</b><br><span class="small">Sem registro encontrado.</span></div>'}else{var r=regs[regs.length-1];h+='<div class="item">'+tag('ENVIADO_NO_HORARIO')+' <b>'+c.cocho+'</b><br><span class="small">Último: '+r.data+' '+r.hora+' • '+r.responsavel+'</span></div>'}}document.getElementById('pendList').innerHTML=h||'<p class="small">Nenhuma pendência.</p>'}
-function renderCochos(){var lista=listaCochos(),h='';for(var i=0;i<lista.length;i++){var c=lista[i];h+='<div class="item"><b>'+c.cocho+'</b> '+tag(c._inferido?'INFERIDO':'ATIVO')+'<br><span class="small">'+(c.propriedade||'-')+' • '+(c.lote||'-')+' • Resp.: '+(c.responsavelPadrao||'-')+' • Total: '+(c.totalKg?Number(c.totalKg).toFixed(1)+' kg':'-')+' • GPS: '+(c.latitudeCocho?c.latitudeCocho+', '+c.longitudeCocho:'sem georreferência')+'</span></div>'}document.getElementById('cochoList').innerHTML=h||'<p class="small">Sem cochos.</p>'}
-function renderRegs(){var arr=registrosFiltrados(false),h='<tr><th>Data</th><th>Hora</th><th>Propriedade</th><th>Lote/Pasto</th><th>Cocho</th><th>Tipo</th><th>Responsável</th><th>Sacos</th><th>Peso saco</th><th>Kg Total</th><th>Escore</th><th>GPS</th><th>Lat</th><th>Lng</th><th>Sync</th></tr>';for(var i=0;i<arr.length;i++){var r=arr[i];h+='<tr><td>'+(r.data||'-')+'</td><td>'+(r.hora||'-')+'</td><td>'+(r.propriedade||'-')+'</td><td>'+(r.lote||'-')+'</td><td>'+(r.cocho||'-')+'</td><td>'+(r.tipoSal||'-')+'</td><td>'+(r.responsavel||'-')+'</td><td>'+(r.quantidadeSacos||'-')+'</td><td>'+(r.pesoSacoKg||'-')+'</td><td>'+(r.totalKg||'-')+'</td><td>'+(r.escoreCocho||'-')+'</td><td>'+(r.statusGps||'-')+'</td><td>'+(r.latitudeLancamento||'-')+'</td><td>'+(r.longitudeLancamento||'-')+'</td><td>'+(r.statusSync||'-')+'</td></tr>'}document.getElementById('tRegs').innerHTML=h}
-function renderAlertas(){var arr=registrosFiltrados(false),h='';for(var i=0;i<arr.length;i++){var r=arr[i],alertas=[];if(!r.latitudeLancamento||!r.longitudeLancamento)alertas.push('SEM_GPS_LANCAMENTO');if(!r.cocho)alertas.push('COCHO_VAZIO');if(!r.lote)alertas.push('LOTE_VAZIO');if(!r.responsavel)alertas.push('RESPONSAVEL_VAZIO');if(!num(r.totalKg))alertas.push('KG_ZERADO');if(r._audStatus==='FORA_DO_RAIO')alertas.push('FORA_DO_RAIO');for(var j=0;j<alertas.length;j++)h+='<div class="item">'+tag(alertas[j])+' <b>'+r.cocho+'</b><br><span class="small">'+r.data+' '+r.hora+' • '+r.responsavel+' • '+r.propriedade+' / '+r.lote+'</span></div>'}document.getElementById('alertaList').innerHTML=h||'<p class="small">Sem alertas operacionais.</p>'}
-function renderRel(){var regs=db().registros,semGps=0,comGps=0,porCocho={},porResp={};for(var i=0;i<regs.length;i++){if(regs[i].latitudeLancamento&&regs[i].longitudeLancamento)comGps++;else semGps++;if(regs[i].cocho)porCocho[regs[i].cocho]=(porCocho[regs[i].cocho]||0)+num(regs[i].totalKg);if(regs[i].responsavel)porResp[regs[i].responsavel]=(porResp[regs[i].responsavel]||0)+num(regs[i].totalKg)}var h='<div class="item"><b>Com GPS:</b> '+comGps+'</div><div class="item"><b>Sem GPS:</b> '+semGps+'</div><div class="item"><b>Ranking por cocho</b></div>';for(var k in porCocho)h+='<div class="item">'+k+': '+porCocho[k].toFixed(1)+' kg</div>';h+='<div class="item"><b>Ranking por responsável</b></div>';for(k in porResp)h+='<div class="item">'+k+': '+porResp[k].toFixed(1)+' kg</div>';document.getElementById('relGeo').innerHTML=h}
-function carregarMapa(){var arr=registrosFiltrados(true),geo=document.getElementById('geoLista');geo.innerHTML='';if(typeof L==='undefined'){geo.innerHTML='<p class="small">Mapa online não carregou. Dados listados abaixo.</p>';return}if(!mapObj){mapObj=L.map('map').setView([-1.94,-47.44],9);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'OSM'}).addTo(mapObj)}else{mapObj.eachLayer(function(layer){if(!layer.options||!layer.options.attribution)mapObj.removeLayer(layer)})}var bounds=[],lista=listaCochos();for(var i=0;i<lista.length;i++){var c=lista[i];if(c.latitudeCocho&&c.longitudeCocho){L.circleMarker([num(c.latitudeCocho),num(c.longitudeCocho)],{radius:8,color:'blue'}).addTo(mapObj).bindPopup('Cocho: '+c.cocho+'<br>'+c.lote);bounds.push([num(c.latitudeCocho),num(c.longitudeCocho)])}}for(i=0;i<arr.length;i++){var r=arr[i];if(r.latitudeLancamento&&r.longitudeLancamento){var color=r._audStatus==='DENTRO_DO_RAIO'?'green':(r._audStatus==='FORA_DO_RAIO'?'red':(r._audStatus==='GPS_IMPRECISO'?'orange':'gray'));L.circleMarker([num(r.latitudeLancamento),num(r.longitudeLancamento)],{radius:7,color:color}).addTo(mapObj).bindPopup((r.cocho||'-')+'<br>'+r.data+' '+r.hora+'<br>'+r.responsavel+'<br>'+r.totalKg+' kg<br>'+r._audStatus);bounds.push([num(r.latitudeLancamento),num(r.longitudeLancamento)])}geo.innerHTML+='<div class="item">'+tag(r._audStatus)+' <b>'+(r.cocho||'-')+'</b><br><span class="small">'+(r.latitudeLancamento||'sem lat')+', '+(r.longitudeLancamento||'sem lng')+' • '+(r.totalKg||'-')+' kg • '+(r.responsavel||'-')+'</span></div>'}if(bounds.length)mapObj.fitBounds(bounds,{padding:[25,25]});if(!arr.length)geo.innerHTML='<p class="small">Sem registros para mostrar no filtro.</p>'}
-function capturarCochoGPS(){if(!navigator.geolocation){alert('GPS indisponível.');return}navigator.geolocation.getCurrentPosition(function(p){document.getElementById('cLat').value=p.coords.latitude;document.getElementById('cLng').value=p.coords.longitude;alert('Coordenada capturada.')},function(e){alert('GPS não capturado: '+e.message)},{enableHighAccuracy:true,timeout:12000})}
-function salvarCocho(){var d=db(),id='COCHO_'+Date.now();d.cochos.push({idCocho:id,propriedade:document.getElementById('cProp').value,lote:document.getElementById('cLote').value,cocho:document.getElementById('cNome').value,responsavelPadrao:document.getElementById('cResp').value,ativo:'SIM',obrigatorioDiario:'SIM',horarioLimite:'19:00',toleranciaMin:10,latitudeCocho:document.getElementById('cLat').value,longitudeCocho:document.getElementById('cLng').value,raioAceitoMetros:document.getElementById('cRaio').value||100,observacao:'Cadastro local',_local:true});saveDb(d);renderAll();alert('Cocho salvo localmente.')}
-function salvarConfig(){var c=cfg();c.apiUrl=document.getElementById('apiUrl').value.trim();saveCfg(c);alert('URL salva.')}
-function baixarDados(){var url=(document.getElementById('apiUrl').value||cfg().apiUrl||'').trim();if(!url){alert('Informe a URL /exec.');return}fetch(url+'?acao=dados').then(function(r){return r.json()}).then(function(js){var pacote=normalizarPacote(js);saveDb(pacote);renderAll();alert('Dados baixados. Registros: '+pacote.registros.length)}).catch(function(e){alert('Falha ao baixar dados: '+e.message)})}
-function criarDadosDemo(){var d={registros:[{idRegistro:'DEMO_1',data:hojeISO(),hora:'18:20',propriedade:'Fazenda Pedaço de Chão',lote:'Pasto 01',cocho:'Cocho 01',tipoSal:'Sal Mineral',responsavel:'Marcelo',quantidadeSacos:2,pesoSacoKg:30,totalKg:60,statusGps:'GPS_CAPTURADO',latitudeLancamento:'-1.9402',longitudeLancamento:'-47.4401',precisaoGps:18,statusSync:'DEMO'}],cochos:[],pontos:[],alertas:[],logs:[],configuracoes:[],cochosInferidos:[],meta:{origem:'DEMONSTRACAO',ultimaAtualizacao:dataHoraBR(),brutos:1,normalizados:1}};d.cochosInferidos=inferirCochos(d.registros);saveDb(d);renderAll();alert('Demo criada.')}
-function exportCSV(){var arr=registrosFiltrados(false),csv='DATA;HORA;PROPRIEDADE;LOTE;COCHO;TIPO;RESPONSAVEL;SACOS;KG;GPS;LAT;LNG;SYNC\n';for(var i=0;i<arr.length;i++){var r=arr[i];csv+=[r.data,r.hora,r.propriedade,r.lote,r.cocho,r.tipoSal,r.responsavel,r.quantidadeSacos,r.totalKg,r.statusGps,r.latitudeLancamento,r.longitudeLancamento,r.statusSync].map(function(x){return '"'+String(x||'').replace(/"/g,'""')+'"'}).join(';')+'\n'}download('reprogen_sal_cocho_central_v1_2_registros.csv',csv,'text/csv')}
-function exportExcelHtml(){download('reprogen_sal_cocho_central_v1_2.xls','<html><meta charset="UTF-8"><body><table>'+document.getElementById('tRegs').innerHTML+'</table></body></html>','application/vnd.ms-excel')}
-function exportJSON(){download('reprogen_sal_cocho_central_v1_2.json',JSON.stringify(db(),null,2),'application/json')}
-function download(name,content,type){var blob=new Blob([content],{type:type});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)}
-iniciar();
+(function(){
+'use strict';
+var DB='reprogen_central_v42';
+var map=null;
+var camadas={fazenda:null,cochos:null};
+var TITULOS={dashboard:'📊 Painel',produtos:'📦 Produtos',lotes:'📋 Lotes',movimentacao:'🔄 Movimentação',registros:'📝 Registros',mapa:'🗺️ Mapa',config:'⚙️ Configuração'};
+
+function $(id){return document.getElementById(id)}
+function load(k,d){try{var v=localStorage.getItem(DB+'_'+k);return v?JSON.parse(v):d}catch(e){return d}}
+function save(k,v){localStorage.setItem(DB+'_'+k,JSON.stringify(v))}
+function now(){return new Date().toISOString()}
+function today(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function toast(msg){var t=$('toast');t.innerHTML=msg;t.className='toast show';setTimeout(function(){t.className='toast'},3500)}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+
+function getProdutos(){return load('produtos',[])}
+function setProdutos(p){save('produtos',p)}
+function getLotes(){return load('lotes',[])}
+function setLotes(l){save('lotes',l)}
+function getRegistros(){return load('registros',[])}
+function setRegistros(r){save('registros',r)}
+function getMovimentacoes(){return load('movimentacoes',[])}
+function setMovimentacoes(m){save('movimentacoes',m)}
+function getMapaFeatures(){return load('mapa_features',[])}
+function setMapaFeatures(f){save('mapa_features',f)}
+
+window.trocarAba=function(nome){
+  var all=document.querySelectorAll('.content');
+  for(var i=0;i<all.length;i++)all[i].classList.add('hide');
+  var t=$('content'+cap(nome));if(t)t.classList.remove('hide');
+  var btns=document.querySelectorAll('.nav-tab');
+  for(var i=0;i<btns.length;i++){btns[i].classList.remove('active');if(btns[i].getAttribute('data-tab')===nome)btns[i].classList.add('active');}
+  $('sectionTitle').textContent=TITULOS[nome]||nome;
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(nome==='mapa' && !map){setTimeout(inicializarMapa,150);}
+  else if(nome==='mapa' && map){setTimeout(function(){map.invalidateSize();},150);}
+  if(nome==='movimentacao'){renderMovimentacoes();}
+  render();
+};
+
+function bindNav(){
+  var btns=document.querySelectorAll('.nav-tab');
+  for(var i=0;i<btns.length;i++){
+    if(btns[i].dataset.bound)continue;
+    btns[i].dataset.bound='1';
+    btns[i].addEventListener('click',function(){trocarAba(this.getAttribute('data-tab'));});
+  }
+}
+if(document.readyState!=='loading')bindNav();
+else document.addEventListener('DOMContentLoaded',bindNav);
+
+function render(){
+  renderStatus();renderKPIs();renderProdutos();renderLotes();renderRegistros();renderUltimosRegistros();renderUltimasMovimentacoes();renderMovimentacoesKPIs();renderFiltroLotes();
+}
+
+function renderStatus(){
+  var cfg=load('config',{});
+  var html='<span class="pill ok">V4.2 OK</span>';
+  if(cfg.url)html+='<span class="pill ok">API Configurada</span>';
+  $('status').innerHTML=html;
+}
+
+function renderKPIs(){
+  var lotes=getLotes(),prod=getProdutos(),reg=getRegistros(),mov=getMovimentacoes(),t=today(),hoje=0,ativos=0;
+  for(var i=0;i<reg.length;i++)if((reg[i].dataHora||'').substring(0,10)===t)hoje++;
+  for(var i=0;i<lotes.length;i++)if(!lotes[i].dataSaida)ativos++;
+  $('kLotesAtivos').innerHTML=ativos;$('kProdutos').innerHTML=prod.length;$('kRegistrosHoje').innerHTML=hoje;$('kMovimentacoes').innerHTML=mov.length;
+}
+
+function renderUltimosRegistros(){
+  var r=getRegistros(),h='',u=r.slice(0,5);
+  if(!u.length)h='<div class="item muted">Nenhum registro.</div>';
+  for(var i=0;i<u.length;i++)h+='<div class="item"><b>'+esc(u[i].tipo)+'</b><span class="pill ok">SINCRONIZADO</span><br><span class="muted">'+esc(u[i].dataHora.substring(0,16))+' • '+esc((u[i].payload||{}).loteId||'')+'</span></div>';
+  $('ultimosRegistros').innerHTML=h;
+}
+
+function renderUltimasMovimentacoes(){
+  var m=getMovimentacoes(),h='',u=m.slice(0,5);
+  if(!u.length)h='<div class="item muted">Nenhuma movimentação. Clique em "Movimentação" → "Baixar".</div>';
+  for(var i=0;i<u.length;i++){
+    var x=u[i],cor=x.evento==='ENTRADA'?'ok':(x.evento==='SAIDA'?'err':'warn');
+    h+='<div class="item"><b>'+esc(x.loteId)+' - '+esc(x.evento)+'</b><span class="pill '+cor+'">'+x.quantidade+' animais</span><br><span class="muted">'+esc(x.dataHora.substring(0,16))+'</span></div>';
+  }
+  $('ultimasMovimentacoes').innerHTML=h;
+}
+
+function renderMovimentacoesKPIs(){
+  var m=getMovimentacoes(),ent=0,tra=0,sai=0;
+  for(var i=0;i<m.length;i++){
+    if(m[i].evento==='ENTRADA')ent++;
+    else if(m[i].evento==='TRANSFERENCIA')tra++;
+    else if(m[i].evento==='SAIDA')sai++;
+  }
+  $('kTotalMov').innerHTML=m.length;$('kEntradas').innerHTML=ent;$('kTransferencias').innerHTML=tra;$('kSaidas').innerHTML=sai;
+}
+
+function renderFiltroLotes(){
+  var lotes=getLotes(),h='<option value="">Todos</option>';
+  for(var i=0;i<lotes.length;i++)h+='<option value="'+esc(lotes[i].id)+'">'+esc(lotes[i].id)+'</option>';
+  var el=$('filtroLoteMov');if(el)el.innerHTML=h;
+}
+
+window.renderMovimentacoes=function(){
+  var m=getMovimentacoes(),fLote=$('filtroLoteMov').value,fEvento=$('filtroEvento').value;
+  var filtrados=[];
+  for(var i=0;i<m.length;i++){
+    if(fLote && m[i].loteId!==fLote)continue;
+    if(fEvento && m[i].evento!==fEvento)continue;
+    filtrados.push(m[i]);
+  }
+  // Timeline
+  var tl='';
+  if(!filtrados.length)tl='<div class="muted">Nenhuma movimentação encontrada.</div>';
+  for(var i=0;i<Math.min(filtrados.length,10);i++){
+    var x=filtrados[i],eClass='evento-'+x.evento.toLowerCase();
+    tl+='<div class="timeline-item"><b class="'+eClass+'">'+esc(x.evento)+'</b> - '+esc(x.loteId)+' ('+x.quantidade+' animais)<br><span class="muted">'+esc(x.dataHora.substring(0,16))+'</span>';
+    if(x.observacao)tl+='<br><span class="muted">📝 '+esc(x.observacao)+'</span>';
+    tl+='</div>';
+  }
+  $('timelineMov').innerHTML=tl;
+  
+  // Tabela
+  var th='<table class="table"><tr><th>Data</th><th>Lote</th><th>Evento</th><th>Qtd</th><th>Bezerros</th><th>Novilhas</th><th>Vacas</th><th>Obs</th></tr>';
+  for(var i=0;i<filtrados.length;i++){
+    var x=filtrados[i],d=x.distribuicao||{},bez=(d.BEZERRO||0)+(d.BEZERRA||0),nov=(d.NOVILHO||0)+(d.NOVILHA||0),vac=(d.SOLTEIRA||0)+(d.NULIPARA||0)+(d.PRIMIPARA||0)+(d.MULTIPARA||0);
+    var cor=x.evento==='ENTRADA'?'ok':(x.evento==='SAIDA'?'err':'warn');
+    th+='<tr><td>'+x.dataHora.substring(0,16)+'</td><td>'+esc(x.loteId)+'</td><td><span class="badge '+cor+'">'+x.evento+'</span></td><td>'+x.quantidade+'</td><td>'+bez+'</td><td>'+nov+'</td><td>'+vac+'</td><td>'+esc((x.observacao||'').substring(0,30))+'</td></tr>';
+  }
+  th+='</table>';
+  $('tabelaMovimentacoes').innerHTML=th;
+};
+
+function renderProdutos(){
+  var p=getProdutos(),h='';
+  if(!p.length)h='<div class="item muted">Nenhum produto.</div>';
+  for(var i=0;i<p.length;i++)h+='<div class="item"><b>'+esc(p[i].nome)+'</b><span class="badge">'+esc(p[i].id)+'</span><span class="pill blue-pill">'+p[i].tipo+'</span><br><span class="muted">'+p[i].peso+'kg • R$ '+(p[i].custo||0).toFixed(2)+'</span></div>';
+  $('listaProdutos').innerHTML=h;
+}
+
+function renderLotes(){
+  var l=getLotes(),h='';
+  if(!l.length)h='<div class="item muted">Nenhum lote.</div>';
+  for(var i=0;i<l.length;i++){
+    var x=l[i],status=x.dataSaida?'SAÍDO':'ATIVO',d=x.distribuicao||{};
+    h+='<div class="item"><b>'+esc(x.id)+' ('+x.qtdTotal+' animais)</b><span class="pill '+(status==='ATIVO'?'ok':'warn')+'">'+status+'</span><br><span class="muted">Entrada: '+x.dataEntrada+' • B:'+((d.BEZERRO||0)+(d.BEZERRA||0))+' N:'+((d.NOVILHO||0)+(d.NOVILHA||0))+' V:'+((d.SOLTEIRA||0)+(d.NULIPARA||0)+(d.PRIMIPARA||0)+(d.MULTIPARA||0))+'</span></div>';
+  }
+  $('listaLotes').innerHTML=h;
+}
+
+function renderRegistros(){
+  var r=getRegistros(),h='<table class="table"><tr><th>UUID</th><th>Tipo</th><th>Lote</th><th>Data</th></tr>';
+  for(var i=0;i<Math.min(r.length,20);i++){
+    h+='<tr><td>'+r[i].uuid.substring(0,12)+'...</td><td>'+r[i].tipo+'</td><td>'+esc((r[i].payload||{}).loteId||'')+'</td><td>'+r[i].dataHora.substring(0,16)+'</td></tr>';
+  }
+  h+='</table>';
+  $('tabelaRegistros').innerHTML=h;
+}
+
+// PRODUTOS
+window.adicionarProduto=function(){
+  var nome=$('prodNome').value.trim(),codigo=$('prodCodigo').value.trim();
+  if(!nome||!codigo){toast('❌ Preencha nome e código.');return;}
+  var p=getProdutos();
+  p.push({id:codigo,nome:nome,tipo:$('prodTipo').value,peso:parseFloat($('prodPeso').value)||0,custo:parseFloat($('prodCusto').value)||0,validade:$('prodValidade').value,obs:$('prodObs').value,dataCad:now()});
+  setProdutos(p);
+  ['Nome','Codigo','Peso','Custo','Validade','Obs'].forEach(function(c){var e=$('prod'+c);if(e)e.value='';});
+  toast('✅ '+nome);render();
+};
+
+window.sincronizarProdutos=function(){
+  var cfg=load('config',{});if(!cfg.url){toast('❌ Configure URL.');return;}
+  var prod=getProdutos();
+  var promises=prod.map(function(p){
+    return fetch(cfg.url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'cadastrarProduto',produto:p})});
+  });
+  Promise.all(promises).then(function(){toast('✅ '+prod.length+' produtos sincronizados');}).catch(function(e){toast('❌ '+e.message);});
+};
+
+// LOTES
+window.criarLote=function(){
+  var id=$('lotId').value.trim(),qtd=$('lotQtd').value,entrada=$('lotDataEntrada').value;
+  if(!id||!qtd||!entrada){toast('❌ Preencha campos obrigatórios.');return;}
+  var b_m=parseInt($('lotBezerro').value)||0,b_f=parseInt($('lotBezerra').value)||0,n_m=parseInt($('lotNovilho').value)||0,n_f=parseInt($('lotNovilha').value)||0;
+  var sol=parseInt($('lotSolteira').value)||0,nul=parseInt($('lotNulipara').value)||0,prim=parseInt($('lotPrimipara').value)||0,mult=parseInt($('lotMultipara').value)||0;
+  var soma=b_m+b_f+n_m+n_f+sol+nul+prim+mult;
+  if(soma!==parseInt(qtd)){toast('❌ Soma ('+soma+') ≠ total ('+qtd+')');return;}
+  var lotes=getLotes();
+  lotes.push({id:id,qtdTotal:parseInt(qtd),dataEntrada:entrada,dataSaida:null,propriedade:$('lotProp').value,distribuicao:{BEZERRO:b_m,BEZERRA:b_f,NOVILHO:n_m,NOVILHA:n_f,SOLTEIRA:sol,NULIPARA:nul,PRIMIPARA:prim,MULTIPARA:mult}});
+  setLotes(lotes);
+  ['Id','Qtd','DataEntrada','Prop','Bezerro','Bezerra','Novilho','Novilha','Solteira','Nulipara','Primipara','Multipara'].forEach(function(c){var e=$('lot'+c);if(e)e.value='';});
+  toast('✅ Lote: '+id);render();
+};
+
+window.sincronizarLotes=function(){
+  var cfg=load('config',{});if(!cfg.url){toast('❌ Configure URL.');return;}
+  var lotes=getLotes();
+  var promises=lotes.map(function(l){
+    return fetch(cfg.url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'cadastrarLote',lote:l})});
+  });
+  Promise.all(promises).then(function(){toast('✅ '+lotes.length+' lotes sincronizados');}).catch(function(e){toast('❌ '+e.message);});
+};
+
+// MOVIMENTAÇÃO
+window.baixarMovimentacoes=function(){
+  var cfg=load('config',{});if(!cfg.url){toast('❌ Configure URL.');return;}
+  fetch(cfg.url+'?acao=getMovimentacoes').then(function(r){return r.json();}).then(function(j){
+    if(j.sucesso){
+      setMovimentacoes(j.movimentacoes||[]);
+      toast('✅ '+(j.movimentacoes||[]).length+' movimentações baixadas');
+      render();renderMovimentacoes();
+    }
+  }).catch(function(e){toast('❌ '+e.message);});
+};
+
+window.filtrarPorLote=function(){
+  trocarAba('movimentacao');
+  setTimeout(function(){var el=$('filtroLoteMov');if(el)el.focus();},200);
+};
+
+// REGISTROS
+window.sincronizarCentral=function(){
+  var cfg=load('config',{});if(!cfg.url){toast('❌ Configure URL.');return;}
+  fetch(cfg.url+'?acao=getRegistrosOperacionais').then(function(r){return r.json();}).then(function(j){
+    if(j.sucesso){setRegistros(j.registros||[]);toast('✅ '+(j.registros||[]).length+' registros');render();}
+  }).catch(function(e){toast('❌ '+e.message);});
+};
+
+window.exportarDados=function(){
+  var d={lotes:getLotes(),produtos:getProdutos(),registros:getRegistros(),movimentacoes:getMovimentacoes(),mapa:getMapaFeatures(),exportadoEm:now()};
+  var blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='reprogen_v42_'+Date.now()+'.json';a.click();
+  toast('📥 Exportado');
+};
+
+// MAPA
+function inicializarMapa(){
+  map=L.map('mapa').setView([-1.776,-47.450],11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
+  camadas.fazenda=L.featureGroup().addTo(map);camadas.cochos=L.featureGroup().addTo(map);
+  carregarMapaFeatures();
+}
+
+window.processarArquivoMapa=function(ev){
+  var f=ev.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(e){
+    var c=e.target.result,features=[];
+    try{
+      if(f.name.endsWith('.kml'))features=parseKML(c);
+      else if(f.name.endsWith('.geojson')||f.name.endsWith('.json'))features=parseGeoJSON(c);
+      else if(f.name.endsWith('.csv'))features=parseCSV(c);
+      else throw new Error('Formato não suportado');
+      var atuais=getMapaFeatures();atuais=atuais.concat(features);setMapaFeatures(atuais);
+      renderizarFeatures(features);
+      toast('✅ '+features.length+' importados');
+    }catch(err){toast('❌ '+err.message);}
+  };
+  r.readAsText(f);
+};
+
+function parseKML(s){var doc=new DOMParser().parseFromString(s,"text/xml"),features=[];
+  var pol=doc.getElementsByTagName('Polygon');for(var i=0;i<pol.length;i++){var ce=pol[i].getElementsByTagName('coordinates')[0];if(!ce)continue;features.push({tipo:'POLIGONO',nome:getNome(pol[i].parentNode)||'P'+i,coordinates:[parseCoordsKML(ce.textContent)],geometry:'Polygon'});}
+  var pts=doc.getElementsByTagName('Point');for(var i=0;i<pts.length;i++){var ce=pts[i].getElementsByTagName('coordinates')[0];if(!ce)continue;var p=ce.textContent.trim().split(',');features.push({tipo:'PONTO',nome:getNome(pts[i].parentNode)||'Pt'+i,coordinates:[parseFloat(p[0]),parseFloat(p[1])],geometry:'Point'});}
+  return features;
+}
+function parseCoordsKML(t){var c=t.trim().split(/\s+/),r=[];for(var i=0;i<c.length;i++){var p=c[i].split(',');if(p.length>=2)r.push([parseFloat(p[0]),parseFloat(p[1])]);}return r;}
+function getNome(el){var n=el.getElementsByTagName('name');return n.length>0?n[0].textContent:null;}
+function parseGeoJSON(s){var d=JSON.parse(s),features=[],arr=d.features||[];for(var i=0;i<arr.length;i++){var f=arr[i],p=f.properties||{};features.push({tipo:f.geometry.type==='Point'?'PONTO':'POLIGONO',nome:p.name||p.NAME||'F'+i,coordinates:f.geometry.coordinates,geometry:f.geometry.type});}return features;}
+function parseCSV(s){var lines=s.split(/\r?\n/).filter(function(l){return l.trim();}),h=lines[0].split(',').map(function(x){return x.trim().toLowerCase();});var latI=findCol(h,['lat','latitude']),lngI=findCol(h,['lng','lon','longitude']),nI=findCol(h,['nome','name']);if(latI===-1||lngI===-1)throw new Error('CSV precisa: lat e lng');var features=[];for(var i=1;i<lines.length;i++){var v=lines[i].split(','),lat=parseFloat(v[latI]),lng=parseFloat(v[lngI]);if(isNaN(lat)||isNaN(lng))continue;features.push({tipo:'PONTO',nome:(nI!==-1?v[nI]:'Pt'+i).trim(),coordinates:[lng,lat],geometry:'Point'});}return features;}
+function findCol(h,cs){for(var i=0;i<h.length;i++)for(var j=0;j<cs.length;j++)if(h[i].indexOf(cs[j])!==-1)return i;return -1;}
+
+function renderizarFeatures(features){
+  for(var i=0;i<features.length;i++){
+    var f=features[i];
+    if(f.geometry==='Polygon'){var c=f.coordinates[0]||f.coordinates,ll=[];for(var j=0;j<c.length;j++)ll.push([c[j][1],c[j][0]]);var poly=L.polygon(ll,{color:'#0f5132',weight:3,fillOpacity:0.15});poly.bindPopup('<b>'+esc(f.nome)+'</b>');camadas.fazenda.addLayer(poly);}
+    else if(f.geometry==='Point'){var c=f.coordinates,m=L.circleMarker([c[1],c[0]],{radius:8,fillColor:'#198754',color:'#fff',weight:2,fillOpacity:0.9});m.bindPopup('<b>'+esc(f.nome)+'</b>');camadas.cochos.addLayer(m);}
+  }
+  setTimeout(centralizarMapa,300);
+}
+
+function carregarMapaFeatures(){var f=getMapaFeatures();if(!f.length)return;Object.keys(camadas).forEach(function(k){if(camadas[k])camadas[k].clearLayers();});renderizarFeatures(f);}
+
+window.centralizarMapa=function(){if(!map)return;var b=L.latLngBounds([]);Object.keys(camadas).forEach(function(k){if(camadas[k]&&camadas[k].getLayers().length>0){var bb=camadas[k].getBounds();if(bb.isValid())b.extend(bb);}});if(b.isValid())map.fitBounds(b,{padding:[20,20]});};
+
+window.exportarMapaGeoJSON=function(){var f=getMapaFeatures();if(!f.length){toast('❌ Mapa vazio');return;}var g={type:'FeatureCollection',features:f.map(function(x){return{type:'Feature',properties:{name:x.nome,tipo:x.tipo},geometry:{type:x.geometry,coordinates:x.coordinates}};})};var blob=new Blob([JSON.stringify(g,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mapa_'+Date.now()+'.geojson';a.click();toast('📤 GeoJSON');};
+
+window.limparMapa=function(){if(!confirm('Limpar mapa?'))return;setMapaFeatures([]);Object.keys(camadas).forEach(function(k){if(camadas[k])camadas[k].clearLayers();});toast('🗑️ Limpo');render();};
+
+// CONFIG
+window.salvarConfig=function(){save('config',{url:$('configURL').value.trim()});toast('✅ Salvo');render();};
+
+window.testarConexao=function(){
+  var cfg=load('config',{});if(!cfg.url){toast('❌ URL?');return;}
+  fetch(cfg.url).then(function(r){return r.json();}).then(function(j){
+    $('configStatus').innerHTML='<div class="item ok"><b>✅ OK</b><br>'+esc(JSON.stringify(j).substring(0,100))+'</div>';toast('✅ OK');
+  }).catch(function(e){$('configStatus').innerHTML='<div class="item err"><b>❌ '+esc(e.message)+'</b></div>';toast('❌ '+e.message);});
+};
+
+var cfgS=load('config',{});if(cfgS.url)$('configURL').value=cfgS.url;
+render();
+})();
 </script>
 </body>
 </html>
