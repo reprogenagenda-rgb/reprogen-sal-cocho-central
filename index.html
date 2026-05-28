@@ -553,7 +553,7 @@ $('mFoto').addEventListener('click',function(e){if(e.target===this){this.classNa
 window.sincronizarTudo=function(){baixarPropriedades();baixarCochos();baixarRegistros();baixarMovimentacoes();baixarNotas();baixarNovos();baixarEstoque();};
 
 function apiGet(a,cb){var c=cfg();if(!c.url){toast('Configure URL primeiro.');return;}fetch(c.url+'?acao='+a).then(function(r){return r.json();}).then(cb).catch(function(e){toast('Erro '+a+': '+e.message);});}
-function apiPost(a,d,cb){var c=cfg();if(!c.url){toast('Configure URL.');return;}fetch(c.url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({acao:a},d))}).then(function(r){return r.json();}).then(cb||function(j){if(j.sucesso)toast('OK');else toast('Erro: '+(j.erro||''));}).catch(function(e){toast('Erro: '+e.message);});}
+function apiPost(a,d,cb){var c=cfg();if(!c.url){toast('Configure URL.');return;}fetch(c.url,{method:'POST',body:JSON.stringify(Object.assign({acao:a},d))}).then(function(r){return r.json();}).then(cb||function(j){if(j.sucesso)toast('OK');else toast('Erro: '+(j.erro||''));}).catch(function(e){toast('Erro: '+e.message);});}
 
 window.baixarPropriedades=function(){apiGet('getPropriedades',function(j){if(j.sucesso){_set('props',j.propriedades||[]);renderListaProps();renderSelects();renderKPIs();}});};
 window.baixarCochos=function(){apiGet('getCochos',function(j){if(j.sucesso){_set('cochos',j.cochos||[]);renderListaCochos();}});};
