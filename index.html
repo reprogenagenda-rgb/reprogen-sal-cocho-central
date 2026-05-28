@@ -2,956 +2,795 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<!-- iOS: viewport-fit=cover para safe area -->
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0f5132">
-<!-- iOS PWA -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="REPROGEN">
-<title>REPROGEN CAMPO</title>
+<title>REPROGEN CENTRAL V5.2</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
-:root{
-  --g:#0f5132;--g2:#198754;--g3:#d1e7dd;
-  --r:#dc3545;--am:#ffc107;--bl:#0d6efd;
-  --ln:#c8dcc9;--bg:#e8f2e9;--card:#fff;
-  --ink:#0d1f12;--muted:#4e6b52;
-  /* safe area iOS */
-  --sab: env(safe-area-inset-bottom, 0px);
-  --sat: env(safe-area-inset-top, 0px);
-}
-*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; margin:0; padding:0; }
-html{ height:100%; }
-body{
-  background:var(--bg);
-  font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
-  color:var(--ink);
-  font-size:17px;
-  -webkit-font-smoothing:antialiased;
-  min-height:100%;
-}
-
-/* HEADER */
-.header{
-  background:linear-gradient(135deg,#0a3d24,#0f5132);
-  color:#fff;
-  padding:calc(12px + var(--sat)) 16px 12px;
-  position:sticky;top:0;z-index:50;
-  box-shadow:0 3px 10px rgba(0,0,0,.25);
-}
-.header-top{ display:flex;align-items:center;justify-content:space-between; }
-.header h1{ font-size:20px;font-weight:900; }
-.header p{ font-size:12px;opacity:.8;margin-top:2px; }
-.hpills{ display:flex;gap:6px;margin-top:8px;flex-wrap:wrap; }
-.hpill{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:5px 10px;border-radius:999px;
-  font-size:12px;font-weight:700;
-  background:rgba(255,255,255,.15);
-}
-.dot{ width:9px;height:9px;border-radius:50%;background:#999; }
-.dot-on{ background:#4ade80; }
-.dot-off{ background:#60a5fa; }
-.hdpend{
-  background:rgba(255,255,255,.15);border-radius:10px;
-  padding:6px 10px;font-size:12px;font-weight:700;color:#fff;
-}
-
-/* SCROLL AREA */
-.conteudo{
-  padding:14px 12px calc(80px + var(--sab));
-  max-width:540px;margin:0 auto;
-  /* iOS scroll suave */
-  -webkit-overflow-scrolling:touch;
-}
-
-/* CARD */
-.card{
-  background:var(--card);border-radius:18px;
-  box-shadow:0 4px 16px rgba(10,50,20,.12);
-  padding:18px 16px;margin-bottom:14px;
-  border:1.5px solid var(--ln);
-}
-.ctitulo{
-  font-size:17px;font-weight:900;color:var(--g);
-  margin-bottom:16px;display:flex;align-items:center;gap:10px;
-}
-.ctitulo .ico{ font-size:21px; }
-
-/* CAMPO INPUT */
-.campo{ margin-bottom:14px; }
-.campo label{
-  display:block;font-size:13px;font-weight:800;
-  color:var(--muted);margin-bottom:6px;
-  text-transform:uppercase;letter-spacing:.4px;
-}
-/* iOS: font-size minimo 16px para evitar zoom automatico */
-.campo input,
-.campo select,
-.campo textarea{
-  width:100%;
-  padding:16px 14px;
-  border:2px solid var(--ln);
-  border-radius:14px;
-  background:#f7fbf7;
-  font-size:16px; /* CRITICO iOS: min 16px */
-  font-family:inherit;
-  color:var(--ink);
-  outline:none;
-  font-weight:600;
-  min-height:56px;
-  /* iOS: remove estilo padrão */
-  -webkit-appearance:none;
-  appearance:none;
-}
-.campo input:focus,
-.campo select:focus,
-.campo textarea:focus{
-  border-color:var(--g2);background:#fff;
-  box-shadow:0 0 0 4px rgba(25,135,84,.15);
-}
-/* iOS select: adicionar seta */
-.campo select{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234e6b52' fill='none' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:right 14px center;
-  padding-right:36px;
-}
-.campo textarea{
-  min-height:80px;resize:none;line-height:1.5;
-}
-
-/* GRID */
-.grid2{ display:grid;grid-template-columns:1fr 1fr;gap:10px; }
-@media(max-width:360px){ .grid2{ grid-template-columns:1fr; } }
-
-/* BOTOES */
-.btn{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  width:100%;min-height:64px;padding:14px 16px;
-  border:0;border-radius:16px;
-  font-size:18px;font-weight:900;cursor:pointer;
-  margin-bottom:10px;
-  font-family:inherit;
-  /* iOS: remove estilo padrão */
-  -webkit-appearance:none;
-  transition:opacity .15s;
-}
-.btn:active{ opacity:.85; }
-.btn .bico{ font-size:22px; }
-.btn-verde{
-  background:linear-gradient(135deg,#0f5132,#198754);color:#fff;
-  box-shadow:0 5px 18px rgba(15,81,50,.3);
-}
-.btn-azul{ background:#dbeafe;color:#1e3a8a; }
-.btn-laranja{ background:#fef3c7;color:#78350f; }
-.btn-cinza{ background:#f0f5f0;color:#2d4a32; }
-.btn-roxo{ background:#ede9fe;color:#4c1d95; }
-.btn-sm{ min-height:48px;font-size:15px;padding:10px 14px;border-radius:12px;margin-bottom:8px; }
-
-/* KPIs */
-.kpis{ display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px; }
-.kpi{ background:#fff;border:2px solid var(--ln);border-radius:16px;padding:14px 12px;text-align:center; }
-.kpi .num{ font-size:30px;font-weight:900;color:var(--g);line-height:1; }
-.kpi .lbl{ font-size:12px;font-weight:700;color:var(--muted);margin-top:4px;text-transform:uppercase; }
-
-/* PILLS */
-.pill{ display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:800; }
-.pok{ background:#d1e7dd;color:#0f5132; }
-.ppend{ background:#fef3c7;color:#78350f; }
-.perr{ background:#fee2e2;color:#7f1d1d; }
-.psync{ background:#dbeafe;color:#1e3a8a; }
-.pnota{ background:#ede9fe;color:#4c1d95; }
-
-/* LISTA */
-.lista{ display:flex;flex-direction:column;gap:10px; }
-.item{
-  background:#fff;border:2px solid var(--ln);
-  border-radius:16px;padding:14px;
-}
-.item .itop{ display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px; }
-.item .inome{ font-size:16px;font-weight:800;flex:1; }
-.item .isub{ font-size:12px;color:var(--muted);margin-top:3px; }
-.item .ifoto{ width:60px;height:60px;border-radius:10px;object-fit:cover;margin-top:8px;border:2px solid var(--ln); }
-
-/* NOTA DO COCHO */
-.nota-box{
-  background:#faf5ff;border:2px solid #c4b5fd;
-  border-radius:16px;padding:16px;margin-bottom:14px;
-}
-.nota-titulo{
-  font-size:14px;font-weight:800;color:#4c1d95;
-  margin-bottom:12px;display:flex;align-items:center;gap:8px;
-}
-.foto-preview-wrap{ position:relative;display:inline-block; }
-.foto-preview{
-  width:100%;max-height:220px;object-fit:cover;
-  border-radius:12px;margin-top:8px;display:none;
-  border:2px solid #c4b5fd;
-}
-.foto-preview.show{ display:block; }
-.btn-remover-foto{
-  position:absolute;top:14px;right:8px;
-  background:#7f1d1d;color:#fff;border:0;
-  width:30px;height:30px;border-radius:50%;
-  font-size:16px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  display:none;
-}
-.btn-remover-foto.show{ display:flex; }
-.foto-status{ font-size:12px;color:#6d28d9;font-weight:700;margin-top:6px; }
-
-/* BOTTOM NAV */
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:50;
-  background:#fff;border-top:2px solid var(--ln);
-  display:flex;
-  /* iOS safe area */
-  padding-bottom:var(--sab);
-  box-shadow:0 -3px 14px rgba(0,0,0,.1);
-}
-.bnbtn{
-  flex:1;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:10px 4px 10px;
-  border:0;background:none;cursor:pointer;gap:3px;
-  min-height:56px;
-  font-family:inherit;
-  -webkit-appearance:none;
-}
-.bnbtn .bnico{ font-size:22px;line-height:1; }
-.bnbtn .bnome{ font-size:11px;font-weight:700;color:#647067; }
-.bnbtn.active .bnome{ color:var(--g); }
-.bnbtn.active{ position:relative; }
-.bnbtn.active::before{
-  content:'';position:absolute;top:0;left:25%;right:25%;
-  height:3px;background:var(--g);border-radius:0 0 3px 3px;
-}
-
-/* TOAST */
-.toast{
-  position:fixed;left:12px;right:12px;
-  bottom:calc(76px + var(--sab));z-index:100;
-  background:#0a3d24;color:#fff;
-  padding:14px 16px;border-radius:16px;
-  font-size:15px;font-weight:700;
-  box-shadow:0 6px 20px rgba(0,0,0,.3);
-  display:none;text-align:center;
-}
-.toast.show{ display:block;animation:sup .2s ease; }
-@keyframes sup{ from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1} }
-
-/* OVERLAY SALVO */
-.ov-salvo{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(15,81,50,.93);
-  display:none;flex-direction:column;
-  align-items:center;justify-content:center;gap:16px;
-  padding:24px;
-}
-.ov-salvo.show{ display:flex;animation:fi .2s ease; }
-@keyframes fi{ from{opacity:0}to{opacity:1} }
-.ov-ico{ font-size:72px; }
-.ov-txt{ color:#fff;font-size:26px;font-weight:900;text-align:center; }
-.ov-sub{ color:rgba(255,255,255,.85);font-size:15px;text-align:center;line-height:1.5; }
-
-.sep{ height:1px;background:var(--ln);margin:14px 0; }
-.hide{ display:none!important; }
-.muted{ color:var(--muted);font-size:13px; }
+:root{--g:#0f5132;--g2:#198754;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--pu:#6f42c1;--ln:#dfe8dd;--sh:0 4px 16px rgba(22,50,30,.12);--rd:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f0f5f0;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;color:#1d2b22;font-size:15px}
+header{position:sticky;top:0;z-index:30;background:linear-gradient(135deg,#0f5132,#16724a);color:#fff;padding:12px 18px;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+header h1{font-size:18px;font-weight:900}header p{font-size:11px;opacity:.85;margin-top:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:14px}
+.card{background:#fff;border:1px solid var(--ln);border-radius:var(--rd);box-shadow:var(--sh);padding:16px;margin-bottom:14px}
+.card h2{font-size:17px;margin:0 0 12px;color:var(--g)}.card h3{font-size:13px;margin:12px 0 6px;font-weight:800}
+label{font-weight:700;font-size:12px;color:#2a3e2d;display:block;margin:8px 0 3px}
+input,select,textarea{width:100%;padding:10px;border:1.5px solid #cfdacf;border-radius:10px;background:#fff;font-size:16px;outline:none;margin-bottom:6px;-webkit-appearance:none;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:var(--g2)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234e6b52' fill='none' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;min-height:40px;margin:2px;font-family:inherit;-webkit-appearance:none}
+.bp{background:linear-gradient(135deg,#0f5132,#198754);color:#fff}.bb{background:#cfe2ff;color:#084298}.bw{background:#fff3cd;color:#664d03}.bd{background:#f8d7da;color:#842029}.bs{background:#d1e7dd;color:#0f5132}.bn{background:#e9f2eb;color:#0d3d27}.bpu{background:#ede9fe;color:#4c1d95}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:600px){.row{grid-template-columns:1fr}}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}@media(max-width:600px){.row3{grid-template-columns:1fr}}
+.pill{display:inline-flex;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:700;margin:2px}
+.pok{background:#d1e7dd;color:#0f5132}.pwn{background:#fff3cd;color:#664d03}.per{background:#f8d7da;color:#842029}.pnv{background:#e2d9f3;color:#3d246b}.pbl{background:#cfe2ff;color:#084298}.ppu{background:#ede9fe;color:#4c1d95}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}@media(max-width:600px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{border:1px solid var(--ln);border-radius:12px;padding:10px;background:#f9fbf9;text-align:center}.kpi small{display:block;color:#647067;font-size:10px;font-weight:700;margin-bottom:2px}.kpi .n{font-size:22px;font-weight:900;color:var(--g)}
+.lista{display:flex;flex-direction:column;gap:7px}.item{border:1px solid var(--ln);border-radius:10px;padding:10px;background:#fff;font-size:13px}.item strong{display:block;margin-bottom:3px}.item .sub{color:#647067;font-size:11px;margin-top:2px}
+.hide{display:none!important}.sep{height:1px;background:var(--ln);margin:12px 0}.muted{color:#647067;font-size:12px}
+.nav{display:flex;gap:4px;margin-bottom:12px;border-bottom:2px solid var(--ln);overflow-x:auto;position:sticky;top:62px;background:#f0f5f0;z-index:20;padding:6px 0}
+.ntab{padding:9px 12px;cursor:pointer;border:0;background:none;font-weight:700;font-size:12px;color:#647067;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;border-radius:6px 6px 0 0;min-height:auto;font-family:inherit}
+.ntab:hover{background:#e9f2eb;color:var(--g)}.ntab.active{color:var(--g);border-bottom-color:var(--g);background:#fff}
+.bkbar{display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--ln);padding:8px 14px;margin-bottom:10px}
+.bkbar span{font-weight:800;color:var(--g);font-size:13px}.bkbar button{background:#e9f2eb;color:var(--g);border:0;padding:6px 10px;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;min-height:auto;margin:0}
+.toast{position:fixed;left:15px;right:15px;bottom:15px;background:#0f3d22;color:#fff;padding:12px 14px;border-radius:10px;z-index:60;display:none;font-size:13px;box-shadow:var(--sh)}.toast.show{display:block}
+.table{width:100%;border-collapse:collapse;font-size:12px}.table th{background:#f4f7f2;padding:8px;text-align:left;font-weight:700;border-bottom:2px solid var(--ln)}.table td{padding:8px;border-bottom:1px solid var(--ln);vertical-align:top}.table tr:hover{background:#f9fbf9}
+.badge{display:inline-block;padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800}
+.bnv{background:#e2d9f3;color:#3d246b}.bok{background:#d1e7dd;color:#0f5132}.bin{background:#f0f0f0;color:#666}.bur{background:#fee2e2;color:#7f1d1d}.bat{background:#fef3c7;color:#78350f}
+/* SCORE */
+.score-box{border-radius:18px;padding:20px;text-align:center;margin-bottom:14px;color:#fff}
+.score-otimo{background:linear-gradient(135deg,#0f5132,#198754)}
+.score-bom{background:linear-gradient(135deg,#198754,#20c997)}
+.score-atencao{background:linear-gradient(135deg,#e67e22,#f39c12)}
+.score-critico{background:linear-gradient(135deg,#c0392b,#e74c3c)}
+.score-num{font-size:52px;font-weight:900;line-height:1}
+.score-label{font-size:16px;font-weight:700;opacity:.9;margin-top:4px}
+/* ESTOQUE */
+.est-ok{border-left:4px solid #198754}
+.est-baixo{border-left:4px solid #ffc107}
+.est-critico{border-left:4px solid #dc3545}
+.est-barra-wrap{height:10px;background:#e9f2eb;border-radius:5px;margin-top:6px;overflow:hidden}
+.est-barra{height:100%;border-radius:5px;transition:width .3s}
+/* NOTAS */
+.nota-card{border-radius:12px;padding:12px;margin-bottom:8px;border:1.5px solid #c4b5fd;background:#faf5ff}
+.nota-urgente{border-color:#dc3545;background:#fff5f5}
+.nota-atencao{border-color:#ffc107;background:#fffbf0}
+/* FOTO */
+.foto-thumb{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--ln);cursor:pointer;display:block}
+.modal-foto{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-foto.show{display:flex}.modal-foto img{max-width:100%;max-height:90vh;border-radius:12px}
+.modal-fechar{position:absolute;top:16px;right:20px;color:#fff;font-size:28px;cursor:pointer;font-weight:700;background:rgba(0,0,0,.4);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:0}
+.timeline{border-left:3px solid var(--g);padding-left:14px}
+.titem{position:relative;padding:6px 0 6px 0;margin-bottom:6px;font-size:12px}
+.titem::before{content:'';position:absolute;left:-20px;top:10px;width:10px;height:10px;border-radius:50%;background:var(--g);border:2px solid #fff;box-shadow:0 0 0 2px var(--g)}
+.alert-box{border-radius:10px;padding:12px;margin-bottom:10px}
+.alert-urg{background:#fff5f5;border:1.5px solid #dc3545}
+.alert-novo{background:#f0ebfa;border:1.5px solid #c9b8e8}
+#mapa{width:100%;height:450px;border-radius:12px;border:1px solid var(--ln);margin-top:12px}
+.upzone{border:2px dashed #cfdacf;border-radius:12px;padding:20px;text-align:center;background:#f9fbfa;cursor:pointer}
+.upzone:hover{border-color:var(--g2);background:#eefbf3}
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-top">
-    <div>
-      <h1>REPROGEN CAMPO</h1>
-      <p>Registro de Abastecimento</p>
-    </div>
-    <div id="hdPend" class="hdpend">OK</div>
-  </div>
-  <div class="hpills" id="hpills"></div>
+<header>
+  <h1>REPROGEN CENTRAL V5.2</h1>
+  <p>Consultor &bull; Estoque &bull; Auto Avaliacao &bull; Campo</p>
 </header>
 
-<div class="conteudo">
+<div class="wrap">
 
-  <!-- PAINEL -->
-  <div id="pgPainel" class="pg">
-    <div class="kpis">
-      <div class="kpi"><div class="num" id="kHoje">0</div><div class="lbl">Hoje</div></div>
-      <div class="kpi"><div class="num" id="kPend" style="color:#c45200">0</div><div class="lbl">Pendentes</div></div>
-    </div>
-
-    <button class="btn btn-verde" onclick="ir('registrar')">
-      <span class="bico">📝</span> Registrar Abastecimento
-    </button>
-    <button class="btn btn-roxo" onclick="ir('nota')">
-      <span class="bico">📷</span> Nota do Cocho
-    </button>
-    <button class="btn btn-laranja" onclick="ir('movimentacao')">
-      <span class="bico">🔄</span> Movimentacao de Lote
-    </button>
-    <button class="btn btn-azul btn-sm" onclick="sincronizar()">
-      <span class="bico">🔁</span> Sincronizar Agora
-    </button>
-
-    <div class="sep"></div>
-    <div class="card">
-      <div class="ctitulo"><span class="ico">🕐</span>Ultimos Registros</div>
-      <div id="ultimasList" class="lista"></div>
-    </div>
-  </div>
-
-  <!-- REGISTRAR ABASTECIMENTO -->
-  <div id="pgRegistrar" class="pg hide">
-    <div class="card">
-      <div class="ctitulo"><span class="ico">📝</span>Novo Abastecimento</div>
-
-      <div class="campo">
-        <label>Fazenda / Propriedade</label>
-        <input id="rProp" list="lstProps" placeholder="Ex: Fazenda Sao Joao" autocomplete="off" autocorrect="off" autocapitalize="words">
-        <datalist id="lstProps"></datalist>
-      </div>
-      <div class="campo">
-        <label>Cocho / Ponto</label>
-        <input id="rCocho" list="lstCochos" placeholder="Ex: Cocho Norte" autocomplete="off" autocorrect="off">
-        <datalist id="lstCochos"></datalist>
-      </div>
-      <div class="campo">
-        <label>Operador (seu nome)</label>
-        <input id="rOper" list="lstOpers" placeholder="Ex: Marcelo" autocomplete="off" autocorrect="off">
-        <datalist id="lstOpers"></datalist>
-      </div>
-      <div class="grid2">
-        <div class="campo">
-          <label>Produto</label>
-          <input id="rProd" list="lstProds" placeholder="Concentrado..." autocomplete="off">
-          <datalist id="lstProds"></datalist>
-        </div>
-        <div class="campo">
-          <label>Quantidade (kg)</label>
-          <input id="rQtd" type="number" step="0.5" placeholder="25" inputmode="decimal">
-        </div>
-      </div>
-      <div class="campo">
-        <label>Observacao <span class="muted">(opcional)</span></label>
-        <textarea id="rObs" placeholder="Ex: cocho estava vazio, sal fino..."></textarea>
-      </div>
-
-      <!-- FOTO OPCIONAL -->
-      <div class="nota-box">
-        <div class="nota-titulo">📷 Foto do Cocho <span class="muted" style="font-weight:500">(opcional)</span></div>
-        <button class="btn btn-roxo btn-sm" onclick="abrirCamera('regFoto')">
-          <span class="bico">📸</span> Tirar Foto ou Escolher
-        </button>
-        <input type="file" id="regFotoInput" accept="image/*" capture="environment" style="display:none" onchange="processarFoto(this,'regFoto')">
-        <div class="foto-preview-wrap">
-          <img id="regFotoPreview" class="foto-preview" alt="Preview">
-          <button class="btn-remover-foto" id="regFotoBtnRem" onclick="removerFoto('regFoto')">✕</button>
-        </div>
-        <div id="regFotoStatus" class="foto-status"></div>
-      </div>
-
-      <div id="gpsIndicador" style="background:#f0f5f0;border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:13px;color:#4e6b52;display:flex;align-items:center;gap:8px">
-        <span id="gpsIcone">📍</span>
-        <span id="gpsLabel">GPS sera capturado automaticamente ao salvar</span>
-      </div>
-
-      <button class="btn btn-verde" id="btnSalvarReg" onclick="salvarComGPS()">
-        <span class="bico">💾</span> SALVAR
-      </button>
-    </div>
-  </div>
-
-  <!-- NOTA DO COCHO -->
-  <div id="pgNota" class="pg hide">
-    <div class="card">
-      <div class="ctitulo"><span class="ico">📷</span>Nota do Cocho</div>
-      <p class="muted" style="margin-bottom:16px">Registre algo digno de nota: cocho danificado, sal entupido, qualidade ruim, animal doente, problema no pasto...</p>
-
-      <div class="campo">
-        <label>Fazenda / Propriedade</label>
-        <input id="nProp" list="lstProps" placeholder="Ex: Fazenda Sao Joao" autocomplete="off" autocorrect="off" autocapitalize="words">
-      </div>
-      <div class="campo">
-        <label>Cocho / Ponto</label>
-        <input id="nCocho" list="lstCochos" placeholder="Ex: Cocho Norte" autocomplete="off">
-      </div>
-      <div class="campo">
-        <label>Operador (seu nome)</label>
-        <input id="nOper" list="lstOpers" placeholder="Ex: Marcelo" autocomplete="off">
-      </div>
-
-      <!-- FOTO PRINCIPAL DA NOTA -->
-      <div class="nota-box">
-        <div class="nota-titulo">📷 Foto da Situacao</div>
-        <button class="btn btn-roxo btn-sm" onclick="abrirCamera('notaFoto')">
-          <span class="bico">📸</span> Tirar Foto ou Escolher
-        </button>
-        <input type="file" id="notaFotoInput" accept="image/*" capture="environment" style="display:none" onchange="processarFoto(this,'notaFoto')">
-        <div class="foto-preview-wrap" style="width:100%">
-          <img id="notaFotoPreview" class="foto-preview" alt="Preview" style="width:100%">
-          <button class="btn-remover-foto" id="notaFotoBtnRem" onclick="removerFoto('notaFoto')">✕</button>
-        </div>
-        <div id="notaFotoStatus" class="foto-status"></div>
-      </div>
-
-      <div class="campo">
-        <label>Descricao da Situacao</label>
-        <textarea id="nDesc" placeholder="Ex: Cocho com vazamento, sal empedrado, 3 animais com sinais de doenca, cerca rompida ao lado..." style="min-height:100px"></textarea>
-      </div>
-
-      <div class="campo">
-        <label>Urgencia</label>
-        <select id="nUrgencia">
-          <option value="NORMAL">Normal — pode aguardar proxima visita</option>
-          <option value="ATENCAO">Atencao — verificar em breve</option>
-          <option value="URGENTE">Urgente — requer acao rapida</option>
-        </select>
-      </div>
-
-      <button class="btn btn-roxo" onclick="salvarNota()">
-        <span class="bico">📋</span> REGISTRAR NOTA
-      </button>
-    </div>
-  </div>
-
-  <!-- MOVIMENTACAO -->
-  <div id="pgMovimentacao" class="pg hide">
-    <div class="card">
-      <div class="ctitulo"><span class="ico">🔄</span>Movimentacao de Lote</div>
-
-      <div class="campo">
-        <label>Fazenda / Propriedade</label>
-        <input id="mProp" list="lstProps" placeholder="Ex: Fazenda Sao Joao" autocomplete="off" autocorrect="off">
-      </div>
-      <div class="campo">
-        <label>Identificacao do Lote</label>
-        <input id="mLote" list="lstLotes" placeholder="Ex: LOTE_A" autocomplete="off">
-        <datalist id="lstLotes"></datalist>
-      </div>
-      <div class="campo">
-        <label>Tipo de Movimentacao</label>
-        <select id="mEvento">
-          <option value="ENTRADA">🟢 ENTRADA — lote chegou</option>
-          <option value="TRANSFERENCIA">🟡 TRANSFERENCIA — mudou de pasto</option>
-          <option value="SAIDA">🔴 SAIDA — venda ou morte</option>
-        </select>
-      </div>
-      <div class="campo">
-        <label>Quantidade Total de Animais</label>
-        <input id="mQtd" type="number" placeholder="Ex: 100" inputmode="numeric">
-      </div>
-
-      <div style="background:#f7fbf7;border-radius:14px;padding:14px;border:1.5px solid var(--ln);margin-bottom:14px">
-        <div class="ctitulo" style="font-size:14px;margin-bottom:12px"><span class="ico">🐄</span>Distribuicao por Categoria</div>
-        <p class="muted" style="margin-bottom:10px">Soma deve ser igual ao total de animais</p>
-        <div class="grid2">
-          <div class="campo"><label>Bezerros</label><input id="mBzm" type="number" placeholder="0" inputmode="numeric" value="0"></div>
-          <div class="campo"><label>Bezerras</label><input id="mBzf" type="number" placeholder="0" inputmode="numeric" value="0"></div>
-          <div class="campo"><label>Novilhos</label><input id="mNvm" type="number" placeholder="0" inputmode="numeric" value="0"></div>
-          <div class="campo"><label>Novilhas</label><input id="mNvf" type="number" placeholder="0" inputmode="numeric" value="0"></div>
-          <div class="campo"><label>Solteiras</label><input id="mSol" type="number" placeholder="0" inputmode="numeric" value="0"></div>
-          <div class="campo"><label>Nulíparas</label><input id="mNul" type="number" placeholder="0" inputmode="numeric" value="0"></div>
-          <div class="campo"><label>Primíparas</label><input id="mPri" type="number" placeholder="0" inputmode="numeric" value="0"></div>
-          <div class="campo"><label>Multíparas</label><input id="mMul" type="number" placeholder="0" inputmode="numeric" value="0"></div>
-        </div>
-        <div id="somaCategs" style="background:#e8f2e9;border-radius:10px;padding:10px;text-align:center;font-weight:800;font-size:15px;color:#0f5132">
-          Soma: 0 / Total: 0
-        </div>
-      </div>
-
-      <div class="campo">
-        <label>Observacao</label>
-        <textarea id="mObs" placeholder="Ex: 5 animais vendidos..."></textarea>
-      </div>
-      <button class="btn btn-verde" onclick="salvarMovimentacao()">
-        <span class="bico">💾</span> SALVAR MOVIMENTACAO
-      </button>
-    </div>
-  </div>
-
-  <!-- FILA -->
-  <div id="pgFila" class="pg hide">
-    <div class="card">
-      <div class="ctitulo"><span class="ico">⏳</span>Fila de Envio</div>
-      <button class="btn btn-verde btn-sm" onclick="sincronizar()"><span class="bico">🔁</span> Sincronizar Agora</button>
-      <button class="btn btn-cinza btn-sm" onclick="limparSync()">Ocultar Ja Enviados</button>
-    </div>
-    <div id="listaFila" class="lista"></div>
-  </div>
-
-  <!-- CONFIG -->
-  <div id="pgConfig" class="pg hide">
-    <div class="card">
-      <div class="ctitulo"><span class="ico">⚙️</span>Configuracao</div>
-      <div class="campo">
-        <label>Endereco do Sistema (URL)</label>
-        <input id="cfgUrl" placeholder="https://script.google.com/..." type="url" autocorrect="off" autocapitalize="none" spellcheck="false">
-      </div>
-      <button class="btn btn-verde btn-sm" onclick="salvarCfg()"><span class="bico">💾</span> Salvar</button>
-      <button class="btn btn-azul btn-sm" onclick="testarCfg()"><span class="bico">🔗</span> Testar Conexao</button>
-      <div id="cfgResult" style="margin-top:8px"></div>
-      <div class="sep"></div>
-      <div class="ctitulo" style="font-size:15px"><span class="ico">💾</span>Backup</div>
-      <button class="btn btn-cinza btn-sm" onclick="exportar()">Exportar JSON</button>
-      <div class="campo" style="margin-top:10px">
-        <label>Importar Backup</label>
-        <input type="file" id="impFile" accept=".json" style="font-size:15px;padding:10px">
-      </div>
-      <button class="btn btn-laranja btn-sm" onclick="importar()">Restaurar Backup</button>
-    </div>
-  </div>
-
-</div><!-- /conteudo -->
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button class="bnbtn active" data-pg="pgPainel" onclick="ir('painel')">
-    <span class="bnico">🏠</span><span class="bnome">Inicio</span>
-  </button>
-  <button class="bnbtn" data-pg="pgRegistrar" onclick="ir('registrar')">
-    <span class="bnico">📝</span><span class="bnome">Registrar</span>
-  </button>
-  <button class="bnbtn" data-pg="pgNota" onclick="ir('nota')">
-    <span class="bnico">📷</span><span class="bnome">Nota</span>
-  </button>
-  <button class="bnbtn" data-pg="pgMovimentacao" onclick="ir('movimentacao')">
-    <span class="bnico">🔄</span><span class="bnome">Movim.</span>
-  </button>
-  <button class="bnbtn" data-pg="pgFila" onclick="ir('fila')">
-    <span class="bnico">⏳</span><span class="bnome">Fila</span>
-  </button>
-  <button class="bnbtn" data-pg="pgConfig" onclick="ir('config')">
-    <span class="bnico">⚙️</span><span class="bnome">Config</span>
-  </button>
+<nav class="nav" id="nav">
+  <button class="ntab active" data-tab="painel">Painel</button>
+  <button class="ntab" data-tab="avaliacao">Avaliacao</button>
+  <button class="ntab" data-tab="novos">Novos</button>
+  <button class="ntab" data-tab="notas">Notas</button>
+  <button class="ntab" data-tab="estoque">Estoque</button>
+  <button class="ntab" data-tab="propriedades">Propriedades</button>
+  <button class="ntab" data-tab="cochos">Cochos</button>
+  <button class="ntab" data-tab="lotes">Lotes</button>
+  <button class="ntab" data-tab="produtos">Produtos</button>
+  <button class="ntab" data-tab="movimentacao">Movim.</button>
+  <button class="ntab" data-tab="registros">Registros</button>
+  <button class="ntab" data-tab="mapa">Mapa</button>
+  <button class="ntab" data-tab="config">Config</button>
 </nav>
 
-<!-- OVERLAY SALVO -->
-<div class="ov-salvo" id="ovSalvo">
-  <div class="ov-ico">✅</div>
-  <div class="ov-txt" id="ovTxt">SALVO!</div>
-  <div class="ov-sub" id="ovSub">Registro salvo</div>
+<div class="bkbar">
+  <span id="tituloAtual">Painel</span>
+  <button onclick="ir('painel')">Painel</button>
 </div>
 
-<!-- TOAST -->
+<!-- PAINEL -->
+<div id="viewPainel" class="view card">
+  <h2>Painel Geral</h2>
+  <div id="alertasGlobais"></div>
+  <div class="kpis">
+    <div class="kpi"><small>Propriedades</small><div class="n" id="kProp">0</div></div>
+    <div class="kpi"><small>Registros</small><div class="n" id="kReg">0</div></div>
+    <div class="kpi"><small>Notas</small><div class="n" id="kNota" style="color:#6f42c1">0</div></div>
+    <div class="kpi"><small>Score Saude</small><div class="n" id="kScore" style="color:#0f5132">—</div></div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+    <button class="bp" onclick="sincronizarTudo()">Sincronizar Tudo</button>
+    <button class="bpu" onclick="ir('avaliacao')">Auto Avaliacao</button>
+    <button class="bn" onclick="ir('estoque')">Ver Estoque</button>
+  </div>
+  <h3>Alertas Urgentes</h3>
+  <div id="alertasUrgentes" class="lista"></div>
+  <h3>Ultimas Atividades</h3>
+  <div id="ultimasAtiv" class="lista"></div>
+</div>
+
+<!-- AUTO AVALIACAO -->
+<div id="viewAvaliacao" class="view card hide">
+  <h2>Auto Avaliacao do Sistema</h2>
+  <button class="bp" onclick="rodarAvaliacao()">Rodar Avaliacao Agora</button>
+  <div id="scoreBox" style="margin-top:14px"></div>
+  <div id="alertasAv" class="lista" style="margin-top:10px"></div>
+  <div id="detalhesAv" style="margin-top:10px"></div>
+</div>
+
+<!-- NOVOS CADASTROS -->
+<div id="viewNovos" class="view card hide">
+  <h2>Novos Cadastros Detectados</h2>
+  <p class="muted">Criados automaticamente pelo App Campo. Valide e complete.</p>
+  <button class="bb" onclick="baixarNovos()">Atualizar</button>
+  <div class="sep"></div>
+  <div id="novosConteudo"></div>
+</div>
+
+<!-- NOTAS DO COCHO -->
+<div id="viewNotas" class="view card hide">
+  <h2>Notas do Cocho</h2>
+  <button class="bb" onclick="baixarNotas()">Atualizar</button>
+  <div class="row" style="margin-top:10px">
+    <div><label>Propriedade</label><select id="fNP" onchange="renderNotas()"><option value="">Todas</option></select></div>
+    <div><label>Urgencia</label><select id="fNU" onchange="renderNotas()"><option value="">Todas</option><option value="URGENTE">Urgente</option><option value="ATENCAO">Atencao</option><option value="NORMAL">Normal</option></select></div>
+  </div>
+  <div class="sep"></div>
+  <div id="listaNotas"></div>
+</div>
+
+<!-- ESTOQUE -->
+<div id="viewEstoque" class="view card hide">
+  <h2>Estoque de Produtos</h2>
+  <div class="row">
+    <div>
+      <button class="bb" onclick="baixarEstoque()">Atualizar Estoque</button>
+    </div>
+    <div>
+      <button class="bp" onclick="abrirEntradaEstoque()">+ Entrada de Estoque</button>
+    </div>
+  </div>
+  <!-- Resumo estoque -->
+  <div id="resumoEstoque" style="margin-top:10px"></div>
+  <div class="sep"></div>
+  <h3>Todos os Produtos</h3>
+  <div id="listaEstoque" class="lista"></div>
+  <!-- MODAL ENTRADA -->
+  <div id="modalEntrada" class="hide" style="background:#f0ebfa;border:2px solid #c9b8e8;border-radius:14px;padding:16px;margin-top:14px">
+    <h3 style="color:#4c1d95;margin-bottom:10px">Registrar Entrada de Estoque</h3>
+    <div class="row">
+      <div><label>Produto</label><select id="entProduto"><option value="">Selecione...</option></select></div>
+      <div><label>Quantidade (kg)</label><input id="entQtd" type="number" step="0.1" placeholder="200"></div>
+    </div>
+    <div class="row">
+      <div><label>Custo Unitario (R$/kg)</label><input id="entCusto" type="number" step="0.01" placeholder="3.00"></div>
+      <div><label>Propriedade</label><select id="entProp"><option value="">Geral</option></select></div>
+    </div>
+    <div><label>Observacao</label><input id="entObs" placeholder="Ex: NF 1234, Fornecedor XYZ"></div>
+    <button class="bp" onclick="registrarEntradaEstoque()">Confirmar Entrada</button>
+    <button class="bn" onclick="fecharEntradaEstoque()">Cancelar</button>
+  </div>
+</div>
+
+<!-- PROPRIEDADES -->
+<div id="viewPropriedades" class="view card hide">
+  <h2>Propriedades</h2>
+  <div class="row"><div><label>Nome</label><input id="prNome" placeholder="Fazenda Sao Joao"></div><div><label>Municipio</label><input id="prMun" placeholder="Irituia"></div></div>
+  <div class="row"><div><label>Responsavel</label><input id="prResp"></div><div><label>Telefone</label><input id="prTel"></div></div>
+  <div class="row"><div><label>Area (ha)</label><input id="prArea" type="number"></div><div><label>Estado</label><input id="prEst" value="PA"></div></div>
+  <button class="bp" onclick="cadastrarPropriedade()">Cadastrar</button>
+  <button class="bb" onclick="baixarPropriedades()">Atualizar</button>
+  <div class="sep"></div>
+  <div id="listaProps" class="lista"></div>
+</div>
+
+<!-- COCHOS -->
+<div id="viewCochos" class="view card hide">
+  <h2>Cochos</h2>
+  <div class="row"><div><label>Nome</label><input id="coNome" placeholder="Cocho Norte"></div><div><label>Propriedade</label><select id="coProp"><option value="">Selecione...</option></select></div></div>
+  <div class="row"><div><label>GPS Lat</label><input id="coLat" placeholder="-1.776"></div><div><label>GPS Lng</label><input id="coLng" placeholder="-47.45"></div></div>
+  <div><label>Horario Limite</label><input id="coHor" type="time" value="18:00"></div>
+  <button class="bp" onclick="cadastrarCocho()">Cadastrar</button>
+  <button class="bb" onclick="baixarCochos()">Atualizar</button>
+  <div class="sep"></div>
+  <div id="listaCochos" class="lista"></div>
+</div>
+
+<!-- LOTES -->
+<div id="viewLotes" class="view card hide">
+  <h2>Lotes</h2>
+  <div class="row"><div><label>ID Lote</label><input id="ltId" placeholder="LOTE_A"></div><div><label>Propriedade</label><select id="ltProp"><option value="">Selecione...</option></select></div></div>
+  <div class="row"><div><label>Quantidade</label><input id="ltQ" type="number"></div><div><label>Data Entrada</label><input id="ltD" type="date"></div></div>
+  <div class="row"><div><label>Bezerros</label><input id="lB1" type="number" value="0"></div><div><label>Bezerras</label><input id="lB2" type="number" value="0"></div></div>
+  <div class="row"><div><label>Novilhos</label><input id="lN1" type="number" value="0"></div><div><label>Novilhas</label><input id="lN2" type="number" value="0"></div></div>
+  <div class="row"><div><label>Solteiras</label><input id="lS" type="number" value="0"></div><div><label>Nulíparas</label><input id="lNu" type="number" value="0"></div></div>
+  <div class="row"><div><label>Primíparas</label><input id="lP" type="number" value="0"></div><div><label>Multíparas</label><input id="lM" type="number" value="0"></div></div>
+  <button class="bp" onclick="cadastrarLote()">Criar</button>
+  <button class="bb" onclick="sincLotes()">Sincronizar</button>
+  <div class="sep"></div>
+  <div id="listaLotes" class="lista"></div>
+</div>
+
+<!-- PRODUTOS -->
+<div id="viewProdutos" class="view card hide">
+  <h2>Produtos</h2>
+  <div class="row"><div><label>Nome</label><input id="pdN" placeholder="Concentrado 28%"></div><div><label>Codigo</label><input id="pdC" placeholder="CONC_28"></div></div>
+  <div class="row"><div><label>Tipo</label><select id="pdT"><option>CONCENTRADO</option><option>FORRAGEM</option><option>SUPLEMENTO</option><option>MINERAL</option><option>OUTRO</option></select></div><div><label>Unidade</label><select id="pdU"><option value="kg">kg</option><option value="saco">Saco</option><option value="ton">Tonelada</option></select></div></div>
+  <div class="row"><div><label>Peso Embalagem (kg)</label><input id="pdPe" type="number" placeholder="50"></div><div><label>Custo por kg (R$)</label><input id="pdCk" type="number" step="0.01" placeholder="3.00"></div></div>
+  <div class="row3">
+    <div><label>Estoque Inicial (kg)</label><input id="pdEI" type="number" placeholder="0"></div>
+    <div><label>Estoque Minimo (kg)</label><input id="pdEM" type="number" placeholder="100"></div>
+    <div><label>Estoque Critico (kg)</label><input id="pdEC" type="number" placeholder="50"></div>
+  </div>
+  <button class="bp" onclick="cadastrarProduto()">Cadastrar</button>
+  <button class="bb" onclick="sincProdutos()">Sincronizar</button>
+  <div class="sep"></div>
+  <div id="listaProdutos" class="lista"></div>
+</div>
+
+<!-- MOVIMENTACAO -->
+<div id="viewMovimentacao" class="view card hide">
+  <h2>Movimentacao de Lotes</h2>
+  <button class="bb" onclick="baixarMovimentacoes()">Atualizar</button>
+  <div class="kpis" style="margin-top:10px">
+    <div class="kpi"><small>Total</small><div class="n" id="kMT">0</div></div>
+    <div class="kpi"><small>Entradas</small><div class="n" id="kME" style="color:#0f5132">0</div></div>
+    <div class="kpi"><small>Transf.</small><div class="n" id="kMTr" style="color:#664d03">0</div></div>
+    <div class="kpi"><small>Saidas</small><div class="n" id="kMS" style="color:#842029">0</div></div>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <div><label>Propriedade</label><select id="fMP" onchange="renderMov()"><option value="">Todas</option></select></div>
+    <div><label>Evento</label><select id="fME" onchange="renderMov()"><option value="">Todos</option><option>ENTRADA</option><option>TRANSFERENCIA</option><option>SAIDA</option></select></div>
+  </div>
+  <h3>Timeline</h3>
+  <div id="timelineMov" class="timeline"></div>
+</div>
+
+<!-- REGISTROS -->
+<div id="viewRegistros" class="view card hide">
+  <h2>Registros de Abastecimento</h2>
+  <button class="bb" onclick="baixarRegistros()">Atualizar</button>
+  <button class="bn" onclick="exportarTudo()">Exportar JSON</button>
+  <div id="tabelaRegs" style="margin-top:14px"></div>
+</div>
+
+<!-- MAPA -->
+<div id="viewMapa" class="view card hide">
+  <h2>Mapa da Fazenda</h2>
+  <div class="upzone" onclick="document.getElementById('mFile').click()">
+    <b>Clique ou arraste arquivo de mapa</b><br>
+    <span class="muted">KML &bull; GeoJSON &bull; CSV &bull; GPX</span>
+  </div>
+  <input type="file" id="mFile" accept=".kml,.geojson,.json,.csv,.gpx" style="display:none" onchange="processMapa(event)">
+  <div style="margin-top:10px">
+    <button class="bp" onclick="centralizarMapa()">Centralizar</button>
+    <button class="bb" onclick="exportGeoJSON()">GeoJSON</button>
+    <button class="bw" onclick="limparMapa()">Limpar</button>
+    <button class="bs" onclick="addPonto()">+ Ponto</button>
+  </div>
+  <div id="mapa"></div>
+</div>
+
+<!-- CONFIG -->
+<div id="viewConfig" class="view card hide">
+  <h2>Configuracao</h2>
+  <label>URL do Apps Script</label>
+  <input id="cfgUrl" placeholder="https://script.google.com/macros/s/.../exec" autocorrect="off" autocapitalize="none" spellcheck="false">
+  <button class="bp" onclick="salvarCfg()">Salvar</button>
+  <button class="bb" onclick="testarCfg()">Testar Conexao</button>
+  <div class="sep"></div>
+  <div id="cfgStatus"></div>
+</div>
+
+</div>
+
+<div class="modal-foto" id="mFoto">
+  <button class="modal-fechar" onclick="$('mFoto').className='modal-foto'">X</button>
+  <img id="mFotoImg" src="" alt="">
+</div>
 <div class="toast" id="toast"></div>
-
-<!-- Canvas para compressão (invisível) -->
-<canvas id="canvasFoto" style="display:none"></canvas>
-
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function(){
 'use strict';
+var DB='rg_c52';
+var map=null,cam={f:null,c:null};
+var TITS={painel:'Painel',avaliacao:'Auto Avaliacao',novos:'Novos Cadastros',notas:'Notas do Cocho',estoque:'Estoque',propriedades:'Propriedades',cochos:'Cochos',lotes:'Lotes',produtos:'Produtos',movimentacao:'Movimentacao',registros:'Registros',mapa:'Mapa',config:'Configuracao'};
 
-var DB  = 'rg_campo_v32';
-var GPS = null;
-var FOTOS = {}; // {regFoto: base64, notaFoto: base64}
+function $(i){return document.getElementById(i);}
+function load(k,d){try{var v=localStorage.getItem(DB+'_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function save(k,v){localStorage.setItem(DB+'_'+k,JSON.stringify(v));}
+function agora(){return new Date().toISOString();}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(m){var t=$('toast');t.textContent=m;t.className='toast show';setTimeout(function(){t.className='toast';},3500);}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function cfg(){return load('config',{});}
+function moeda(v){return'R$ '+parseFloat(v||0).toFixed(2).replace('.',',');}
 
-// ── UTILS ─────────────────────────────────────────────────────────────────────
+var _get=function(k,d){return load(k,d);};
+var _set=function(k,v){save(k,v);};
+function getProps(){return _get('props',[])}function getCochos(){return _get('cochos',[])}
+function getLotes(){return _get('lotes',[])}function getProdutos(){return _get('prods',[])}
+function getRegistros(){return _get('regs',[])}function getMov(){return _get('movs',[])}
+function getNotas(){return _get('notas',[])}function getEstoque(){return _get('estoque',[])}
+function getMapaF(){return _get('mfeat',[])}
 
-function $(i){ return document.getElementById(i); }
-function load(k,d){ try{ var v=localStorage.getItem(DB+'_'+k); return v?JSON.parse(v):d; }catch(e){ return d; } }
-function save(k,v){ localStorage.setItem(DB+'_'+k,JSON.stringify(v)); }
-function uid(){ return 'RGSC-'+Date.now()+'-'+Math.random().toString(16).slice(2,8); }
-function agora(){ return new Date().toISOString(); }
-function hoje(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
-function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-
-function toast(msg){
-  var t=$('toast'); t.textContent=msg; t.className='toast show';
-  setTimeout(function(){ t.className='toast'; },3200);
-}
-
-function mostrarSalvo(titulo,sub){
-  $('ovTxt').textContent=titulo||'SALVO!';
-  $('ovSub').textContent=sub||'Registro salvo offline';
-  $('ovSalvo').className='ov-salvo show';
-  setTimeout(function(){ $('ovSalvo').className='ov-salvo'; ir('painel'); },2000);
-}
-
-function getQueue(){ return load('q',[]); }
-function setQueue(q){ save('q',q); }
-function getSug(){ return load('sug',{p:[],c:[],o:[],pr:[],l:[]}); }
-function addSug(t,v){ if(!v||!v.trim())return; var s=getSug(),val=v.trim(); if(!s[t])s[t]=[]; if(s[t].indexOf(val)===-1){s[t].unshift(val);s[t]=s[t].slice(0,20);} save('sug',s); }
-
-// ── FOTO ──────────────────────────────────────────────────────────────────────
-
-window.abrirCamera = function(chave){
-  var inputId = chave+'Input';
-  var el=$(inputId); if(!el)return;
-  // iOS: resetar input para permitir mesma foto novamente
-  el.value='';
-  el.click();
-};
-
-window.processarFoto = function(inputEl, chave){
-  var file = inputEl.files[0];
-  if(!file) return;
-
-  var statusEl = $(chave+'Status');
-  var previewEl = $(chave+'Preview');
-  var btnRem = $(chave+'BtnRem');
-
-  if(statusEl) statusEl.textContent='Processando foto...';
-
-  var reader = new FileReader();
-  reader.onload = function(e){
-    var img = new Image();
-    img.onload = function(){
-      try{
-        // Comprimir via Canvas
-        var canvas = $('canvasFoto');
-        var MAX = 900; // px maxima dimensao
-        var w=img.width, h=img.height;
-
-        if(w>h && w>MAX){ h=Math.round(h*(MAX/w)); w=MAX; }
-        else if(h>w && h>MAX){ w=Math.round(w*(MAX/h)); h=MAX; }
-        else if(w>MAX){ w=MAX; h=MAX; }
-
-        canvas.width=w; canvas.height=h;
-        var ctx=canvas.getContext('2d');
-        ctx.drawImage(img,0,0,w,h);
-
-        // JPEG 72% qualidade
-        var b64 = canvas.toDataURL('image/jpeg',0.72);
-        var kb = Math.round(b64.length*0.75/1024);
-
-        FOTOS[chave] = b64;
-
-        if(previewEl){ previewEl.src=b64; previewEl.className='foto-preview show'; }
-        if(btnRem) btnRem.className='btn-remover-foto show';
-        if(statusEl) statusEl.textContent='Foto pronta ('+kb+'KB) — sera enviada com o registro';
-
-      }catch(err){
-        FOTOS[chave]=null;
-        if(statusEl) statusEl.textContent='Nao foi possivel processar. Registro sera salvo sem foto.';
-      }
-    };
-    img.onerror = function(){
-      FOTOS[chave]=null;
-      if(statusEl) statusEl.textContent='Erro ao carregar imagem.';
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-};
-
-window.removerFoto = function(chave){
-  FOTOS[chave]=null;
-  var prev=$(chave+'Preview'), btn=$(chave+'BtnRem'), st=$(chave+'Status');
-  if(prev){ prev.src=''; prev.className='foto-preview'; }
-  if(btn) btn.className='btn-remover-foto';
-  if(st) st.textContent='';
-  // Resetar input
-  var inp=$(chave+'Input'); if(inp) inp.value='';
-};
-
-// ── NAVEGACAO ─────────────────────────────────────────────────────────────────
-
-var TITS={ painel:'Inicio',registrar:'Novo Abastecimento',nota:'Nota do Cocho',movimentacao:'Movimentacao de Lote',fila:'Fila de Envio',config:'Configuracao' };
-
-window.ir = function(nome){
-  document.querySelectorAll('.pg').forEach(function(el){ el.classList.add('hide'); });
-  var alvo=$('pg'+nome.charAt(0).toUpperCase()+nome.slice(1));
-  if(alvo) alvo.classList.remove('hide');
-  document.querySelectorAll('.bnbtn').forEach(function(b){
-    var ativo=b.getAttribute('data-pg')==='pg'+nome.charAt(0).toUpperCase()+nome.slice(1);
-    b.classList.toggle('active',ativo);
-  });
+window.ir=function(nome){
+  document.querySelectorAll('.view').forEach(function(el){el.classList.add('hide');});
+  var t=$('view'+cap(nome));if(t)t.classList.remove('hide');
+  document.querySelectorAll('.ntab').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-tab')===nome);});
+  $('tituloAtual').textContent=TITS[nome]||nome;
   window.scrollTo({top:0,behavior:'smooth'});
+  if(nome==='mapa'&&!map)setTimeout(initMapa,150);else if(nome==='mapa'&&map)setTimeout(function(){map.invalidateSize();},150);
+  if(nome==='movimentacao')renderMov();
+  if(nome==='notas')renderNotas();
+  if(nome==='estoque')renderEstoque();
   render();
 };
-
-// ── RENDER ────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.ntab').forEach(function(b){b.addEventListener('click',function(){ir(this.getAttribute('data-tab'));});});
 
 function render(){
-  renderHeader();
-  renderKPIs();
-  renderDataLists();
-  renderFila();
-  renderUltimas();
-}
-
-function renderHeader(){
-  var on=navigator.onLine,api=load('config',{}).url||'',pend=getQueue().filter(function(x){return x.st!=='OK';}).length;
-  $('hpills').innerHTML='<span class="hpill '+(on?'on':'')+'"><span class="dot '+(on?'dot-on':'dot-off')+'"></span>'+(on?'Online':'Offline')+'</span>'+(api?'<span class="hpill on">Sistema OK</span>':'<span class="hpill">Sem URL</span>');
-  $('hdPend').textContent=pend?pend+' pend.':'Tudo OK';
+  renderKPIs();renderAlertasGlobais();renderUltimas();
+  renderListaProps();renderListaCochos();renderListaLotes();renderListaProdutos();
+  renderTabelaRegs();renderMovKPIs();renderFiltros();
 }
 
 function renderKPIs(){
-  var q=getQueue(),t=hoje(),h=0,p=0;
-  q.forEach(function(x){ if((x.ts||'').slice(0,10)===t)h++; if(x.st!=='OK')p++; });
-  $('kHoje').textContent=h; $('kPend').textContent=p;
+  var av=load('ultima_avaliacao',{});
+  $('kProp').textContent=getProps().length;
+  $('kReg').textContent=getRegistros().length;
+  $('kNota').textContent=getNotas().length;
+  $('kScore').textContent=av.score!=null?av.score+'%':'—';
+  if(av.score!=null)$('kScore').style.color=av.score>=90?'#0f5132':av.score>=70?'#198754':av.score>=50?'#e67e22':'#c0392b';
 }
 
-function renderDataLists(){
-  var s=getSug();
-  function fill(id,arr){ var el=$(id);if(!el)return; el.innerHTML=(arr||[]).map(function(v){return'<option value="'+esc(v)+'">'; }).join(''); }
-  fill('lstProps',s.p); fill('lstCochos',s.c); fill('lstOpers',s.o); fill('lstProds',s.pr); fill('lstLotes',s.l);
-}
-
-function renderFila(){
-  var q=getQueue(),h='';
-  if(!q.length)h='<div style="padding:16px;text-align:center;color:var(--muted)">Fila vazia. Tudo enviado!</div>';
-  q.forEach(function(x){
-    var cls=x.st==='OK'?'pok':x.st==='ERRO'?'perr':x.st==='SEND'?'psync':'ppend';
-    var temFoto=x.temFoto?'<span class="pill pnota" style="margin-left:6px">📷 Foto</span>':'';
-    h+='<div class="item"><div class="itop"><span class="inome">'+esc(x.tipo)+(x.prop?' &mdash; '+esc(x.prop):'')+'</span>'
-      +'<span class="pill '+cls+'">'+x.st+'</span></div>'
-      +temFoto
-      +'<div class="isub">'+esc((x.ts||'').slice(0,16))+' &bull; tent: '+(x.tent||0)+'</div>'
-      +'</div>';
+function renderAlertasGlobais(){
+  var h='';
+  var novos=load('novos',{propriedades:[],cochos:[],operadores:[]});
+  var totalNovos=(novos.propriedades||[]).length+(novos.cochos||[]).length+(novos.operadores||[]).length;
+  if(totalNovos)h+='<div class="alert-box alert-novo" style="margin-bottom:8px"><span style="color:#4c1d95;font-weight:700">'+totalNovos+' novo(s) cadastro(s)</span> <button class="bpu" onclick="ir(\'novos\')" style="font-size:11px">Validar</button></div>';
+  var urg=getNotas().filter(function(n){return n.urgencia==='URGENTE'&&n.statusResolucao!=='RESOLVIDO';});
+  if(urg.length)h+='<div class="alert-box alert-urg" style="margin-bottom:8px"><span style="color:#7f1d1d;font-weight:700">'+urg.length+' nota(s) URGENTE(S)</span> <button class="bd" onclick="ir(\'notas\')" style="font-size:11px">Ver</button></div>';
+  var crit=getEstoque().filter(function(e){return e.status==='CRITICO';});
+  if(crit.length)h+='<div class="alert-box" style="background:#fff5f5;border:1.5px solid #dc3545;margin-bottom:8px"><span style="color:#7f1d1d;font-weight:700">'+crit.length+' produto(s) com estoque CRITICO</span> <button class="bd" onclick="ir(\'estoque\')" style="font-size:11px">Ver</button></div>';
+  var baixo=getEstoque().filter(function(e){return e.status==='BAIXO';});
+  if(baixo.length)h+='<div class="alert-box" style="background:#fffbf0;border:1.5px solid #ffc107;margin-bottom:8px"><span style="color:#78350f;font-weight:700">'+baixo.length+' produto(s) com estoque BAIXO</span> <button class="bw" onclick="ir(\'estoque\')" style="font-size:11px">Ver</button></div>';
+  $('alertasGlobais').innerHTML=h;
+  // urgentes na lista
+  var hu='';
+  if(!urg.length)hu='<div class="item muted">Sem notas urgentes.</div>';
+  urg.slice(0,3).forEach(function(n){
+    hu+='<div class="nota-card nota-urgente"><strong>'+esc(n.propriedade)+' / '+esc(n.cocho)+'</strong>'
+      +'<div class="sub">'+esc((n.descricao||'').slice(0,80))+'</div></div>';
   });
-  var el=$('listaFila'); if(el) el.innerHTML=h;
+  $('alertasUrgentes').innerHTML=hu;
 }
 
 function renderUltimas(){
-  var q=getQueue(),h='',u=q.slice(0,6);
-  if(!u.length)h='<div style="color:var(--muted);font-size:14px;padding:8px 0">Nenhum registro ainda.</div>';
-  u.forEach(function(x){
-    var cls=x.st==='OK'?'pok':x.st==='ERRO'?'perr':'ppend';
-    h+='<div class="item"><div class="itop"><span class="inome">'+esc(x.tipo)+(x.prop?' &mdash; '+esc(x.prop):'')+'</span>'
-      +'<span class="pill '+cls+'">'+x.st+'</span></div>'
-      +'<div class="isub">'+esc((x.ts||'').slice(0,16))+'</div></div>';
+  var r=getRegistros().slice(0,5),h='';
+  if(!r.length)h='<div class="item muted">Nenhum registro. Clique em Sincronizar.</div>';
+  r.forEach(function(x){
+    h+='<div class="item"><strong>'+esc(x.tipo)+' &mdash; '+esc(x.propriedade||'')+'</strong>'
+      +(x.urlFoto?'<a href="#" onclick="abrirFoto(\''+esc(x.urlFoto)+'\')" style="margin-left:8px;font-size:11px;color:#6f42c1">foto</a>':'')
+      +(x.custo?'<span class="pill pbl" style="float:right">'+moeda(x.custo)+'</span>':'')
+      +'<div class="sub">'+esc((x.dataHora||'').slice(0,16))+' &bull; '+esc(x.cocho||'')+' &bull; '+esc(x.produto||'')+' '+esc(x.quantidade||'')+'kg</div></div>';
   });
-  var el=$('ultimasList'); if(el) el.innerHTML=h;
+  $('ultimasAtiv').innerHTML=h;
 }
 
-// ── GPS ───────────────────────────────────────────────────────────────────────
+// ── AUTO AVALIACAO ────────────────────────────────────────────────────────────
 
-window.capturarGPS = function(){
-  if(!navigator.geolocation){ toast('GPS nao disponivel neste celular.'); return; }
-  $('gpsLabel').textContent='Capturando...';
-  navigator.geolocation.getCurrentPosition(
-    function(p){ GPS={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy}; $('gpsLabel').textContent=GPS.lat.toFixed(5)+', '+GPS.lng.toFixed(5); toast('GPS capturado!'); },
-    function(e){ $('gpsLabel').textContent='Capturar GPS'; toast('GPS falhou: '+e.message); },
-    {enableHighAccuracy:true,timeout:12000}
-  );
+window.rodarAvaliacao=function(){
+  apiGet('getAutoAvaliacao',function(j){
+    if(j.sucesso){
+      save('ultima_avaliacao',j);
+      renderScoreBox(j);
+      renderAlertasAv(j);
+      renderDetalhesAv(j);
+      renderKPIs();
+      toast('Avaliacao concluida! Score: '+j.score+'%');
+    }
+  });
 };
 
-// ── SOMA CATEGORIAS ───────────────────────────────────────────────────────────
-
-function calcSoma(){
-  var ids=['mBzm','mBzf','mNvm','mNvf','mSol','mNul','mPri','mMul'];
-  var s=0; ids.forEach(function(i){s+=(parseInt($(i).value)||0);});
-  var t=parseInt($('mQtd').value)||0, el=$('somaCategs');
-  if(s===t&&t>0){el.style.background='#d1e7dd';el.style.color='#0f5132';el.textContent='Soma: '+s+' / Total: '+t+' OK';}
-  else{el.style.background='#fee2e2';el.style.color='#7f1d1d';el.textContent='Soma: '+s+' / Total: '+t+(t?' falta '+(t-s):'');}
+function renderScoreBox(av){
+  if(!av||av.score==null){$('scoreBox').innerHTML='<div class="item muted">Clique em "Rodar Avaliacao".</div>';return;}
+  var cls=av.score>=90?'score-otimo':av.score>=70?'score-bom':av.score>=50?'score-atencao':'score-critico';
+  $('scoreBox').innerHTML='<div class="score-box '+cls+'"><div class="score-num">'+av.score+'</div><div class="score-label">'+av.statusGeral+' &bull; Avaliado em '+esc((av.dataAvaliacao||'').slice(0,16))+'</div></div>';
 }
-['mBzm','mBzf','mNvm','mNvf','mSol','mNul','mPri','mMul','mQtd'].forEach(function(id){var el=$(id);if(el)el.addEventListener('input',calcSoma);});
 
-// ── SALVAR REGISTROS ──────────────────────────────────────────────────────────
+function renderAlertasAv(av){
+  var h='';
+  if(!av.alertas||!av.alertas.length){h='<div class="item pok" style="border-color:#198754">Sistema sem alertas. Tudo OK!</div>';}
+  else{av.alertas.forEach(function(a){h+='<div class="item" style="border-left:3px solid #e74c3c"><strong style="color:#c0392b">'+esc(a)+'</strong></div>';});}
+  $('alertasAv').innerHTML=h;
+}
 
-// GPS automatico ao salvar
-window.salvarComGPS = function(){
-  var prop=$('rProp').value.trim(),cocho=$('rCocho').value.trim(),oper=$('rOper').value.trim(),prod=$('rProd').value.trim(),qtd=$('rQtd').value.trim();
-  if(!prop){toast('Preencha o nome da Fazenda.');$('rProp').focus();return;}
-  if(!cocho){toast('Preencha o Cocho ou Ponto.');$('rCocho').focus();return;}
-  if(!oper){toast('Preencha o nome do Operador.');$('rOper').focus();return;}
-  if(!prod){toast('Preencha o Produto.');$('rProd').focus();return;}
-  if(!qtd){toast('Preencha a Quantidade.');$('rQtd').focus();return;}
+function renderDetalhesAv(av){
+  var d=av.detalhes||{};
+  var h='<div class="card" style="background:#f9fbf9"><h3>Detalhes</h3><table class="table">'
+    +'<tr><th>Item</th><th>Valor</th></tr>'
+    +'<tr><td>Estoque Criticos</td><td>'+esc(d.estoqueCriticos||0)+'</td></tr>'
+    +'<tr><td>Estoque Baixos</td><td>'+esc(d.estoqueBaixos||0)+'</td></tr>'
+    +'<tr><td>Notas Urgentes Pendentes</td><td>'+esc(d.notasUrgentesPendentes||0)+'</td></tr>'
+    +'<tr><td>Propriedades sem Registro 7d</td><td>'+esc(d.propriedadesSemRegistro7d||0)+'</td></tr>'
+    +'<tr><td>Cadastros Pendentes Validacao</td><td>'+esc(d.cadastrosPendentes||0)+'</td></tr>'
+    +'</table></div>';
+  $('detalhesAv').innerHTML=h;
+}
 
-  // Feedback visual
-  var btn=$('btnSalvarReg');
-  if(btn)btn.style.opacity='0.6';
-  $('gpsIcone').textContent='⏳';
-  $('gpsLabel').textContent='Capturando GPS... (5 segundos)';
+// ── ESTOQUE ───────────────────────────────────────────────────────────────────
 
-  if(!navigator.geolocation){
-    _finalizarSalvar(null,'GPS nao disponivel');
-    return;
+window.baixarEstoque=function(){
+  apiGet('getEstoque',function(j){
+    if(j.sucesso){_set('estoque',j.estoque||[]);renderEstoque();renderAlertasGlobais();toast('Estoque atualizado.');}
+  });
+};
+
+function renderEstoque(){
+  var est=getEstoque(),h='',crit=0,baixo=0,total=0,valorTotal=0;
+  est.forEach(function(e){
+    if(e.status==='CRITICO')crit++;else if(e.status==='BAIXO')baixo++;
+    valorTotal+=parseFloat(e.valorTotalEstoque||0);
+    total++;
+  });
+  var resumo='<div class="kpis" style="margin-bottom:10px">'
+    +'<div class="kpi"><small>Criticos</small><div class="n" style="color:#c0392b">'+crit+'</div></div>'
+    +'<div class="kpi"><small>Baixos</small><div class="n" style="color:#e67e22">'+baixo+'</div></div>'
+    +'<div class="kpi"><small>OK</small><div class="n" style="color:#0f5132">'+(total-crit-baixo)+'</div></div>'
+    +'<div class="kpi"><small>Valor Total</small><div class="n" style="font-size:14px;color:#084298">'+moeda(valorTotal)+'</div></div>'
+    +'</div>';
+  $('resumoEstoque').innerHTML=resumo;
+
+  if(!est.length)h='<div class="item muted">Nenhum produto. Cadastre produtos primeiro.</div>';
+  est.forEach(function(e){
+    var perc=e.estoqueMinimo?Math.min(100,Math.round((e.estoqueAtual/e.estoqueMinimo)*100)):100;
+    var barColor=e.status==='CRITICO'?'#dc3545':e.status==='BAIXO'?'#ffc107':'#198754';
+    var cls=e.status==='CRITICO'?'est-critico':e.status==='BAIXO'?'est-baixo':'est-ok';
+    var badge=e.status==='CRITICO'?'<span class="badge bur">CRITICO</span>':e.status==='BAIXO'?'<span class="badge bat">BAIXO</span>':'<span class="badge bok">OK</span>';
+    h+='<div class="item '+cls+'"><div style="display:flex;justify-content:space-between;align-items:flex-start">'
+      +'<div><strong>'+esc(e.nome)+'</strong>'+badge+'<div class="sub">'+esc(e.tipo)+'</div></div>'
+      +'<div style="text-align:right"><div style="font-weight:800;font-size:15px">'+esc(e.estoqueAtual)+'kg</div>'
+      +'<div class="muted">Min: '+esc(e.estoqueMinimo)+'kg | Crit: '+esc(e.estoqueCritico)+'kg</div>'
+      +'<div class="muted">Custo: R$ '+parseFloat(e.custoUnitario||0).toFixed(2)+'/kg</div>'
+      +'<div style="font-weight:700;color:#084298">Valor: '+moeda(e.valorTotalEstoque)+'</div></div></div>'
+      +'<div class="est-barra-wrap"><div class="est-barra" style="width:'+perc+'%;background:'+barColor+'"></div></div></div>';
+  });
+  $('listaEstoque').innerHTML=h;
+
+  // Preencher select do modal entrada
+  var se=$('entProduto');if(se){var oh='<option value="">Selecione...</option>';est.forEach(function(e){oh+='<option value="'+esc(e.id)+'">'+esc(e.nome)+' (atual: '+e.estoqueAtual+'kg)</option>';});se.innerHTML=oh;}
+}
+
+window.abrirEntradaEstoque=function(){$('modalEntrada').classList.remove('hide');};
+window.fecharEntradaEstoque=function(){$('modalEntrada').classList.add('hide');};
+
+window.registrarEntradaEstoque=function(){
+  var prod=$('entProduto').value,qtd=$('entQtd').value,custo=$('entCusto').value;
+  if(!prod||!qtd){toast('Selecione produto e quantidade.');return;}
+  apiPost('entradaEstoque',{entrada:{produtoId:prod,quantidade:qtd,custoUnitario:custo||0,propriedade:$('entProp').value||'',observacao:$('entObs').value||''}},function(j){
+    if(j.sucesso){toast('Entrada registrada! Estoque: '+j.estoqueDepois+'kg');fecharEntradaEstoque();baixarEstoque();}
+    else toast('Erro: '+(j.erro||''));
+  });
+};
+
+// ── NOVOS CADASTROS ───────────────────────────────────────────────────────────
+
+window.baixarNovos=function(){
+  apiGet('getNovosCadastros',function(j){if(j.sucesso){save('novos',j.novos);renderNovos();renderAlertasGlobais();toast('Novos: '+j.total);}});
+};
+
+function renderNovos(){
+  var novos=load('novos',{propriedades:[],cochos:[],operadores:[]});
+  function sec(titulo,lista,tipo){
+    if(!lista||!lista.length)return'';
+    var h='<h3>'+titulo+'</h3>';
+    lista.forEach(function(x){
+      h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge bnv">NOVO</span>'
+        +'<div class="sub">Detectado: '+esc((x.dataCadastro||'').slice(0,16))+'</div>'
+        +'<button class="bp" style="margin-top:6px;font-size:11px" onclick="validarItem(\''+esc(tipo)+'\',\''+esc(x.id)+'\',\''+esc(x.nome)+'\')">Validar como ATIVO</button></div>';
+    });
+    return h;
   }
-
-  var gpsObtido=false;
-  var timer=setTimeout(function(){
-    if(!gpsObtido){ _finalizarSalvar(null,'sem sinal GPS'); }
-  },5000);
-
-  navigator.geolocation.getCurrentPosition(
-    function(p){
-      if(gpsObtido)return;
-      gpsObtido=true;
-      clearTimeout(timer);
-      var g={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy};
-      $('gpsIcone').textContent='✅';
-      $('gpsLabel').textContent='GPS: '+g.lat.toFixed(5)+', '+g.lng.toFixed(5)+' ±'+Math.round(g.acc)+'m';
-      _finalizarSalvar(g,'');
-    },
-    function(){
-      if(gpsObtido)return;
-      gpsObtido=true;
-      clearTimeout(timer);
-      _finalizarSalvar(null,'GPS nao obtido');
-    },
-    {enableHighAccuracy:true,timeout:5000,maximumAge:30000}
-  );
-};
-
-function _finalizarSalvar(gps, gpsMsg){
-  var prop=$('rProp').value.trim(),cocho=$('rCocho').value.trim(),oper=$('rOper').value.trim();
-  var prod=$('rProd').value.trim(),qtd=$('rQtd').value.trim();
-  var foto=FOTOS['regFoto']||null;
-
-  addSug('p',prop); addSug('c',cocho); addSug('o',oper); addSug('pr',prod);
-
-  var item={
-    id:uid(),ts:agora(),tipo:'ABASTECIMENTO',st:'PENDENTE',tent:0,
-    prop:prop,cocho:cocho,oper:oper,prod:prod,qtd:qtd,
-    obs:$('rObs').value.trim(),gps:gps,
-    foto:foto, temFoto:!!foto, novo:true
-  };
-
-  var q=getQueue(); q.unshift(item); setQueue(q);
-
-  // Resetar form
-  $('rQtd').value='';$('rObs').value='';
-  $('gpsIcone').textContent='📍';
-  $('gpsLabel').textContent='GPS sera capturado automaticamente ao salvar';
-  var btn=$('btnSalvarReg');if(btn)btn.style.opacity='1';
-  removerFoto('regFoto');
-  GPS=null;
-
-  var sub=prop+' / '+cocho+'\n'+qtd+' kg'+(gps?' + GPS':'')+(foto?' + foto':'');
-  if(gpsMsg)sub+='\n('+gpsMsg+')';
-  mostrarSalvo('SALVO!',sub);
+  $('novosConteudo').innerHTML=sec('Propriedades',novos.propriedades,'PROPRIEDADE')+sec('Cochos',novos.cochos,'COCHO')+sec('Operadores',novos.operadores,'OPERADOR');
 }
 
-window.salvarRegistro = window.salvarComGPS;
-
-window.salvarNota = function(){
-  var prop=$('nProp').value.trim(),cocho=$('nCocho').value.trim(),oper=$('nOper').value.trim(),desc=$('nDesc').value.trim();
-  if(!prop){toast('Preencha o nome da Fazenda.');$('nProp').focus();return;}
-  if(!cocho){toast('Preencha o Cocho.');$('nCocho').focus();return;}
-  if(!desc&&!FOTOS['notaFoto']){toast('Adicione uma foto ou descricao.');return;}
-
-  addSug('p',prop); addSug('c',cocho); if(oper)addSug('o',oper);
-
-  var foto=FOTOS['notaFoto']||null;
-
-  var item={
-    id:uid(),ts:agora(),tipo:'NOTA_COCHO',st:'PENDENTE',tent:0,
-    prop:prop,cocho:cocho,oper:oper||'',
-    descricao:desc,urgencia:$('nUrgencia').value,
-    foto:foto,temFoto:!!foto,novo:true
-  };
-
-  var q=getQueue(); q.unshift(item); setQueue(q);
-  $('nDesc').value='';$('nUrgencia').value='NORMAL';
-  removerFoto('notaFoto');
-
-  mostrarSalvo('NOTA REGISTRADA!',prop+' / '+cocho+(foto?'\n+ Foto':''));
+window.validarItem=function(tipo,id,nome){
+  if(!confirm('Validar "'+nome+'" como ATIVO?'))return;
+  apiPost('validarCadastro',{tipo:tipo,id:id},function(j){
+    if(j.sucesso){toast(nome+' validado!');baixarNovos();baixarPropriedades();}
+    else toast('Erro: '+(j.erro||''));
+  });
 };
 
-window.salvarMovimentacao = function(){
-  var prop=$('mProp').value.trim(),lote=$('mLote').value.trim(),evento=$('mEvento').value,qtd=parseInt($('mQtd').value)||0;
-  if(!prop){toast('Preencha o nome da Fazenda.');$('mProp').focus();return;}
-  if(!lote){toast('Preencha o Lote.');$('mLote').focus();return;}
-  if(!qtd){toast('Preencha a Quantidade.');$('mQtd').focus();return;}
-  var dist={BEZERRO:parseInt($('mBzm').value)||0,BEZERRA:parseInt($('mBzf').value)||0,NOVILHO:parseInt($('mNvm').value)||0,NOVILHA:parseInt($('mNvf').value)||0,SOLTEIRA:parseInt($('mSol').value)||0,NULIPARA:parseInt($('mNul').value)||0,PRIMIPARA:parseInt($('mPri').value)||0,MULTIPARA:parseInt($('mMul').value)||0};
-  var soma=0; for(var c in dist)soma+=dist[c];
-  if(soma!==qtd){toast('Soma ('+soma+') diferente do total ('+qtd+'). Ajuste os numeros.');return;}
-  addSug('p',prop); addSug('l',lote);
-  var item={id:uid(),ts:agora(),tipo:'MOVIMENTACAO',st:'PENDENTE',tent:0,prop:prop,lote:lote,evento:evento,qtd:qtd,dist:dist,obs:$('mObs').value.trim(),novo:true};
-  var q=getQueue(); q.unshift(item); setQueue(q);
-  $('mQtd').value=''; $('mObs').value='';
-  ['mBzm','mBzf','mNvm','mNvf','mSol','mNul','mPri','mMul'].forEach(function(id){$(id).value='0';});
-  calcSoma();
-  mostrarSalvo(evento+' SALVA!',prop+'\nLote: '+lote+' ('+qtd+' animais)');
+// ── NOTAS ─────────────────────────────────────────────────────────────────────
+
+window.baixarNotas=function(){
+  apiGet('getNotas',function(j){if(j.sucesso){_set('notas',j.notas||[]);renderNotas();renderAlertasGlobais();renderKPIs();toast('Notas: '+(j.notas||[]).length);}});
 };
+
+window.renderNotas=function(){
+  var notas=getNotas(),fp=$('fNP')?$('fNP').value:'',fu=$('fNU')?$('fNU').value:'';
+  var f=notas.filter(function(n){if(fp&&n.propriedade!==fp)return false;if(fu&&n.urgencia!==fu)return false;return true;});
+  var h='';
+  if(!f.length)h='<div class="item muted">Nenhuma nota.</div>';
+  f.forEach(function(n){
+    var cls='nota-card '+(n.urgencia==='URGENTE'?'nota-urgente':n.urgencia==='ATENCAO'?'nota-atencao':'');
+    var badgeCls=n.urgencia==='URGENTE'?'bur':n.urgencia==='ATENCAO'?'bat':'';
+    h+='<div class="'+cls+'"><div style="display:flex;align-items:flex-start;gap:10px">'
+      +'<div style="flex:1"><strong>'+esc(n.propriedade)+' / '+esc(n.cocho)+'</strong>'
+      +'<span class="badge '+badgeCls+'" style="margin-left:6px">'+n.urgencia+'</span>'
+      +'<span class="badge bin" style="margin-left:4px">'+esc(n.statusResolucao||'PENDENTE')+'</span>'
+      +'<div class="sub">'+esc((n.dataHora||'').slice(0,16))+' &bull; '+esc(n.operador||'')+'</div>'
+      +'<div style="margin-top:5px;font-size:13px">'+esc(n.descricao||'')+'</div></div>'
+      +(n.urlFoto?'<img src="'+esc(n.urlFoto)+'" class="foto-thumb" onclick="abrirFoto(\''+esc(n.urlFoto)+'\')" onerror="this.style.display=\'none\'" alt="foto">':'')
+      +'</div></div>';
+  });
+  $('listaNotas').innerHTML=h;
+  var props=getProps(),h2='<option value="">Todas</option>';
+  props.forEach(function(p){h2+='<option value="'+esc(p.nome)+'">'+esc(p.nome)+'</option>';});
+  var el=$('fNP');if(el)el.innerHTML=h2;
+};
+
+window.abrirFoto=function(url){$('mFotoImg').src=url;$('mFoto').className='modal-foto show';};
+$('mFoto').addEventListener('click',function(e){if(e.target===this){this.className='modal-foto';$('mFotoImg').src='';}});
 
 // ── SINCRONIZAR ───────────────────────────────────────────────────────────────
 
-window.sincronizar = function(){
-  var cfg=load('config',{});
-  if(!cfg.url){toast('Configure o endereco do sistema.');ir('config');return;}
-  if(!navigator.onLine){toast('Sem internet. Os dados estao salvos e serao enviados em breve.');return;}
-  var q=getQueue(),pend=q.filter(function(x){return x.st!=='OK';});
-  if(!pend.length){toast('Tudo ja foi enviado!');return;}
-  var lote=pend.slice(0,5); // 5 por lote pois pode ter fotos
-  q.forEach(function(x){ lote.forEach(function(l){ if(x.id===l.id){x.st='SEND';x.tent=(x.tent||0)+1;} }); });
-  setQueue(q); render();
+window.sincronizarTudo=function(){baixarPropriedades();baixarCochos();baixarRegistros();baixarMovimentacoes();baixarNotas();baixarNovos();baixarEstoque();};
 
-  var registros=lote.map(function(x){
-    if(x.tipo==='ABASTECIMENTO'){
-      return {uuid:x.id,tipo:'ABASTECIMENTO',dataHora:x.ts,payload:{
-        propriedade:x.prop,cocho:x.cocho,operador:x.oper,
-        produtoId:x.prod,quantidade:x.qtd,observacao:x.obs||'',
-        gps:x.gps||{},origem:'CAMPO_V32',novo:x.novo||false,
-        foto:x.foto||null // Pode ser null se nao tiver foto
-      }};
-    } else if(x.tipo==='NOTA_COCHO'){
-      return {uuid:x.id,tipo:'NOTA_COCHO',dataHora:x.ts,payload:{
-        propriedade:x.prop,cocho:x.cocho,operador:x.oper,
-        descricao:x.descricao||'',urgencia:x.urgencia||'NORMAL',
-        origem:'CAMPO_V32',novo:x.novo||false,
-        foto:x.foto||null
-      }};
-    } else {
-      return {uuid:x.id,tipo:'MOVIMENTACAO_LOTE',dataHora:x.ts,payload:{
-        propriedade:x.prop,loteId:x.lote,evento:x.evento,
-        quantidade:x.qtd,distribuicao:x.dist||{},
-        observacao:x.obs||'',origem:'CAMPO_V32',novo:x.novo||false
-      }};
-    }
-  });
+function apiGet(a,cb){var c=cfg();if(!c.url){toast('Configure URL primeiro.');return;}fetch(c.url+'?acao='+a).then(function(r){return r.json();}).then(cb).catch(function(e){toast('Erro '+a+': '+e.message);});}
+function apiPost(a,d,cb){var c=cfg();if(!c.url){toast('Configure URL.');return;}fetch(c.url,{method:'POST',body:JSON.stringify(Object.assign({acao:a},d))}).then(function(r){return r.json();}).then(cb||function(j){if(j.sucesso)toast('OK');else toast('Erro: '+(j.erro||''));}).catch(function(e){toast('Erro: '+e.message);});}
 
-  fetch(cfg.url,{method:'POST',body:JSON.stringify({acao:'syncRegistrosComLote',registros:registros})})
-  .then(function(r){return r.json();})
-  .then(function(resp){
-    if(!resp||!resp.acks)throw new Error('Resposta invalida');
-    var qq=getQueue();
-    resp.acks.forEach(function(ack){ qq.forEach(function(x){ if(x.id===ack.uuid)x.st=(ack.status==='SINCRONIZADO'?'OK':ack.status); }); });
-    setQueue(qq); toast(resp.acks.length+' registro(s) enviado(s)!'); render();
-  })
-  .catch(function(e){
-    var qq=getQueue(); qq.forEach(function(x){if(x.st==='SEND')x.st='ERRO';}); setQueue(qq);
-    toast('Falha no envio. Sera tentado automaticamente.'); render();
-  });
+window.baixarPropriedades=function(){apiGet('getPropriedades',function(j){if(j.sucesso){_set('props',j.propriedades||[]);renderListaProps();renderSelects();renderKPIs();}});};
+window.baixarCochos=function(){apiGet('getCochos',function(j){if(j.sucesso){_set('cochos',j.cochos||[]);renderListaCochos();}});};
+window.baixarRegistros=function(){apiGet('getRegistros',function(j){if(j.sucesso){_set('regs',j.registros||[]);renderTabelaRegs();renderKPIs();renderUltimas();plotarGPSRegistros();toast('Registros: '+(j.registros||[]).length);}});};
+window.baixarMovimentacoes=function(){apiGet('getMovimentacoes',function(j){if(j.sucesso){_set('movs',j.movimentacoes||[]);renderMovKPIs();renderMov();toast('Movimentacoes: '+(j.movimentacoes||[]).length);}});};
+
+// ── CADASTROS ─────────────────────────────────────────────────────────────────
+
+function renderSelects(){
+  var p=getProps(),h='<option value="">Selecione...</option>';
+  p.forEach(function(x){h+='<option value="'+esc(x.id)+'|'+esc(x.nome)+'">'+esc(x.nome)+'</option>';});
+  ['coProp','ltProp','entProp'].forEach(function(id){var el=$(id);if(el){if(id==='entProp')el.innerHTML='<option value="">Geral</option>'+p.map(function(x){return'<option value="'+esc(x.nome)+'">'+esc(x.nome)+'</option>';}).join('');else el.innerHTML=h;}});
+}
+
+window.cadastrarPropriedade=function(){
+  var nome=$('prNome').value.trim();if(!nome){toast('Nome obrigatorio.');return;}
+  var pr={id:'PROP-'+Date.now(),nome:nome,municipio:$('prMun').value.trim(),estado:$('prEst').value||'PA',responsavel:$('prResp').value.trim(),telefone:$('prTel').value.trim(),areaHa:$('prArea').value||'',status:'ATIVO'};
+  var p=getProps();p.unshift(pr);_set('props',p);
+  apiPost('cadastrarPropriedade',{propriedade:pr},function(j){if(j.sucesso)toast('Cadastrada!');render();});
+  ['prNome','prMun','prResp','prTel','prArea'].forEach(function(id){$(id).value='';});
 };
 
-window.limparSync=function(){ var q=getQueue().filter(function(x){return x.st!=='OK';}); setQueue(q); render(); };
-
-// ── CONFIG ────────────────────────────────────────────────────────────────────
-
-window.salvarCfg=function(){ save('config',{url:$('cfgUrl').value.trim()}); toast('Configuracao salva!'); render(); };
-window.testarCfg=function(){
-  var cfg=load('config',{}); if(!cfg.url){toast('Informe a URL primeiro.');return;}
-  $('cfgResult').innerHTML='<div style="padding:10px;color:var(--muted)">Testando...</div>';
-  fetch(cfg.url).then(function(r){return r.json();}).then(function(j){
-    $('cfgResult').innerHTML='<div style="padding:12px;background:#d1e7dd;border-radius:12px;font-weight:700;color:#0f5132">Conectado ao sistema!</div>';
-    toast('Conexao OK!');
-  }).catch(function(e){
-    $('cfgResult').innerHTML='<div style="padding:12px;background:#fee2e2;border-radius:12px;font-weight:700;color:#7f1d1d">Nao foi possivel conectar.</div>';
-    toast('Falha na conexao.');
-  });
+window.cadastrarCocho=function(){
+  var nome=$('coNome').value.trim(),pv=$('coProp').value;if(!nome||!pv){toast('Nome e propriedade.');return;}
+  var pt=pv.split('|'),c={id:'COCHO-'+Date.now(),nome:nome,propriedadeId:pt[0],propriedadeNome:pt[1]||'',gpsLat:$('coLat').value,gpsLng:$('coLng').value,horarioLimite:$('coHor').value||'18:00',status:'ATIVO'};
+  var co=getCochos();co.unshift(c);_set('cochos',co);
+  apiPost('cadastrarCocho',{cocho:c},function(j){if(j.sucesso)toast('Cocho cadastrado!');render();});
+  $('coNome').value='';$('coLat').value='';$('coLng').value='';
 };
 
-// ── BACKUP ────────────────────────────────────────────────────────────────────
+window.cadastrarLote=function(){
+  var id=$('ltId').value.trim(),qtd=parseInt($('ltQ').value)||0,pv=$('ltProp').value,data=$('ltD').value;
+  if(!id||!qtd||!pv||!data){toast('Preencha todos.');return;}
+  var pt=pv.split('|');
+  var bm=parseInt($('lB1').value)||0,bf=parseInt($('lB2').value)||0,nm=parseInt($('lN1').value)||0,nf=parseInt($('lN2').value)||0;
+  var so=parseInt($('lS').value)||0,nu=parseInt($('lNu').value)||0,pr=parseInt($('lP').value)||0,mu=parseInt($('lM').value)||0;
+  if(bm+bf+nm+nf+so+nu+pr+mu!==qtd){toast('Soma categorias diferente do total.');return;}
+  var l={id:id,propriedadeId:pt[0],propriedadeNome:pt[1]||'',dataEntrada:data,dataSaida:null,qtdTotal:qtd,distribuicao:{BEZERRO:bm,BEZERRA:bf,NOVILHO:nm,NOVILHA:nf,SOLTEIRA:so,NULIPARA:nu,PRIMIPARA:pr,MULTIPARA:mu}};
+  var lotes=getLotes();lotes.unshift(l);_set('lotes',lotes);
+  apiPost('cadastrarLote',{lote:l},function(j){if(j.sucesso)toast('Lote criado!');render();});
+};
 
-window.exportar=function(){
-  // Exportar SEM fotos (evitar arquivo muito grande)
-  var q=getQueue().map(function(x){ var c=Object.assign({},x); c.foto=null; return c; });
-  var d={versao:'V3.2',data:agora(),queue:q,sugestoes:getSug()};
+window.sincLotes=function(){getLotes().forEach(function(l){apiPost('cadastrarLote',{lote:l});});toast('Lotes enviados.');};
+
+window.cadastrarProduto=function(){
+  var nome=$('pdN').value.trim(),cod=$('pdC').value.trim();if(!nome||!cod){toast('Nome e codigo.');return;}
+  var p={id:cod,nome:nome,tipo:$('pdT').value,unidade:$('pdU').value,pesoEmbalagem:$('pdPe').value||50,custoUnitario:$('pdCk').value||0,estoqueInicial:$('pdEI').value||0,estoqueMinimo:$('pdEM').value||0,estoqueCritico:$('pdEC').value||0};
+  var prods=getProdutos();prods.unshift(p);_set('prods',prods);
+  apiPost('cadastrarProduto',{produto:p},function(j){if(j.sucesso)toast('Produto cadastrado!');render();});
+  $('pdN').value='';$('pdC').value='';$('pdCk').value='';$('pdEI').value='';$('pdEM').value='';$('pdEC').value='';
+};
+
+window.sincProdutos=function(){getProdutos().forEach(function(p){apiPost('cadastrarProduto',{produto:p});});toast('Produtos enviados.');};
+
+// ── RENDER LISTAS ─────────────────────────────────────────────────────────────
+
+function renderListaProps(){
+  var p=getProps(),h='';
+  if(!p.length)h='<div class="item muted">Nenhuma. Clique em Atualizar.</div>';
+  p.forEach(function(x){
+    var sc=x.status==='ATIVO'?'bok':x.status==='NOVO'?'bnv':'bin';
+    h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge '+sc+'">'+x.status+'</span><div class="sub">'+esc(x.municipio||'')+' &bull; '+esc(x.responsavel||'')+'</div></div>';
+  });
+  $('listaProps').innerHTML=h;
+}
+
+function renderListaCochos(){
+  var c=getCochos(),h='';
+  if(!c.length)h='<div class="item muted">Nenhum.</div>';
+  c.forEach(function(x){
+    var sc=x.status==='ATIVO'?'bok':x.status==='NOVO'?'bnv':'bin';
+    h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge '+sc+'">'+x.status+'</span><div class="sub">'+esc(x.propriedadeNome||'')+' &bull; '+esc(x.horarioLimite||'')+'</div></div>';
+  });
+  $('listaCochos').innerHTML=h;
+}
+
+function renderListaLotes(){
+  var l=getLotes(),h='';
+  if(!l.length)h='<div class="item muted">Nenhum.</div>';
+  l.forEach(function(x){
+    h+='<div class="item"><strong>'+esc(x.id)+' ('+x.qtdTotal+')</strong><span class="badge '+(x.dataSaida?'bin':'bok')+'">'+(x.dataSaida?'SAIDO':'ATIVO')+'</span><div class="sub">'+esc(x.propriedadeNome||'')+' &bull; '+esc(x.dataEntrada||'')+'</div></div>';
+  });
+  $('listaLotes').innerHTML=h;
+}
+
+function renderListaProdutos(){
+  var p=getProdutos(),h='';
+  if(!p.length)h='<div class="item muted">Nenhum produto cadastrado.</div>';
+  p.forEach(function(x){
+    h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge bok">'+esc(x.tipo||'')+'</span>'
+      +'<div class="sub">R$ '+parseFloat(x.custoUnitario||0).toFixed(2)+'/kg &bull; Estoque inicial: '+esc(x.estoqueInicial||0)+'kg &bull; Minimo: '+esc(x.estoqueMinimo||0)+'kg</div></div>';
+  });
+  $('listaProdutos').innerHTML=h;
+}
+
+function renderTabelaRegs(){
+  var r=getRegistros();
+  var h='<table class="table"><tr><th>Data</th><th>Propriedade</th><th>Cocho</th><th>Operador</th><th>Produto</th><th>Qtd</th><th>Custo</th><th>Foto</th></tr>';
+  r.slice(0,25).forEach(function(x){
+    h+='<tr><td>'+esc((x.dataHora||'').slice(0,16))+'</td><td>'+esc(x.propriedade||'')+'</td><td>'+esc(x.cocho||'')+'</td><td>'+esc(x.operador||'')+'</td><td>'+esc(x.produto||'')+'</td><td>'+esc(x.quantidade||'')+'</td><td>'+moeda(x.custo)+'</td>'
+      +'<td>'+(x.urlFoto?'<img src="'+esc(x.urlFoto)+'" class="foto-thumb" onclick="abrirFoto(\''+esc(x.urlFoto)+'\')" onerror="this.style.display=\'none\'" alt="foto">':'—')+'</td></tr>';
+  });
+  h+='</table>';
+  $('tabelaRegs').innerHTML=h;
+}
+
+function renderMovKPIs(){var m=getMov(),e=0,t=0,s=0;m.forEach(function(x){if(x.evento==='ENTRADA')e++;else if(x.evento==='TRANSFERENCIA')t++;else if(x.evento==='SAIDA')s++;});$('kMT').textContent=m.length;$('kME').textContent=e;$('kMTr').textContent=t;$('kMS').textContent=s;}
+
+function renderFiltros(){
+  var props=getProps(),h='<option value="">Todas</option>';
+  props.forEach(function(p){h+='<option value="'+esc(p.nome)+'">'+esc(p.nome)+'</option>';});
+  ['fMP','fNP'].forEach(function(id){var el=$(id);if(el)el.innerHTML=h;});
+}
+
+window.renderMov=function(){
+  var m=getMov(),fp=$('fMP')?$('fMP').value:'',fe=$('fME')?$('fME').value:'';
+  var f=m.filter(function(x){if(fp&&x.propriedade!==fp)return false;if(fe&&x.evento!==fe)return false;return true;});
+  var tl='';
+  if(!f.length)tl='<div class="muted">Nenhuma movimentacao.</div>';
+  f.slice(0,15).forEach(function(x){
+    var cor=x.evento==='ENTRADA'?'#0f5132':x.evento==='SAIDA'?'#842029':'#664d03';
+    tl+='<div class="titem"><strong style="color:'+cor+'">'+esc(x.evento)+'</strong> &mdash; '+esc(x.loteId||'')+' ('+esc(x.quantidade||0)+')<div class="muted">'+esc((x.dataHora||'').slice(0,16))+' &bull; '+esc(x.propriedade||'')+'</div></div>';
+  });
+  $('timelineMov').innerHTML=tl;
+};
+
+window.exportarTudo=function(){
+  var d={props:getProps(),cochos:getCochos(),lotes:getLotes(),prods:getProdutos(),regs:getRegistros(),movs:getMov(),notas:getNotas(),estoque:getEstoque(),mapa:getMapaF(),exportadoEm:agora()};
   var blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='reprogen_campo_'+Date.now()+'.json'; document.body.appendChild(a); a.click(); a.remove();
-  toast('Backup exportado!');
-};
-window.importar=function(){
-  var f=$('impFile').files[0]; if(!f){toast('Selecione um arquivo.');return;}
-  var r=new FileReader(); r.onload=function(){ try{ var d=JSON.parse(r.result); if(d.queue)setQueue(d.queue); if(d.sugestoes)save('sug',d.sugestoes); toast('Backup restaurado!'); render(); }catch(e){toast('Erro: '+e.message);} }; r.readAsText(f);
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='reprogen_v52_'+Date.now()+'.json';a.click();a.remove();toast('Exportado!');
 };
 
-// ── EVENTOS ───────────────────────────────────────────────────────────────────
+// ── MAPA ─────────────────────────────────────────────────────────────────────
 
-window.addEventListener('online',function(){ var p=getQueue().some(function(x){return x.st!=='OK';}); if(p){toast('Conexao recuperada. Enviando...');setTimeout(sincronizar,1500);} render(); });
-window.addEventListener('offline',function(){ toast('Modo offline. Registros salvos normalmente.'); render(); });
-setInterval(function(){ if(!navigator.onLine)return; var cfg=load('config',{}); if(!cfg.url)return; if(getQueue().some(function(x){return x.st==='PENDENTE'||x.st==='ERRO';})) sincronizar(); },30000);
+function initMapa(){
+  map=L.map('mapa').setView([-1.776,-47.450],11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OpenStreetMap',maxZoom:19}).addTo(map);
+  cam.f=L.featureGroup().addTo(map);
+  cam.c=L.featureGroup().addTo(map);
+  cam.gps=L.featureGroup().addTo(map); // camada GPS dos registros
+  var f=getMapaF();if(f.length)renderFeats(f);
+  plotarGPSRegistros(); // plotar pontos automaticamente
+}
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
+window.processMapa=function(ev){
+  var f=ev.target.files[0];if(!f)return;
+  var r=new FileReader();r.onload=function(e){var c=e.target.result,feats=[];
+    try{if(f.name.endsWith('.kml'))feats=parseKML(c);else if(f.name.endsWith('.geojson')||f.name.endsWith('.json'))feats=parseGeoJSON(c);else if(f.name.endsWith('.csv'))feats=parseCSV(c);else throw new Error('Formato nao suportado');
+    _set('mfeat',getMapaF().concat(feats));renderFeats(feats);toast(feats.length+' importados!');}catch(err){toast('Erro: '+err.message);}};
+  r.readAsText(f);
+};
 
-var cfgSalvo=load('config',{}); if(cfgSalvo.url)$('cfgUrl').value=cfgSalvo.url;
-ir('painel');
+function parseKML(s){var doc=new DOMParser().parseFromString(s,'text/xml'),f=[];
+  var pol=doc.getElementsByTagName('Polygon');for(var i=0;i<pol.length;i++){var ce=pol[i].getElementsByTagName('coordinates')[0];if(!ce)continue;f.push({tipo:'POLIGONO',nome:gn(pol[i].parentNode)||'P'+i,coordinates:[pc(ce.textContent)],geometry:'Polygon'});}
+  var pts=doc.getElementsByTagName('Point');for(var i=0;i<pts.length;i++){var ce=pts[i].getElementsByTagName('coordinates')[0];if(!ce)continue;var p=ce.textContent.trim().split(',');f.push({tipo:'PONTO',nome:gn(pts[i].parentNode)||'Pt'+i,coordinates:[parseFloat(p[0]),parseFloat(p[1])],geometry:'Point'});}
+  return f;}
+function pc(t){var c=t.trim().split(/\s+/),r=[];c.forEach(function(x){var p=x.split(',');if(p.length>=2)r.push([parseFloat(p[0]),parseFloat(p[1])]);});return r;}
+function gn(el){var n=el.getElementsByTagName('name');return n.length?n[0].textContent:null;}
+function parseGeoJSON(s){var d=JSON.parse(s),f=[];(d.features||[]).forEach(function(x,i){var p=x.properties||{};f.push({tipo:x.geometry.type==='Point'?'PONTO':'POLIGONO',nome:p.name||p.NAME||'F'+i,coordinates:x.geometry.coordinates,geometry:x.geometry.type});});return f;}
+function parseCSV(s){var ls=s.split(/\r?\n/).filter(Boolean),h=ls[0].split(',').map(function(x){return x.trim().toLowerCase();}),li=fc(h,['lat','latitude']),lo=fc(h,['lng','lon','longitude']),ni=fc(h,['nome','name']);if(li===-1||lo===-1)throw new Error('CSV precisa lat e lng');var f=[];ls.slice(1).forEach(function(l,i){var v=l.split(','),lat=parseFloat(v[li]),lng=parseFloat(v[lo]);if(!isNaN(lat)&&!isNaN(lng))f.push({tipo:'PONTO',nome:(ni>=0?v[ni]:'Pt'+(i+1)).trim(),coordinates:[lng,lat],geometry:'Point'});});return f;}
+function fc(h,cs){for(var i=0;i<h.length;i++)for(var j=0;j<cs.length;j++)if(h[i].indexOf(cs[j])>=0)return i;return -1;}
+
+function renderFeats(feats){feats.forEach(function(f){if(f.geometry==='Polygon'){var c=f.coordinates[0]||f.coordinates,ll=c.map(function(x){return[x[1],x[0]];});L.polygon(ll,{color:'#0f5132',weight:3,fillOpacity:0.15}).bindPopup('<b>'+esc(f.nome)+'</b>').addTo(cam.f);}else if(f.geometry==='Point'){var c=f.coordinates;L.circleMarker([c[1],c[0]],{radius:8,fillColor:'#198754',color:'#fff',weight:2,fillOpacity:0.9}).bindPopup('<b>'+esc(f.nome)+'</b>').addTo(cam.c);}});setTimeout(centralizarMapa,300);}
+
+window.centralizarMapa=function(){if(!map)return;var b=L.latLngBounds([]);[cam.f,cam.c,cam.gps].forEach(function(c){if(c&&c.getLayers().length){var bb=c.getBounds();if(bb.isValid())b.extend(bb);}});if(b.isValid())map.fitBounds(b,{padding:[20,20]});};
+window.plotarGPSRegistros=function(){
+  if(!map||!cam.gps)return;
+  cam.gps.clearLayers();
+  var regs=getRegistros();
+  var cochos={};
+  var agora=Date.now();
+  // Agrupar por cocho - manter apenas o mais recente
+  regs.forEach(function(r){
+    if(!r.gpsLat&&!r.latitude)return;
+    var lat=parseFloat(r.gpsLat||r.latitude||0);
+    var lng=parseFloat(r.gpsLng||r.longitude||0);
+    if(!lat||!lng)return;
+    var chave=(r.propriedade||'')+'|'+(r.cocho||'');
+    if(!cochos[chave]||r.dataHora>cochos[chave].dataHora){
+      cochos[chave]={
+        lat:lat,lng:lng,
+        propriedade:r.propriedade||'',
+        cocho:r.cocho||'',
+        operador:r.operador||'',
+        produto:r.produto||'',
+        quantidade:r.quantidade||'',
+        dataHora:r.dataHora||'',
+        total:0
+      };
+    }
+    cochos[chave].total++;
+  });
+  var count=0;
+  for(var k in cochos){
+    var c=cochos[k];
+    var dias=0;
+    if(c.dataHora){
+      var dt=new Date(c.dataHora);
+      dias=Math.floor((agora-dt.getTime())/(1000*60*60*24));
+    }
+    var cor=dias<3?'#198754':dias<7?'#e67e22':'#c0392b';
+    var raio=dias<3?10:dias<7?8:7;
+    var popup='<b>'+esc(c.cocho)+'</b><br><span style="color:#647067">'+esc(c.propriedade)+'</span>'
+      +'<hr style="margin:5px 0">'
+      +'<b>Ultimo registro:</b> '+esc(c.dataHora.slice(0,16))+'<br>'
+      +'<b>Operador:</b> '+esc(c.operador)+'<br>'
+      +'<b>Produto:</b> '+esc(c.produto)+'<br>'
+      +'<b>Quantidade:</b> '+esc(c.quantidade)+'kg<br>'
+      +'<b>Total registros:</b> '+c.total+'<br>'
+      +'<b>Dias sem visita:</b> '+dias;
+    L.circleMarker([c.lat,c.lng],{
+      radius:raio,fillColor:cor,color:'#fff',weight:2,fillOpacity:0.9
+    }).bindPopup(popup).addTo(cam.gps);
+    count++;
+  }
+  if(count>0){
+    var lgd=$('mapaLegenda');
+    if(lgd)lgd.style.display='block';
+  }
+};
+
+window.limparMapa=function(){if(!confirm('Limpar?'))return;_set('mfeat',[]);[cam.f,cam.c,cam.gps].forEach(function(c){if(c)c.clearLayers();});toast('Mapa limpo.');}; 
+window.addPonto=function(){var n=prompt('Nome:');if(!n)return;var lat=prompt('Lat:'),lng=prompt('Lng:');if(!lat||!lng)return;var f={tipo:'PONTO',nome:n,coordinates:[parseFloat(lng),parseFloat(lat)],geometry:'Point'};_set('mfeat',getMapaF().concat([f]));renderFeats([f]);};
+window.exportGeoJSON=function(){var f=getMapaF();if(!f.length){toast('Vazio.');return;}var g={type:'FeatureCollection',features:f.map(function(x){return{type:'Feature',properties:{name:x.nome},geometry:{type:x.geometry,coordinates:x.coordinates}};})};var blob=new Blob([JSON.stringify(g,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mapa_'+Date.now()+'.geojson';a.click();a.remove();};
+
+// CONFIG
+window.salvarCfg=function(){save('config',{url:$('cfgUrl').value.trim()});toast('Salvo.');render();};
+window.testarCfg=function(){
+  var c=cfg();if(!c.url){toast('Informe URL.');return;}
+  fetch(c.url).then(function(r){return r.json();}).then(function(j){
+    $('cfgStatus').innerHTML='<div class="item" style="border-color:#198754;background:#d1e7dd"><strong>Conectado: '+esc(j.sistema||j.ok)+'</strong></div>';toast('OK!');
+  }).catch(function(e){$('cfgStatus').innerHTML='<div class="item" style="border-color:#dc3545;background:#fee2e2"><strong>Erro: '+esc(e.message)+'</strong></div>';toast('Falha.');});
+};
+
+var cs=load('config',{});if(cs.url)$('cfgUrl').value=cs.url;
+renderNovos();renderScoreBox(load('ultima_avaliacao',{}));
+render();
 
 })();
 </script>
