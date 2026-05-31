@@ -1,22 +1,25 @@
 {
-  "name": "REPROGEN Central Cocho",
-  "short_name": "Central Cocho",
+  "name": "REPROGEN Central V5.3.5",
+  "short_name": "Central",
+  "description": "REPROGEN CENTRAL - Gestão, estoque, campo, registros e mapa GPS híbrido.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f0f5f0",
+  "orientation": "portrait",
+  "background_color": "#0f5132",
   "theme_color": "#0f5132",
-  "orientation": "any",
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "./icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "./icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

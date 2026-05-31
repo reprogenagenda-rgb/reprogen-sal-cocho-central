@@ -1,0 +1,13 @@
+REPROGEN CENTRAL V5.3.5 — PWA INSTALÁVEL
+
+Suba no GitHub todos estes arquivos:
+- index.html
+- manifest.json
+- service-worker.js
+- README.md
+- pasta icons com icon-192.png e icon-512.png
+
+Mensagem de commit:
+Atualiza Central V5.3.5 como PWA instalável com ícones
+
+Depois abra pelo GitHub Pages, instale no Android e teste o mapa GPS.

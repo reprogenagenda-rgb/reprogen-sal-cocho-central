@@ -3,7 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>REPROGEN CENTRAL V5.3.3 - DATA/HORA LOCAL PROTEGIDA</title>
+<title>REPROGEN CENTRAL V5.3.5 - PWA INSTALÁVEL</title>
+<meta name="theme-color" content="#0f5132">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="REPROGEN Central">
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 :root{--g:#0f5132;--g2:#198754;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--pu:#6f42c1;--ln:#dfe8dd;--sh:0 4px 16px rgba(22,50,30,.12);--rd:14px}
@@ -48,8 +55,8 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
 </head>
 <body>
 <header>
-  <h1>REPROGEN CENTRAL V5.3.3</h1>
-  <p>Consultor &bull; Estoque &bull; Campo &bull; Pontos GPS &bull; Data/Hora Local Protegida</p>
+  <h1>REPROGEN CENTRAL V5.3.5</h1>
+  <p>Consultor &bull; Estoque &bull; Campo &bull; Mapa GPS Híbrido &bull; PWA</p>
 </header>
 
 <div class="wrap">
@@ -202,8 +209,9 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
     <div id="mapaTipoStatus" class="muted" style="margin-top:8px">Mapa padrão selecionado.</div>
   </div>
   <div id="gpsResumoMapa" class="kpis" style="margin-top:10px;margin-bottom:10px"><div class="kpi"><small>Pontos GPS</small><div class="n" id="gpsTotal">0</div></div><div class="kpi"><small>Recentes</small><div class="n" id="gpsRec" style="color:#198754">0</div></div><div class="kpi"><small>Atenção</small><div class="n" id="gpsAt" style="color:#e67e22">0</div></div><div class="kpi"><small>Sem GPS</small><div class="n" id="gpsSem" style="color:#842029">0</div></div></div>
-  <div style="margin-top:10px"><button class="bp" onclick="plotarGPSRegistros()">Atualizar Pontos GPS</button><button class="bb" onclick="centralizarMapa()">Centralizar</button><button class="bb" onclick="exportGeoJSON()">GeoJSON</button><button class="bw" onclick="limparMapaImportado()">Limpar Mapa Importado</button><button class="bd" onclick="limparPontosGPS()">Limpar Pontos GPS da Tela</button><button class="bs" onclick="addPonto()">+ Ponto</button></div>
-  <div class="muted" style="margin-top:6px">Verde: até 3 dias • Amarelo: 4 a 7 dias • Vermelho: acima de 7 dias • Azul: sem data confiável</div>
+  <div style="margin-top:10px"><button class="bp" onclick="plotarGPSRegistros()">Atualizar Pontos GPS</button><button class="bb" onclick="centralizarMapa()">Centralizar</button><button class="bb" onclick="diagnosticarGPS()">Diagnóstico GPS</button><button class="bb" onclick="exportGeoJSON()">GeoJSON</button><button class="bw" onclick="limparMapaImportado()">Limpar Mapa Importado</button><button class="bd" onclick="limparPontosGPS()">Limpar Pontos GPS da Tela</button><button class="bs" onclick="addPonto()">+ Ponto</button></div>
+  <div class="muted" style="margin-top:6px">Mapa híbrido: usa GPS de REGISTROS e COCHOS. Verde: registro recente • Amarelo/vermelho: atraso • Azul: cocho fixo ou sem data confiável.</div>
+  <div id="gpsDiagnostico" class="item muted" style="margin-top:10px">Clique em “Atualizar Pontos GPS” para carregar registros e cochos no mapa.</div>
   <div id="mapa"></div>
 </div>
 
@@ -270,8 +278,17 @@ function getMapaF(){return _get('mfeat',[])}
 function normNome(v){return String(v||'').trim().toUpperCase().replace(/\s+/g,' ');}
 
 function atualizarResumoGPS(stats){
-  stats=stats||{total:0,recentes:0,atencao:0,atrasados:0,semGps:0};
-  var el;$('gpsTotal')&&($('gpsTotal').textContent=stats.total||0);$('gpsRec')&&($('gpsRec').textContent=stats.recentes||0);$('gpsAt')&&($('gpsAt').textContent=(stats.atencao||0)+(stats.atrasados||0));$('gpsSem')&&($('gpsSem').textContent=stats.semGps||0);
+  stats=stats||{total:0,recentes:0,atencao:0,atrasados:0,semGps:0,invalidos:0,cochos:0,registros:0};
+  var sem=(stats.semGps||0)+(stats.invalidos||0);
+  $('gpsTotal')&&($('gpsTotal').textContent=stats.total||0);
+  $('gpsRec')&&($('gpsRec').textContent=stats.recentes||0);
+  $('gpsAt')&&($('gpsAt').textContent=(stats.atencao||0)+(stats.atrasados||0));
+  $('gpsSem')&&($('gpsSem').textContent=sem);
+  var dg=$('gpsDiagnostico');
+  if(dg){
+    dg.className='item';
+    dg.innerHTML='<strong>Diagnóstico GPS</strong><div class="sub">Registros com GPS: '+(stats.registros||0)+' &bull; Cochos com GPS: '+(stats.cochos||0)+' &bull; Sem GPS: '+(stats.semGps||0)+' &bull; Inválidos: '+(stats.invalidos||0)+'</div>';
+  }
 }
 function extrairGPSRegistro(r){
   var lat=null,lng=null,acc=null;
@@ -394,28 +411,148 @@ function fc(h,cs){for(var i=0;i<h.length;i++)for(var j=0;j<cs.length;j++)if(h[i]
 function renderFeats(feats){feats.forEach(function(f){if(f.geometry==='Polygon'){var c=f.coordinates[0]||f.coordinates,ll=c.map(function(x){return[x[1],x[0]];});L.polygon(ll,{color:'#0f5132',weight:3,fillOpacity:0.15}).bindPopup('<b>'+esc(f.nome)+'</b>').addTo(cam.f);}else if(f.geometry==='Point'){var c=f.coordinates;L.circleMarker([c[1],c[0]],{radius:8,fillColor:'#198754',color:'#fff',weight:2,fillOpacity:0.9}).bindPopup('<b>'+esc(f.nome)+'</b>').addTo(cam.c);}});setTimeout(centralizarMapa,300);}
 window.centralizarMapa=function(){if(!map)return;var b=L.latLngBounds([]);[cam.f,cam.c,cam.gps].forEach(function(c){if(c&&c.getLayers().length){var bb=c.getBounds();if(bb.isValid())b.extend(bb);}});if(b.isValid())map.fitBounds(b,{padding:[20,20]});};
 window.plotarGPSRegistros=function(){
-  var regs=getRegistros(),stats={total:0,recentes:0,atencao:0,atrasados:0,semGps:0},pontos={},agoraMs=Date.now();
+  var regs=getRegistros();
+  var cochos=getCochos();
+  var stats={total:0,recentes:0,atencao:0,atrasados:0,semGps:0,invalidos:0,cochos:0,registros:0};
+  var pontos={};
+  var agoraMs=Date.now();
+
+  function gpsValido(gps){
+    if(!gps)return false;
+    if(isNaN(gps.lat)||isNaN(gps.lng))return false;
+    if(gps.lat<-90||gps.lat>90||gps.lng<-180||gps.lng>180)return false;
+    return true;
+  }
+
+  cochos.forEach(function(c){
+    var gps=extrairGPSRegistro(c);
+    if(!gps){stats.semGps++;return;}
+    if(!gpsValido(gps)){stats.invalidos++;return;}
+    var propriedade=c.propriedadeNome||c.propriedade||'';
+    var cocho=c.nome||c.cocho||'Cocho';
+    var chave='COCHO|'+propriedade+'|'+cocho;
+    pontos[chave]={
+      fonte:'COCHO',
+      lat:gps.lat,
+      lng:gps.lng,
+      acc:gps.acc,
+      propriedade:propriedade,
+      cocho:cocho,
+      operador:'',
+      produto:'',
+      quantidade:'',
+      dataHora:c.dataCadastro||'',
+      total:0,
+      statusCadastro:c.status||''
+    };
+    stats.cochos++;
+  });
+
   regs.forEach(function(r){
-    var gps=extrairGPSRegistro(r);if(!gps){stats.semGps++;return;}
+    var gps=extrairGPSRegistro(r);
+    if(!gps){stats.semGps++;return;}
+    if(!gpsValido(gps)){stats.invalidos++;return;}
     var propriedade=r.propriedade||r.propriedadeNome||(r.payload&&r.payload.propriedade)||'';
     var cocho=r.cocho||r.cochoNome||r.ponto||r.local||(r.payload&&(r.payload.cocho||r.payload.ponto))||'Ponto GPS';
     var dataHora=dataHoraManejo(r)||(r.payload&&dataHoraManejo(r.payload))||'';
-    var chave=propriedade+'|'+cocho;
-    if(!pontos[chave])pontos[chave]={lat:gps.lat,lng:gps.lng,acc:gps.acc,propriedade:propriedade,cocho:cocho,operador:r.operador||r.oper||(r.payload&&r.payload.operador)||'',produto:r.produto||r.prod||r.produtoId||(r.payload&&(r.payload.produto||r.payload.produtoId))||'',quantidade:r.quantidade||r.qtd||(r.payload&&r.payload.quantidade)||'',dataHora:dataHora,total:0};
+    var chave='REG|'+propriedade+'|'+cocho;
+    if(!pontos[chave]){
+      pontos[chave]={
+        fonte:'REGISTRO',
+        lat:gps.lat,
+        lng:gps.lng,
+        acc:gps.acc,
+        propriedade:propriedade,
+        cocho:cocho,
+        operador:r.operador||r.oper||(r.payload&&r.payload.operador)||'',
+        produto:r.produto||r.prod||r.produtoId||(r.payload&&(r.payload.produto||r.payload.produtoId))||'',
+        quantidade:r.quantidade||r.qtd||(r.payload&&r.payload.quantidade)||'',
+        dataHora:dataHora,
+        total:0
+      };
+    }
     pontos[chave].total++;
-    if(dataHora&&(!pontos[chave].dataHora||dataHora>pontos[chave].dataHora)){pontos[chave].lat=gps.lat;pontos[chave].lng=gps.lng;pontos[chave].acc=gps.acc;pontos[chave].dataHora=dataHora;pontos[chave].operador=r.operador||r.oper||(r.payload&&r.payload.operador)||'';pontos[chave].produto=r.produto||r.prod||r.produtoId||(r.payload&&(r.payload.produto||r.payload.produtoId))||'';pontos[chave].quantidade=r.quantidade||r.qtd||(r.payload&&r.payload.quantidade)||'';}
+    if(dataHora&&(!pontos[chave].dataHora||dataHora>pontos[chave].dataHora)){
+      pontos[chave].lat=gps.lat;
+      pontos[chave].lng=gps.lng;
+      pontos[chave].acc=gps.acc;
+      pontos[chave].dataHora=dataHora;
+      pontos[chave].operador=r.operador||r.oper||(r.payload&&r.payload.operador)||'';
+      pontos[chave].produto=r.produto||r.prod||r.produtoId||(r.payload&&(r.payload.produto||r.payload.produtoId))||'';
+      pontos[chave].quantidade=r.quantidade||r.qtd||(r.payload&&r.payload.quantidade)||'';
+    }
+    stats.registros++;
   });
-  if(map&&cam.gps)cam.gps.clearLayers();var count=0;
+
+  if(map&&cam.gps)cam.gps.clearLayers();
+  var count=0;
+
   for(var k in pontos){
-    var p=pontos[k],dias=null;if(p.dataHora){var ms=parseDataHoraLocalMs(p.dataHora);if(!isNaN(ms))dias=Math.floor((agoraMs-ms)/(1000*60*60*24));}
-    var cor='#0d6efd',textoStatus='Sem data confiável';
-    if(dias!==null){if(dias<=3){cor='#198754';textoStatus='Recente';stats.recentes++;}else if(dias<=7){cor='#ffc107';textoStatus='Atenção';stats.atencao++;}else{cor='#dc3545';textoStatus='Atrasado';stats.atrasados++;}}
-    var popup='<b>'+esc(p.cocho)+'</b><br><span style="color:#647067">'+esc(p.propriedade)+'</span><hr style="margin:5px 0"><b>Status:</b> '+textoStatus+'<br><b>Último registro:</b> '+esc(formatarDataHoraBR(p.dataHora))+'<br><b>Operador:</b> '+esc(p.operador)+'<br><b>Produto:</b> '+esc(p.produto)+'<br><b>Quantidade:</b> '+esc(p.quantidade)+' kg<br><b>Total de registros:</b> '+p.total+'<br><b>Precisão GPS:</b> '+esc(p.acc||'')+'<br><b>Dias sem visita:</b> '+(dias!==null?dias:'—');
-    if(map&&cam.gps)L.circleMarker([p.lat,p.lng],{radius:10,fillColor:cor,color:'#fff',weight:2,fillOpacity:0.9}).bindPopup(popup).addTo(cam.gps);
+    var p=pontos[k],dias=null;
+    if(p.dataHora){
+      var ms=parseDataHoraLocalMs(p.dataHora);
+      if(!isNaN(ms))dias=Math.floor((agoraMs-ms)/(1000*60*60*24));
+    }
+
+    var cor='#0d6efd',textoStatus='Cocho cadastrado / sem data confiável';
+    if(p.fonte==='REGISTRO'){
+      if(dias!==null){
+        if(dias<=3){cor='#198754';textoStatus='Registro recente';stats.recentes++;}
+        else if(dias<=7){cor='#ffc107';textoStatus='Atenção';stats.atencao++;}
+        else{cor='#dc3545';textoStatus='Atrasado';stats.atrasados++;}
+      }else{
+        cor='#0d6efd';textoStatus='Registro sem data confiável';
+      }
+    }
+
+    var popup='<b>'+esc(p.cocho)+'</b><br><span style="color:#647067">'+esc(p.propriedade)+'</span><hr style="margin:5px 0">'
+      +'<b>Fonte:</b> '+esc(p.fonte)+'<br>'
+      +'<b>Status:</b> '+textoStatus+'<br>'
+      +'<b>Último registro:</b> '+esc(formatarDataHoraBR(p.dataHora))+'<br>'
+      +'<b>Operador:</b> '+esc(p.operador)+'<br>'
+      +'<b>Produto:</b> '+esc(p.produto)+'<br>'
+      +'<b>Quantidade:</b> '+esc(p.quantidade)+' kg<br>'
+      +'<b>Total de registros:</b> '+p.total+'<br>'
+      +'<b>Precisão GPS:</b> '+esc(p.acc||'')+'<br>'
+      +'<b>Dias sem visita:</b> '+(dias!==null?dias:'—');
+
+    if(map&&cam.gps){
+      L.circleMarker([p.lat,p.lng],{
+        radius:p.fonte==='COCHO'?8:10,
+        fillColor:cor,
+        color:'#fff',
+        weight:2,
+        fillOpacity:0.9
+      }).bindPopup(popup).addTo(cam.gps);
+    }
     count++;
   }
-  stats.total=count;atualizarResumoGPS(stats);if(map&&cam.gps&&count>0)centralizarMapa();if(count>0)toast(count+' ponto(s) GPS exibido(s) no mapa.');else toast('Nenhum registro com GPS encontrado.');
+
+  stats.total=count;
+  atualizarResumoGPS(stats);
+  if(map&&cam.gps&&count>0)centralizarMapa();
+
+  if(count>0)toast(count+' ponto(s) GPS exibido(s): registros + cochos.');
+  else toast('Nenhum ponto GPS válido encontrado em REGISTROS ou COCHOS.');
 };
+
+window.diagnosticarGPS=function(){
+  var regs=getRegistros(),cochos=getCochos();
+  var stats={regGps:0,regSem:0,regInv:0,coGps:0,coSem:0,coInv:0};
+  function ok(g){return g&&!isNaN(g.lat)&&!isNaN(g.lng)&&g.lat>=-90&&g.lat<=90&&g.lng>=-180&&g.lng<=180;}
+  regs.forEach(function(r){var g=extrairGPSRegistro(r);if(!g)stats.regSem++;else if(!ok(g))stats.regInv++;else stats.regGps++;});
+  cochos.forEach(function(c){var g=extrairGPSRegistro(c);if(!g)stats.coSem++;else if(!ok(g))stats.coInv++;else stats.coGps++;});
+  var dg=$('gpsDiagnostico');
+  if(dg){
+    dg.className='item';
+    dg.innerHTML='<strong>Diagnóstico GPS Detalhado</strong>'
+      +'<div class="sub">REGISTROS: '+stats.regGps+' com GPS válido, '+stats.regSem+' sem GPS, '+stats.regInv+' inválidos.</div>'
+      +'<div class="sub">COCHOS: '+stats.coGps+' com GPS válido, '+stats.coSem+' sem GPS, '+stats.coInv+' inválidos.</div>'
+      +'<div class="sub">Se a planilha tem GPS e aqui aparece zero, clique em Registros > Atualizar e depois volte ao mapa.</div>';
+  }
+  toast('Diagnóstico GPS atualizado.');
+};
+
 window.limparMapaImportado=function(){if(!confirm('Limpar apenas mapa importado/manual?'))return;_set('mfeat',[]);[cam.f,cam.c].forEach(function(c){if(c)c.clearLayers();});toast('Mapa importado limpo. Pontos GPS dos registros foram preservados.');};
 window.limparPontosGPS=function(){if(cam.gps)cam.gps.clearLayers();atualizarResumoGPS({total:0,recentes:0,atencao:0,atrasados:0,semGps:getRegistros().length});toast('Pontos GPS removidos apenas da tela. Os registros continuam salvos.');};
 window.limparMapa=window.limparMapaImportado;
@@ -430,5 +567,16 @@ var cs=load('config',{});if(cs.url)$('cfgUrl').value=cs.url;
 renderNovos();renderScoreBox(load('ultima_avaliacao',{}));render();
 })();
 </script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(function(){ console.log('[REPROGEN CENTRAL] Service Worker registrado.'); })
+      .catch(function(err){ console.warn('[REPROGEN CENTRAL] Falha no Service Worker:', err); });
+  });
+}
+</script>
+
 </body>
 </html>

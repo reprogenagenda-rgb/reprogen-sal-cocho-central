@@ -1,103 +1,77 @@
-# REPROGEN CENTRAL V5.3.3 — Data/Hora Local Protegida
+# REPROGEN CENTRAL V5.3.5 — PWA Instalável + Mapa GPS Híbrido
 
-Central web do sistema **REPROGEN SAL COCHO**, preparada para GitHub Pages.
+Central web do sistema **REPROGEN SAL COCHO**, pronta para GitHub Pages e instalação no Android/Chrome.
 
-## Objetivo desta versão
+## Arquivos principais
 
-A versão **V5.3.3** corrige a exibição de data e hora na Central, preservando a hora real registrada no App Campo.
+- `index.html` — Central completa.
+- `manifest.json` — configuração PWA.
+- `service-worker.js` — cache/offline do app shell.
+- `icons/icon-192.png` — ícone Android/PWA.
+- `icons/icon-512.png` — ícone Android/PWA.
+- `README.md` — documentação do repositório.
 
-A regra técnica é:
+## O que esta versão mantém
 
-> A data/hora do manejo é dado operacional de campo e não deve ser convertida para UTC.
+- Central V5.3.4 com mapa GPS híbrido.
+- GPS de REGISTROS + COCHOS.
+- Diagnóstico GPS.
+- Data/hora local protegida.
+- Tipos de mapa: Padrão, Satélite, Topográfico, Claro e Sem base.
+- Painel, notas, estoque, propriedades, cochos, lotes, produtos, movimentações e registros.
 
-## O que foi mantido
+## O que esta versão adiciona
 
-- Painel geral
-- Autoavaliação
-- Novos cadastros
-- Notas do cocho
-- Estoque
-- Propriedades
-- Cochos
-- Lotes
-- Produtos
-- Movimentação
-- Registros
-- Mapa com tipos de base:
-  - Padrão
-  - Satélite
-  - Topográfico
-  - Claro
-  - Sem base
-- Configuração da URL do Apps Script
+- Manifest PWA.
+- Service Worker.
+- Ícones.
+- Instalação pelo Android/Chrome.
+- Abertura offline do app shell quando já carregado uma vez.
 
-## O que foi corrigido
+## Observação importante sobre offline
 
-- A Central prioriza:
-  1. `dataHoraBR`
-  2. `dataHoraLocal`
-  3. `dataHora`
-- A data é exibida no padrão brasileiro: `DD/MM/AAAA HH:mm`.
-- O mapa não usa conversão UTC para exibir a data/hora do manejo.
-- O cálculo de dias no mapa usa parser local protegido.
-- A exportação JSON usa hora local.
+A Central pode abrir como PWA, mas a sincronização com Google Apps Script e mapas online dependem de internet.
 
-## Ordem correta de atualização
+O app shell pode abrir offline; já:
+- Apps Script precisa de internet;
+- mapas base online precisam de internet;
+- dados novos precisam ser sincronizados online.
 
-Antes de testar esta Central, atualize o **Apps Script V1.1 — Data/Hora Local Protegida**.
+## Como subir no GitHub
 
-Sequência recomendada:
+Suba todos os arquivos e pastas:
 
-1. Atualizar o Apps Script.
-2. Salvar o projeto.
-3. Executar `setupReprogen`.
-4. Reimplantar como **nova versão**.
-5. Subir este `index.html` no repositório da Central no GitHub.
-6. Fazer um novo registro no App Campo.
-7. Sincronizar.
-8. Atualizar a Central.
-
-## Como subir no GitHub Pages
-
-No repositório da Central:
-
-1. Clique em **Add file**.
-2. Clique em **Upload files**.
-3. Envie:
-   - `index.html`
-   - `README.md`
-4. Confirme em **Commit changes**.
+```text
+index.html
+manifest.json
+service-worker.js
+README.md
+icons/icon-192.png
+icons/icon-512.png
+```
 
 Mensagem de commit sugerida:
 
 ```text
-Atualiza Central V5.3.3 com data e hora local protegida
+Atualiza Central V5.3.5 como PWA instalável com ícones
 ```
 
-## Teste de aprovação
+## Teste de instalação
 
-Faça um registro novo no Campo, por exemplo às **09:07**.
+1. Abra a Central pelo GitHub Pages com internet.
+2. Aguarde carregar.
+3. No Android/Chrome, toque nos três pontinhos.
+4. Toque em **Adicionar à tela inicial** ou **Instalar app**.
+5. Abra pelo ícone instalado.
+6. Teste **Config > Testar Conexão**.
+7. Teste **Registros > Atualizar**.
+8. Teste **Mapa > Atualizar Pontos GPS**.
+9. Teste **Diagnóstico GPS**.
 
-O correto é aparecer:
+## Critério de aprovação
 
-```text
-Campo: 09:07
-Planilha: 09:07
-Central: 31/05/2026 09:07
-```
-
-Nunca deve virar:
-
-```text
-12:07
-```
-
-## Observação importante
-
-Registros antigos que já foram gravados com +3 horas na planilha não são corrigidos automaticamente.
-
-A correção vale para registros novos sincronizados depois da atualização do Apps Script e da Central.
-
-## Versão
-
-**REPROGEN CENTRAL V5.3.3 — Data/Hora Local Protegida**
+- O ícone aparece na tela inicial.
+- A Central abre pelo ícone.
+- O painel abre normalmente.
+- A conexão com Apps Script funciona com internet.
+- O mapa mostra pontos GPS usando REGISTROS e/ou COCHOS.
