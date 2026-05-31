@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>REPROGEN CENTRAL V5.3.2 - TIPO DE MAPA</title>
+<title>REPROGEN CENTRAL V5.3.3 - DATA/HORA LOCAL PROTEGIDA</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 :root{--g:#0f5132;--g2:#198754;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--pu:#6f42c1;--ln:#dfe8dd;--sh:0 4px 16px rgba(22,50,30,.12);--rd:14px}
@@ -17,7 +17,7 @@ header h1{font-size:18px;font-weight:900}header p{font-size:11px;opacity:.85;mar
 label{font-weight:700;font-size:12px;color:#2a3e2d;display:block;margin:8px 0 3px}
 input,select,textarea{width:100%;padding:10px;border:1.5px solid #cfdacf;border-radius:10px;background:#fff;font-size:16px;outline:none;margin-bottom:6px;-webkit-appearance:none;font-family:inherit}
 input:focus,select:focus,textarea:focus{border-color:var(--g2)}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234e6b52' fill='none' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234e6b52' fill='none' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
 button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;min-height:40px;margin:2px;font-family:inherit;-webkit-appearance:none}
 .bp{background:linear-gradient(135deg,#0f5132,#198754);color:#fff}.bb{background:#cfe2ff;color:#084298}.bw{background:#fff3cd;color:#664d03}.bd{background:#f8d7da;color:#842029}.bs{background:#d1e7dd;color:#0f5132}.bn{background:#e9f2eb;color:#0d3d27}.bpu{background:#ede9fe;color:#4c1d95}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:600px){.row{grid-template-columns:1fr}}
@@ -35,57 +35,24 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
 .bkbar span{font-weight:800;color:var(--g);font-size:13px}.bkbar button{background:#e9f2eb;color:var(--g);border:0;padding:6px 10px;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;min-height:auto;margin:0}
 .toast{position:fixed;left:15px;right:15px;bottom:15px;background:#0f3d22;color:#fff;padding:12px 14px;border-radius:10px;z-index:60;display:none;font-size:13px;box-shadow:var(--sh)}.toast.show{display:block}
 .table{width:100%;border-collapse:collapse;font-size:12px}.table th{background:#f4f7f2;padding:8px;text-align:left;font-weight:700;border-bottom:2px solid var(--ln)}.table td{padding:8px;border-bottom:1px solid var(--ln);vertical-align:top}.table tr:hover{background:#f9fbf9}
-.badge{display:inline-block;padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800}
-.bnv{background:#e2d9f3;color:#3d246b}.bok{background:#d1e7dd;color:#0f5132}.bin{background:#f0f0f0;color:#666}.bur{background:#fee2e2;color:#7f1d1d}.bat{background:#fef3c7;color:#78350f}
-/* SCORE */
-.score-box{border-radius:18px;padding:20px;text-align:center;margin-bottom:14px;color:#fff}
-.score-otimo{background:linear-gradient(135deg,#0f5132,#198754)}
-.score-bom{background:linear-gradient(135deg,#198754,#20c997)}
-.score-atencao{background:linear-gradient(135deg,#e67e22,#f39c12)}
-.score-critico{background:linear-gradient(135deg,#c0392b,#e74c3c)}
-.score-num{font-size:52px;font-weight:900;line-height:1}
-.score-label{font-size:16px;font-weight:700;opacity:.9;margin-top:4px}
-/* ESTOQUE */
-.est-ok{border-left:4px solid #198754}
-.est-baixo{border-left:4px solid #ffc107}
-.est-critico{border-left:4px solid #dc3545}
-.est-barra-wrap{height:10px;background:#e9f2eb;border-radius:5px;margin-top:6px;overflow:hidden}
-.est-barra{height:100%;border-radius:5px;transition:width .3s}
-/* NOTAS */
-.nota-card{border-radius:12px;padding:12px;margin-bottom:8px;border:1.5px solid #c4b5fd;background:#faf5ff}
-.nota-urgente{border-color:#dc3545;background:#fff5f5}
-.nota-atencao{border-color:#ffc107;background:#fffbf0}
-/* FOTO */
-.foto-thumb{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--ln);cursor:pointer;display:block}
-.modal-foto{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;display:none;align-items:center;justify-content:center;padding:20px}
-.modal-foto.show{display:flex}.modal-foto img{max-width:100%;max-height:90vh;border-radius:12px}
-.modal-fechar{position:absolute;top:16px;right:20px;color:#fff;font-size:28px;cursor:pointer;font-weight:700;background:rgba(0,0,0,.4);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:0}
-.timeline{border-left:3px solid var(--g);padding-left:14px}
-.titem{position:relative;padding:6px 0 6px 0;margin-bottom:6px;font-size:12px}
-.titem::before{content:'';position:absolute;left:-20px;top:10px;width:10px;height:10px;border-radius:50%;background:var(--g);border:2px solid #fff;box-shadow:0 0 0 2px var(--g)}
-.alert-box{border-radius:10px;padding:12px;margin-bottom:10px}
-.alert-urg{background:#fff5f5;border:1.5px solid #dc3545}
-.alert-novo{background:#f0ebfa;border:1.5px solid #c9b8e8}
-
-.maptype-box{margin-top:10px;background:#f9fbf9;border:1px solid var(--ln);border-radius:12px;padding:12px}
-.maptype-title{font-size:13px;font-weight:900;color:var(--g);margin-bottom:8px}
-.maptype-buttons{display:flex;gap:6px;flex-wrap:wrap}
-.maptype-buttons button{font-size:12px;padding:8px 10px;min-height:34px;margin:0;background:#e9f2eb;color:#0d3d27}
-.maptype-buttons button.active{background:linear-gradient(135deg,#0f5132,#198754);color:#fff}
-#mapa{width:100%;height:450px;border-radius:12px;border:1px solid var(--ln);margin-top:12px}
-.upzone{border:2px dashed #cfdacf;border-radius:12px;padding:20px;text-align:center;background:#f9fbfa;cursor:pointer}
-.upzone:hover{border-color:var(--g2);background:#eefbf3}
+.badge{display:inline-block;padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800}.bnv{background:#e2d9f3;color:#3d246b}.bok{background:#d1e7dd;color:#0f5132}.bin{background:#f0f0f0;color:#666}.bur{background:#fee2e2;color:#7f1d1d}.bat{background:#fef3c7;color:#78350f}
+.score-box{border-radius:18px;padding:20px;text-align:center;margin-bottom:14px;color:#fff}.score-otimo{background:linear-gradient(135deg,#0f5132,#198754)}.score-bom{background:linear-gradient(135deg,#198754,#20c997)}.score-atencao{background:linear-gradient(135deg,#e67e22,#f39c12)}.score-critico{background:linear-gradient(135deg,#c0392b,#e74c3c)}.score-num{font-size:52px;font-weight:900;line-height:1}.score-label{font-size:16px;font-weight:700;opacity:.9;margin-top:4px}
+.est-ok{border-left:4px solid #198754}.est-baixo{border-left:4px solid #ffc107}.est-critico{border-left:4px solid #dc3545}.est-barra-wrap{height:10px;background:#e9f2eb;border-radius:5px;margin-top:6px;overflow:hidden}.est-barra{height:100%;border-radius:5px;transition:width .3s}
+.nota-card{border-radius:12px;padding:12px;margin-bottom:8px;border:1.5px solid #c4b5fd;background:#faf5ff}.nota-urgente{border-color:#dc3545;background:#fff5f5}.nota-atencao{border-color:#ffc107;background:#fffbf0}
+.foto-thumb{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--ln);cursor:pointer;display:block}.modal-foto{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;display:none;align-items:center;justify-content:center;padding:20px}.modal-foto.show{display:flex}.modal-foto img{max-width:100%;max-height:90vh;border-radius:12px}.modal-fechar{position:absolute;top:16px;right:20px;color:#fff;font-size:28px;cursor:pointer;font-weight:700;background:rgba(0,0,0,.4);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:0}
+.timeline{border-left:3px solid var(--g);padding-left:14px}.titem{position:relative;padding:6px 0 6px 0;margin-bottom:6px;font-size:12px}.titem::before{content:'';position:absolute;left:-20px;top:10px;width:10px;height:10px;border-radius:50%;background:var(--g);border:2px solid #fff;box-shadow:0 0 0 2px var(--g)}
+.alert-box{border-radius:10px;padding:12px;margin-bottom:10px}.alert-urg{background:#fff5f5;border:1.5px solid #dc3545}.alert-novo{background:#f0ebfa;border:1.5px solid #c9b8e8}
+.maptype-box{margin-top:10px;background:#f9fbf9;border:1px solid var(--ln);border-radius:12px;padding:12px}.maptype-title{font-size:13px;font-weight:900;color:var(--g);margin-bottom:8px}.maptype-buttons{display:flex;gap:6px;flex-wrap:wrap}.maptype-buttons button{font-size:12px;padding:8px 10px;min-height:34px;margin:0;background:#e9f2eb;color:#0d3d27}.maptype-buttons button.active{background:linear-gradient(135deg,#0f5132,#198754);color:#fff}
+#mapa{width:100%;height:450px;border-radius:12px;border:1px solid var(--ln);margin-top:12px}.upzone{border:2px dashed #cfdacf;border-radius:12px;padding:20px;text-align:center;background:#f9fbfa;cursor:pointer}.upzone:hover{border-color:var(--g2);background:#eefbf3}
 </style>
 </head>
 <body>
-
 <header>
-  <h1>REPROGEN CENTRAL V5.3.2</h1>
-  <p>Consultor &bull; Estoque &bull; Campo &bull; Pontos GPS &bull; Tipo de Mapa</p>
+  <h1>REPROGEN CENTRAL V5.3.3</h1>
+  <p>Consultor &bull; Estoque &bull; Campo &bull; Pontos GPS &bull; Data/Hora Local Protegida</p>
 </header>
 
 <div class="wrap">
-
 <nav class="nav" id="nav">
   <button class="ntab active" data-tab="painel">Painel</button>
   <button class="ntab" data-tab="avaliacao">Avaliacao</button>
@@ -101,13 +68,8 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
   <button class="ntab" data-tab="mapa">Mapa</button>
   <button class="ntab" data-tab="config">Config</button>
 </nav>
+<div class="bkbar"><span id="tituloAtual">Painel</span><button onclick="ir('painel')">Painel</button></div>
 
-<div class="bkbar">
-  <span id="tituloAtual">Painel</span>
-  <button onclick="ir('painel')">Painel</button>
-</div>
-
-<!-- PAINEL -->
 <div id="viewPainel" class="view card">
   <h2>Painel Geral</h2>
   <div id="alertasGlobais"></div>
@@ -122,13 +84,10 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
     <button class="bpu" onclick="ir('avaliacao')">Auto Avaliacao</button>
     <button class="bn" onclick="ir('estoque')">Ver Estoque</button>
   </div>
-  <h3>Alertas Urgentes</h3>
-  <div id="alertasUrgentes" class="lista"></div>
-  <h3>Ultimas Atividades</h3>
-  <div id="ultimasAtiv" class="lista"></div>
+  <h3>Alertas Urgentes</h3><div id="alertasUrgentes" class="lista"></div>
+  <h3>Ultimas Atividades</h3><div id="ultimasAtiv" class="lista"></div>
 </div>
 
-<!-- AUTO AVALIACAO -->
 <div id="viewAvaliacao" class="view card hide">
   <h2>Auto Avaliacao do Sistema</h2>
   <button class="bp" onclick="rodarAvaliacao()">Rodar Avaliacao Agora</button>
@@ -137,16 +96,13 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
   <div id="detalhesAv" style="margin-top:10px"></div>
 </div>
 
-<!-- NOVOS CADASTROS -->
 <div id="viewNovos" class="view card hide">
   <h2>Novos Cadastros Detectados</h2>
   <p class="muted">Criados automaticamente pelo App Campo. Valide e complete.</p>
   <button class="bb" onclick="baixarNovos()">Atualizar</button>
-  <div class="sep"></div>
-  <div id="novosConteudo"></div>
+  <div class="sep"></div><div id="novosConteudo"></div>
 </div>
 
-<!-- NOTAS DO COCHO -->
 <div id="viewNotas" class="view card hide">
   <h2>Notas do Cocho</h2>
   <button class="bb" onclick="baixarNotas()">Atualizar</button>
@@ -154,44 +110,23 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
     <div><label>Propriedade</label><select id="fNP" onchange="renderNotas()"><option value="">Todas</option></select></div>
     <div><label>Urgencia</label><select id="fNU" onchange="renderNotas()"><option value="">Todas</option><option value="URGENTE">Urgente</option><option value="ATENCAO">Atencao</option><option value="NORMAL">Normal</option></select></div>
   </div>
-  <div class="sep"></div>
-  <div id="listaNotas"></div>
+  <div class="sep"></div><div id="listaNotas"></div>
 </div>
 
-<!-- ESTOQUE -->
 <div id="viewEstoque" class="view card hide">
   <h2>Estoque de Produtos</h2>
-  <div class="row">
-    <div>
-      <button class="bb" onclick="baixarEstoque()">Atualizar Estoque</button>
-    </div>
-    <div>
-      <button class="bp" onclick="abrirEntradaEstoque()">+ Entrada de Estoque</button>
-    </div>
-  </div>
-  <!-- Resumo estoque -->
+  <div class="row"><div><button class="bb" onclick="baixarEstoque()">Atualizar Estoque</button></div><div><button class="bp" onclick="abrirEntradaEstoque()">+ Entrada de Estoque</button></div></div>
   <div id="resumoEstoque" style="margin-top:10px"></div>
-  <div class="sep"></div>
-  <h3>Todos os Produtos</h3>
-  <div id="listaEstoque" class="lista"></div>
-  <!-- MODAL ENTRADA -->
+  <div class="sep"></div><h3>Todos os Produtos</h3><div id="listaEstoque" class="lista"></div>
   <div id="modalEntrada" class="hide" style="background:#f0ebfa;border:2px solid #c9b8e8;border-radius:14px;padding:16px;margin-top:14px">
     <h3 style="color:#4c1d95;margin-bottom:10px">Registrar Entrada de Estoque</h3>
-    <div class="row">
-      <div><label>Produto</label><select id="entProduto"><option value="">Selecione...</option></select></div>
-      <div><label>Quantidade (kg)</label><input id="entQtd" type="number" step="0.1" placeholder="200"></div>
-    </div>
-    <div class="row">
-      <div><label>Custo Unitario (R$/kg)</label><input id="entCusto" type="number" step="0.01" placeholder="3.00"></div>
-      <div><label>Propriedade</label><select id="entProp"><option value="">Geral</option></select></div>
-    </div>
+    <div class="row"><div><label>Produto</label><select id="entProduto"><option value="">Selecione...</option></select></div><div><label>Quantidade (kg)</label><input id="entQtd" type="number" step="0.1" placeholder="200"></div></div>
+    <div class="row"><div><label>Custo Unitario (R$/kg)</label><input id="entCusto" type="number" step="0.01" placeholder="3.00"></div><div><label>Propriedade</label><select id="entProp"><option value="">Geral</option></select></div></div>
     <div><label>Observacao</label><input id="entObs" placeholder="Ex: NF 1234, Fornecedor XYZ"></div>
-    <button class="bp" onclick="registrarEntradaEstoque()">Confirmar Entrada</button>
-    <button class="bn" onclick="fecharEntradaEstoque()">Cancelar</button>
+    <button class="bp" onclick="registrarEntradaEstoque()">Confirmar Entrada</button><button class="bn" onclick="fecharEntradaEstoque()">Cancelar</button>
   </div>
 </div>
 
-<!-- PROPRIEDADES -->
 <div id="viewPropriedades" class="view card hide">
   <h2>Cadastro Funcional de Fazendas / Propriedades</h2>
   <p class="muted">Base oficial para alimentar Campo, registros, filtros e mapa. O GPS da sede é opcional; o mapa operacional usa prioritariamente os pontos GPS enviados nos registros de campo.</p>
@@ -202,23 +137,18 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
   <button class="bb" onclick="capturarGPSPropriedade()">📍 Capturar GPS da Sede</button>
   <button class="bp" onclick="cadastrarPropriedade()">Cadastrar / Atualizar</button>
   <button class="bb" onclick="baixarPropriedades()">Atualizar</button>
-  <div class="sep"></div>
-  <div id="listaProps" class="lista"></div>
+  <div class="sep"></div><div id="listaProps" class="lista"></div>
 </div>
 
-<!-- COCHOS -->
 <div id="viewCochos" class="view card hide">
   <h2>Cochos</h2>
   <div class="row"><div><label>Nome</label><input id="coNome" placeholder="Cocho Norte"></div><div><label>Propriedade</label><select id="coProp"><option value="">Selecione...</option></select></div></div>
   <div class="row"><div><label>GPS Lat</label><input id="coLat" placeholder="-1.776"></div><div><label>GPS Lng</label><input id="coLng" placeholder="-47.45"></div></div>
   <div><label>Horario Limite</label><input id="coHor" type="time" value="18:00"></div>
-  <button class="bp" onclick="cadastrarCocho()">Cadastrar</button>
-  <button class="bb" onclick="baixarCochos()">Atualizar</button>
-  <div class="sep"></div>
-  <div id="listaCochos" class="lista"></div>
+  <button class="bp" onclick="cadastrarCocho()">Cadastrar</button><button class="bb" onclick="baixarCochos()">Atualizar</button>
+  <div class="sep"></div><div id="listaCochos" class="lista"></div>
 </div>
 
-<!-- LOTES -->
 <div id="viewLotes" class="view card hide">
   <h2>Lotes</h2>
   <div class="row"><div><label>ID Lote</label><input id="ltId" placeholder="LOTE_A"></div><div><label>Propriedade</label><select id="ltProp"><option value="">Selecione...</option></select></div></div>
@@ -227,48 +157,28 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
   <div class="row"><div><label>Novilhos</label><input id="lN1" type="number" value="0"></div><div><label>Novilhas</label><input id="lN2" type="number" value="0"></div></div>
   <div class="row"><div><label>Solteiras</label><input id="lS" type="number" value="0"></div><div><label>Nulíparas</label><input id="lNu" type="number" value="0"></div></div>
   <div class="row"><div><label>Primíparas</label><input id="lP" type="number" value="0"></div><div><label>Multíparas</label><input id="lM" type="number" value="0"></div></div>
-  <button class="bp" onclick="cadastrarLote()">Criar</button>
-  <button class="bb" onclick="sincLotes()">Sincronizar</button>
-  <div class="sep"></div>
-  <div id="listaLotes" class="lista"></div>
+  <button class="bp" onclick="cadastrarLote()">Criar</button><button class="bb" onclick="sincLotes()">Sincronizar</button>
+  <div class="sep"></div><div id="listaLotes" class="lista"></div>
 </div>
 
-<!-- PRODUTOS -->
 <div id="viewProdutos" class="view card hide">
   <h2>Produtos</h2>
   <div class="row"><div><label>Nome</label><input id="pdN" placeholder="Concentrado 28%"></div><div><label>Codigo</label><input id="pdC" placeholder="CONC_28"></div></div>
   <div class="row"><div><label>Tipo</label><select id="pdT"><option>CONCENTRADO</option><option>FORRAGEM</option><option>SUPLEMENTO</option><option>MINERAL</option><option>OUTRO</option></select></div><div><label>Unidade</label><select id="pdU"><option value="kg">kg</option><option value="saco">Saco</option><option value="ton">Tonelada</option></select></div></div>
   <div class="row"><div><label>Peso Embalagem (kg)</label><input id="pdPe" type="number" placeholder="50"></div><div><label>Custo por kg (R$)</label><input id="pdCk" type="number" step="0.01" placeholder="3.00"></div></div>
-  <div class="row3">
-    <div><label>Estoque Inicial (kg)</label><input id="pdEI" type="number" placeholder="0"></div>
-    <div><label>Estoque Minimo (kg)</label><input id="pdEM" type="number" placeholder="100"></div>
-    <div><label>Estoque Critico (kg)</label><input id="pdEC" type="number" placeholder="50"></div>
-  </div>
-  <button class="bp" onclick="cadastrarProduto()">Cadastrar</button>
-  <button class="bb" onclick="sincProdutos()">Sincronizar</button>
-  <div class="sep"></div>
-  <div id="listaProdutos" class="lista"></div>
+  <div class="row3"><div><label>Estoque Inicial (kg)</label><input id="pdEI" type="number" placeholder="0"></div><div><label>Estoque Minimo (kg)</label><input id="pdEM" type="number" placeholder="100"></div><div><label>Estoque Critico (kg)</label><input id="pdEC" type="number" placeholder="50"></div></div>
+  <button class="bp" onclick="cadastrarProduto()">Cadastrar</button><button class="bb" onclick="sincProdutos()">Sincronizar</button>
+  <div class="sep"></div><div id="listaProdutos" class="lista"></div>
 </div>
 
-<!-- MOVIMENTACAO -->
 <div id="viewMovimentacao" class="view card hide">
   <h2>Movimentacao de Lotes</h2>
   <button class="bb" onclick="baixarMovimentacoes()">Atualizar</button>
-  <div class="kpis" style="margin-top:10px">
-    <div class="kpi"><small>Total</small><div class="n" id="kMT">0</div></div>
-    <div class="kpi"><small>Entradas</small><div class="n" id="kME" style="color:#0f5132">0</div></div>
-    <div class="kpi"><small>Transf.</small><div class="n" id="kMTr" style="color:#664d03">0</div></div>
-    <div class="kpi"><small>Saidas</small><div class="n" id="kMS" style="color:#842029">0</div></div>
-  </div>
-  <div class="row" style="margin-top:10px">
-    <div><label>Propriedade</label><select id="fMP" onchange="renderMov()"><option value="">Todas</option></select></div>
-    <div><label>Evento</label><select id="fME" onchange="renderMov()"><option value="">Todos</option><option>ENTRADA</option><option>TRANSFERENCIA</option><option>SAIDA</option></select></div>
-  </div>
-  <h3>Timeline</h3>
-  <div id="timelineMov" class="timeline"></div>
+  <div class="kpis" style="margin-top:10px"><div class="kpi"><small>Total</small><div class="n" id="kMT">0</div></div><div class="kpi"><small>Entradas</small><div class="n" id="kME" style="color:#0f5132">0</div></div><div class="kpi"><small>Transf.</small><div class="n" id="kMTr" style="color:#664d03">0</div></div><div class="kpi"><small>Saidas</small><div class="n" id="kMS" style="color:#842029">0</div></div></div>
+  <div class="row" style="margin-top:10px"><div><label>Propriedade</label><select id="fMP" onchange="renderMov()"><option value="">Todas</option></select></div><div><label>Evento</label><select id="fME" onchange="renderMov()"><option value="">Todos</option><option>ENTRADA</option><option>TRANSFERENCIA</option><option>SAIDA</option></select></div></div>
+  <h3>Timeline</h3><div id="timelineMov" class="timeline"></div>
 </div>
 
-<!-- REGISTROS -->
 <div id="viewRegistros" class="view card hide">
   <h2>Registros de Abastecimento</h2>
   <button class="bb" onclick="baixarRegistros()">Atualizar</button>
@@ -276,13 +186,9 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
   <div id="tabelaRegs" style="margin-top:14px"></div>
 </div>
 
-<!-- MAPA -->
 <div id="viewMapa" class="view card hide">
   <h2>Mapa da Fazenda</h2>
-  <div class="upzone" onclick="document.getElementById('mFile').click()">
-    <b>Clique ou arraste arquivo de mapa</b><br>
-    <span class="muted">KML &bull; GeoJSON &bull; CSV &bull; GPX</span>
-  </div>
+  <div class="upzone" onclick="document.getElementById('mFile').click()"><b>Clique ou arraste arquivo de mapa</b><br><span class="muted">KML &bull; GeoJSON &bull; CSV &bull; GPX</span></div>
   <input type="file" id="mFile" accept=".kml,.geojson,.json,.csv,.gpx" style="display:none" onchange="processMapa(event)">
   <div class="maptype-box">
     <div class="maptype-title">Tipo de mapa</div>
@@ -295,60 +201,64 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
     </div>
     <div id="mapaTipoStatus" class="muted" style="margin-top:8px">Mapa padrão selecionado.</div>
   </div>
-  <div id="gpsResumoMapa" class="kpis" style="margin-top:10px;margin-bottom:10px">
-    <div class="kpi"><small>Pontos GPS</small><div class="n" id="gpsTotal">0</div></div>
-    <div class="kpi"><small>Recentes</small><div class="n" id="gpsRec" style="color:#198754">0</div></div>
-    <div class="kpi"><small>Atenção</small><div class="n" id="gpsAt" style="color:#e67e22">0</div></div>
-    <div class="kpi"><small>Sem GPS</small><div class="n" id="gpsSem" style="color:#842029">0</div></div>
-  </div>
-  <div style="margin-top:10px">
-    <button class="bp" onclick="plotarGPSRegistros()">Atualizar Pontos GPS</button>
-    <button class="bb" onclick="centralizarMapa()">Centralizar</button>
-    <button class="bb" onclick="exportGeoJSON()">GeoJSON</button>
-    <button class="bw" onclick="limparMapaImportado()">Limpar Mapa Importado</button>
-    <button class="bd" onclick="limparPontosGPS()">Limpar Pontos GPS da Tela</button>
-    <button class="bs" onclick="addPonto()">+ Ponto</button>
-  </div>
+  <div id="gpsResumoMapa" class="kpis" style="margin-top:10px;margin-bottom:10px"><div class="kpi"><small>Pontos GPS</small><div class="n" id="gpsTotal">0</div></div><div class="kpi"><small>Recentes</small><div class="n" id="gpsRec" style="color:#198754">0</div></div><div class="kpi"><small>Atenção</small><div class="n" id="gpsAt" style="color:#e67e22">0</div></div><div class="kpi"><small>Sem GPS</small><div class="n" id="gpsSem" style="color:#842029">0</div></div></div>
+  <div style="margin-top:10px"><button class="bp" onclick="plotarGPSRegistros()">Atualizar Pontos GPS</button><button class="bb" onclick="centralizarMapa()">Centralizar</button><button class="bb" onclick="exportGeoJSON()">GeoJSON</button><button class="bw" onclick="limparMapaImportado()">Limpar Mapa Importado</button><button class="bd" onclick="limparPontosGPS()">Limpar Pontos GPS da Tela</button><button class="bs" onclick="addPonto()">+ Ponto</button></div>
   <div class="muted" style="margin-top:6px">Verde: até 3 dias • Amarelo: 4 a 7 dias • Vermelho: acima de 7 dias • Azul: sem data confiável</div>
   <div id="mapa"></div>
 </div>
 
-<!-- CONFIG -->
 <div id="viewConfig" class="view card hide">
   <h2>Configuracao</h2>
   <label>URL do Apps Script</label>
   <input id="cfgUrl" placeholder="https://script.google.com/macros/s/.../exec" autocorrect="off" autocapitalize="none" spellcheck="false">
-  <button class="bp" onclick="salvarCfg()">Salvar</button>
-  <button class="bb" onclick="testarCfg()">Testar Conexao</button>
-  <div class="sep"></div>
-  <div id="cfgStatus"></div>
+  <button class="bp" onclick="salvarCfg()">Salvar</button><button class="bb" onclick="testarCfg()">Testar Conexao</button>
+  <div class="sep"></div><div id="cfgStatus"></div>
+</div>
 </div>
 
-</div>
-
-<div class="modal-foto" id="mFoto">
-  <button class="modal-fechar" onclick="$('mFoto').className='modal-foto'">X</button>
-  <img id="mFotoImg" src="" alt="">
-</div>
+<div class="modal-foto" id="mFoto"><button class="modal-fechar" onclick="$('mFoto').className='modal-foto'">X</button><img id="mFotoImg" src="" alt=""></div>
 <div class="toast" id="toast"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function(){
 'use strict';
 var DB='rg_c52';
-var map=null,cam={f:null,c:null};
+var map=null,cam={f:null,c:null,gps:null};
 var baseLayerAtual=null;
 var TITS={painel:'Painel',avaliacao:'Auto Avaliacao',novos:'Novos Cadastros',notas:'Notas do Cocho',estoque:'Estoque',propriedades:'Propriedades',cochos:'Cochos',lotes:'Lotes',produtos:'Produtos',movimentacao:'Movimentacao',registros:'Registros',mapa:'Mapa',config:'Configuracao'};
 
 function $(i){return document.getElementById(i);}
 function load(k,d){try{var v=localStorage.getItem(DB+'_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
 function save(k,v){localStorage.setItem(DB+'_'+k,JSON.stringify(v));}
-function agora(){return new Date().toISOString();}
+function agora(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+'T'+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2);}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function toast(m){var t=$('toast');t.textContent=m;t.className='toast show';setTimeout(function(){t.className='toast';},3500);}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 function cfg(){return load('config',{});}
 function moeda(v){return'R$ '+parseFloat(v||0).toFixed(2).replace('.',',');}
+
+/* DATA/HORA LOCAL PROTEGIDA — nunca converter a data do manejo para UTC */
+function formatarDataHoraBR(valor){
+  if(!valor)return '';
+  if(Object.prototype.toString.call(valor)==='[object Date]'&&!isNaN(valor.getTime())){
+    var d=valor;return('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+  }
+  var s=String(valor).trim();
+  if(s.length>=16&&s.charAt(2)==='/'&&s.charAt(5)==='/')return s.slice(0,16);
+  if(s.length>=16&&s.charAt(4)==='-'&&s.charAt(7)==='-')return s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4)+' '+s.slice(11,16);
+  return s;
+}
+function dataHoraManejo(r){
+  if(!r)return '';
+  return r.dataHoraBR||r.DataHoraBR||r.dataHoraLocal||r.DataHoraLocal||r.dataHoraManejo||r.DataHoraManejo||r.dataHora||r.DataHora||r.ts||r.data||'';
+}
+function dataHoraManejoBR(r){return formatarDataHoraBR(dataHoraManejo(r));}
+function parseDataHoraLocalMs(valor){
+  if(!valor)return NaN;var s=String(valor).trim();
+  if(s.length>=16&&s.charAt(2)==='/'&&s.charAt(5)==='/')return new Date(Number(s.slice(6,10)),Number(s.slice(3,5))-1,Number(s.slice(0,2)),Number(s.slice(11,13)),Number(s.slice(14,16)),0).getTime();
+  if(s.length>=16&&s.charAt(4)==='-'&&s.charAt(7)==='-')return new Date(Number(s.slice(0,4)),Number(s.slice(5,7))-1,Number(s.slice(8,10)),Number(s.slice(11,13)),Number(s.slice(14,16)),0).getTime();
+  return NaN;
+}
 
 var _get=function(k,d){return load(k,d);};
 var _set=function(k,v){save(k,v);};
@@ -358,25 +268,19 @@ function getRegistros(){return _get('regs',[])}function getMov(){return _get('mo
 function getNotas(){return _get('notas',[])}function getEstoque(){return _get('estoque',[])}
 function getMapaF(){return _get('mfeat',[])}
 function normNome(v){return String(v||'').trim().toUpperCase().replace(/\s+/g,' ');}
+
 function atualizarResumoGPS(stats){
   stats=stats||{total:0,recentes:0,atencao:0,atrasados:0,semGps:0};
-  var el;
-  el=$('gpsTotal'); if(el)el.textContent=stats.total||0;
-  el=$('gpsRec'); if(el)el.textContent=stats.recentes||0;
-  el=$('gpsAt'); if(el)el.textContent=(stats.atencao||0)+(stats.atrasados||0);
-  el=$('gpsSem'); if(el)el.textContent=stats.semGps||0;
+  var el;$('gpsTotal')&&($('gpsTotal').textContent=stats.total||0);$('gpsRec')&&($('gpsRec').textContent=stats.recentes||0);$('gpsAt')&&($('gpsAt').textContent=(stats.atencao||0)+(stats.atrasados||0));$('gpsSem')&&($('gpsSem').textContent=stats.semGps||0);
 }
 function extrairGPSRegistro(r){
   var lat=null,lng=null,acc=null;
   if(r.gps){lat=r.gps.lat||r.gps.latitude||lat;lng=r.gps.lng||r.gps.lon||r.gps.longitude||lng;acc=r.gps.acc||r.gps.accuracy||acc;}
   if(r.payload&&r.payload.gps){lat=r.payload.gps.lat||r.payload.gps.latitude||lat;lng=r.payload.gps.lng||r.payload.gps.lon||r.payload.gps.longitude||lng;acc=r.payload.gps.acc||r.payload.gps.accuracy||acc;}
-  lat=r.gpsLat||r.latitude||r.lat||lat;
-  lng=r.gpsLng||r.longitude||r.lng||r.lon||lng;
-  acc=r.gpsAcc||r.accuracy||acc;
+  lat=r.gpsLat||r.latitude||r.lat||lat;lng=r.gpsLng||r.longitude||r.lng||r.lon||lng;acc=r.gpsAcc||r.accuracy||acc;
   lat=parseFloat(String(lat).replace(',','.'));lng=parseFloat(String(lng).replace(',','.'));
-  if(isNaN(lat)||isNaN(lng))return null;
-  if(lat<-90||lat>90||lng<-180||lng>180)return null;
-  return {lat:lat,lng:lng,acc:acc};
+  if(isNaN(lat)||isNaN(lng))return null;if(lat<-90||lat>90||lng<-180||lng>180)return null;
+  return{lat:lat,lng:lng,acc:acc};
 }
 
 window.ir=function(nome){
@@ -386,510 +290,144 @@ window.ir=function(nome){
   $('tituloAtual').textContent=TITS[nome]||nome;
   window.scrollTo({top:0,behavior:'smooth'});
   if(nome==='mapa'&&!map)setTimeout(initMapa,150);else if(nome==='mapa'&&map)setTimeout(function(){map.invalidateSize();},150);
-  if(nome==='movimentacao')renderMov();
-  if(nome==='notas')renderNotas();
-  if(nome==='estoque')renderEstoque();
+  if(nome==='movimentacao')renderMov();if(nome==='notas')renderNotas();if(nome==='estoque')renderEstoque();
   render();
 };
 document.querySelectorAll('.ntab').forEach(function(b){b.addEventListener('click',function(){ir(this.getAttribute('data-tab'));});});
 
-function render(){
-  renderKPIs();renderAlertasGlobais();renderUltimas();
-  renderListaProps();renderListaCochos();renderListaLotes();renderListaProdutos();
-  renderTabelaRegs();renderMovKPIs();renderFiltros();
-}
-
-function renderKPIs(){
-  var av=load('ultima_avaliacao',{});
-  $('kProp').textContent=getProps().length;
-  $('kReg').textContent=getRegistros().length;
-  $('kNota').textContent=getNotas().length;
-  $('kScore').textContent=av.score!=null?av.score+'%':'—';
-  if(av.score!=null)$('kScore').style.color=av.score>=90?'#0f5132':av.score>=70?'#198754':av.score>=50?'#e67e22':'#c0392b';
-}
-
+function render(){renderKPIs();renderAlertasGlobais();renderUltimas();renderListaProps();renderListaCochos();renderListaLotes();renderListaProdutos();renderTabelaRegs();renderMovKPIs();renderFiltros();}
+function renderKPIs(){var av=load('ultima_avaliacao',{});$('kProp').textContent=getProps().length;$('kReg').textContent=getRegistros().length;$('kNota').textContent=getNotas().length;$('kScore').textContent=av.score!=null?av.score+'%':'—';if(av.score!=null)$('kScore').style.color=av.score>=90?'#0f5132':av.score>=70?'#198754':av.score>=50?'#e67e22':'#c0392b';}
 function renderAlertasGlobais(){
-  var h='';
-  var novos=load('novos',{propriedades:[],cochos:[],operadores:[]});
+  var h='',novos=load('novos',{propriedades:[],cochos:[],operadores:[]});
   var totalNovos=(novos.propriedades||[]).length+(novos.cochos||[]).length+(novos.operadores||[]).length;
   if(totalNovos)h+='<div class="alert-box alert-novo" style="margin-bottom:8px"><span style="color:#4c1d95;font-weight:700">'+totalNovos+' novo(s) cadastro(s)</span> <button class="bpu" onclick="ir(\'novos\')" style="font-size:11px">Validar</button></div>';
   var urg=getNotas().filter(function(n){return n.urgencia==='URGENTE'&&n.statusResolucao!=='RESOLVIDO';});
   if(urg.length)h+='<div class="alert-box alert-urg" style="margin-bottom:8px"><span style="color:#7f1d1d;font-weight:700">'+urg.length+' nota(s) URGENTE(S)</span> <button class="bd" onclick="ir(\'notas\')" style="font-size:11px">Ver</button></div>';
-  var crit=getEstoque().filter(function(e){return e.status==='CRITICO';});
-  if(crit.length)h+='<div class="alert-box" style="background:#fff5f5;border:1.5px solid #dc3545;margin-bottom:8px"><span style="color:#7f1d1d;font-weight:700">'+crit.length+' produto(s) com estoque CRITICO</span> <button class="bd" onclick="ir(\'estoque\')" style="font-size:11px">Ver</button></div>';
-  var baixo=getEstoque().filter(function(e){return e.status==='BAIXO';});
-  if(baixo.length)h+='<div class="alert-box" style="background:#fffbf0;border:1.5px solid #ffc107;margin-bottom:8px"><span style="color:#78350f;font-weight:700">'+baixo.length+' produto(s) com estoque BAIXO</span> <button class="bw" onclick="ir(\'estoque\')" style="font-size:11px">Ver</button></div>';
+  var crit=getEstoque().filter(function(e){return e.status==='CRITICO';});if(crit.length)h+='<div class="alert-box" style="background:#fff5f5;border:1.5px solid #dc3545;margin-bottom:8px"><span style="color:#7f1d1d;font-weight:700">'+crit.length+' produto(s) com estoque CRITICO</span> <button class="bd" onclick="ir(\'estoque\')" style="font-size:11px">Ver</button></div>';
+  var baixo=getEstoque().filter(function(e){return e.status==='BAIXO';});if(baixo.length)h+='<div class="alert-box" style="background:#fffbf0;border:1.5px solid #ffc107;margin-bottom:8px"><span style="color:#78350f;font-weight:700">'+baixo.length+' produto(s) com estoque BAIXO</span> <button class="bw" onclick="ir(\'estoque\')" style="font-size:11px">Ver</button></div>';
   $('alertasGlobais').innerHTML=h;
-  // urgentes na lista
-  var hu='';
-  if(!urg.length)hu='<div class="item muted">Sem notas urgentes.</div>';
-  urg.slice(0,3).forEach(function(n){
-    hu+='<div class="nota-card nota-urgente"><strong>'+esc(n.propriedade)+' / '+esc(n.cocho)+'</strong>'
-      +'<div class="sub">'+esc((n.descricao||'').slice(0,80))+'</div></div>';
-  });
+  var hu='';if(!urg.length)hu='<div class="item muted">Sem notas urgentes.</div>';
+  urg.slice(0,3).forEach(function(n){hu+='<div class="nota-card nota-urgente"><strong>'+esc(n.propriedade)+' / '+esc(n.cocho)+'</strong><div class="sub">'+esc((n.descricao||'').slice(0,80))+'</div></div>';});
   $('alertasUrgentes').innerHTML=hu;
 }
-
 function renderUltimas(){
-  var r=getRegistros().slice(0,5),h='';
-  if(!r.length)h='<div class="item muted">Nenhum registro. Clique em Sincronizar.</div>';
-  r.forEach(function(x){
-    h+='<div class="item"><strong>'+esc(x.tipo)+' &mdash; '+esc(x.propriedade||'')+'</strong>'
-      +(x.urlFoto?'<a href="#" onclick="abrirFoto(\''+esc(x.urlFoto)+'\')" style="margin-left:8px;font-size:11px;color:#6f42c1">foto</a>':'')
-      +(x.custo?'<span class="pill pbl" style="float:right">'+moeda(x.custo)+'</span>':'')
-      +'<div class="sub">'+esc((x.dataHora||'').slice(0,16))+' &bull; '+esc(x.cocho||'')+' &bull; '+esc(x.produto||'')+' '+esc(x.quantidade||'')+'kg</div></div>';
-  });
+  var r=getRegistros().slice(0,5),h='';if(!r.length)h='<div class="item muted">Nenhum registro. Clique em Sincronizar.</div>';
+  r.forEach(function(x){h+='<div class="item"><strong>'+esc(x.tipo)+' &mdash; '+esc(x.propriedade||'')+'</strong>'+(x.urlFoto?'<a href="#" onclick="abrirFoto(\''+esc(x.urlFoto)+'\')" style="margin-left:8px;font-size:11px;color:#6f42c1">foto</a>':'')+(x.custo?'<span class="pill pbl" style="float:right">'+moeda(x.custo)+'</span>':'')+'<div class="sub">'+esc(dataHoraManejoBR(x))+' &bull; '+esc(x.cocho||'')+' &bull; '+esc(x.produto||'')+' '+esc(x.quantidade||'')+'kg</div></div>';});
   $('ultimasAtiv').innerHTML=h;
 }
 
-// ── AUTO AVALIACAO ────────────────────────────────────────────────────────────
+/* AUTO AVALIACAO */
+window.rodarAvaliacao=function(){apiGet('getAutoAvaliacao',function(j){if(j.sucesso){save('ultima_avaliacao',j);renderScoreBox(j);renderAlertasAv(j);renderDetalhesAv(j);renderKPIs();toast('Avaliacao concluida! Score: '+j.score+'%');}});};
+function renderScoreBox(av){if(!av||av.score==null){$('scoreBox').innerHTML='<div class="item muted">Clique em "Rodar Avaliacao".</div>';return;}var cls=av.score>=90?'score-otimo':av.score>=70?'score-bom':av.score>=50?'score-atencao':'score-critico';$('scoreBox').innerHTML='<div class="score-box '+cls+'"><div class="score-num">'+av.score+'</div><div class="score-label">'+esc(av.statusGeral||'')+' &bull; Avaliado em '+esc(formatarDataHoraBR(av.dataAvaliacao||''))+'</div></div>';}
+function renderAlertasAv(av){var h='';if(!av.alertas||!av.alertas.length){h='<div class="item pok" style="border-color:#198754">Sistema sem alertas. Tudo OK!</div>';}else{av.alertas.forEach(function(a){h+='<div class="item" style="border-left:3px solid #e74c3c"><strong style="color:#c0392b">'+esc(a)+'</strong></div>';});}$('alertasAv').innerHTML=h;}
+function renderDetalhesAv(av){var d=av.detalhes||{};var h='<div class="card" style="background:#f9fbf9"><h3>Detalhes</h3><table class="table"><tr><th>Item</th><th>Valor</th></tr><tr><td>Estoque Criticos</td><td>'+esc(d.estoqueCriticos||0)+'</td></tr><tr><td>Estoque Baixos</td><td>'+esc(d.estoqueBaixos||0)+'</td></tr><tr><td>Notas Urgentes Pendentes</td><td>'+esc(d.notasUrgentesPendentes||0)+'</td></tr><tr><td>Propriedades sem Registro 7d</td><td>'+esc(d.propriedadesSemRegistro7d||0)+'</td></tr><tr><td>Cadastros Pendentes Validacao</td><td>'+esc(d.cadastrosPendentes||0)+'</td></tr></table></div>';$('detalhesAv').innerHTML=h;}
 
-window.rodarAvaliacao=function(){
-  apiGet('getAutoAvaliacao',function(j){
-    if(j.sucesso){
-      save('ultima_avaliacao',j);
-      renderScoreBox(j);
-      renderAlertasAv(j);
-      renderDetalhesAv(j);
-      renderKPIs();
-      toast('Avaliacao concluida! Score: '+j.score+'%');
-    }
-  });
-};
-
-function renderScoreBox(av){
-  if(!av||av.score==null){$('scoreBox').innerHTML='<div class="item muted">Clique em "Rodar Avaliacao".</div>';return;}
-  var cls=av.score>=90?'score-otimo':av.score>=70?'score-bom':av.score>=50?'score-atencao':'score-critico';
-  $('scoreBox').innerHTML='<div class="score-box '+cls+'"><div class="score-num">'+av.score+'</div><div class="score-label">'+av.statusGeral+' &bull; Avaliado em '+esc((av.dataAvaliacao||'').slice(0,16))+'</div></div>';
-}
-
-function renderAlertasAv(av){
-  var h='';
-  if(!av.alertas||!av.alertas.length){h='<div class="item pok" style="border-color:#198754">Sistema sem alertas. Tudo OK!</div>';}
-  else{av.alertas.forEach(function(a){h+='<div class="item" style="border-left:3px solid #e74c3c"><strong style="color:#c0392b">'+esc(a)+'</strong></div>';});}
-  $('alertasAv').innerHTML=h;
-}
-
-function renderDetalhesAv(av){
-  var d=av.detalhes||{};
-  var h='<div class="card" style="background:#f9fbf9"><h3>Detalhes</h3><table class="table">'
-    +'<tr><th>Item</th><th>Valor</th></tr>'
-    +'<tr><td>Estoque Criticos</td><td>'+esc(d.estoqueCriticos||0)+'</td></tr>'
-    +'<tr><td>Estoque Baixos</td><td>'+esc(d.estoqueBaixos||0)+'</td></tr>'
-    +'<tr><td>Notas Urgentes Pendentes</td><td>'+esc(d.notasUrgentesPendentes||0)+'</td></tr>'
-    +'<tr><td>Propriedades sem Registro 7d</td><td>'+esc(d.propriedadesSemRegistro7d||0)+'</td></tr>'
-    +'<tr><td>Cadastros Pendentes Validacao</td><td>'+esc(d.cadastrosPendentes||0)+'</td></tr>'
-    +'</table></div>';
-  $('detalhesAv').innerHTML=h;
-}
-
-// ── ESTOQUE ───────────────────────────────────────────────────────────────────
-
-window.baixarEstoque=function(){
-  apiGet('getEstoque',function(j){
-    if(j.sucesso){_set('estoque',j.estoque||[]);renderEstoque();renderAlertasGlobais();toast('Estoque atualizado.');}
-  });
-};
-
+/* ESTOQUE */
+window.baixarEstoque=function(){apiGet('getEstoque',function(j){if(j.sucesso){_set('estoque',j.estoque||[]);renderEstoque();renderAlertasGlobais();toast('Estoque atualizado.');}});};
 function renderEstoque(){
-  var est=getEstoque(),h='',crit=0,baixo=0,total=0,valorTotal=0;
-  est.forEach(function(e){
-    if(e.status==='CRITICO')crit++;else if(e.status==='BAIXO')baixo++;
-    valorTotal+=parseFloat(e.valorTotalEstoque||0);
-    total++;
-  });
-  var resumo='<div class="kpis" style="margin-bottom:10px">'
-    +'<div class="kpi"><small>Criticos</small><div class="n" style="color:#c0392b">'+crit+'</div></div>'
-    +'<div class="kpi"><small>Baixos</small><div class="n" style="color:#e67e22">'+baixo+'</div></div>'
-    +'<div class="kpi"><small>OK</small><div class="n" style="color:#0f5132">'+(total-crit-baixo)+'</div></div>'
-    +'<div class="kpi"><small>Valor Total</small><div class="n" style="font-size:14px;color:#084298">'+moeda(valorTotal)+'</div></div>'
-    +'</div>';
-  $('resumoEstoque').innerHTML=resumo;
-
+  var est=getEstoque(),h='',crit=0,baixo=0,total=0,valorTotal=0;est.forEach(function(e){if(e.status==='CRITICO')crit++;else if(e.status==='BAIXO')baixo++;valorTotal+=parseFloat(e.valorTotalEstoque||0);total++;});
+  $('resumoEstoque').innerHTML='<div class="kpis" style="margin-bottom:10px"><div class="kpi"><small>Criticos</small><div class="n" style="color:#c0392b">'+crit+'</div></div><div class="kpi"><small>Baixos</small><div class="n" style="color:#e67e22">'+baixo+'</div></div><div class="kpi"><small>OK</small><div class="n" style="color:#0f5132">'+(total-crit-baixo)+'</div></div><div class="kpi"><small>Valor Total</small><div class="n" style="font-size:14px;color:#084298">'+moeda(valorTotal)+'</div></div></div>';
   if(!est.length)h='<div class="item muted">Nenhum produto. Cadastre produtos primeiro.</div>';
-  est.forEach(function(e){
-    var perc=e.estoqueMinimo?Math.min(100,Math.round((e.estoqueAtual/e.estoqueMinimo)*100)):100;
-    var barColor=e.status==='CRITICO'?'#dc3545':e.status==='BAIXO'?'#ffc107':'#198754';
-    var cls=e.status==='CRITICO'?'est-critico':e.status==='BAIXO'?'est-baixo':'est-ok';
-    var badge=e.status==='CRITICO'?'<span class="badge bur">CRITICO</span>':e.status==='BAIXO'?'<span class="badge bat">BAIXO</span>':'<span class="badge bok">OK</span>';
-    h+='<div class="item '+cls+'"><div style="display:flex;justify-content:space-between;align-items:flex-start">'
-      +'<div><strong>'+esc(e.nome)+'</strong>'+badge+'<div class="sub">'+esc(e.tipo)+'</div></div>'
-      +'<div style="text-align:right"><div style="font-weight:800;font-size:15px">'+esc(e.estoqueAtual)+'kg</div>'
-      +'<div class="muted">Min: '+esc(e.estoqueMinimo)+'kg | Crit: '+esc(e.estoqueCritico)+'kg</div>'
-      +'<div class="muted">Custo: R$ '+parseFloat(e.custoUnitario||0).toFixed(2)+'/kg</div>'
-      +'<div style="font-weight:700;color:#084298">Valor: '+moeda(e.valorTotalEstoque)+'</div></div></div>'
-      +'<div class="est-barra-wrap"><div class="est-barra" style="width:'+perc+'%;background:'+barColor+'"></div></div></div>';
-  });
-  $('listaEstoque').innerHTML=h;
-
-  // Preencher select do modal entrada
-  var se=$('entProduto');if(se){var oh='<option value="">Selecione...</option>';est.forEach(function(e){oh+='<option value="'+esc(e.id)+'">'+esc(e.nome)+' (atual: '+e.estoqueAtual+'kg)</option>';});se.innerHTML=oh;}
+  est.forEach(function(e){var perc=e.estoqueMinimo?Math.min(100,Math.round((e.estoqueAtual/e.estoqueMinimo)*100)):100;var barColor=e.status==='CRITICO'?'#dc3545':e.status==='BAIXO'?'#ffc107':'#198754';var cls=e.status==='CRITICO'?'est-critico':e.status==='BAIXO'?'est-baixo':'est-ok';var badge=e.status==='CRITICO'?'<span class="badge bur">CRITICO</span>':e.status==='BAIXO'?'<span class="badge bat">BAIXO</span>':'<span class="badge bok">OK</span>';h+='<div class="item '+cls+'"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><strong>'+esc(e.nome)+'</strong>'+badge+'<div class="sub">'+esc(e.tipo)+'</div></div><div style="text-align:right"><div style="font-weight:800;font-size:15px">'+esc(e.estoqueAtual)+'kg</div><div class="muted">Min: '+esc(e.estoqueMinimo)+'kg | Crit: '+esc(e.estoqueCritico)+'kg</div><div class="muted">Custo: R$ '+parseFloat(e.custoUnitario||0).toFixed(2)+'/kg</div><div style="font-weight:700;color:#084298">Valor: '+moeda(e.valorTotalEstoque)+'</div></div></div><div class="est-barra-wrap"><div class="est-barra" style="width:'+perc+'%;background:'+barColor+'"></div></div></div>';});
+  $('listaEstoque').innerHTML=h;var se=$('entProduto');if(se){var oh='<option value="">Selecione...</option>';est.forEach(function(e){oh+='<option value="'+esc(e.id)+'">'+esc(e.nome)+' (atual: '+e.estoqueAtual+'kg)</option>';});se.innerHTML=oh;}
 }
+window.abrirEntradaEstoque=function(){$('modalEntrada').classList.remove('hide');};window.fecharEntradaEstoque=function(){$('modalEntrada').classList.add('hide');};
+window.registrarEntradaEstoque=function(){var prod=$('entProduto').value,qtd=$('entQtd').value,custo=$('entCusto').value;if(!prod||!qtd){toast('Selecione produto e quantidade.');return;}apiPost('entradaEstoque',{entrada:{produtoId:prod,quantidade:qtd,custoUnitario:custo||0,propriedade:$('entProp').value||'',observacao:$('entObs').value||''}},function(j){if(j.sucesso){toast('Entrada registrada! Estoque: '+j.estoqueDepois+'kg');fecharEntradaEstoque();baixarEstoque();}else toast('Erro: '+(j.erro||''));});};
 
-window.abrirEntradaEstoque=function(){$('modalEntrada').classList.remove('hide');};
-window.fecharEntradaEstoque=function(){$('modalEntrada').classList.add('hide');};
+/* NOVOS */
+window.baixarNovos=function(){apiGet('getNovosCadastros',function(j){if(j.sucesso){save('novos',j.novos);renderNovos();renderAlertasGlobais();toast('Novos: '+j.total);}});};
+function renderNovos(){var novos=load('novos',{propriedades:[],cochos:[],operadores:[]});function sec(titulo,lista,tipo){if(!lista||!lista.length)return'';var h='<h3>'+titulo+'</h3>';lista.forEach(function(x){h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge bnv">NOVO</span><div class="sub">Detectado: '+esc(formatarDataHoraBR(x.dataCadastro||''))+'</div><button class="bp" style="margin-top:6px;font-size:11px" onclick="validarItem(\''+esc(tipo)+'\',\''+esc(x.id)+'\',\''+esc(x.nome)+'\')">Validar como ATIVO</button></div>';});return h;}$('novosConteudo').innerHTML=sec('Propriedades',novos.propriedades,'PROPRIEDADE')+sec('Cochos',novos.cochos,'COCHO')+sec('Operadores',novos.operadores,'OPERADOR');}
+window.validarItem=function(tipo,id,nome){if(!confirm('Validar "'+nome+'" como ATIVO?'))return;apiPost('validarCadastro',{tipo:tipo,id:id},function(j){if(j.sucesso){toast(nome+' validado!');baixarNovos();baixarPropriedades();}else toast('Erro: '+(j.erro||''));});};
 
-window.registrarEntradaEstoque=function(){
-  var prod=$('entProduto').value,qtd=$('entQtd').value,custo=$('entCusto').value;
-  if(!prod||!qtd){toast('Selecione produto e quantidade.');return;}
-  apiPost('entradaEstoque',{entrada:{produtoId:prod,quantidade:qtd,custoUnitario:custo||0,propriedade:$('entProp').value||'',observacao:$('entObs').value||''}},function(j){
-    if(j.sucesso){toast('Entrada registrada! Estoque: '+j.estoqueDepois+'kg');fecharEntradaEstoque();baixarEstoque();}
-    else toast('Erro: '+(j.erro||''));
-  });
-};
-
-// ── NOVOS CADASTROS ───────────────────────────────────────────────────────────
-
-window.baixarNovos=function(){
-  apiGet('getNovosCadastros',function(j){if(j.sucesso){save('novos',j.novos);renderNovos();renderAlertasGlobais();toast('Novos: '+j.total);}});
-};
-
-function renderNovos(){
-  var novos=load('novos',{propriedades:[],cochos:[],operadores:[]});
-  function sec(titulo,lista,tipo){
-    if(!lista||!lista.length)return'';
-    var h='<h3>'+titulo+'</h3>';
-    lista.forEach(function(x){
-      h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge bnv">NOVO</span>'
-        +'<div class="sub">Detectado: '+esc((x.dataCadastro||'').slice(0,16))+'</div>'
-        +'<button class="bp" style="margin-top:6px;font-size:11px" onclick="validarItem(\''+esc(tipo)+'\',\''+esc(x.id)+'\',\''+esc(x.nome)+'\')">Validar como ATIVO</button></div>';
-    });
-    return h;
-  }
-  $('novosConteudo').innerHTML=sec('Propriedades',novos.propriedades,'PROPRIEDADE')+sec('Cochos',novos.cochos,'COCHO')+sec('Operadores',novos.operadores,'OPERADOR');
-}
-
-window.validarItem=function(tipo,id,nome){
-  if(!confirm('Validar "'+nome+'" como ATIVO?'))return;
-  apiPost('validarCadastro',{tipo:tipo,id:id},function(j){
-    if(j.sucesso){toast(nome+' validado!');baixarNovos();baixarPropriedades();}
-    else toast('Erro: '+(j.erro||''));
-  });
-};
-
-// ── NOTAS ─────────────────────────────────────────────────────────────────────
-
-window.baixarNotas=function(){
-  apiGet('getNotas',function(j){if(j.sucesso){_set('notas',j.notas||[]);renderNotas();renderAlertasGlobais();renderKPIs();toast('Notas: '+(j.notas||[]).length);}});
-};
-
+/* NOTAS */
+window.baixarNotas=function(){apiGet('getNotas',function(j){if(j.sucesso){_set('notas',j.notas||[]);renderNotas();renderAlertasGlobais();renderKPIs();toast('Notas: '+(j.notas||[]).length);}});};
 window.renderNotas=function(){
-  var notas=getNotas(),fp=$('fNP')?$('fNP').value:'',fu=$('fNU')?$('fNU').value:'';
-  var f=notas.filter(function(n){if(fp&&n.propriedade!==fp)return false;if(fu&&n.urgencia!==fu)return false;return true;});
-  var h='';
-  if(!f.length)h='<div class="item muted">Nenhuma nota.</div>';
-  f.forEach(function(n){
-    var cls='nota-card '+(n.urgencia==='URGENTE'?'nota-urgente':n.urgencia==='ATENCAO'?'nota-atencao':'');
-    var badgeCls=n.urgencia==='URGENTE'?'bur':n.urgencia==='ATENCAO'?'bat':'';
-    h+='<div class="'+cls+'"><div style="display:flex;align-items:flex-start;gap:10px">'
-      +'<div style="flex:1"><strong>'+esc(n.propriedade)+' / '+esc(n.cocho)+'</strong>'
-      +'<span class="badge '+badgeCls+'" style="margin-left:6px">'+n.urgencia+'</span>'
-      +'<span class="badge bin" style="margin-left:4px">'+esc(n.statusResolucao||'PENDENTE')+'</span>'
-      +'<div class="sub">'+esc((n.dataHora||'').slice(0,16))+' &bull; '+esc(n.operador||'')+'</div>'
-      +'<div style="margin-top:5px;font-size:13px">'+esc(n.descricao||'')+'</div></div>'
-      +(n.urlFoto?'<img src="'+esc(n.urlFoto)+'" class="foto-thumb" onclick="abrirFoto(\''+esc(n.urlFoto)+'\')" onerror="this.style.display=\'none\'" alt="foto">':'')
-      +'</div></div>';
-  });
-  $('listaNotas').innerHTML=h;
-  var props=getProps(),h2='<option value="">Todas</option>';
-  props.forEach(function(p){h2+='<option value="'+esc(p.nome)+'">'+esc(p.nome)+'</option>';});
-  var el=$('fNP');if(el)el.innerHTML=h2;
+  var notas=getNotas(),fp=$('fNP')?$('fNP').value:'',fu=$('fNU')?$('fNU').value:'';var f=notas.filter(function(n){if(fp&&n.propriedade!==fp)return false;if(fu&&n.urgencia!==fu)return false;return true;});
+  var h='';if(!f.length)h='<div class="item muted">Nenhuma nota.</div>';
+  f.forEach(function(n){var cls='nota-card '+(n.urgencia==='URGENTE'?'nota-urgente':n.urgencia==='ATENCAO'?'nota-atencao':'');var badgeCls=n.urgencia==='URGENTE'?'bur':n.urgencia==='ATENCAO'?'bat':'';h+='<div class="'+cls+'"><div style="display:flex;align-items:flex-start;gap:10px"><div style="flex:1"><strong>'+esc(n.propriedade)+' / '+esc(n.cocho)+'</strong><span class="badge '+badgeCls+'" style="margin-left:6px">'+esc(n.urgencia||'')+'</span><span class="badge bin" style="margin-left:4px">'+esc(n.statusResolucao||'PENDENTE')+'</span><div class="sub">'+esc(dataHoraManejoBR(n))+' &bull; '+esc(n.operador||'')+'</div><div style="margin-top:5px;font-size:13px">'+esc(n.descricao||'')+'</div></div>'+(n.urlFoto?'<img src="'+esc(n.urlFoto)+'" class="foto-thumb" onclick="abrirFoto(\''+esc(n.urlFoto)+'\')" onerror="this.style.display=\'none\'" alt="foto">':'')+'</div></div>';});
+  $('listaNotas').innerHTML=h;var props=getProps(),h2='<option value="">Todas</option>';props.forEach(function(p){h2+='<option value="'+esc(p.nome)+'">'+esc(p.nome)+'</option>';});var el=$('fNP');if(el)el.innerHTML=h2;
 };
+window.abrirFoto=function(url){$('mFotoImg').src=url;$('mFoto').className='modal-foto show';};$('mFoto').addEventListener('click',function(e){if(e.target===this){this.className='modal-foto';$('mFotoImg').src='';}});
 
-window.abrirFoto=function(url){$('mFotoImg').src=url;$('mFoto').className='modal-foto show';};
-$('mFoto').addEventListener('click',function(e){if(e.target===this){this.className='modal-foto';$('mFotoImg').src='';}});
-
-// ── SINCRONIZAR ───────────────────────────────────────────────────────────────
-
+/* API */
 window.sincronizarTudo=function(){baixarPropriedades();baixarCochos();baixarRegistros();baixarMovimentacoes();baixarNotas();baixarNovos();baixarEstoque();};
-
 function apiGet(a,cb){var c=cfg();if(!c.url){toast('Configure URL primeiro.');return;}fetch(c.url+'?acao='+a).then(function(r){return r.json();}).then(cb).catch(function(e){toast('Erro '+a+': '+e.message);});}
 function apiPost(a,d,cb){var c=cfg();if(!c.url){toast('Configure URL.');return;}fetch(c.url,{method:'POST',body:JSON.stringify(Object.assign({acao:a},d))}).then(function(r){return r.json();}).then(cb||function(j){if(j.sucesso)toast('OK');else toast('Erro: '+(j.erro||''));}).catch(function(e){toast('Erro: '+e.message);});}
-
 window.baixarPropriedades=function(){apiGet('getPropriedades',function(j){if(j.sucesso){_set('props',j.propriedades||[]);renderListaProps();renderSelects();renderKPIs();}});};
 window.baixarCochos=function(){apiGet('getCochos',function(j){if(j.sucesso){_set('cochos',j.cochos||[]);renderListaCochos();}});};
 window.baixarRegistros=function(){apiGet('getRegistros',function(j){if(j.sucesso){_set('regs',j.registros||[]);renderTabelaRegs();renderKPIs();renderUltimas();plotarGPSRegistros();toast('Registros: '+(j.registros||[]).length);}});};
 window.baixarMovimentacoes=function(){apiGet('getMovimentacoes',function(j){if(j.sucesso){_set('movs',j.movimentacoes||[]);renderMovKPIs();renderMov();toast('Movimentacoes: '+(j.movimentacoes||[]).length);}});};
 
-// ── CADASTROS ─────────────────────────────────────────────────────────────────
-
-function renderSelects(){
-  var p=getProps(),h='<option value="">Selecione...</option>';
-  p.forEach(function(x){h+='<option value="'+esc(x.id)+'|'+esc(x.nome)+'">'+esc(x.nome)+'</option>';});
-  ['coProp','ltProp','entProp'].forEach(function(id){var el=$(id);if(el){if(id==='entProp')el.innerHTML='<option value="">Geral</option>'+p.map(function(x){return'<option value="'+esc(x.nome)+'">'+esc(x.nome)+'</option>';}).join('');else el.innerHTML=h;}});
-}
-
-window.cadastrarPropriedade=function(){
-  var nome=$('prNome').value.trim();if(!nome){toast('Nome obrigatorio.');return;}
-  var lat=$('prLat').value.trim(),lng=$('prLng').value.trim();
-  var pr={id:'PROP-'+Date.now(),nome:nome,municipio:$('prMun').value.trim(),estado:($('prEst').value||'PA').toUpperCase(),responsavel:$('prResp').value.trim(),telefone:$('prTel').value.trim(),areaHa:$('prArea').value||'',gpsLat:lat,gpsLng:lng,gps:{lat:lat,lng:lng},status:'ATIVO'};
-  var p=getProps(),nn=normNome(nome),achou=false;
-  p=p.map(function(x){if(normNome(x.nome)===nn){achou=true;pr.id=x.id||pr.id;return pr;}return x;});
-  if(!achou)p.unshift(pr);
-  _set('props',p);
-  apiPost('cadastrarPropriedade',{propriedade:pr},function(j){if(j.sucesso)toast('Propriedade salva!');render();});
-  ['prNome','prMun','prResp','prTel','prArea','prLat','prLng'].forEach(function(id){$(id).value='';});$('prEst').value='PA';
-};
-
-window.capturarGPSPropriedade=function(){
-  if(!navigator.geolocation){toast('GPS nao disponivel.');return;}
-  toast('Capturando GPS da sede...');
-  navigator.geolocation.getCurrentPosition(function(p){$('prLat').value=p.coords.latitude.toFixed(7);$('prLng').value=p.coords.longitude.toFixed(7);toast('GPS da sede capturado.');},function(e){toast('Falha no GPS: '+e.message);},{enableHighAccuracy:true,timeout:12000,maximumAge:30000});
-};
-
-window.cadastrarCocho=function(){
-  var nome=$('coNome').value.trim(),pv=$('coProp').value;if(!nome||!pv){toast('Nome e propriedade.');return;}
-  var pt=pv.split('|'),c={id:'COCHO-'+Date.now(),nome:nome,propriedadeId:pt[0],propriedadeNome:pt[1]||'',gpsLat:$('coLat').value,gpsLng:$('coLng').value,horarioLimite:$('coHor').value||'18:00',status:'ATIVO'};
-  var co=getCochos();co.unshift(c);_set('cochos',co);
-  apiPost('cadastrarCocho',{cocho:c},function(j){if(j.sucesso)toast('Cocho cadastrado!');render();});
-  $('coNome').value='';$('coLat').value='';$('coLng').value='';
-};
-
-window.cadastrarLote=function(){
-  var id=$('ltId').value.trim(),qtd=parseInt($('ltQ').value)||0,pv=$('ltProp').value,data=$('ltD').value;
-  if(!id||!qtd||!pv||!data){toast('Preencha todos.');return;}
-  var pt=pv.split('|');
-  var bm=parseInt($('lB1').value)||0,bf=parseInt($('lB2').value)||0,nm=parseInt($('lN1').value)||0,nf=parseInt($('lN2').value)||0;
-  var so=parseInt($('lS').value)||0,nu=parseInt($('lNu').value)||0,pr=parseInt($('lP').value)||0,mu=parseInt($('lM').value)||0;
-  if(bm+bf+nm+nf+so+nu+pr+mu!==qtd){toast('Soma categorias diferente do total.');return;}
-  var l={id:id,propriedadeId:pt[0],propriedadeNome:pt[1]||'',dataEntrada:data,dataSaida:null,qtdTotal:qtd,distribuicao:{BEZERRO:bm,BEZERRA:bf,NOVILHO:nm,NOVILHA:nf,SOLTEIRA:so,NULIPARA:nu,PRIMIPARA:pr,MULTIPARA:mu}};
-  var lotes=getLotes();lotes.unshift(l);_set('lotes',lotes);
-  apiPost('cadastrarLote',{lote:l},function(j){if(j.sucesso)toast('Lote criado!');render();});
-};
-
+/* CADASTROS */
+function renderSelects(){var p=getProps(),h='<option value="">Selecione...</option>';p.forEach(function(x){h+='<option value="'+esc(x.id)+'|'+esc(x.nome)+'">'+esc(x.nome)+'</option>';});['coProp','ltProp','entProp'].forEach(function(id){var el=$(id);if(el){if(id==='entProp')el.innerHTML='<option value="">Geral</option>'+p.map(function(x){return'<option value="'+esc(x.nome)+'">'+esc(x.nome)+'</option>';}).join('');else el.innerHTML=h;}});}
+window.cadastrarPropriedade=function(){var nome=$('prNome').value.trim();if(!nome){toast('Nome obrigatorio.');return;}var lat=$('prLat').value.trim(),lng=$('prLng').value.trim();var pr={id:'PROP-'+Date.now(),nome:nome,municipio:$('prMun').value.trim(),estado:($('prEst').value||'PA').toUpperCase(),responsavel:$('prResp').value.trim(),telefone:$('prTel').value.trim(),areaHa:$('prArea').value||'',gpsLat:lat,gpsLng:lng,gps:{lat:lat,lng:lng},status:'ATIVO'};var p=getProps(),nn=normNome(nome),achou=false;p=p.map(function(x){if(normNome(x.nome)===nn){achou=true;pr.id=x.id||pr.id;return pr;}return x;});if(!achou)p.unshift(pr);_set('props',p);apiPost('cadastrarPropriedade',{propriedade:pr},function(j){if(j.sucesso)toast('Propriedade salva!');render();});['prNome','prMun','prResp','prTel','prArea','prLat','prLng'].forEach(function(id){$(id).value='';});$('prEst').value='PA';};
+window.capturarGPSPropriedade=function(){if(!navigator.geolocation){toast('GPS nao disponivel.');return;}toast('Capturando GPS da sede...');navigator.geolocation.getCurrentPosition(function(p){$('prLat').value=p.coords.latitude.toFixed(7);$('prLng').value=p.coords.longitude.toFixed(7);toast('GPS da sede capturado.');},function(e){toast('Falha no GPS: '+e.message);},{enableHighAccuracy:true,timeout:12000,maximumAge:30000});};
+window.cadastrarCocho=function(){var nome=$('coNome').value.trim(),pv=$('coProp').value;if(!nome||!pv){toast('Nome e propriedade.');return;}var pt=pv.split('|'),c={id:'COCHO-'+Date.now(),nome:nome,propriedadeId:pt[0],propriedadeNome:pt[1]||'',gpsLat:$('coLat').value,gpsLng:$('coLng').value,horarioLimite:$('coHor').value||'18:00',status:'ATIVO'};var co=getCochos();co.unshift(c);_set('cochos',co);apiPost('cadastrarCocho',{cocho:c},function(j){if(j.sucesso)toast('Cocho cadastrado!');render();});$('coNome').value='';$('coLat').value='';$('coLng').value='';};
+window.cadastrarLote=function(){var id=$('ltId').value.trim(),qtd=parseInt($('ltQ').value)||0,pv=$('ltProp').value,data=$('ltD').value;if(!id||!qtd||!pv||!data){toast('Preencha todos.');return;}var pt=pv.split('|');var bm=parseInt($('lB1').value)||0,bf=parseInt($('lB2').value)||0,nm=parseInt($('lN1').value)||0,nf=parseInt($('lN2').value)||0;var so=parseInt($('lS').value)||0,nu=parseInt($('lNu').value)||0,pr=parseInt($('lP').value)||0,mu=parseInt($('lM').value)||0;if(bm+bf+nm+nf+so+nu+pr+mu!==qtd){toast('Soma categorias diferente do total.');return;}var l={id:id,propriedadeId:pt[0],propriedadeNome:pt[1]||'',dataEntrada:data,dataSaida:null,qtdTotal:qtd,distribuicao:{BEZERRO:bm,BEZERRA:bf,NOVILHO:nm,NOVILHA:nf,SOLTEIRA:so,NULIPARA:nu,PRIMIPARA:pr,MULTIPARA:mu}};var lotes=getLotes();lotes.unshift(l);_set('lotes',lotes);apiPost('cadastrarLote',{lote:l},function(j){if(j.sucesso)toast('Lote criado!');render();});};
 window.sincLotes=function(){getLotes().forEach(function(l){apiPost('cadastrarLote',{lote:l});});toast('Lotes enviados.');};
-
-window.cadastrarProduto=function(){
-  var nome=$('pdN').value.trim(),cod=$('pdC').value.trim();if(!nome||!cod){toast('Nome e codigo.');return;}
-  var p={id:cod,nome:nome,tipo:$('pdT').value,unidade:$('pdU').value,pesoEmbalagem:$('pdPe').value||50,custoUnitario:$('pdCk').value||0,estoqueInicial:$('pdEI').value||0,estoqueMinimo:$('pdEM').value||0,estoqueCritico:$('pdEC').value||0};
-  var prods=getProdutos();prods.unshift(p);_set('prods',prods);
-  apiPost('cadastrarProduto',{produto:p},function(j){if(j.sucesso)toast('Produto cadastrado!');render();});
-  $('pdN').value='';$('pdC').value='';$('pdCk').value='';$('pdEI').value='';$('pdEM').value='';$('pdEC').value='';
-};
-
+window.cadastrarProduto=function(){var nome=$('pdN').value.trim(),cod=$('pdC').value.trim();if(!nome||!cod){toast('Nome e codigo.');return;}var p={id:cod,nome:nome,tipo:$('pdT').value,unidade:$('pdU').value,pesoEmbalagem:$('pdPe').value||50,custoUnitario:$('pdCk').value||0,estoqueInicial:$('pdEI').value||0,estoqueMinimo:$('pdEM').value||0,estoqueCritico:$('pdEC').value||0};var prods=getProdutos();prods.unshift(p);_set('prods',prods);apiPost('cadastrarProduto',{produto:p},function(j){if(j.sucesso)toast('Produto cadastrado!');render();});$('pdN').value='';$('pdC').value='';$('pdCk').value='';$('pdEI').value='';$('pdEM').value='';$('pdEC').value='';};
 window.sincProdutos=function(){getProdutos().forEach(function(p){apiPost('cadastrarProduto',{produto:p});});toast('Produtos enviados.');};
 
-// ── RENDER LISTAS ─────────────────────────────────────────────────────────────
-
-function renderListaProps(){
-  var p=getProps(),h='';
-  if(!p.length)h='<div class="item muted">Nenhuma. Clique em Atualizar.</div>';
-  p.forEach(function(x){
-    var sc=x.status==='ATIVO'?'bok':x.status==='NOVO'?'bnv':'bin';
-    var lat=x.gpsLat||(x.gps&&x.gps.lat)||'',lng=x.gpsLng||(x.gps&&x.gps.lng)||'';
-    h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge '+sc+'">'+(x.status||'ATIVO')+'</span><div class="sub">'+esc(x.municipio||'')+' &bull; '+esc(x.responsavel||'')+'</div>'
-      +'<div class="sub">Área: '+esc(x.areaHa||'')+' ha &bull; GPS sede: '+(lat&&lng?esc(lat)+', '+esc(lng):'não informado')+'</div></div>';
-  });
-  $('listaProps').innerHTML=h;
-}
-
-function renderListaCochos(){
-  var c=getCochos(),h='';
-  if(!c.length)h='<div class="item muted">Nenhum.</div>';
-  c.forEach(function(x){
-    var sc=x.status==='ATIVO'?'bok':x.status==='NOVO'?'bnv':'bin';
-    h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge '+sc+'">'+x.status+'</span><div class="sub">'+esc(x.propriedadeNome||'')+' &bull; '+esc(x.horarioLimite||'')+'</div></div>';
-  });
-  $('listaCochos').innerHTML=h;
-}
-
-function renderListaLotes(){
-  var l=getLotes(),h='';
-  if(!l.length)h='<div class="item muted">Nenhum.</div>';
-  l.forEach(function(x){
-    h+='<div class="item"><strong>'+esc(x.id)+' ('+x.qtdTotal+')</strong><span class="badge '+(x.dataSaida?'bin':'bok')+'">'+(x.dataSaida?'SAIDO':'ATIVO')+'</span><div class="sub">'+esc(x.propriedadeNome||'')+' &bull; '+esc(x.dataEntrada||'')+'</div></div>';
-  });
-  $('listaLotes').innerHTML=h;
-}
-
-function renderListaProdutos(){
-  var p=getProdutos(),h='';
-  if(!p.length)h='<div class="item muted">Nenhum produto cadastrado.</div>';
-  p.forEach(function(x){
-    h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge bok">'+esc(x.tipo||'')+'</span>'
-      +'<div class="sub">R$ '+parseFloat(x.custoUnitario||0).toFixed(2)+'/kg &bull; Estoque inicial: '+esc(x.estoqueInicial||0)+'kg &bull; Minimo: '+esc(x.estoqueMinimo||0)+'kg</div></div>';
-  });
-  $('listaProdutos').innerHTML=h;
-}
-
-function renderTabelaRegs(){
-  var r=getRegistros();
-  var h='<table class="table"><tr><th>Data</th><th>Propriedade</th><th>Cocho</th><th>Operador</th><th>Produto</th><th>Qtd</th><th>Custo</th><th>Foto</th></tr>';
-  r.slice(0,25).forEach(function(x){
-    h+='<tr><td>'+esc((x.dataHora||'').slice(0,16))+'</td><td>'+esc(x.propriedade||'')+'</td><td>'+esc(x.cocho||'')+'</td><td>'+esc(x.operador||'')+'</td><td>'+esc(x.produto||'')+'</td><td>'+esc(x.quantidade||'')+'</td><td>'+moeda(x.custo)+'</td>'
-      +'<td>'+(x.urlFoto?'<img src="'+esc(x.urlFoto)+'" class="foto-thumb" onclick="abrirFoto(\''+esc(x.urlFoto)+'\')" onerror="this.style.display=\'none\'" alt="foto">':'—')+'</td></tr>';
-  });
-  h+='</table>';
-  $('tabelaRegs').innerHTML=h;
-}
-
+/* RENDER LISTAS */
+function renderListaProps(){var p=getProps(),h='';if(!p.length)h='<div class="item muted">Nenhuma. Clique em Atualizar.</div>';p.forEach(function(x){var sc=x.status==='ATIVO'?'bok':x.status==='NOVO'?'bnv':'bin';var lat=x.gpsLat||(x.gps&&x.gps.lat)||'',lng=x.gpsLng||(x.gps&&x.gps.lng)||'';h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge '+sc+'">'+esc(x.status||'ATIVO')+'</span><div class="sub">'+esc(x.municipio||'')+' &bull; '+esc(x.responsavel||'')+'</div><div class="sub">Área: '+esc(x.areaHa||'')+' ha &bull; GPS sede: '+(lat&&lng?esc(lat)+', '+esc(lng):'não informado')+'</div></div>';});$('listaProps').innerHTML=h;}
+function renderListaCochos(){var c=getCochos(),h='';if(!c.length)h='<div class="item muted">Nenhum.</div>';c.forEach(function(x){var sc=x.status==='ATIVO'?'bok':x.status==='NOVO'?'bnv':'bin';h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge '+sc+'">'+esc(x.status||'')+'</span><div class="sub">'+esc(x.propriedadeNome||'')+' &bull; '+esc(x.horarioLimite||'')+'</div></div>';});$('listaCochos').innerHTML=h;}
+function renderListaLotes(){var l=getLotes(),h='';if(!l.length)h='<div class="item muted">Nenhum.</div>';l.forEach(function(x){h+='<div class="item"><strong>'+esc(x.id)+' ('+esc(x.qtdTotal||'')+')</strong><span class="badge '+(x.dataSaida?'bin':'bok')+'">'+(x.dataSaida?'SAIDO':'ATIVO')+'</span><div class="sub">'+esc(x.propriedadeNome||'')+' &bull; '+esc(formatarDataHoraBR(x.dataEntrada||''))+'</div></div>';});$('listaLotes').innerHTML=h;}
+function renderListaProdutos(){var p=getProdutos(),h='';if(!p.length)h='<div class="item muted">Nenhum produto cadastrado.</div>';p.forEach(function(x){h+='<div class="item"><strong>'+esc(x.nome)+'</strong><span class="badge bok">'+esc(x.tipo||'')+'</span><div class="sub">R$ '+parseFloat(x.custoUnitario||0).toFixed(2)+'/kg &bull; Estoque inicial: '+esc(x.estoqueInicial||0)+'kg &bull; Minimo: '+esc(x.estoqueMinimo||0)+'kg</div></div>';});$('listaProdutos').innerHTML=h;}
+function renderTabelaRegs(){var r=getRegistros();var h='<table class="table"><tr><th>Data</th><th>Propriedade</th><th>Cocho</th><th>Operador</th><th>Produto</th><th>Qtd</th><th>Custo</th><th>Foto</th></tr>';r.slice(0,25).forEach(function(x){h+='<tr><td>'+esc(dataHoraManejoBR(x))+'</td><td>'+esc(x.propriedade||'')+'</td><td>'+esc(x.cocho||'')+'</td><td>'+esc(x.operador||'')+'</td><td>'+esc(x.produto||'')+'</td><td>'+esc(x.quantidade||'')+'</td><td>'+moeda(x.custo)+'</td><td>'+(x.urlFoto?'<img src="'+esc(x.urlFoto)+'" class="foto-thumb" onclick="abrirFoto(\''+esc(x.urlFoto)+'\')" onerror="this.style.display=\'none\'" alt="foto">':'—')+'</td></tr>';});h+='</table>';$('tabelaRegs').innerHTML=h;}
 function renderMovKPIs(){var m=getMov(),e=0,t=0,s=0;m.forEach(function(x){if(x.evento==='ENTRADA')e++;else if(x.evento==='TRANSFERENCIA')t++;else if(x.evento==='SAIDA')s++;});$('kMT').textContent=m.length;$('kME').textContent=e;$('kMTr').textContent=t;$('kMS').textContent=s;}
+function renderFiltros(){var props=getProps(),h='<option value="">Todas</option>';props.forEach(function(p){h+='<option value="'+esc(p.nome)+'">'+esc(p.nome)+'</option>';});['fMP','fNP'].forEach(function(id){var el=$(id);if(el)el.innerHTML=h;});}
+window.renderMov=function(){var m=getMov(),fp=$('fMP')?$('fMP').value:'',fe=$('fME')?$('fME').value:'';var f=m.filter(function(x){if(fp&&x.propriedade!==fp)return false;if(fe&&x.evento!==fe)return false;return true;});var tl='';if(!f.length)tl='<div class="muted">Nenhuma movimentacao.</div>';f.slice(0,15).forEach(function(x){var cor=x.evento==='ENTRADA'?'#0f5132':x.evento==='SAIDA'?'#842029':'#664d03';tl+='<div class="titem"><strong style="color:'+cor+'">'+esc(x.evento)+'</strong> &mdash; '+esc(x.loteId||'')+' ('+esc(x.quantidade||0)+')<div class="muted">'+esc(dataHoraManejoBR(x))+' &bull; '+esc(x.propriedade||'')+'</div></div>';});$('timelineMov').innerHTML=tl;};
+window.exportarTudo=function(){var d={props:getProps(),cochos:getCochos(),lotes:getLotes(),prods:getProdutos(),regs:getRegistros(),movs:getMov(),notas:getNotas(),estoque:getEstoque(),mapa:getMapaF(),exportadoEm:agora()};var blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='reprogen_central_v533_'+Date.now()+'.json';a.click();a.remove();toast('Exportado!');};
 
-function renderFiltros(){
-  var props=getProps(),h='<option value="">Todas</option>';
-  props.forEach(function(p){h+='<option value="'+esc(p.nome)+'">'+esc(p.nome)+'</option>';});
-  ['fMP','fNP'].forEach(function(id){var el=$(id);if(el)el.innerHTML=h;});
-}
-
-window.renderMov=function(){
-  var m=getMov(),fp=$('fMP')?$('fMP').value:'',fe=$('fME')?$('fME').value:'';
-  var f=m.filter(function(x){if(fp&&x.propriedade!==fp)return false;if(fe&&x.evento!==fe)return false;return true;});
-  var tl='';
-  if(!f.length)tl='<div class="muted">Nenhuma movimentacao.</div>';
-  f.slice(0,15).forEach(function(x){
-    var cor=x.evento==='ENTRADA'?'#0f5132':x.evento==='SAIDA'?'#842029':'#664d03';
-    tl+='<div class="titem"><strong style="color:'+cor+'">'+esc(x.evento)+'</strong> &mdash; '+esc(x.loteId||'')+' ('+esc(x.quantidade||0)+')<div class="muted">'+esc((x.dataHora||'').slice(0,16))+' &bull; '+esc(x.propriedade||'')+'</div></div>';
-  });
-  $('timelineMov').innerHTML=tl;
-};
-
-window.exportarTudo=function(){
-  var d={props:getProps(),cochos:getCochos(),lotes:getLotes(),prods:getProdutos(),regs:getRegistros(),movs:getMov(),notas:getNotas(),estoque:getEstoque(),mapa:getMapaF(),exportadoEm:agora()};
-  var blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='reprogen_v53_'+Date.now()+'.json';a.click();a.remove();toast('Exportado!');
-};
-
-// ── MAPA ─────────────────────────────────────────────────────────────────────
-
-function criarCamadaBase(tipo){
-  tipo=tipo||'padrao';
-  if(tipo==='satelite'){
-    return L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Tiles © Esri',maxZoom:19});
-  }
-  if(tipo==='topografico'){
-    return L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:'OpenTopoMap',maxZoom:17});
-  }
-  if(tipo==='claro'){
-    return L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'OpenStreetMap/CARTO',maxZoom:19});
-  }
-  if(tipo==='sem_base'){
-    return null;
-  }
-  return L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OpenStreetMap',maxZoom:19});
-}
-
-function marcarBotaoMapa(tipo){
-  var ids={padrao:'btnMapaPadrao',satelite:'btnMapaSatelite',topografico:'btnMapaTopo',claro:'btnMapaClaro',sem_base:'btnMapaSem'};
-  for(var k in ids){var b=$(ids[k]);if(b)b.classList.toggle('active',k===tipo);}
-}
-
-window.trocarTipoMapa=function(tipo){
-  tipo=tipo||'padrao';
-  save('tipo_mapa',tipo);
-  marcarBotaoMapa(tipo);
-  if(map&&baseLayerAtual){try{map.removeLayer(baseLayerAtual);}catch(e){} baseLayerAtual=null;}
-  baseLayerAtual=criarCamadaBase(tipo);
-  if(map&&baseLayerAtual){baseLayerAtual.addTo(map);}
-  var nomes={
-    padrao:'Mapa padrão: ruas, estradas e localidades.',
-    satelite:'Satélite: imagem aérea online. Precisa de internet.',
-    topografico:'Topográfico: relevo/terreno online. Precisa de internet.',
-    claro:'Claro: mapa limpo online. Precisa de internet.',
-    sem_base:'Sem mapa base: exibe somente pontos GPS e camadas importadas.'
-  };
-  var st=$('mapaTipoStatus'); if(st)st.textContent=nomes[tipo]||nomes.padrao;
-  if(map){setTimeout(function(){try{map.invalidateSize();}catch(e){}},100);}
-};
-
-function initMapa(){
-  map=L.map('mapa').setView([-1.776,-47.450],11);
-  trocarTipoMapa(load('tipo_mapa','padrao'));
-  cam.f=L.featureGroup().addTo(map);
-  cam.c=L.featureGroup().addTo(map);
-  cam.gps=L.featureGroup().addTo(map); // camada GPS dos registros
-  var f=getMapaF();if(f.length)renderFeats(f);
-  plotarGPSRegistros(); // plotar pontos automaticamente
-}
-
-window.processMapa=function(ev){
-  var f=ev.target.files[0];if(!f)return;
-  var r=new FileReader();r.onload=function(e){var c=e.target.result,feats=[];
-    try{if(f.name.endsWith('.kml'))feats=parseKML(c);else if(f.name.endsWith('.geojson')||f.name.endsWith('.json'))feats=parseGeoJSON(c);else if(f.name.endsWith('.csv'))feats=parseCSV(c);else throw new Error('Formato nao suportado');
-    _set('mfeat',getMapaF().concat(feats));renderFeats(feats);toast(feats.length+' importados!');}catch(err){toast('Erro: '+err.message);}};
-  r.readAsText(f);
-};
-
-function parseKML(s){var doc=new DOMParser().parseFromString(s,'text/xml'),f=[];
-  var pol=doc.getElementsByTagName('Polygon');for(var i=0;i<pol.length;i++){var ce=pol[i].getElementsByTagName('coordinates')[0];if(!ce)continue;f.push({tipo:'POLIGONO',nome:gn(pol[i].parentNode)||'P'+i,coordinates:[pc(ce.textContent)],geometry:'Polygon'});}
-  var pts=doc.getElementsByTagName('Point');for(var i=0;i<pts.length;i++){var ce=pts[i].getElementsByTagName('coordinates')[0];if(!ce)continue;var p=ce.textContent.trim().split(',');f.push({tipo:'PONTO',nome:gn(pts[i].parentNode)||'Pt'+i,coordinates:[parseFloat(p[0]),parseFloat(p[1])],geometry:'Point'});}
-  return f;}
+/* MAPA */
+function criarCamadaBase(tipo){tipo=tipo||'padrao';if(tipo==='satelite')return L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Tiles © Esri',maxZoom:19});if(tipo==='topografico')return L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:'OpenTopoMap',maxZoom:17});if(tipo==='claro')return L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'OpenStreetMap/CARTO',maxZoom:19});if(tipo==='sem_base')return null;return L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OpenStreetMap',maxZoom:19});}
+function marcarBotaoMapa(tipo){var ids={padrao:'btnMapaPadrao',satelite:'btnMapaSatelite',topografico:'btnMapaTopo',claro:'btnMapaClaro',sem_base:'btnMapaSem'};for(var k in ids){var b=$(ids[k]);if(b)b.classList.toggle('active',k===tipo);}}
+window.trocarTipoMapa=function(tipo){tipo=tipo||'padrao';save('tipo_mapa',tipo);marcarBotaoMapa(tipo);if(map&&baseLayerAtual){try{map.removeLayer(baseLayerAtual);}catch(e){}baseLayerAtual=null;}baseLayerAtual=criarCamadaBase(tipo);if(map&&baseLayerAtual){baseLayerAtual.addTo(map);}var nomes={padrao:'Mapa padrão: ruas, estradas e localidades.',satelite:'Satélite: imagem aérea online. Precisa de internet.',topografico:'Topográfico: relevo/terreno online. Precisa de internet.',claro:'Claro: mapa limpo online. Precisa de internet.',sem_base:'Sem mapa base: exibe somente pontos GPS e camadas importadas.'};var st=$('mapaTipoStatus');if(st)st.textContent=nomes[tipo]||nomes.padrao;if(map){setTimeout(function(){try{map.invalidateSize();}catch(e){}},100);}};
+function initMapa(){map=L.map('mapa').setView([-1.776,-47.450],11);trocarTipoMapa(load('tipo_mapa','padrao'));cam.f=L.featureGroup().addTo(map);cam.c=L.featureGroup().addTo(map);cam.gps=L.featureGroup().addTo(map);var f=getMapaF();if(f.length)renderFeats(f);plotarGPSRegistros();}
+window.processMapa=function(ev){var f=ev.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){var c=e.target.result,feats=[];try{if(f.name.endsWith('.kml'))feats=parseKML(c);else if(f.name.endsWith('.geojson')||f.name.endsWith('.json'))feats=parseGeoJSON(c);else if(f.name.endsWith('.csv'))feats=parseCSV(c);else throw new Error('Formato nao suportado');_set('mfeat',getMapaF().concat(feats));renderFeats(feats);toast(feats.length+' importados!');}catch(err){toast('Erro: '+err.message);}};r.readAsText(f);};
+function parseKML(s){var doc=new DOMParser().parseFromString(s,'text/xml'),f=[];var pol=doc.getElementsByTagName('Polygon');for(var i=0;i<pol.length;i++){var ce=pol[i].getElementsByTagName('coordinates')[0];if(!ce)continue;f.push({tipo:'POLIGONO',nome:gn(pol[i].parentNode)||'P'+i,coordinates:[pc(ce.textContent)],geometry:'Polygon'});}var pts=doc.getElementsByTagName('Point');for(var j=0;j<pts.length;j++){var ce2=pts[j].getElementsByTagName('coordinates')[0];if(!ce2)continue;var p=ce2.textContent.trim().split(',');f.push({tipo:'PONTO',nome:gn(pts[j].parentNode)||'Pt'+j,coordinates:[parseFloat(p[0]),parseFloat(p[1])],geometry:'Point'});}return f;}
 function pc(t){var c=t.trim().split(/\s+/),r=[];c.forEach(function(x){var p=x.split(',');if(p.length>=2)r.push([parseFloat(p[0]),parseFloat(p[1])]);});return r;}
 function gn(el){var n=el.getElementsByTagName('name');return n.length?n[0].textContent:null;}
 function parseGeoJSON(s){var d=JSON.parse(s),f=[];(d.features||[]).forEach(function(x,i){var p=x.properties||{};f.push({tipo:x.geometry.type==='Point'?'PONTO':'POLIGONO',nome:p.name||p.NAME||'F'+i,coordinates:x.geometry.coordinates,geometry:x.geometry.type});});return f;}
 function parseCSV(s){var ls=s.split(/\r?\n/).filter(Boolean),h=ls[0].split(',').map(function(x){return x.trim().toLowerCase();}),li=fc(h,['lat','latitude']),lo=fc(h,['lng','lon','longitude']),ni=fc(h,['nome','name']);if(li===-1||lo===-1)throw new Error('CSV precisa lat e lng');var f=[];ls.slice(1).forEach(function(l,i){var v=l.split(','),lat=parseFloat(v[li]),lng=parseFloat(v[lo]);if(!isNaN(lat)&&!isNaN(lng))f.push({tipo:'PONTO',nome:(ni>=0?v[ni]:'Pt'+(i+1)).trim(),coordinates:[lng,lat],geometry:'Point'});});return f;}
 function fc(h,cs){for(var i=0;i<h.length;i++)for(var j=0;j<cs.length;j++)if(h[i].indexOf(cs[j])>=0)return i;return -1;}
-
 function renderFeats(feats){feats.forEach(function(f){if(f.geometry==='Polygon'){var c=f.coordinates[0]||f.coordinates,ll=c.map(function(x){return[x[1],x[0]];});L.polygon(ll,{color:'#0f5132',weight:3,fillOpacity:0.15}).bindPopup('<b>'+esc(f.nome)+'</b>').addTo(cam.f);}else if(f.geometry==='Point'){var c=f.coordinates;L.circleMarker([c[1],c[0]],{radius:8,fillColor:'#198754',color:'#fff',weight:2,fillOpacity:0.9}).bindPopup('<b>'+esc(f.nome)+'</b>').addTo(cam.c);}});setTimeout(centralizarMapa,300);}
-
 window.centralizarMapa=function(){if(!map)return;var b=L.latLngBounds([]);[cam.f,cam.c,cam.gps].forEach(function(c){if(c&&c.getLayers().length){var bb=c.getBounds();if(bb.isValid())b.extend(bb);}});if(b.isValid())map.fitBounds(b,{padding:[20,20]});};
 window.plotarGPSRegistros=function(){
-  var regs=getRegistros();
-  var stats={total:0,recentes:0,atencao:0,atrasados:0,semGps:0};
-  var pontos={};
-  var agoraMs=Date.now();
-
+  var regs=getRegistros(),stats={total:0,recentes:0,atencao:0,atrasados:0,semGps:0},pontos={},agoraMs=Date.now();
   regs.forEach(function(r){
-    var gps=extrairGPSRegistro(r);
-    if(!gps){stats.semGps++;return;}
+    var gps=extrairGPSRegistro(r);if(!gps){stats.semGps++;return;}
     var propriedade=r.propriedade||r.propriedadeNome||(r.payload&&r.payload.propriedade)||'';
     var cocho=r.cocho||r.cochoNome||r.ponto||r.local||(r.payload&&(r.payload.cocho||r.payload.ponto))||'Ponto GPS';
-    var dataHora=r.dataHora||r.ts||r.data||(r.payload&&r.payload.dataHora)||'';
+    var dataHora=dataHoraManejo(r)||(r.payload&&dataHoraManejo(r.payload))||'';
     var chave=propriedade+'|'+cocho;
-    if(!pontos[chave]){
-      pontos[chave]={lat:gps.lat,lng:gps.lng,acc:gps.acc,propriedade:propriedade,cocho:cocho,operador:r.operador||r.oper||(r.payload&&r.payload.operador)||'',produto:r.produto||r.prod||r.produtoId||(r.payload&&(r.payload.produto||r.payload.produtoId))||'',quantidade:r.quantidade||r.qtd||(r.payload&&r.payload.quantidade)||'',dataHora:dataHora,total:0};
-    }
+    if(!pontos[chave])pontos[chave]={lat:gps.lat,lng:gps.lng,acc:gps.acc,propriedade:propriedade,cocho:cocho,operador:r.operador||r.oper||(r.payload&&r.payload.operador)||'',produto:r.produto||r.prod||r.produtoId||(r.payload&&(r.payload.produto||r.payload.produtoId))||'',quantidade:r.quantidade||r.qtd||(r.payload&&r.payload.quantidade)||'',dataHora:dataHora,total:0};
     pontos[chave].total++;
-    if(dataHora&&(!pontos[chave].dataHora||dataHora>pontos[chave].dataHora)){
-      pontos[chave].lat=gps.lat;pontos[chave].lng=gps.lng;pontos[chave].acc=gps.acc;pontos[chave].dataHora=dataHora;
-      pontos[chave].operador=r.operador||r.oper||(r.payload&&r.payload.operador)||'';
-      pontos[chave].produto=r.produto||r.prod||r.produtoId||(r.payload&&(r.payload.produto||r.payload.produtoId))||'';
-      pontos[chave].quantidade=r.quantidade||r.qtd||(r.payload&&r.payload.quantidade)||'';
-    }
+    if(dataHora&&(!pontos[chave].dataHora||dataHora>pontos[chave].dataHora)){pontos[chave].lat=gps.lat;pontos[chave].lng=gps.lng;pontos[chave].acc=gps.acc;pontos[chave].dataHora=dataHora;pontos[chave].operador=r.operador||r.oper||(r.payload&&r.payload.operador)||'';pontos[chave].produto=r.produto||r.prod||r.produtoId||(r.payload&&(r.payload.produto||r.payload.produtoId))||'';pontos[chave].quantidade=r.quantidade||r.qtd||(r.payload&&r.payload.quantidade)||'';}
   });
-
-  if(map&&cam.gps)cam.gps.clearLayers();
-  var count=0;
+  if(map&&cam.gps)cam.gps.clearLayers();var count=0;
   for(var k in pontos){
-    var p=pontos[k],dias=null;
-    if(p.dataHora){var dt=new Date(p.dataHora);if(!isNaN(dt.getTime()))dias=Math.floor((agoraMs-dt.getTime())/(1000*60*60*24));}
+    var p=pontos[k],dias=null;if(p.dataHora){var ms=parseDataHoraLocalMs(p.dataHora);if(!isNaN(ms))dias=Math.floor((agoraMs-ms)/(1000*60*60*24));}
     var cor='#0d6efd',textoStatus='Sem data confiável';
     if(dias!==null){if(dias<=3){cor='#198754';textoStatus='Recente';stats.recentes++;}else if(dias<=7){cor='#ffc107';textoStatus='Atenção';stats.atencao++;}else{cor='#dc3545';textoStatus='Atrasado';stats.atrasados++;}}
-    var popup='<b>'+esc(p.cocho)+'</b><br><span style="color:#647067">'+esc(p.propriedade)+'</span><hr style="margin:5px 0">'
-      +'<b>Status:</b> '+textoStatus+'<br>'
-      +'<b>Último registro:</b> '+esc((p.dataHora||'').slice(0,16))+'<br>'
-      +'<b>Operador:</b> '+esc(p.operador)+'<br>'
-      +'<b>Produto:</b> '+esc(p.produto)+'<br>'
-      +'<b>Quantidade:</b> '+esc(p.quantidade)+' kg<br>'
-      +'<b>Total de registros:</b> '+p.total+'<br>'
-      +'<b>Precisão GPS:</b> '+esc(p.acc||'')+'<br>'
-      +'<b>Dias sem visita:</b> '+(dias!==null?dias:'—');
-    if(map&&cam.gps){L.circleMarker([p.lat,p.lng],{radius:10,fillColor:cor,color:'#fff',weight:2,fillOpacity:0.9}).bindPopup(popup).addTo(cam.gps);}
+    var popup='<b>'+esc(p.cocho)+'</b><br><span style="color:#647067">'+esc(p.propriedade)+'</span><hr style="margin:5px 0"><b>Status:</b> '+textoStatus+'<br><b>Último registro:</b> '+esc(formatarDataHoraBR(p.dataHora))+'<br><b>Operador:</b> '+esc(p.operador)+'<br><b>Produto:</b> '+esc(p.produto)+'<br><b>Quantidade:</b> '+esc(p.quantidade)+' kg<br><b>Total de registros:</b> '+p.total+'<br><b>Precisão GPS:</b> '+esc(p.acc||'')+'<br><b>Dias sem visita:</b> '+(dias!==null?dias:'—');
+    if(map&&cam.gps)L.circleMarker([p.lat,p.lng],{radius:10,fillColor:cor,color:'#fff',weight:2,fillOpacity:0.9}).bindPopup(popup).addTo(cam.gps);
     count++;
   }
-  stats.total=count;atualizarResumoGPS(stats);
-  if(map&&cam.gps&&count>0)centralizarMapa();
-  if(count>0)toast(count+' ponto(s) GPS exibido(s) no mapa.');else toast('Nenhum registro com GPS encontrado.');
+  stats.total=count;atualizarResumoGPS(stats);if(map&&cam.gps&&count>0)centralizarMapa();if(count>0)toast(count+' ponto(s) GPS exibido(s) no mapa.');else toast('Nenhum registro com GPS encontrado.');
 };
-
 window.limparMapaImportado=function(){if(!confirm('Limpar apenas mapa importado/manual?'))return;_set('mfeat',[]);[cam.f,cam.c].forEach(function(c){if(c)c.clearLayers();});toast('Mapa importado limpo. Pontos GPS dos registros foram preservados.');};
 window.limparPontosGPS=function(){if(cam.gps)cam.gps.clearLayers();atualizarResumoGPS({total:0,recentes:0,atencao:0,atrasados:0,semGps:getRegistros().length});toast('Pontos GPS removidos apenas da tela. Os registros continuam salvos.');};
 window.limparMapa=window.limparMapaImportado;
 window.addPonto=function(){var n=prompt('Nome:');if(!n)return;var lat=prompt('Lat:'),lng=prompt('Lng:');if(!lat||!lng)return;var f={tipo:'PONTO',nome:n,coordinates:[parseFloat(lng),parseFloat(lat)],geometry:'Point'};_set('mfeat',getMapaF().concat([f]));renderFeats([f]);};
 window.exportGeoJSON=function(){var f=getMapaF();if(!f.length){toast('Vazio.');return;}var g={type:'FeatureCollection',features:f.map(function(x){return{type:'Feature',properties:{name:x.nome},geometry:{type:x.geometry,coordinates:x.coordinates}};})};var blob=new Blob([JSON.stringify(g,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mapa_'+Date.now()+'.geojson';a.click();a.remove();};
 
-// CONFIG
+/* CONFIG */
 window.salvarCfg=function(){save('config',{url:$('cfgUrl').value.trim()});toast('Salvo.');render();};
-window.testarCfg=function(){
-  var c=cfg();if(!c.url){toast('Informe URL.');return;}
-  fetch(c.url).then(function(r){return r.json();}).then(function(j){
-    $('cfgStatus').innerHTML='<div class="item" style="border-color:#198754;background:#d1e7dd"><strong>Conectado: '+esc(j.sistema||j.ok)+'</strong></div>';toast('OK!');
-  }).catch(function(e){$('cfgStatus').innerHTML='<div class="item" style="border-color:#dc3545;background:#fee2e2"><strong>Erro: '+esc(e.message)+'</strong></div>';toast('Falha.');});
-};
+window.testarCfg=function(){var c=cfg();if(!c.url){toast('Informe URL.');return;}fetch(c.url).then(function(r){return r.json();}).then(function(j){$('cfgStatus').innerHTML='<div class="item" style="border-color:#198754;background:#d1e7dd"><strong>Conectado: '+esc(j.sistema||j.ok)+'</strong></div>';toast('OK!');}).catch(function(e){$('cfgStatus').innerHTML='<div class="item" style="border-color:#dc3545;background:#fee2e2"><strong>Erro: '+esc(e.message)+'</strong></div>';toast('Falha.');});};
 
 var cs=load('config',{});if(cs.url)$('cfgUrl').value=cs.url;
-renderNovos();renderScoreBox(load('ultima_avaliacao',{}));
-render();
-
+renderNovos();renderScoreBox(load('ultima_avaliacao',{}));render();
 })();
 </script>
 </body>
