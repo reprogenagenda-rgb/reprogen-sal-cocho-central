@@ -3,9 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>REPROGEN CENTRAL V5.4</title>
-<link rel="manifest" href="./manifest.json">
-<link rel="stylesheet" href="./libs/leaflet.css">
+<title>REPROGEN CENTRAL V5.3.2 - TIPO DE MAPA</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 :root{--g:#0f5132;--g2:#198754;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--pu:#6f42c1;--ln:#dfe8dd;--sh:0 4px 16px rgba(22,50,30,.12);--rd:14px}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -67,6 +66,12 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
 .alert-box{border-radius:10px;padding:12px;margin-bottom:10px}
 .alert-urg{background:#fff5f5;border:1.5px solid #dc3545}
 .alert-novo{background:#f0ebfa;border:1.5px solid #c9b8e8}
+
+.maptype-box{margin-top:10px;background:#f9fbf9;border:1px solid var(--ln);border-radius:12px;padding:12px}
+.maptype-title{font-size:13px;font-weight:900;color:var(--g);margin-bottom:8px}
+.maptype-buttons{display:flex;gap:6px;flex-wrap:wrap}
+.maptype-buttons button{font-size:12px;padding:8px 10px;min-height:34px;margin:0;background:#e9f2eb;color:#0d3d27}
+.maptype-buttons button.active{background:linear-gradient(135deg,#0f5132,#198754);color:#fff}
 #mapa{width:100%;height:450px;border-radius:12px;border:1px solid var(--ln);margin-top:12px}
 .upzone{border:2px dashed #cfdacf;border-radius:12px;padding:20px;text-align:center;background:#f9fbfa;cursor:pointer}
 .upzone:hover{border-color:var(--g2);background:#eefbf3}
@@ -75,8 +80,8 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
 <body>
 
 <header>
-  <h1>REPROGEN CENTRAL V5.4</h1>
-  <p>Consultor &bull; Estoque &bull; Campo &bull; Pontos GPS</p>
+  <h1>REPROGEN CENTRAL V5.3.2</h1>
+  <p>Consultor &bull; Estoque &bull; Campo &bull; Pontos GPS &bull; Tipo de Mapa</p>
 </header>
 
 <div class="wrap">
@@ -274,13 +279,22 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
 <!-- MAPA -->
 <div id="viewMapa" class="view card hide">
   <h2>Mapa da Fazenda</h2>
-  <div id="mapaStatusOffline" class="item" style="background:#d1e7dd;border-color:#198754"><strong>Mapa online/offline:</strong> Central pronta. Se estiver sem internet, os dados locais e camadas importadas continuam disponíveis.</div>
-  <div class="row" style="margin-bottom:8px"><div><label>Tipo da camada importada</label><select id="mTipoCamada"><option value="AREAS">Áreas da fazenda / Pastos</option><option value="VEGETACAO">Vegetação visual</option><option value="CAR_SICAR">CAR/SICAR</option><option value="DAR">DAR / Dados Ambientais Rurais</option><option value="PONTOS">Pontos diversos</option></select></div><div><label>Base do mapa</label><select id="mBase" onchange="trocarBaseMapa(this.value)"><option value="padrao">Padrão</option><option value="satelite">Satélite online</option><option value="hibrido">Híbrido visual</option><option value="offline">Offline sem base</option></select></div></div>
   <div class="upzone" onclick="document.getElementById('mFile').click()">
     <b>Clique ou arraste arquivo de mapa</b><br>
     <span class="muted">KML &bull; GeoJSON &bull; CSV &bull; GPX</span>
   </div>
   <input type="file" id="mFile" accept=".kml,.geojson,.json,.csv,.gpx" style="display:none" onchange="processMapa(event)">
+  <div class="maptype-box">
+    <div class="maptype-title">Tipo de mapa</div>
+    <div class="maptype-buttons">
+      <button id="btnMapaPadrao" onclick="trocarTipoMapa('padrao')">Padrão</button>
+      <button id="btnMapaSatelite" onclick="trocarTipoMapa('satelite')">Satélite</button>
+      <button id="btnMapaTopo" onclick="trocarTipoMapa('topografico')">Topográfico</button>
+      <button id="btnMapaClaro" onclick="trocarTipoMapa('claro')">Claro</button>
+      <button id="btnMapaSem" onclick="trocarTipoMapa('sem_base')">Sem base</button>
+    </div>
+    <div id="mapaTipoStatus" class="muted" style="margin-top:8px">Mapa padrão selecionado.</div>
+  </div>
   <div id="gpsResumoMapa" class="kpis" style="margin-top:10px;margin-bottom:10px">
     <div class="kpi"><small>Pontos GPS</small><div class="n" id="gpsTotal">0</div></div>
     <div class="kpi"><small>Recentes</small><div class="n" id="gpsRec" style="color:#198754">0</div></div>
@@ -289,7 +303,6 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
   </div>
   <div style="margin-top:10px">
     <button class="bp" onclick="plotarGPSRegistros()">Atualizar Pontos GPS</button>
-    <button class="bb" onclick="renderizarCamadasSalvas()">Renderizar Camadas Salvas</button>
     <button class="bb" onclick="centralizarMapa()">Centralizar</button>
     <button class="bb" onclick="exportGeoJSON()">GeoJSON</button>
     <button class="bw" onclick="limparMapaImportado()">Limpar Mapa Importado</button>
@@ -318,12 +331,13 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
   <img id="mFotoImg" src="" alt="">
 </div>
 <div class="toast" id="toast"></div>
-<script src="./libs/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function(){
 'use strict';
 var DB='rg_c52';
 var map=null,cam={f:null,c:null};
+var baseLayerAtual=null;
 var TITS={painel:'Painel',avaliacao:'Auto Avaliacao',novos:'Novos Cadastros',notas:'Notas do Cocho',estoque:'Estoque',propriedades:'Propriedades',cochos:'Cochos',lotes:'Lotes',produtos:'Produtos',movimentacao:'Movimentacao',registros:'Registros',mapa:'Mapa',config:'Configuracao'};
 
 function $(i){return document.getElementById(i);}
@@ -343,8 +357,6 @@ function getLotes(){return _get('lotes',[])}function getProdutos(){return _get('
 function getRegistros(){return _get('regs',[])}function getMov(){return _get('movs',[])}
 function getNotas(){return _get('notas',[])}function getEstoque(){return _get('estoque',[])}
 function getMapaF(){return _get('mfeat',[])}
-function setMapaF(v){_set('mfeat',v)}
-function getTipoCamadaAtual(){var el=$('mTipoCamada');return el?el.value:'AREAS';}
 function normNome(v){return String(v||'').trim().toUpperCase().replace(/\s+/g,' ');}
 function atualizarResumoGPS(stats){
   stats=stats||{total:0,recentes:0,atencao:0,atrasados:0,semGps:0};
@@ -739,12 +751,49 @@ window.exportarTudo=function(){
 
 // ── MAPA ─────────────────────────────────────────────────────────────────────
 
+function criarCamadaBase(tipo){
+  tipo=tipo||'padrao';
+  if(tipo==='satelite'){
+    return L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Tiles © Esri',maxZoom:19});
+  }
+  if(tipo==='topografico'){
+    return L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:'OpenTopoMap',maxZoom:17});
+  }
+  if(tipo==='claro'){
+    return L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'OpenStreetMap/CARTO',maxZoom:19});
+  }
+  if(tipo==='sem_base'){
+    return null;
+  }
+  return L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OpenStreetMap',maxZoom:19});
+}
+
+function marcarBotaoMapa(tipo){
+  var ids={padrao:'btnMapaPadrao',satelite:'btnMapaSatelite',topografico:'btnMapaTopo',claro:'btnMapaClaro',sem_base:'btnMapaSem'};
+  for(var k in ids){var b=$(ids[k]);if(b)b.classList.toggle('active',k===tipo);}
+}
+
+window.trocarTipoMapa=function(tipo){
+  tipo=tipo||'padrao';
+  save('tipo_mapa',tipo);
+  marcarBotaoMapa(tipo);
+  if(map&&baseLayerAtual){try{map.removeLayer(baseLayerAtual);}catch(e){} baseLayerAtual=null;}
+  baseLayerAtual=criarCamadaBase(tipo);
+  if(map&&baseLayerAtual){baseLayerAtual.addTo(map);}
+  var nomes={
+    padrao:'Mapa padrão: ruas, estradas e localidades.',
+    satelite:'Satélite: imagem aérea online. Precisa de internet.',
+    topografico:'Topográfico: relevo/terreno online. Precisa de internet.',
+    claro:'Claro: mapa limpo online. Precisa de internet.',
+    sem_base:'Sem mapa base: exibe somente pontos GPS e camadas importadas.'
+  };
+  var st=$('mapaTipoStatus'); if(st)st.textContent=nomes[tipo]||nomes.padrao;
+  if(map){setTimeout(function(){try{map.invalidateSize();}catch(e){}},100);}
+};
+
 function initMapa(){
   map=L.map('mapa').setView([-1.776,-47.450],11);
-  window._basePadrao=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OpenStreetMap',maxZoom:19});
-  window._baseSatelite=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Tiles © Esri',maxZoom:19});
-  window._basePadrao.addTo(map);
-  var st=$('mapaStatusOffline'); if(st){st.innerHTML='<strong>Base:</strong> padrão online. Camadas locais permanecem salvas no aparelho.';}
+  trocarTipoMapa(load('tipo_mapa','padrao'));
   cam.f=L.featureGroup().addTo(map);
   cam.c=L.featureGroup().addTo(map);
   cam.gps=L.featureGroup().addTo(map); // camada GPS dos registros
@@ -756,7 +805,7 @@ window.processMapa=function(ev){
   var f=ev.target.files[0];if(!f)return;
   var r=new FileReader();r.onload=function(e){var c=e.target.result,feats=[];
     try{if(f.name.endsWith('.kml'))feats=parseKML(c);else if(f.name.endsWith('.geojson')||f.name.endsWith('.json'))feats=parseGeoJSON(c);else if(f.name.endsWith('.csv'))feats=parseCSV(c);else throw new Error('Formato nao suportado');
-    feats.forEach(function(ft){ft.tipoCamada=getTipoCamadaAtual();ft.dataImportacao=agora();});_set('mfeat',getMapaF().concat(feats));renderFeats(feats);toast(feats.length+' importados em '+getTipoCamadaAtual()+'!');}catch(err){toast('Erro: '+err.message);}};
+    _set('mfeat',getMapaF().concat(feats));renderFeats(feats);toast(feats.length+' importados!');}catch(err){toast('Erro: '+err.message);}};
   r.readAsText(f);
 };
 
@@ -770,7 +819,7 @@ function parseGeoJSON(s){var d=JSON.parse(s),f=[];(d.features||[]).forEach(funct
 function parseCSV(s){var ls=s.split(/\r?\n/).filter(Boolean),h=ls[0].split(',').map(function(x){return x.trim().toLowerCase();}),li=fc(h,['lat','latitude']),lo=fc(h,['lng','lon','longitude']),ni=fc(h,['nome','name']);if(li===-1||lo===-1)throw new Error('CSV precisa lat e lng');var f=[];ls.slice(1).forEach(function(l,i){var v=l.split(','),lat=parseFloat(v[li]),lng=parseFloat(v[lo]);if(!isNaN(lat)&&!isNaN(lng))f.push({tipo:'PONTO',nome:(ni>=0?v[ni]:'Pt'+(i+1)).trim(),coordinates:[lng,lat],geometry:'Point'});});return f;}
 function fc(h,cs){for(var i=0;i<h.length;i++)for(var j=0;j<cs.length;j++)if(h[i].indexOf(cs[j])>=0)return i;return -1;}
 
-function renderFeats(feats){feats.forEach(function(f){if(f.geometry==='Polygon'){var c=f.coordinates[0]||f.coordinates,ll=c.map(function(x){return[x[1],x[0]];});var cor=(f.tipoCamada==='VEGETACAO'?'#2e7d32':(f.tipoCamada==='CAR_SICAR'?'#6f42c1':(f.tipoCamada==='DAR'?'#0d6efd':'#0f5132')));L.polygon(ll,{color:cor,weight:3,fillOpacity:0.15}).bindPopup('<b>'+esc(f.nome)+'</b><br>'+esc(f.tipoCamada||'CAMADA')).addTo(cam.f);}else if(f.geometry==='Point'){var c=f.coordinates;var cor=(f.tipoCamada==='VEGETACAO'?'#2e7d32':(f.tipoCamada==='CAR_SICAR'?'#6f42c1':(f.tipoCamada==='DAR'?'#0d6efd':'#198754')));L.circleMarker([c[1],c[0]],{radius:8,fillColor:cor,color:'#fff',weight:2,fillOpacity:0.9}).bindPopup('<b>'+esc(f.nome)+'</b><br>'+esc(f.tipoCamada||'PONTO')).addTo(cam.c);}});setTimeout(centralizarMapa,300);}
+function renderFeats(feats){feats.forEach(function(f){if(f.geometry==='Polygon'){var c=f.coordinates[0]||f.coordinates,ll=c.map(function(x){return[x[1],x[0]];});L.polygon(ll,{color:'#0f5132',weight:3,fillOpacity:0.15}).bindPopup('<b>'+esc(f.nome)+'</b>').addTo(cam.f);}else if(f.geometry==='Point'){var c=f.coordinates;L.circleMarker([c[1],c[0]],{radius:8,fillColor:'#198754',color:'#fff',weight:2,fillOpacity:0.9}).bindPopup('<b>'+esc(f.nome)+'</b>').addTo(cam.c);}});setTimeout(centralizarMapa,300);}
 
 window.centralizarMapa=function(){if(!map)return;var b=L.latLngBounds([]);[cam.f,cam.c,cam.gps].forEach(function(c){if(c&&c.getLayers().length){var bb=c.getBounds();if(bb.isValid())b.extend(bb);}});if(b.isValid())map.fitBounds(b,{padding:[20,20]});};
 window.plotarGPSRegistros=function(){
@@ -828,17 +877,6 @@ window.limparMapa=window.limparMapaImportado;
 window.addPonto=function(){var n=prompt('Nome:');if(!n)return;var lat=prompt('Lat:'),lng=prompt('Lng:');if(!lat||!lng)return;var f={tipo:'PONTO',nome:n,coordinates:[parseFloat(lng),parseFloat(lat)],geometry:'Point'};_set('mfeat',getMapaF().concat([f]));renderFeats([f]);};
 window.exportGeoJSON=function(){var f=getMapaF();if(!f.length){toast('Vazio.');return;}var g={type:'FeatureCollection',features:f.map(function(x){return{type:'Feature',properties:{name:x.nome},geometry:{type:x.geometry,coordinates:x.coordinates}};})};var blob=new Blob([JSON.stringify(g,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mapa_'+Date.now()+'.geojson';a.click();a.remove();};
 
-
-window.trocarBaseMapa=function(tipo){
-  if(!map){toast('Abra o mapa primeiro.');return;}
-  try{ if(window._basePadrao&&map.removeLayer)map.removeLayer(window._basePadrao); if(window._baseSatelite&&map.removeLayer)map.removeLayer(window._baseSatelite); }catch(e){}
-  if(tipo==='satelite'&&window._baseSatelite&&window._baseSatelite.addTo){window._baseSatelite.addTo(map);toast('Camada satélite online ativada.');}
-  else if(tipo==='offline'){toast('Modo sem base: usa apenas pontos e camadas locais.');}
-  else {if(window._basePadrao&&window._basePadrao.addTo)window._basePadrao.addTo(map);toast(tipo==='hibrido'?'Híbrido visual: base padrão + camadas locais.':'Base padrão ativada.');}
-  var st=$('mapaStatusOffline'); if(st){st.innerHTML='<strong>Base selecionada:</strong> '+tipo+'. Satélite depende de internet; camadas importadas e GPS ficam locais.';}
-};
-window.renderizarCamadasSalvas=function(){ if(!map){initMapa();return;} if(cam.f)cam.f.clearLayers(); if(cam.c)cam.c.clearLayers(); renderFeats(getMapaF()); plotarGPSRegistros(); toast('Camadas salvas renderizadas.'); };
-
 // CONFIG
 window.salvarCfg=function(){save('config',{url:$('cfgUrl').value.trim()});toast('Salvo.');render();};
 window.testarCfg=function(){
@@ -853,16 +891,6 @@ renderNovos();renderScoreBox(load('ultima_avaliacao',{}));
 render();
 
 })();
-</script>
-
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function () {
-    navigator.serviceWorker.register('./service-worker.js')
-      .then(function () { console.log('REPROGEN Central SW registrado'); })
-      .catch(function (err) { console.log('Erro no SW Central', err); });
-  });
-}
 </script>
 </body>
 </html>
