@@ -1,7 +1,7 @@
 {
-  "name": "REPROGEN Central V5.3.5",
+  "name": "REPROGEN Central V5.3.6",
   "short_name": "Central",
-  "description": "REPROGEN CENTRAL - Gestão, estoque, campo, registros e mapa GPS híbrido.",
+  "description": "REPROGEN CENTRAL - diagnóstico API, atualização forçada e mapa GPS híbrido.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

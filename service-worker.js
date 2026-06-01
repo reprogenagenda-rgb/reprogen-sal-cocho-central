@@ -1,9 +1,9 @@
-/* REPROGEN CENTRAL V5.3.5 — PWA Instalável
+/* REPROGEN CENTRAL V5.3.6 — PWA Instalável
    Compatível com GitHub Pages, Android Chrome e JavaScript ES5.
    App shell offline + atualização segura de cache.
 */
 
-var CACHE_VERSION = 'reprogen-central-v5-3-5-pwa';
+var CACHE_VERSION = 'reprogen-central-v5-3-6-api-force';
 var APP_SHELL = [
   './',
   './index.html',

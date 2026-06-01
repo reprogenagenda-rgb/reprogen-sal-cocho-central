@@ -1,45 +1,17 @@
-# REPROGEN CENTRAL V5.3.5 — PWA Instalável + Mapa GPS Híbrido
+# REPROGEN CENTRAL V5.3.6 — Atualização Forçada + Diagnóstico API
 
-Central web do sistema **REPROGEN SAL COCHO**, pronta para GitHub Pages e instalação no Android/Chrome.
+Versão para corrigir a Central quando a API V1.3 já entrega registros, mas o navegador ainda segura dados antigos.
 
-## Arquivos principais
+## Novidades
 
-- `index.html` — Central completa.
-- `manifest.json` — configuração PWA.
-- `service-worker.js` — cache/offline do app shell.
-- `icons/icon-192.png` — ícone Android/PWA.
-- `icons/icon-512.png` — ícone Android/PWA.
-- `README.md` — documentação do repositório.
+- Botão **Diagnóstico API** em Registros.
+- Botão **Atualização Forçada** em Registros.
+- Limpeza opcional dos dados locais quando trocar a URL do Apps Script.
+- Service Worker com cache novo V5.3.6.
 
-## O que esta versão mantém
+## Subir no GitHub
 
-- Central V5.3.4 com mapa GPS híbrido.
-- GPS de REGISTROS + COCHOS.
-- Diagnóstico GPS.
-- Data/hora local protegida.
-- Tipos de mapa: Padrão, Satélite, Topográfico, Claro e Sem base.
-- Painel, notas, estoque, propriedades, cochos, lotes, produtos, movimentações e registros.
-
-## O que esta versão adiciona
-
-- Manifest PWA.
-- Service Worker.
-- Ícones.
-- Instalação pelo Android/Chrome.
-- Abertura offline do app shell quando já carregado uma vez.
-
-## Observação importante sobre offline
-
-A Central pode abrir como PWA, mas a sincronização com Google Apps Script e mapas online dependem de internet.
-
-O app shell pode abrir offline; já:
-- Apps Script precisa de internet;
-- mapas base online precisam de internet;
-- dados novos precisam ser sincronizados online.
-
-## Como subir no GitHub
-
-Suba todos os arquivos e pastas:
+Envie:
 
 ```text
 index.html
@@ -50,28 +22,15 @@ icons/icon-192.png
 icons/icon-512.png
 ```
 
-Mensagem de commit sugerida:
+Mensagem de commit:
 
 ```text
-Atualiza Central V5.3.5 como PWA instalável com ícones
+Atualiza Central V5.3.6 com diagnóstico API e atualização forçada
 ```
 
-## Teste de instalação
+## Teste
 
-1. Abra a Central pelo GitHub Pages com internet.
-2. Aguarde carregar.
-3. No Android/Chrome, toque nos três pontinhos.
-4. Toque em **Adicionar à tela inicial** ou **Instalar app**.
-5. Abra pelo ícone instalado.
-6. Teste **Config > Testar Conexão**.
-7. Teste **Registros > Atualizar**.
-8. Teste **Mapa > Atualizar Pontos GPS**.
-9. Teste **Diagnóstico GPS**.
-
-## Critério de aprovação
-
-- O ícone aparece na tela inicial.
-- A Central abre pelo ícone.
-- O painel abre normalmente.
-- A conexão com Apps Script funciona com internet.
-- O mapa mostra pontos GPS usando REGISTROS e/ou COCHOS.
+1. Config > Testar Conexão = REPROGEN_APPS_SCRIPT_V1_3_PLANILHA_NOVA.
+2. Registros > Diagnóstico API.
+3. Registros > Atualização Forçada.
+4. Mapa > Atualizar Pontos GPS.

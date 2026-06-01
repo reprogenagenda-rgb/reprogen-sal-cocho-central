@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>REPROGEN CENTRAL V5.3.5 - PWA INSTALÁVEL</title>
+<title>REPROGEN CENTRAL V5.3.6 - ATUALIZAÇÃO FORÇADA API</title>
 <meta name="theme-color" content="#0f5132">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
@@ -51,12 +51,12 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
 .alert-box{border-radius:10px;padding:12px;margin-bottom:10px}.alert-urg{background:#fff5f5;border:1.5px solid #dc3545}.alert-novo{background:#f0ebfa;border:1.5px solid #c9b8e8}
 .maptype-box{margin-top:10px;background:#f9fbf9;border:1px solid var(--ln);border-radius:12px;padding:12px}.maptype-title{font-size:13px;font-weight:900;color:var(--g);margin-bottom:8px}.maptype-buttons{display:flex;gap:6px;flex-wrap:wrap}.maptype-buttons button{font-size:12px;padding:8px 10px;min-height:34px;margin:0;background:#e9f2eb;color:#0d3d27}.maptype-buttons button.active{background:linear-gradient(135deg,#0f5132,#198754);color:#fff}
 #mapa{width:100%;height:450px;border-radius:12px;border:1px solid var(--ln);margin-top:12px}.upzone{border:2px dashed #cfdacf;border-radius:12px;padding:20px;text-align:center;background:#f9fbfa;cursor:pointer}.upzone:hover{border-color:var(--g2);background:#eefbf3}
-</style>
+.api-diagnostico{white-space:pre-wrap;background:#f6fbf7;border:1px solid var(--ln);border-radius:10px;padding:10px;font-size:11px;max-height:260px;overflow:auto;margin-top:10px;color:#21352a}</style>
 </head>
 <body>
 <header>
-  <h1>REPROGEN CENTRAL V5.3.5</h1>
-  <p>Consultor &bull; Estoque &bull; Campo &bull; Mapa GPS Híbrido &bull; PWA</p>
+  <h1>REPROGEN CENTRAL V5.3.6</h1>
+  <p>Consultor &bull; Estoque &bull; Campo &bull; Mapa GPS Híbrido &bull; API V1.3</p>
 </header>
 
 <div class="wrap">
@@ -188,9 +188,9 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
 
 <div id="viewRegistros" class="view card hide">
   <h2>Registros de Abastecimento</h2>
-  <button class="bb" onclick="baixarRegistros()">Atualizar</button>
+  <button class="bb" onclick="baixarRegistros()">Atualizar</button><button class="bp" onclick="atualizacaoForcadaRegistros()">Atualização Forçada</button><button class="bb" onclick="diagnosticarAPI()">Diagnóstico API</button>
   <button class="bn" onclick="exportarTudo()">Exportar JSON</button>
-  <div id="tabelaRegs" style="margin-top:14px"></div>
+  <div id="tabelaRegs" style="margin-top:14px"></div><div id="apiDiag" class="api-diagnostico hide"></div>
 </div>
 
 <div id="viewMapa" class="view card hide">
@@ -372,7 +372,23 @@ function apiGet(a,cb){var c=cfg();if(!c.url){toast('Configure URL primeiro.');re
 function apiPost(a,d,cb){var c=cfg();if(!c.url){toast('Configure URL.');return;}fetch(c.url,{method:'POST',body:JSON.stringify(Object.assign({acao:a},d))}).then(function(r){return r.json();}).then(cb||function(j){if(j.sucesso)toast('OK');else toast('Erro: '+(j.erro||''));}).catch(function(e){toast('Erro: '+e.message);});}
 window.baixarPropriedades=function(){apiGet('getPropriedades',function(j){if(j.sucesso){_set('props',j.propriedades||[]);renderListaProps();renderSelects();renderKPIs();}});};
 window.baixarCochos=function(){apiGet('getCochos',function(j){if(j.sucesso){_set('cochos',j.cochos||[]);renderListaCochos();}});};
-window.baixarRegistros=function(){apiGet('getRegistros',function(j){if(j.sucesso){_set('regs',j.registros||[]);renderTabelaRegs();renderKPIs();renderUltimas();plotarGPSRegistros();toast('Registros: '+(j.registros||[]).length);}});};
+window.baixarRegistros=function(){
+  apiGet('getRegistros',function(j){
+    if(j&&j.sucesso){
+      var regs=j.registros||[];
+      _set('regs',regs);
+      renderTabelaRegs();renderKPIs();renderUltimas();plotarGPSRegistros();
+      toast('Registros atualizados: '+regs.length);
+      var dg=$('apiDiag');
+      if(dg){
+        dg.className='api-diagnostico';
+        dg.textContent='API getRegistros OK\nSistema: '+(j.sistema||'')+'\nTotal recebido: '+regs.length+'\nCom gpsLat/gpsLng: '+regs.filter(function(r){return r.gpsLat&&r.gpsLng;}).length;
+      }
+    }else{
+      toast('API não retornou sucesso em getRegistros.');
+    }
+  });
+};
 window.baixarMovimentacoes=function(){apiGet('getMovimentacoes',function(j){if(j.sucesso){_set('movs',j.movimentacoes||[]);renderMovKPIs();renderMov();toast('Movimentacoes: '+(j.movimentacoes||[]).length);}});};
 
 /* CADASTROS */
@@ -560,7 +576,20 @@ window.addPonto=function(){var n=prompt('Nome:');if(!n)return;var lat=prompt('La
 window.exportGeoJSON=function(){var f=getMapaF();if(!f.length){toast('Vazio.');return;}var g={type:'FeatureCollection',features:f.map(function(x){return{type:'Feature',properties:{name:x.nome},geometry:{type:x.geometry,coordinates:x.coordinates}};})};var blob=new Blob([JSON.stringify(g,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mapa_'+Date.now()+'.geojson';a.click();a.remove();};
 
 /* CONFIG */
-window.salvarCfg=function(){save('config',{url:$('cfgUrl').value.trim()});toast('Salvo.');render();};
+window.salvarCfg=function(){
+  var novaUrl=$('cfgUrl').value.trim();
+  var antiga=(cfg().url||'').trim();
+  if(novaUrl!==antiga){
+    if(confirm('URL do Apps Script mudou. Limpar dados locais antigos da Central?')){
+      ['props','cochos','lotes','prods','regs','movs','notas','estoque','novos','ultima_avaliacao'].forEach(function(k){
+        try{localStorage.removeItem(DB+'_'+k);}catch(e){}
+      });
+      toast('URL salva e dados locais antigos limpos.');
+    }
+  }
+  save('config',{url:novaUrl});
+  render();
+};
 window.testarCfg=function(){var c=cfg();if(!c.url){toast('Informe URL.');return;}fetch(c.url).then(function(r){return r.json();}).then(function(j){$('cfgStatus').innerHTML='<div class="item" style="border-color:#198754;background:#d1e7dd"><strong>Conectado: '+esc(j.sistema||j.ok)+'</strong></div>';toast('OK!');}).catch(function(e){$('cfgStatus').innerHTML='<div class="item" style="border-color:#dc3545;background:#fee2e2"><strong>Erro: '+esc(e.message)+'</strong></div>';toast('Falha.');});};
 
 var cs=load('config',{});if(cs.url)$('cfgUrl').value=cs.url;
