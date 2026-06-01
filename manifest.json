@@ -1,7 +1,7 @@
 {
-  "name": "REPROGEN Central V5.3.6",
+  "name": "REPROGEN Central V5.3.7",
   "short_name": "Central",
-  "description": "REPROGEN CENTRAL - diagnóstico API, atualização forçada e mapa GPS híbrido.",
+  "description": "REPROGEN CENTRAL - GPS V1.3 corrigido.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

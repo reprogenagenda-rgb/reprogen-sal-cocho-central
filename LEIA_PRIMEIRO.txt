@@ -1,1 +1,1 @@
-Suba todos os arquivos. Depois use Registros > Diagnóstico API e Atualização Forçada.
+Suba a Central V5.3.7 e teste Registros > Atualização Forçada, depois Mapa > GPS Local V1.3.

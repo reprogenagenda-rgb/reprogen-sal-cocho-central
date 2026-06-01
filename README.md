@@ -1,36 +1,25 @@
-# REPROGEN CENTRAL V5.3.6 — Atualização Forçada + Diagnóstico API
+# REPROGEN CENTRAL V5.3.7 — GPS V1.3 Corrigido
 
-Versão para corrigir a Central quando a API V1.3 já entrega registros, mas o navegador ainda segura dados antigos.
-
-## Novidades
-
-- Botão **Diagnóstico API** em Registros.
-- Botão **Atualização Forçada** em Registros.
-- Limpeza opcional dos dados locais quando trocar a URL do Apps Script.
-- Service Worker com cache novo V5.3.6.
+Corrige a leitura de GPS da Central para registros vindos do Apps Script V1.3/planilha nova.
 
 ## Subir no GitHub
 
-Envie:
-
-```text
-index.html
-manifest.json
-service-worker.js
-README.md
-icons/icon-192.png
-icons/icon-512.png
-```
+Suba:
+- index.html
+- manifest.json
+- service-worker.js
+- README.md
+- icons/icon-192.png
+- icons/icon-512.png
 
 Mensagem de commit:
 
-```text
-Atualiza Central V5.3.6 com diagnóstico API e atualização forçada
-```
+Atualiza Central V5.3.7 com GPS V1.3 corrigido
 
 ## Teste
 
-1. Config > Testar Conexão = REPROGEN_APPS_SCRIPT_V1_3_PLANILHA_NOVA.
-2. Registros > Diagnóstico API.
-3. Registros > Atualização Forçada.
+1. Config > Testar Conexão.
+2. Registros > Atualização Forçada.
+3. Registros > Diagnóstico API.
 4. Mapa > Atualizar Pontos GPS.
+5. Mapa > GPS Local V1.3.
