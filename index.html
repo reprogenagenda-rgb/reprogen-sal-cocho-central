@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>REPROGEN CENTRAL V5.3.9 - GPS DEBUG DEFINITIVO</title>
+<title>REPROGEN CENTRAL V5.4.0 - GPS FUNCIONAL</title>
 <meta name="theme-color" content="#0f5132">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
@@ -51,12 +51,12 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
 .alert-box{border-radius:10px;padding:12px;margin-bottom:10px}.alert-urg{background:#fff5f5;border:1.5px solid #dc3545}.alert-novo{background:#f0ebfa;border:1.5px solid #c9b8e8}
 .maptype-box{margin-top:10px;background:#f9fbf9;border:1px solid var(--ln);border-radius:12px;padding:12px}.maptype-title{font-size:13px;font-weight:900;color:var(--g);margin-bottom:8px}.maptype-buttons{display:flex;gap:6px;flex-wrap:wrap}.maptype-buttons button{font-size:12px;padding:8px 10px;min-height:34px;margin:0;background:#e9f2eb;color:#0d3d27}.maptype-buttons button.active{background:linear-gradient(135deg,#0f5132,#198754);color:#fff}
 #mapa{width:100%;height:450px;border-radius:12px;border:1px solid var(--ln);margin-top:12px}.upzone{border:2px dashed #cfdacf;border-radius:12px;padding:20px;text-align:center;background:#f9fbfa;cursor:pointer}.upzone:hover{border-color:var(--g2);background:#eefbf3}
-.api-diagnostico{white-space:pre-wrap;background:#f6fbf7;border:1px solid var(--ln);border-radius:10px;padding:10px;font-size:11px;max-height:260px;overflow:auto;margin-top:10px;color:#21352a}</style>
+.api-diagnostico{white-space:pre-wrap;background:#f6fbf7;border:1px solid var(--ln);border-radius:10px;padding:10px;font-size:12px;max-height:360px;overflow:auto;margin-top:10px;color:#21352a}</style>
 </head>
 <body>
 <header>
-  <h1>REPROGEN CENTRAL V5.3.9</h1>
-  <p>Consultor &bull; Estoque &bull; Campo &bull; GPS Debug Definitivo</p>
+  <h1>REPROGEN CENTRAL V5.4.0</h1>
+  <p>Consultor &bull; Estoque &bull; Campo &bull; GPS Funcional</p>
 </header>
 
 <div class="wrap">
@@ -188,8 +188,7 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
 
 <div id="viewRegistros" class="view card hide">
   <h2>Registros de Abastecimento</h2>
-  <button class="bb" onclick="baixarRegistros()">Atualizar</button><button class="bp" onclick="atualizacaoForcadaRegistros()">Atualização Forçada</button><button class="bb" onclick="diagnosticarAPI()">Diagnóstico API</button><button class="bw" onclick="diagnosticoAPIvsLocal()">API x Local</button><button class="bd" onclick="resetLocalCentral()">Reset Local</button><button class="bp" onclick="atualizacaoForcadaRegistros()">Atualização Forçada</button><button class="bb" onclick="diagnosticarAPI()">Diagnóstico API</button>
-  <button class="bn" onclick="exportarTudo()">Exportar JSON</button>
+  <button class="bb" onclick="baixarRegistros()">Atualizar</button><button class="bp" onclick="atualizacaoForcadaRegistros()">Atualização Forçada</button><button class="bb" onclick="diagnosticarAPI()">Diagnóstico API</button><button class="bw" onclick="diagnosticoAPIvsLocal()">API x Local</button><button class="bd" onclick="resetLocalCentral()">Reset Local</button><button class="bn" onclick="exportarTudo()">Exportar JSON</button>
   <div id="tabelaRegs" style="margin-top:14px"></div><div id="apiDiag" class="api-diagnostico hide"></div>
 </div>
 
@@ -209,8 +208,7 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
     <div id="mapaTipoStatus" class="muted" style="margin-top:8px">Mapa padrão selecionado.</div>
   </div>
   <div id="gpsResumoMapa" class="kpis" style="margin-top:10px;margin-bottom:10px"><div class="kpi"><small>Pontos GPS</small><div class="n" id="gpsTotal">0</div></div><div class="kpi"><small>Recentes</small><div class="n" id="gpsRec" style="color:#198754">0</div></div><div class="kpi"><small>Atenção</small><div class="n" id="gpsAt" style="color:#e67e22">0</div></div><div class="kpi"><small>Sem GPS</small><div class="n" id="gpsSem" style="color:#842029">0</div></div></div>
-  <div style="margin-top:10px"><button class="bp" onclick="plotarGPSRegistros()">Atualizar Pontos GPS</button><button class="bb" onclick="centralizarMapa()">Centralizar</button><button class="bb" onclick="diagnosticarGPS()">Diagnóstico GPS</button><button class="bb" onclick="exportGeoJSON()">GeoJSON</button><button class="bb" onclick="diagnosticoGPSLocalDetalhado()">GPS Local Debug</button><button class="bw" onclick="debugRegistroLocal()">DEBUG Registro Local</button><button class="bb" onclick="diagnosticoGPSLocalDetalhado()">GPS Local Debug</button><button class="bw" onclick="limparMapaImportado()">Limpar Mapa Importado</button><button class="bd" onclick="limparPontosGPS()">Limpar Pontos GPS da Tela</button><button class="bs" onclick="addPonto()">+ Ponto</button></div>
-  <div class="muted" style="margin-top:6px">Mapa híbrido: usa GPS de REGISTROS e COCHOS. Verde: registro recente • Amarelo/vermelho: atraso • Azul: cocho fixo ou sem data confiável.</div>
+  <div style="margin-top:10px"><button class="bp" onclick="plotarGPSRegistros()">Atualizar Pontos GPS</button><button class="bb" onclick="centralizarMapa()">Centralizar</button><button class="bb" onclick="diagnosticoGPSLocalDetalhado()">GPS Local Debug</button><button class="bw" onclick="debugRegistroLocal()">DEBUG Registro Local</button><button class="bb" onclick="exportGeoJSON()">GeoJSON</button><button class="bw" onclick="limparMapaImportado()">Limpar Mapa Importado</button><button class="bd" onclick="limparPontosGPS()">Limpar Pontos GPS da Tela</button><button class="bs" onclick="addPonto()">+ Ponto</button></div><div id="mapaDiag" class="api-diagnostico hide"></div><div class="muted" style="margin-top:6px">Mapa híbrido: usa GPS de REGISTROS e COCHOS. Verde: registro recente • Amarelo/vermelho: atraso • Azul: cocho fixo ou sem data confiável.</div>
   <div id="gpsDiagnostico" class="item muted" style="margin-top:10px">Clique em “Atualizar Pontos GPS” para carregar registros e cochos no mapa.</div>
   <div id="mapa"></div>
 </div>
@@ -296,6 +294,7 @@ function atualizarResumoGPS(stats){
 function normalizarChave(k){
   return String(k || '').toLowerCase().replace(/[^a-z0-9]/g,'');
 }
+
 function valorFlex(obj, nomes){
   if(!obj) return '';
   var mapa = {};
@@ -313,6 +312,7 @@ function valorFlex(obj, nomes){
   }
   return '';
 }
+
 function valorPrimeiro(){
   for(var i=0;i<arguments.length;i++){
     var v=arguments[i];
@@ -320,18 +320,26 @@ function valorPrimeiro(){
   }
   return '';
 }
+
 function parsePayload(r){
   if(!r) return {};
   if(r.payload && typeof r.payload === 'object') return r.payload;
+
   var pj = valorFlex(r, ['payloadJson','payload_json','payloadJSON','payload']);
   if(!pj) return {};
+
   try{
-    if(typeof pj === 'object') return pj;
-    return JSON.parse(String(pj));
+    var val = pj;
+    for(var i=0;i<3;i++){
+      if(typeof val === 'object') return val;
+      val = JSON.parse(String(val));
+    }
+    return (typeof val === 'object') ? val : {};
   }catch(e){
     return {};
   }
 }
+
 function numeroGPS(v){
   if(v === undefined || v === null) return NaN;
   var s = String(v).trim();
@@ -340,45 +348,92 @@ function numeroGPS(v){
   s = s.replace(/[^\d\.\-]/g, '');
   return parseFloat(s);
 }
-function extrairGPSRegistro(r){
+
+function validarParGPS(lat,lng){
+  return !isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+}
+
+function ajustarParGPS(lat,lng){
+  if(validarParGPS(lat,lng)) return {lat:lat,lng:lng,ajuste:''};
+
+  /* Fallback para colunas do Google Planilhas que perderam a vírgula decimal:
+     Ex.: -17.69231 / -473.7399 deve virar -1.769231 / -47.37399 */
+  var escalas = [10,100,1000,10000,100000];
+  for(var i=0;i<escalas.length;i++){
+    var s = escalas[i];
+    var a = lat/s;
+    var b = lng/s;
+    if(validarParGPS(a,b)){
+      return {lat:a,lng:b,ajuste:'dividido por '+s};
+    }
+  }
+
+  return null;
+}
+
+function candidatosGPS(r){
   r = r || {};
   var p = parsePayload(r);
   var gps = r.gps && typeof r.gps === 'object' ? r.gps : {};
   var gpsP = p.gps && typeof p.gps === 'object' ? p.gps : {};
+  var lista = [];
 
-  var lat = valorFlex(r, ['gpsLat','gpslat','gps_lat','GPS_LAT','GpsLat','lat','latitude']) ||
-            valorFlex(gps, ['gpsLat','gpslat','lat','latitude']) ||
-            valorFlex(p, ['gpsLat','gpslat','gps_lat','lat','latitude']) ||
-            valorFlex(gpsP, ['gpsLat','gpslat','lat','latitude']);
+  function add(origem, obj){
+    if(!obj) return;
+    var lat = valorFlex(obj, ['gpsLat','gpslat','gps_lat','GPS_LAT','GpsLat','lat','latitude']);
+    var lng = valorFlex(obj, ['gpsLng','gpslng','gps_lng','GPS_LNG','GpsLng','lng','lon','long','longitude']);
+    var acc = valorFlex(obj, ['gpsAcc','gpsacc','gps_acc','accuracy','acc']);
+    if(lat !== '' || lng !== '') lista.push({origem:origem,lat:lat,lng:lng,acc:acc});
+  }
 
-  var lng = valorFlex(r, ['gpsLng','gpslng','gps_lng','GPS_LNG','GpsLng','lng','lon','long','longitude']) ||
-            valorFlex(gps, ['gpsLng','gpslng','lng','lon','long','longitude']) ||
-            valorFlex(p, ['gpsLng','gpslng','gps_lng','lng','lon','long','longitude']) ||
-            valorFlex(gpsP, ['gpsLng','gpslng','lng','lon','long','longitude']);
+  /* Prioridade: payload real do celular, depois objetos gps, por último colunas que podem estar reformatadas */
+  add('payload.gps', gpsP);
+  add('payload', p);
+  add('r.gps', gps);
+  add('registro', r);
 
-  var acc = valorFlex(r, ['gpsAcc','gpsacc','gps_acc','accuracy','acc']) ||
-            valorFlex(gps, ['gpsAcc','gpsacc','accuracy','acc']) ||
-            valorFlex(p, ['gpsAcc','gpsacc','gps_acc','accuracy','acc']) ||
-            valorFlex(gpsP, ['gpsAcc','gpsacc','accuracy','acc']);
-
-  var nlat = numeroGPS(lat);
-  var nlng = numeroGPS(lng);
-
-  if(isNaN(nlat) || isNaN(nlng)) return null;
-  if(nlat < -90 || nlat > 90 || nlng < -180 || nlng > 180) return null;
-
-  return { lat: nlat, lng: nlng, acc: acc };
+  return lista;
 }
+
+function extrairGPSRegistro(r){
+  var lista = candidatosGPS(r);
+
+  for(var i=0;i<lista.length;i++){
+    var c = lista[i];
+    var nlat = numeroGPS(c.lat);
+    var nlng = numeroGPS(c.lng);
+    var ajustado = ajustarParGPS(nlat,nlng);
+    if(ajustado){
+      return {
+        lat: ajustado.lat,
+        lng: ajustado.lng,
+        acc: c.acc,
+        origem: c.origem,
+        ajuste: ajustado.ajuste
+      };
+    }
+  }
+
+  return null;
+}
+
 function campoRegistro(r,campo){
   var p = parsePayload(r);
   return valorPrimeiro(valorFlex(r,[campo]), valorFlex(p,[campo]));
 }
+
 function formatarDataHoraMapa(v){
   v=String(v||'').trim();
   if(!v)return '';
   if(v.length>=16 && v.charAt(2)==='/' && v.charAt(5)==='/') return v.slice(0,16);
   if(v.length>=16 && v.charAt(4)==='-' && v.charAt(7)==='-') return v.slice(8,10)+'/'+v.slice(5,7)+'/'+v.slice(0,4)+' '+v.slice(11,16);
   return v.slice(0,16);
+}
+
+function mostrarDiag(msg){
+  var a=$('apiDiag'), m=$('mapaDiag');
+  if(a){a.className='api-diagnostico';a.textContent=msg;}
+  if(m){m.className='api-diagnostico';m.textContent=msg;}
 }
 
 window.ir=function(nome){
@@ -459,14 +514,13 @@ window.baixarRegistros=function(){
       var regs=j.registros||[];
       _set('regs',regs);
       renderTabelaRegs();renderKPIs();renderUltimas();
-      toast('Registros atualizados: '+regs.length);
       var gpsOk=0; regs.forEach(function(r){if(extrairGPSRegistro(r))gpsOk++;});
-      var dg=$('apiDiag');
-      if(dg){
-        dg.className='api-diagnostico';
-        dg.textContent='API getRegistros OK\nSistema: '+(j.sistema||'')+'\nTotal recebido: '+regs.length+'\nCom GPS extraível: '+gpsOk+'\nChave local salva: '+DB+'_regs';
-      }
-    }else{toast('API não retornou sucesso em getRegistros.');}
+      var msg='API getRegistros OK\nSistema: '+(j.sistema||'')+'\nTotal recebido: '+regs.length+'\nCom GPS extraível: '+gpsOk+'\nChave local salva: '+DB+'_regs';
+      mostrarDiag(msg);
+      toast('Registros atualizados: '+regs.length+' | GPS válido: '+gpsOk);
+    }else{
+      toast('API não retornou sucesso em getRegistros.');
+    }
   });
 };
 window.baixarMovimentacoes=function(){apiGet('getMovimentacoes',function(j){if(j.sucesso){_set('movs',j.movimentacoes||[]);renderMovKPIs();renderMov();toast('Movimentacoes: '+(j.movimentacoes||[]).length);}});};
@@ -519,6 +573,7 @@ window.plotarGPSRegistros=function(){
 
   regs.forEach(function(r,idx){
     var gps = extrairGPSRegistro(r);
+
     if(!gps){
       stats.semGps++;
       return;
@@ -538,6 +593,8 @@ window.plotarGPSRegistros=function(){
       'Lat: ' + gps.lat + '<br>' +
       'Lng: ' + gps.lng + '<br>' +
       'Acc: ' + esc(gps.acc || '') + '<br>' +
+      'Origem: ' + esc(gps.origem || '') + '<br>' +
+      'Ajuste: ' + esc(gps.ajuste || '') + '<br>' +
       'Registro: ' + (idx+1);
 
     if(map && cam.gps){
@@ -558,7 +615,9 @@ window.plotarGPSRegistros=function(){
     map.fitBounds(bounds, {padding:[20,20]});
   }
 
-  toast('GPS plotado: ' + stats.total + ' ponto(s). Sem GPS: ' + stats.semGps);
+  var msg='GPS plotado: ' + stats.total + ' ponto(s). Sem GPS: ' + stats.semGps;
+  mostrarDiag(msg);
+  toast(msg);
 };
 
 
