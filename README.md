@@ -1,10 +1,11 @@
-# REPROGEN CENTRAL V5.3.7 — GPS V1.3 Corrigido
+# REPROGEN CENTRAL V5.3.8 — GPS V1.3 Definitivo
 
-Corrige a leitura de GPS da Central para registros vindos do Apps Script V1.3/planilha nova.
+Correção para quando a API mostra `Com gpsLat/gpsLng`, mas o mapa ainda mostra GPS zero.
 
 ## Subir no GitHub
 
 Suba:
+
 - index.html
 - manifest.json
 - service-worker.js
@@ -14,12 +15,14 @@ Suba:
 
 Mensagem de commit:
 
-Atualiza Central V5.3.7 com GPS V1.3 corrigido
+Atualiza Central V5.3.8 com GPS definitivo
 
 ## Teste
 
-1. Config > Testar Conexão.
-2. Registros > Atualização Forçada.
-3. Registros > Diagnóstico API.
-4. Mapa > Atualizar Pontos GPS.
-5. Mapa > GPS Local V1.3.
+1. Abrir com `?v=538`
+2. Registros > Atualização Forçada
+3. Registros > Diagnóstico API
+4. Mapa > Atualizar Pontos GPS
+5. Mapa > GPS Local V1.3 Definitivo
+
+Critério: REGISTROS com GPS válido maior que 0.

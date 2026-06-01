@@ -1,1 +1,1 @@
-Suba a Central V5.3.7 e teste Registros > Atualização Forçada, depois Mapa > GPS Local V1.3.
+Suba a Central V5.3.8. Abra com ?v=538. Faça Registros > Atualização Forçada e Mapa > GPS Local V1.3 Definitivo.

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>REPROGEN CENTRAL V5.3.7 - GPS V1.3 CORRIGIDO</title>
+<title>REPROGEN CENTRAL V5.3.8 - GPS V1.3 DEFINITIVO</title>
 <meta name="theme-color" content="#0f5132">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
@@ -55,8 +55,8 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
 </head>
 <body>
 <header>
-  <h1>REPROGEN CENTRAL V5.3.7</h1>
-  <p>Consultor &bull; Estoque &bull; Campo &bull; GPS V1.3 Corrigido</p>
+  <h1>REPROGEN CENTRAL V5.3.8</h1>
+  <p>Consultor &bull; Estoque &bull; Campo &bull; GPS V1.3 Definitivo</p>
 </header>
 
 <div class="wrap">
@@ -209,7 +209,7 @@ button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:1
     <div id="mapaTipoStatus" class="muted" style="margin-top:8px">Mapa padrão selecionado.</div>
   </div>
   <div id="gpsResumoMapa" class="kpis" style="margin-top:10px;margin-bottom:10px"><div class="kpi"><small>Pontos GPS</small><div class="n" id="gpsTotal">0</div></div><div class="kpi"><small>Recentes</small><div class="n" id="gpsRec" style="color:#198754">0</div></div><div class="kpi"><small>Atenção</small><div class="n" id="gpsAt" style="color:#e67e22">0</div></div><div class="kpi"><small>Sem GPS</small><div class="n" id="gpsSem" style="color:#842029">0</div></div></div>
-  <div style="margin-top:10px"><button class="bp" onclick="plotarGPSRegistros()">Atualizar Pontos GPS</button><button class="bb" onclick="centralizarMapa()">Centralizar</button><button class="bb" onclick="diagnosticarGPS()">Diagnóstico GPS</button><button class="bb" onclick="exportGeoJSON()">GeoJSON</button><button class="bb" onclick="diagnosticoGPSLocalDetalhado()">GPS Local V1.3</button><button class="bw" onclick="limparMapaImportado()">Limpar Mapa Importado</button><button class="bd" onclick="limparPontosGPS()">Limpar Pontos GPS da Tela</button><button class="bs" onclick="addPonto()">+ Ponto</button></div>
+  <div style="margin-top:10px"><button class="bp" onclick="plotarGPSRegistros()">Atualizar Pontos GPS</button><button class="bb" onclick="centralizarMapa()">Centralizar</button><button class="bb" onclick="diagnosticarGPS()">Diagnóstico GPS</button><button class="bb" onclick="exportGeoJSON()">GeoJSON</button><button class="bb" onclick="diagnosticoGPSLocalDetalhado()">GPS Local V1.3 Definitivo</button><button class="bw" onclick="limparMapaImportado()">Limpar Mapa Importado</button><button class="bd" onclick="limparPontosGPS()">Limpar Pontos GPS da Tela</button><button class="bs" onclick="addPonto()">+ Ponto</button></div>
   <div class="muted" style="margin-top:6px">Mapa híbrido: usa GPS de REGISTROS e COCHOS. Verde: registro recente • Amarelo/vermelho: atraso • Azul: cocho fixo ou sem data confiável.</div>
   <div id="gpsDiagnostico" class="item muted" style="margin-top:10px">Clique em “Atualizar Pontos GPS” para carregar registros e cochos no mapa.</div>
   <div id="mapa"></div>
@@ -291,27 +291,90 @@ function atualizarResumoGPS(stats){
   }
 }
 
-function valorPrimeiro(){for(var i=0;i<arguments.length;i++){var v=arguments[i];if(v!==undefined&&v!==null&&String(v).trim()!=='')return v;}return '';}
-function parsePayloadJsonSeguro(r){if(!r)return{};if(r.payload&&typeof r.payload==='object')return r.payload;var pj=r.payloadJson||r.payloadJSON||r.payload_json||'';if(!pj)return{};try{return typeof pj==='object'?pj:JSON.parse(String(pj));}catch(e){return{};}}
-function numeroGPS(v){if(v===undefined||v===null)return NaN;var s=String(v).trim();if(!s)return NaN;s=s.replace(/"/g,'').replace(/'/g,'').replace(',','.').replace(/[^\d\.\-]/g,'');return parseFloat(s);}
+
+function valorPrimeiro(){
+  for(var i=0;i<arguments.length;i++){
+    var v=arguments[i];
+    if(v!==undefined&&v!==null&&String(v).trim()!=='')return v;
+  }
+  return '';
+}
+function normalizarChaveObjeto(k){return String(k||'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+function valorObjFlex(obj){
+  if(!obj)return '';
+  var mapa={},k;
+  for(k in obj){if(Object.prototype.hasOwnProperty.call(obj,k)){mapa[normalizarChaveObjeto(k)]=obj[k];}}
+  for(var i=1;i<arguments.length;i++){
+    var alvo=normalizarChaveObjeto(arguments[i]);
+    if(mapa[alvo]!==undefined&&mapa[alvo]!==null&&String(mapa[alvo]).trim()!=='')return mapa[alvo];
+  }
+  return '';
+}
+function parsePayloadJsonSeguro(r){
+  if(!r)return {};
+  if(r.payload&&typeof r.payload==='object')return r.payload;
+  var pj=valorObjFlex(r,'payloadJson','payloadJSON','payload_json','payload');
+  if(!pj)return {};
+  try{return typeof pj==='object'?pj:JSON.parse(String(pj));}catch(e){return {};}
+}
+function numeroGPS(v){
+  if(v===undefined||v===null)return NaN;
+  var s=String(v).trim();
+  if(!s)return NaN;
+  s=s.replace(/"/g,'').replace(/'/g,'').replace(',','.').replace(/[^\d\.\-]/g,'');
+  return parseFloat(s);
+}
 function extrairGPSRegistro(r){
-  r=r||{};var p=parsePayloadJsonSeguro(r),g=r.gps||{},pg=p.gps||{};
-  var lat=valorPrimeiro(r.gpsLat,r.gpsLAT,r.latitude,r.lat,g.lat,g.latitude,p.gpsLat,p.gpsLAT,p.latitude,p.lat,pg.lat,pg.latitude);
-  var lng=valorPrimeiro(r.gpsLng,r.gpsLNG,r.longitude,r.lng,r.lon,g.lng,g.longitude,g.lon,p.gpsLng,p.gpsLNG,p.longitude,p.lng,p.lon,pg.lng,pg.longitude,pg.lon);
-  var acc=valorPrimeiro(r.gpsAcc,r.gpsACC,r.accuracy,g.acc,g.accuracy,p.gpsAcc,p.gpsACC,p.accuracy,pg.acc,pg.accuracy);
+  r=r||{};
+  var p=parsePayloadJsonSeguro(r);
+  var g=valorObjFlex(r,'gps'); if(!g||typeof g!=='object')g={};
+  var pg=valorObjFlex(p,'gps'); if(!pg||typeof pg!=='object')pg={};
+  var lat=valorPrimeiro(
+    valorObjFlex(r,'gpsLat','gpslat','gps_lat','gpslatitude','latitude','lat'),
+    valorObjFlex(g,'gpsLat','gpslat','latitude','lat'),
+    valorObjFlex(p,'gpsLat','gpslat','gps_lat','gpslatitude','latitude','lat'),
+    valorObjFlex(pg,'gpsLat','gpslat','latitude','lat')
+  );
+  var lng=valorPrimeiro(
+    valorObjFlex(r,'gpsLng','gpslng','gps_lng','gpsLon','gpsLong','gpsLongitude','gpslongitude','longitude','lng','lon','long'),
+    valorObjFlex(g,'gpsLng','gpslng','gpsLon','gpsLong','gpsLongitude','longitude','lng','lon','long'),
+    valorObjFlex(p,'gpsLng','gpslng','gps_lng','gpsLon','gpsLong','gpsLongitude','gpslongitude','longitude','lng','lon','long'),
+    valorObjFlex(pg,'gpsLng','gpslng','gpsLon','gpsLong','gpsLongitude','longitude','lng','lon','long')
+  );
+  var acc=valorPrimeiro(
+    valorObjFlex(r,'gpsAcc','gpsacc','gpsAccuracy','gpsaccuracy','accuracy','acc'),
+    valorObjFlex(g,'gpsAcc','gpsacc','gpsAccuracy','accuracy','acc'),
+    valorObjFlex(p,'gpsAcc','gpsacc','gpsAccuracy','gpsaccuracy','accuracy','acc'),
+    valorObjFlex(pg,'gpsAcc','gpsacc','gpsAccuracy','accuracy','acc')
+  );
   var nlat=numeroGPS(lat),nlng=numeroGPS(lng);
   if(isNaN(nlat)||isNaN(nlng))return null;
   if(nlat<-90||nlat>90||nlng<-180||nlng>180)return null;
   return {lat:nlat,lng:nlng,acc:acc};
 }
-function campoRegistro(r,campo){var p=parsePayloadJsonSeguro(r);return valorPrimeiro(r[campo],p[campo]);}
-function formatarDataHoraMapa(v){v=String(v||'').trim();if(!v)return '';if(v.length>=16&&v.charAt(2)==='/'&&v.charAt(5)==='/')return v.slice(0,16);if(v.length>=16&&v.charAt(4)==='-'&&v.charAt(7)==='-')return v.slice(8,10)+'/'+v.slice(5,7)+'/'+v.slice(0,4)+' '+v.slice(11,16);return v.slice(0,16);}
+function campoRegistro(r,campo){
+  var p=parsePayloadJsonSeguro(r);
+  return valorPrimeiro(valorObjFlex(r,campo),valorObjFlex(p,campo));
+}
+function formatarDataHoraMapa(v){
+  v=String(v||'').trim();
+  if(!v)return '';
+  if(v.length>=16&&v.charAt(2)==='/'&&v.charAt(5)==='/')return v.slice(0,16);
+  if(v.length>=16&&v.charAt(4)==='-'&&v.charAt(7)==='-')return v.slice(8,10)+'/'+v.slice(5,7)+'/'+v.slice(0,4)+' '+v.slice(11,16);
+  return v.slice(0,16);
+}
 window.diagnosticoGPSLocalDetalhado=function(){
-  var regs=getRegistros(),cochos=getCochos(),rv=0,rs=0,cv=0,cs=0;
-  regs.forEach(function(r){if(extrairGPSRegistro(r))rv++;else rs++;});
+  var regs=getRegistros(),cochos=getCochos(),rv=0,rs=0,cv=0,cs=0,amostra='';
+  regs.forEach(function(r,i){
+    var g=extrairGPSRegistro(r);
+    if(g){rv++; if(!amostra)amostra='Amostra GPS registro '+(i+1)+': lat='+g.lat+' lng='+g.lng+' acc='+(g.acc||'');}
+    else rs++;
+  });
   cochos.forEach(function(c){if(extrairGPSRegistro(c))cv++;else cs++;});
-  var msg='Diagnóstico GPS V1.3 Corrigido\nREGISTROS: '+rv+' com GPS válido, '+rs+' sem GPS.\nCOCHOS: '+cv+' com GPS válido, '+cs+' sem GPS.';
-  var box=$('apiDiag');if(box){box.className='api-diagnostico';box.textContent=msg;}toast(msg.replace(/\n/g,' | '));
+  var msg='Diagnóstico GPS V1.3 Definitivo\nREGISTROS: '+rv+' com GPS válido, '+rs+' sem GPS.\nCOCHOS: '+cv+' com GPS válido, '+cs+' sem GPS.';
+  if(amostra)msg+='\n'+amostra;
+  var box=$('apiDiag');if(box){box.className='api-diagnostico';box.textContent=msg;}
+  toast(msg.replace(/\n/g,' | '));
 };
 
 window.ir=function(nome){
@@ -458,8 +521,8 @@ window.plotarGPSRegistros=function(){
     var gps=extrairGPSRegistro(c);
     if(!gps){stats.semGps++;return;}
     if(!gpsValido(gps)){stats.invalidos++;return;}
-    var propriedade=c.propriedadeNome||c.propriedade||'';
-    var cocho=c.nome||c.cocho||'Cocho';
+    var propriedade=valorPrimeiro(campoRegistro(r,'propriedade'),campoRegistro(r,'propriedadeNome'),campoRegistro(r,'fazenda'),'');
+    var cocho=valorPrimeiro(campoRegistro(r,'cocho'),campoRegistro(r,'cochoNome'),campoRegistro(r,'ponto'),campoRegistro(r,'local'),'Ponto GPS');
     var chave='COCHO|'+propriedade+'|'+cocho;
     pontos[chave]={
       fonte:'COCHO',
@@ -484,7 +547,7 @@ window.plotarGPSRegistros=function(){
     if(!gpsValido(gps)){stats.invalidos++;return;}
     var propriedade=valorPrimeiro(r.propriedade,r.propriedadeNome,campoRegistro(r,'propriedade'),campoRegistro(r,'propriedadeNome'),campoRegistro(r,'fazenda'),'');
     var cocho=valorPrimeiro(r.cocho,r.cochoNome,r.ponto,r.local,campoRegistro(r,'cocho'),campoRegistro(r,'cochoNome'),campoRegistro(r,'ponto'),campoRegistro(r,'local'),'Ponto GPS');
-    var dataHora=dataHoraManejo(r)||(r.payload&&dataHoraManejo(r.payload))||'';
+    var dataHora=valorPrimeiro(campoRegistro(r,'dataHoraBR'),campoRegistro(r,'dataHoraLocal'),campoRegistro(r,'dataHora'),campoRegistro(r,'ts'),campoRegistro(r,'data'),'');
     var chave='REG|'+propriedade+'|'+cocho;
     if(!pontos[chave]){
       pontos[chave]={
