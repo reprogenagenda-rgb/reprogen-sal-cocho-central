@@ -1,28 +1,66 @@
-# REPROGEN CENTRAL V5.3.8 — GPS V1.3 Definitivo
+# REPROGEN CENTRAL V5.3.9 — GPS Debug Definitivo
 
-Correção para quando a API mostra `Com gpsLat/gpsLng`, mas o mapa ainda mostra GPS zero.
+Correção cirúrgica para quando a API `getRegistros` mostra GPS, mas o mapa ainda indica zero pontos.
 
-## Subir no GitHub
+## O que foi alterado
 
-Suba:
+- Mantém layout e módulos existentes.
+- Não mexe no Campo.
+- Não mexe no Apps Script.
+- Não troca URL.
+- Usa a mesma chave local: `DB + '_regs'`.
+- Adiciona:
+  - **API x Local**
+  - **DEBUG Registro Local**
+  - **Reset Local**
+  - **GPS Local Debug**
+- Simplifica temporariamente a plotagem: **um ponto por registro com GPS válido**.
+- Extrator GPS flexível para:
+  - gpsLat, gpslat, gps_lat, GPS_LAT, GpsLat, lat, latitude
+  - gpsLng, gpslng, gps_lng, GPS_LNG, GpsLng, lng, lon, longitude
+  - gpsAcc, gpsacc, gps_acc, accuracy, acc
+  - r.gps, r.payload, r.payloadJson
 
-- index.html
-- manifest.json
-- service-worker.js
-- README.md
-- icons/icon-192.png
-- icons/icon-512.png
+## Arquivos para subir no GitHub
 
-Mensagem de commit:
+```text
+index.html
+manifest.json
+service-worker.js
+README.md
+icons/icon-192.png
+icons/icon-512.png
+```
 
-Atualiza Central V5.3.8 com GPS definitivo
+## Mensagem de commit
 
-## Teste
+```text
+Corrige GPS definitivo da Central V5.3.9
+```
 
-1. Abrir com `?v=538`
-2. Registros > Atualização Forçada
-3. Registros > Diagnóstico API
-4. Mapa > Atualizar Pontos GPS
-5. Mapa > GPS Local V1.3 Definitivo
+## Teste obrigatório
 
-Critério: REGISTROS com GPS válido maior que 0.
+Abrir com:
+
+```text
+https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/?v=539
+```
+
+Depois:
+
+1. **Registros > Reset Local**
+2. **Registros > Atualização Forçada**
+3. **Registros > Diagnóstico API**
+4. **Registros > API x Local**
+5. **Mapa > DEBUG Registro Local**
+6. **Mapa > GPS Local Debug**
+7. **Mapa > Atualizar Pontos GPS**
+
+Critério de aprovação:
+
+```text
+API mostra GPS
+Local mostra GPS
+Mapa plota pontos
+Pontos GPS > 0
+```

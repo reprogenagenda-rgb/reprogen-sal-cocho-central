@@ -1,7 +1,7 @@
 {
-  "name": "REPROGEN Central V5.3.8",
-  "short_name": "Central",
-  "description": "REPROGEN CENTRAL - GPS V1.3 definitivo com leitura flexível.",
+  "name": "REPROGEN Central V5.3.9",
+  "short_name": "REPROGEN Central",
+  "description": "REPROGEN CENTRAL - GPS Debug Definitivo.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

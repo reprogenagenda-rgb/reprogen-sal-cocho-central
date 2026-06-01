@@ -1,1 +1,1 @@
-Suba a Central V5.3.8. Abra com ?v=538. Faça Registros > Atualização Forçada e Mapa > GPS Local V1.3 Definitivo.
+Suba a Central V5.3.9. Abra com ?v=539. Faça Reset Local, Atualização Forçada, API x Local, GPS Local Debug e Atualizar Pontos GPS.
