@@ -1,66 +1,36 @@
-# REPROGEN CENTRAL V5.3.9 — GPS Debug Definitivo
+# APP COCHO CENTRAL V5.4
 
-Correção cirúrgica para quando a API `getRegistros` mostra GPS, mas o mapa ainda indica zero pontos.
-
-## O que foi alterado
-
-- Mantém layout e módulos existentes.
-- Não mexe no Campo.
-- Não mexe no Apps Script.
-- Não troca URL.
-- Usa a mesma chave local: `DB + '_regs'`.
-- Adiciona:
-  - **API x Local**
-  - **DEBUG Registro Local**
-  - **Reset Local**
-  - **GPS Local Debug**
-- Simplifica temporariamente a plotagem: **um ponto por registro com GPS válido**.
-- Extrator GPS flexível para:
-  - gpsLat, gpslat, gps_lat, GPS_LAT, GpsLat, lat, latitude
-  - gpsLng, gpslng, gps_lng, GPS_LNG, GpsLng, lng, lon, longitude
-  - gpsAcc, gpsacc, gps_acc, accuracy, acc
-  - r.gps, r.payload, r.payloadJson
+Central conectada ao SCRIPT COCHO CLOUD V2.0.
 
 ## Arquivos para subir no GitHub
 
-```text
-index.html
-manifest.json
-service-worker.js
-README.md
-icons/icon-192.png
-icons/icon-512.png
-```
+- index.html
+- manifest.json
+- service-worker.js
+- README.md
+- icons/icon-192.png
+- icons/icon-512.png
+
+## Configuração inicial
+
+1. Abra a Central pelo GitHub Pages.
+2. Vá em Config Cloud.
+3. Cole a URL do Web App do Apps Script Cloud V2.0.
+4. Clique em Salvar URL.
+5. Clique em Testar conexão.
+
+## Testes obrigatórios
+
+1. Cloud OK.
+2. Criar fazenda.
+3. Editar fazenda sem duplicar.
+4. Criar usuário.
+5. Validar CHAVE_FAZENDA + PIN.
+6. Enviar registro teste via POST.
+7. Confirmar se entrou em REGISTROS_COCHO.
+8. Confirmar SYNC_LOG.
+9. Confirmar AUDITORIA.
 
 ## Mensagem de commit
 
-```text
-Corrige GPS definitivo da Central V5.3.9
-```
-
-## Teste obrigatório
-
-Abrir com:
-
-```text
-https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/?v=539
-```
-
-Depois:
-
-1. **Registros > Reset Local**
-2. **Registros > Atualização Forçada**
-3. **Registros > Diagnóstico API**
-4. **Registros > API x Local**
-5. **Mapa > DEBUG Registro Local**
-6. **Mapa > GPS Local Debug**
-7. **Mapa > Atualizar Pontos GPS**
-
-Critério de aprovação:
-
-```text
-API mostra GPS
-Local mostra GPS
-Mapa plota pontos
-Pontos GPS > 0
-```
+Adicionar Central Cocho V5.4 com cloud multifazenda usuarios e sync
