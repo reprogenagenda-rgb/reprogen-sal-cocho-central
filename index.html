@@ -1,571 +1,617 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0f5132">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Cocho Central">
-  <title>APP COCHO CENTRAL V5.5.1</title>
-  <link rel="manifest" href="./manifest.json?v=5.5.1">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <style>
-    :root {
-      --g:#0f5132; --g2:#198754; --bg:#eef6ef; --card:#fff;
-      --line:#c8dcc9; --ink:#10291c; --muted:#607066;
-      --r:#dc3545; --am:#ffc107; --b:#0d6efd;
-    }
-    * { box-sizing:border-box; }
-    body { margin:0; background:var(--bg); font-family:Arial,Helvetica,sans-serif; color:var(--ink); }
-    header { background:linear-gradient(135deg,var(--g),#0b3d26); color:#fff; padding:12px; position:sticky; top:0; z-index:1000; }
-    .top { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:center; }
-    h1 { margin:0; font-size:18px; }
-    .sub { font-size:12px; opacity:.9; }
-    .badges { display:flex; gap:6px; flex-wrap:wrap; }
-    .badge { border-radius:999px; padding:6px 10px; font-weight:800; font-size:12px; background:#e9ecef; color:#111; }
-    .ok { background:#d1e7dd; color:#0f5132; }
-    .warn { background:#fff3cd; color:#664d03; }
-    .err { background:#f8d7da; color:#842029; }
-    main { max-width:1260px; margin:0 auto; padding:12px; }
-    nav { display:flex; gap:8px; overflow-x:auto; margin-bottom:12px; }
-    .tab { background:#fff; border:1px solid var(--line); color:#123; border-radius:12px; padding:10px 12px; font-weight:800; white-space:nowrap; }
-    .tab.active { background:var(--g); color:#fff; }
-    .view { display:none; }
-    .view.active { display:block; }
-    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:12px; }
-    .card { grid-column:span 12; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; box-shadow:0 4px 16px rgba(0,0,0,.06); }
-    @media(min-width:850px){ .c4{grid-column:span 4;} .c6{grid-column:span 6;} .c8{grid-column:span 8;} }
-    h2 { color:var(--g); margin:0 0 10px; font-size:18px; }
-    label { display:block; margin:8px 0 4px; font-size:12px; font-weight:800; }
-    input,select,textarea { width:100%; border:1px solid var(--line); border-radius:12px; padding:10px; font-size:15px; background:#fff; }
-    button { border:0; border-radius:12px; padding:10px 12px; font-weight:900; background:var(--g2); color:#fff; }
-    button.blue { background:var(--b); }
-    button.gray { background:#6c757d; }
-    button.warnbtn { background:#f0ad00; color:#111; }
-    .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-    pre { background:#0b1f16; color:#d8ffe6; padding:12px; border-radius:12px; overflow:auto; white-space:pre-wrap; font-size:12px; }
-    .msg { border-radius:12px; padding:10px; margin:8px 0; background:#fff3cd; color:#664d03; border:1px solid #ffe69c; }
-    .success { background:#d1e7dd; color:#0f5132; border-color:#badbcc; }
-    .error { background:#f8d7da; color:#842029; border-color:#f5c2c7; }
-    .kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
-    .kpi { border:1px solid var(--line); border-radius:14px; padding:12px; background:#fbfffb; }
-    .num { font-size:24px; font-weight:900; color:var(--g); }
-    .lab { font-size:12px; color:var(--muted); }
-    .tablewrap { overflow:auto; border:1px solid var(--line); border-radius:12px; }
-    table { border-collapse:collapse; width:100%; min-width:850px; background:#fff; }
-    th,td { padding:9px; border-bottom:1px solid #e7eee7; text-align:left; font-size:13px; }
-    th { background:#eef7ef; color:#0f5132; }
-    #map { height:560px; border-radius:16px; border:1px solid var(--line); background:#dfe8df; }
-    .legend { display:flex; gap:10px; flex-wrap:wrap; font-size:12px; margin-top:8px; }
-    .dot { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:4px; }
-    .green{background:#198754;} .yellow{background:#ffc107;} .red{background:#dc3545;} .gray{background:#6c757d;}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f5132">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cocho Central">
+<title>APP COCHO CENTRAL V5.6</title>
+<link rel="manifest" href="./manifest.json?v=5.6">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+:root{
+  --g:#0f5132;--g2:#198754;--g3:#d1e7dd;--bg:#eef6ef;--card:#fff;--ink:#10291c;
+  --line:#c8dcc9;--muted:#607066;--r:#dc3545;--am:#ffc107;--b:#0d6efd;--dark:#0b1f16;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+header{position:sticky;top:0;z-index:1000;background:linear-gradient(135deg,var(--g),#0a3822);color:#fff;padding:12px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+h1{margin:0;font-size:18px;letter-spacing:.2px}.sub{font-size:12px;opacity:.9;margin-top:2px}
+.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{border-radius:999px;padding:6px 10px;font-weight:900;font-size:12px;background:#e9ecef;color:#112}.ok{background:#d1e7dd;color:#0f5132}.warn{background:#fff3cd;color:#664d03}.err{background:#f8d7da;color:#842029}.bluebg{background:#cfe2ff;color:#084298}
+main{max-width:1320px;margin:0 auto;padding:12px}
+nav{display:flex;gap:8px;overflow-x:auto;margin:0 0 12px;padding-bottom:4px}
+.tab{border:1px solid var(--line);background:#fff;color:#123;border-radius:12px;padding:10px 12px;font-weight:900;white-space:nowrap}
+.tab.active{background:var(--g);color:#fff;border-color:var(--g)}
+.view{display:none}.view.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.card{grid-column:span 12;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+@media(min-width:900px){.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c9{grid-column:span 9}}
+h2{margin:0 0 10px;font-size:18px;color:var(--g)}h3{margin:10px 0 8px;font-size:15px;color:#173}
+label{display:block;margin:8px 0 4px;font-weight:900;font-size:12px;color:#263}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff;font-size:15px}
+button{border:0;border-radius:12px;padding:10px 12px;font-weight:900;background:var(--g2);color:#fff;cursor:pointer}
+button.blue{background:var(--b)}button.gray{background:#6c757d}button.warnbtn{background:#f0ad00;color:#111}button.red{background:var(--r)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.row>*{flex:0 0 auto}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.kpi{background:#fbfffb;border:1px solid var(--line);border-radius:14px;padding:12px}.num{font-size:24px;font-weight:900;color:var(--g)}.lab{font-size:12px;color:var(--muted)}
+pre{background:var(--dark);color:#d8ffe6;padding:12px;border-radius:12px;overflow:auto;white-space:pre-wrap;font-size:12px;max-height:360px}
+.msg{border:1px solid #ffe69c;background:#fff3cd;color:#664d03;border-radius:12px;padding:10px;margin:8px 0}.success{background:#d1e7dd;color:#0f5132;border-color:#badbcc}.error{background:#f8d7da;color:#842029;border-color:#f5c2c7}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1px solid #e7eee7;padding:9px;text-align:left;font-size:13px}th{background:#eef7ef;color:#0f5132}
+#map{height:560px;border-radius:16px;border:1px solid var(--line);background:#dfe8df}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;margin-top:8px}.dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:4px}.green{background:#198754}.yellow{background:#ffc107}.redc{background:#dc3545}.grayc{background:#6c757d}.bluec{background:#0d6efd}
+.footer{text-align:center;color:#607066;font-size:12px;padding:22px}
+.small{font-size:12px;color:var(--muted)}.pill{display:inline-block;border-radius:999px;background:#eef7ef;border:1px solid var(--line);padding:5px 8px;margin:2px;font-size:12px;font-weight:800}
+</style>
 </head>
+
 <body>
 <header>
   <div class="top">
     <div>
-      <h1>APP COCHO CENTRAL V5.5.1 — HOTFIX MAPA</h1>
-      <div class="sub">Mapa Satélite • GPS • Cloud V2.1 • Cache corrigido</div>
+      <h1>APP COCHO CENTRAL V5.6</h1>
+      <div class="sub">Estoque • Consumo • Lotes • Mapa Satélite • Sons • Minha Posição</div>
     </div>
     <div class="badges">
       <span id="netBadge" class="badge">Online?</span>
       <span id="cloudBadge" class="badge warn">Cloud não testada</span>
+      <span id="soundBadge" class="badge bluebg">Som ligado</span>
       <span id="hourBadge" class="badge ok">Brasília</span>
     </div>
   </div>
 </header>
 
 <main>
-  <nav>
-    <button class="tab active" data-view="painel">Painel</button>
-    <button class="tab" data-view="config">Config Cloud</button>
-    <button class="tab" data-view="acesso">Validar Acesso</button>
-    <button class="tab" data-view="sync">Teste Sync GPS</button>
-    <button class="tab" data-view="mapa">Mapa Satélite</button>
-    <button class="tab" data-view="auditoria">Sem GPS</button>
-  </nav>
+<nav id="tabs">
+  <button class="tab active" data-view="painel">Painel</button>
+  <button class="tab" data-view="config">Config Cloud</button>
+  <button class="tab" data-view="acesso">Acesso</button>
+  <button class="tab" data-view="produtos">Produtos</button>
+  <button class="tab" data-view="estoque">Estoque</button>
+  <button class="tab" data-view="entrada">Entrada Estoque</button>
+  <button class="tab" data-view="consumo">Dashboard Consumo</button>
+  <button class="tab" data-view="lotes">Lotes</button>
+  <button class="tab" data-view="movlotes">Mov. Lotes</button>
+  <button class="tab" data-view="mapa">Mapa Satélite</button>
+  <button class="tab" data-view="sync">Teste Sync</button>
+  <button class="tab" data-view="alertas">Alertas</button>
+</nav>
 
-  <section id="painel" class="view active">
-    <div class="grid">
-      <div class="card c4">
-        <h2>Status</h2>
-        <div class="kpis">
-          <div class="kpi"><div id="kPontos" class="num">0</div><div class="lab">Pontos</div></div>
-          <div class="kpi"><div id="kSemGps" class="num">0</div><div class="lab">Sem GPS</div></div>
-          <div class="kpi"><div id="kEnvios" class="num">0</div><div class="lab">Envios teste</div></div>
-          <div class="kpi"><div id="kSessao" class="num">0</div><div class="lab">Sessão</div></div>
-        </div>
+<section id="painel" class="view active">
+  <div class="grid">
+    <div class="card c4">
+      <h2>Status Geral</h2>
+      <div class="kpis">
+        <div class="kpi"><div id="kSessao" class="num">0</div><div class="lab">Sessão</div></div>
+        <div class="kpi"><div id="kProdutos" class="num">0</div><div class="lab">Produtos</div></div>
+        <div class="kpi"><div id="kEstoque" class="num">0</div><div class="lab">Itens estoque</div></div>
+        <div class="kpi"><div id="kLotes" class="num">0</div><div class="lab">Lotes</div></div>
+        <div class="kpi"><div id="kPontos" class="num">0</div><div class="lab">Pontos mapa</div></div>
+        <div class="kpi"><div id="kSemGps" class="num">0</div><div class="lab">Sem GPS</div></div>
       </div>
-      <div class="card c8">
-        <h2>Diagnóstico</h2>
-        <div class="msg success">
-          Se esta tela mostra <b>V5.5.1 — HOTFIX MAPA</b>, o index novo abriu corretamente.
-        </div>
-        <div class="row">
-          <button onclick="testCloud()">Testar Cloud</button>
-          <button class="blue" onclick="loadMapConsultoria()">Carregar Mapa Consultoria</button>
-          <button class="gray" onclick="showView('config')">Configurar URL</button>
-        </div>
-        <pre id="outPainel">Aguardando...</pre>
+      <div class="row">
+        <button onclick="toggleSound()" class="gray">Liga/Desliga Som</button>
+        <button onclick="playSound('sucesso')" class="blue">Testar Som</button>
       </div>
     </div>
-  </section>
-
-  <section id="config" class="view">
-    <div class="grid">
-      <div class="card c6">
-        <h2>Config Cloud V2.1</h2>
-        <label>URL do Web App /exec</label>
-        <input id="cloudUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
-        <div class="row">
-          <button onclick="saveUrl()">Salvar URL</button>
-          <button class="blue" onclick="testCloud()">Testar conexão</button>
-          <button class="gray" onclick="clearUrl()">Limpar</button>
-        </div>
+    <div class="card c8">
+      <h2>Fluxo recomendado de teste V5.6</h2>
+      <div class="msg success">Cloud V2.2 deve responder em Config Cloud. Depois valide acesso e teste Produtos → Entrada → Estoque → Consumo.</div>
+      <div class="row">
+        <button onclick="testCloud()">Testar Cloud</button>
+        <button onclick="showView('acesso')" class="blue">Validar Acesso</button>
+        <button onclick="refreshAll()" class="gray">Atualizar Dados</button>
+        <button onclick="minhaPosicao()" class="warnbtn">Onde estou</button>
       </div>
-      <div class="card c6">
-        <h2>Retorno</h2>
-        <pre id="outConfig">Aguardando...</pre>
+      <pre id="outPainel">Aguardando...</pre>
+    </div>
+  </div>
+</section>
+
+<section id="config" class="view">
+  <div class="grid">
+    <div class="card c6">
+      <h2>Config Cloud V2.2</h2>
+      <label>URL do Web App /exec</label>
+      <input id="cloudUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+      <div class="row">
+        <button onclick="saveUrl()">Salvar URL</button>
+        <button class="blue" onclick="testCloud()">Testar conexão</button>
+        <button class="gray" onclick="clearUrl()">Limpar</button>
+      </div>
+      <div class="msg">A Central V5.6 consome o SCRIPT COCHO CLOUD V2.2.</div>
+    </div>
+    <div class="card c6">
+      <h2>Retorno</h2>
+      <pre id="outConfig">Aguardando...</pre>
+    </div>
+  </div>
+</section>
+
+<section id="acesso" class="view">
+  <div class="grid">
+    <div class="card c5">
+      <h2>Validar CHAVE_FAZENDA + PIN</h2>
+      <label>CHAVE_FAZENDA</label>
+      <input id="chave" placeholder="COCHO-...">
+      <label>PIN</label>
+      <input id="pin" value="1234">
+      <div class="row">
+        <button onclick="validarAcesso()">Validar Acesso</button>
+        <button onclick="preencherTeste()" class="gray">Preencher Teste</button>
+        <button onclick="baixarBase()" class="blue">Baixar Base</button>
       </div>
     </div>
-  </section>
+    <div class="card c7">
+      <h2>Sessão</h2>
+      <div id="sessaoBox" class="msg">Nenhuma sessão validada.</div>
+      <pre id="outAcesso">Aguardando...</pre>
+    </div>
+  </div>
+</section>
 
-  <section id="acesso" class="view">
-    <div class="grid">
-      <div class="card c6">
-        <h2>Validar CHAVE_FAZENDA + PIN</h2>
-        <label>CHAVE_FAZENDA</label>
-        <input id="chave" placeholder="COCHO-...">
-        <label>PIN</label>
-        <input id="pin" value="1234">
-        <div class="row">
-          <button onclick="validarAcesso()">Validar Acesso</button>
-          <button class="gray" onclick="preencherTeste()">Preencher teste</button>
-        </div>
-      </div>
-      <div class="card c6">
-        <h2>Sessão</h2>
-        <div id="sessaoBox" class="msg">Nenhuma sessão validada.</div>
-        <pre id="outAcesso">Aguardando...</pre>
+<section id="produtos" class="view">
+  <div class="grid">
+    <div class="card c5">
+      <h2>Cadastrar Produto</h2>
+      <label>Nome do Produto</label><input id="prod_nome" value="SAL MINERAL">
+      <label>Tipo</label>
+      <select id="prod_tipo">
+        <option>SAL_MINERAL</option><option>PROTEINADO</option><option>ENERGETICO</option><option>NUCLEO</option><option>RACAO</option><option>SUPLEMENTO</option><option>OUTRO</option>
+      </select>
+      <label>Fabricante</label><input id="prod_fab" placeholder="opcional">
+      <label>Unidade padrão</label><input id="prod_unid" value="KG">
+      <label>Kg por unidade/saco</label><input id="prod_kgunid" value="30">
+      <label>Saldo mínimo kg</label><input id="prod_min" value="60">
+      <div class="row">
+        <button onclick="criarProduto()">Criar Produto</button>
+        <button class="blue" onclick="listarProdutos()">Listar Produtos</button>
       </div>
     </div>
-  </section>
+    <div class="card c7">
+      <h2>Produtos da Fazenda</h2>
+      <div class="tablewrap"><table><thead><tr><th>ID</th><th>Produto</th><th>Tipo</th><th>Fabricante</th><th>Unidade</th><th>Status</th></tr></thead><tbody id="prodRows"></tbody></table></div>
+      <pre id="outProdutos">Aguardando...</pre>
+    </div>
+  </div>
+</section>
 
-  <section id="sync" class="view">
-    <div class="grid">
-      <div class="card c6">
-        <h2>Teste de sincronização GPS</h2>
-        <label>Lote</label><input id="lote" value="LOTE 01">
-        <label>Cocho</label><input id="cocho" value="COCHO 01">
-        <label>Produto</label><input id="produto" value="SAL MINERAL">
-        <label>Quantidade kg</label><input id="kg" value="25">
-        <label>Latitude</label><input id="lat" value="-1.23456">
-        <label>Longitude</label><input id="lng" value="-47.12345">
-        <label>Acurácia</label><input id="acc" value="18">
-        <div class="row">
-          <button class="blue" onclick="syncGps(true)">Enviar com GPS</button>
-          <button class="warnbtn" onclick="syncGps(false)">Enviar sem GPS</button>
-        </div>
+<section id="estoque" class="view">
+  <div class="grid">
+    <div class="card c4">
+      <h2>Estoque Atual</h2>
+      <div class="row">
+        <button onclick="listarEstoque()">Listar Estoque</button>
+        <button onclick="listarMovEstoque()" class="gray">Movimentações</button>
       </div>
-      <div class="card c6">
-        <h2>Retorno</h2>
-        <pre id="outSync">Aguardando...</pre>
+      <div class="msg">Status: OK, BAIXO, ZERADO ou NEGATIVO.</div>
+    </div>
+    <div class="card c8">
+      <h2>Itens de Estoque</h2>
+      <div class="tablewrap"><table><thead><tr><th>Produto</th><th>Tipo</th><th>Saldo kg</th><th>Mínimo kg</th><th>Status</th><th>Atualização</th></tr></thead><tbody id="estRows"></tbody></table></div>
+      <pre id="outEstoque">Aguardando...</pre>
+    </div>
+  </div>
+</section>
+
+<section id="entrada" class="view">
+  <div class="grid">
+    <div class="card c5">
+      <h2>Entrada / Ajuste de Estoque</h2>
+      <label>Produto</label><select id="ent_prod"></select>
+      <label>Tipo de movimento</label>
+      <select id="ent_tipo">
+        <option>ENTRADA_COMPRA</option><option>ENTRADA_AJUSTE</option><option>CORRECAO</option><option>PERDA</option><option>SAIDA_AJUSTE</option>
+      </select>
+      <label>Quantidade kg</label><input id="ent_kg" value="300">
+      <label>Observação</label><input id="ent_obs" value="Entrada inicial de estoque">
+      <div class="row">
+        <button onclick="registrarEntrada()">Registrar Movimento</button>
+        <button onclick="listarEstoque()" class="blue">Ver Estoque</button>
       </div>
     </div>
-  </section>
+    <div class="card c7">
+      <h2>Retorno</h2>
+      <pre id="outEntrada">Aguardando...</pre>
+    </div>
+  </div>
+</section>
 
-  <section id="mapa" class="view">
-    <div class="grid">
-      <div class="card c4">
-        <h2>Filtros do Mapa</h2>
-        <label>Modo</label>
-        <select id="modoMapa">
-          <option value="fazenda">Fazenda da sessão</option>
-          <option value="consultoria">Consultoria geral</option>
-        </select>
-        <label>Lote</label><input id="fLote" placeholder="opcional">
-        <label>Cocho</label><input id="fCocho" placeholder="opcional">
-        <label>Produto</label><input id="fProduto" placeholder="opcional">
-        <label>Usuário</label><input id="fUsuario" placeholder="opcional">
-        <div class="row">
-          <button class="blue" onclick="carregarMapa()">Carregar Mapa</button>
-          <button class="gray" onclick="centralizar()">Centralizar</button>
-        </div>
-        <div class="legend">
-          <span><i class="dot green"></i>OK</span>
-          <span><i class="dot yellow"></i>Impreciso</span>
-          <span><i class="dot red"></i>Alerta</span>
-          <span><i class="dot gray"></i>Sem ponto</span>
-        </div>
-        <div id="mapMsg" class="msg">Aguardando pontos.</div>
+<section id="consumo" class="view">
+  <div class="grid">
+    <div class="card c4">
+      <h2>Dashboard de Consumo</h2>
+      <label>Período em dias</label><input id="cons_dias" value="30">
+      <div class="row">
+        <button onclick="dashboardConsumo()">Atualizar Fazenda</button>
+        <button class="blue" onclick="dashboardConsumoConsultoria()">Consultoria</button>
       </div>
-      <div class="card c8">
-        <h2>Mapa padrão / satélite</h2>
-        <div id="map"></div>
-      </div>
-      <div class="card">
-        <h2>Registros sem GPS</h2>
-        <div class="tablewrap">
-          <table>
-            <thead>
-              <tr><th>ID</th><th>Fazenda</th><th>Data</th><th>Lote</th><th>Cocho</th><th>Produto</th><th>Usuário</th><th>Motivo</th></tr>
-            </thead>
-            <tbody id="semGpsRows"></tbody>
-          </table>
-        </div>
-        <pre id="outMapa">Aguardando...</pre>
+      <div class="kpis" style="margin-top:10px">
+        <div class="kpi"><div id="consKg" class="num">0</div><div class="lab">Kg consumido</div></div>
+        <div class="kpi"><div id="consDia" class="num">0</div><div class="lab">Kg/dia</div></div>
+        <div class="kpi"><div id="consAnimais" class="num">0</div><div class="lab">Animais</div></div>
+        <div class="kpi"><div id="consAnimalDia" class="num">-</div><div class="lab">kg/animal/dia</div></div>
       </div>
     </div>
-  </section>
+    <div class="card c8">
+      <h2>Consumo por Produto</h2>
+      <div id="consProdutoBox"></div>
+      <pre id="outConsumo">Aguardando...</pre>
+    </div>
+  </div>
+</section>
 
-  <section id="auditoria" class="view">
-    <div class="grid">
-      <div class="card c6">
-        <h2>Auditoria GPS</h2>
-        <div class="row">
-          <button onclick="listarSemGps()">Listar registros sem GPS</button>
-          <button class="gray" onclick="validarGpsExemplo()">Validar GPS exemplo</button>
-        </div>
-      </div>
-      <div class="card c6">
-        <h2>Retorno</h2>
-        <pre id="outAuditoria">Aguardando...</pre>
+<section id="lotes" class="view">
+  <div class="grid">
+    <div class="card c5">
+      <h2>Cadastrar Lote</h2>
+      <label>Nome do Lote</label><input id="lote_nome" value="LOTE 01">
+      <label>Categoria</label>
+      <select id="lote_cat">
+        <option>LOTE_MISTO</option><option>BEZERROS</option><option>BEZERRAS</option><option>NOVILHOS</option><option>NOVILHAS</option><option>VACAS</option><option>TOUROS</option><option>GARROTES</option><option>OUTRO</option>
+      </select>
+      <label>Quantidade de animais</label><input id="lote_qtd" value="100">
+      <label>Pasto/Local</label><input id="lote_pasto" value="PASTO 01">
+      <label>Observações</label><input id="lote_obs" placeholder="opcional">
+      <div class="row">
+        <button onclick="criarLote()">Criar Lote</button>
+        <button onclick="listarLotes()" class="blue">Listar Lotes</button>
       </div>
     </div>
-  </section>
+    <div class="card c7">
+      <h2>Lotes da Fazenda</h2>
+      <div class="tablewrap"><table><thead><tr><th>ID</th><th>Lote</th><th>Categoria</th><th>Animais</th><th>Status</th><th>Local</th></tr></thead><tbody id="loteRows"></tbody></table></div>
+      <pre id="outLotes">Aguardando...</pre>
+    </div>
+  </div>
+</section>
+
+<section id="movlotes" class="view">
+  <div class="grid">
+    <div class="card c5">
+      <h2>Movimentar Lote</h2>
+      <label>Lote</label><select id="mov_lote"></select>
+      <label>Tipo Movimento</label>
+      <select id="mov_tipo">
+        <option>ENTRADA</option><option>SAIDA</option><option>TRANSFERENCIA</option><option>AJUSTE</option><option>MORTE</option><option>VENDA</option><option>COMPRA</option><option>TROCA_PASTO</option><option>ENCERRAMENTO</option>
+      </select>
+      <label>Quantidade de animais</label><input id="mov_qtd" value="10">
+      <label>Origem</label><input id="mov_origem" value="PASTO 01">
+      <label>Destino</label><input id="mov_destino" value="PASTO 02">
+      <label>Motivo</label><input id="mov_motivo" value="Movimentação pela Central V5.6">
+      <div class="row">
+        <button onclick="registrarMovLote()">Registrar Movimentação</button>
+        <button onclick="listarMovLotes()" class="blue">Listar Movimentos</button>
+      </div>
+    </div>
+    <div class="card c7">
+      <h2>Movimentações</h2>
+      <div class="tablewrap"><table><thead><tr><th>Data</th><th>Lote</th><th>Tipo</th><th>Qtd</th><th>Anterior</th><th>Novo</th><th>Origem</th><th>Destino</th></tr></thead><tbody id="movLoteRows"></tbody></table></div>
+      <pre id="outMovLotes">Aguardando...</pre>
+    </div>
+  </div>
+</section>
+
+<section id="mapa" class="view">
+  <div class="grid">
+    <div class="card c4">
+      <h2>Filtros do Mapa</h2>
+      <label>Modo</label><select id="mapModo"><option value="fazenda">Fazenda da sessão</option><option value="consultoria">Consultoria geral</option></select>
+      <label>Lote</label><input id="fLote" placeholder="opcional">
+      <label>Cocho</label><input id="fCocho" placeholder="opcional">
+      <label>Produto</label><input id="fProduto" placeholder="opcional">
+      <label>Usuário</label><input id="fUsuario" placeholder="opcional">
+      <div class="row">
+        <button class="blue" onclick="carregarMapa()">Carregar Mapa</button>
+        <button class="gray" onclick="centralizarMapa()">Centralizar</button>
+        <button class="warnbtn" onclick="minhaPosicao()">Onde estou</button>
+      </div>
+      <div class="legend">
+        <span><i class="dot green"></i>OK</span>
+        <span><i class="dot yellow"></i>Impreciso</span>
+        <span><i class="dot redc"></i>Alerta</span>
+        <span><i class="dot grayc"></i>Sem ponto</span>
+        <span><i class="dot bluec"></i>Minha posição</span>
+      </div>
+      <div id="mapMsg" class="msg">Aguardando carregar mapa.</div>
+    </div>
+    <div class="card c8">
+      <h2>Mapa padrão / satélite</h2>
+      <div id="map"></div>
+    </div>
+    <div class="card">
+      <h2>Registros sem GPS</h2>
+      <div class="tablewrap"><table><thead><tr><th>ID</th><th>Fazenda</th><th>Data</th><th>Lote</th><th>Cocho</th><th>Produto</th><th>Usuário</th><th>Motivo</th></tr></thead><tbody id="semGpsRows"></tbody></table></div>
+      <pre id="outMapa">Aguardando...</pre>
+    </div>
+  </div>
+</section>
+
+<section id="sync" class="view">
+  <div class="grid">
+    <div class="card c5">
+      <h2>Teste Sync Cocho</h2>
+      <label>Lote</label><input id="sync_lote" value="LOTE 01">
+      <label>Cocho</label><input id="sync_cocho" value="COCHO 01">
+      <label>Produto</label><select id="sync_prod"></select>
+      <label>Quantidade kg</label><input id="sync_kg" value="25">
+      <label>Latitude</label><input id="sync_lat" value="-1.23456">
+      <label>Longitude</label><input id="sync_lng" value="-47.12345">
+      <label>Acurácia</label><input id="sync_acc" value="18">
+      <div class="row">
+        <button onclick="syncRegistro(true)" class="blue">Enviar com GPS</button>
+        <button onclick="syncRegistro(false)" class="warnbtn">Enviar sem GPS</button>
+      </div>
+      <div class="small">Se o produto existir, o Cloud V2.2 deve baixar estoque automaticamente.</div>
+    </div>
+    <div class="card c7">
+      <h2>Retorno</h2>
+      <pre id="outSync">Aguardando...</pre>
+    </div>
+  </div>
+</section>
+
+<section id="alertas" class="view">
+  <div class="grid">
+    <div class="card c4">
+      <h2>Alertas e Auditoria</h2>
+      <div class="row">
+        <button onclick="listarSemGps()">Listar Sem GPS</button>
+        <button onclick="validarGPSExemplo()" class="gray">Validar GPS</button>
+        <button onclick="testarNormalizacao()" class="blue">Testar Coordenação</button>
+      </div>
+    </div>
+    <div class="card c8">
+      <h2>Retorno</h2>
+      <pre id="outAlertas">Aguardando...</pre>
+    </div>
+  </div>
+</section>
+
+<div class="footer">APP COCHO CENTRAL V5.6 — Cloud V2.2 — Estoque, Consumo, Lotes, Sons e GPS</div>
 </main>
 
 <script>
 (function(){
-  'use strict';
+'use strict';
 
-  var VERSION = 'APP COCHO CENTRAL V5.5.1 HOTFIX MAPA';
-  var LS_URL = 'cocho_cloud_url_v551';
-  var LS_SESSION = 'cocho_session_v551';
-  var map = null;
-  var markers = [];
-  var testCount = 0;
+var VERSION='APP COCHO CENTRAL V5.6';
+var LS_URL='cocho_cloud_url_v56';
+var LS_SESSION='cocho_session_v56';
+var LS_SOUND='cocho_sound_v56';
+var map=null, markers=[], myMarker=null;
+var produtosCache=[], estoqueCache=[], lotesCache=[];
+var audioCtx=null;
 
-  function $(id){ return document.getElementById(id); }
-  function val(id){ return ($(id).value || '').trim(); }
-  function setVal(id,v){ $(id).value = v || ''; }
-  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  function pretty(o){ try { return JSON.stringify(o,null,2); } catch(e){ return String(o); } }
-  function out(id,o){ $(id).textContent = typeof o === 'string' ? o : pretty(o); }
-  function nowBR(){ try { return new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',hour12:false}); } catch(e){ return new Date().toLocaleString('pt-BR'); } }
-  function nowUTC(){ return new Date().toISOString(); }
-  function tz(){ try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e){ return ''; } }
-  function uid(p){ return p + '-' + Date.now() + '-' + Math.random().toString(36).substr(2,5).toUpperCase(); }
-  function getUrl(){ return (val('cloudUrl') || localStorage.getItem(LS_URL) || '').trim(); }
-  function session(){ try { return JSON.parse(localStorage.getItem(LS_SESSION) || 'null'); } catch(e){ return null; } }
+function $(id){return document.getElementById(id)}
+function val(id){return ($(id).value||'').trim()}
+function setVal(id,v){$(id).value=v||''}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function pretty(o){try{return JSON.stringify(o,null,2)}catch(e){return String(o)}}
+function out(id,o){$(id).textContent=typeof o==='string'?o:pretty(o)}
+function nowBR(){try{return new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',hour12:false})}catch(e){return new Date().toLocaleString('pt-BR')}}
+function nowUTC(){return new Date().toISOString()}
+function uid(p){return p+'-'+Date.now()+'-'+Math.random().toString(36).substr(2,5).toUpperCase()}
+function getUrl(){return (val('cloudUrl')||localStorage.getItem(LS_URL)||'').trim()}
+function session(){try{return JSON.parse(localStorage.getItem(LS_SESSION)||'null')}catch(e){return null}}
+function saveSession(s){localStorage.setItem(LS_SESSION,JSON.stringify(s))}
+function soundOn(){return localStorage.getItem(LS_SOUND)!=='NAO'}
 
-  function req(action,data){
-    var url = getUrl();
-    if(!url){ return Promise.reject(new Error('Configure a URL do Cloud V2.1.')); }
-    data = data || {};
-    data.action = action;
-    return fetch(url,{
-      method:'POST',
-      mode:'cors',
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify(data)
-    }).then(function(r){ return r.text(); }).then(function(t){
-      try { return JSON.parse(t); }
-      catch(e){ throw new Error('Retorno não JSON: ' + t); }
-    });
-  }
+function playSound(tipo){
+  if(!soundOn())return;
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    var o=audioCtx.createOscillator();
+    var g=audioCtx.createGain();
+    var f=440, dur=.08;
+    if(tipo==='sucesso'){f=660;dur=.12}
+    if(tipo==='alerta'){f=330;dur=.18}
+    if(tipo==='erro'){f=180;dur=.25}
+    if(tipo==='gps'){f=880;dur=.10}
+    if(tipo==='click'){f=520;dur=.05}
+    o.type='sine';o.frequency.value=f;
+    g.gain.setValueAtTime(.0001,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.08,audioCtx.currentTime+.01);
+    g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);
+    o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur+.02);
+  }catch(e){}
+}
+window.playSound=playSound;
+window.toggleSound=function(){
+  localStorage.setItem(LS_SOUND,soundOn()?'NAO':'SIM');
+  updateSoundBadge(); playSound('click');
+}
+function updateSoundBadge(){var on=soundOn();$('soundBadge').className='badge '+(on?'bluebg':'warn');$('soundBadge').textContent=on?'Som ligado':'Som desligado'}
 
-  window.showView = function(id){
-    var views = document.querySelectorAll('.view');
-    var tabs = document.querySelectorAll('.tab');
-    for(var i=0;i<views.length;i++){ views[i].classList.remove('active'); }
-    for(var j=0;j<tabs.length;j++){ tabs[j].classList.remove('active'); }
-    $(id).classList.add('active');
-    var tab = document.querySelector('[data-view="'+id+'"]');
-    if(tab){ tab.classList.add('active'); }
-    if(id === 'mapa'){ setTimeout(function(){ initMap(); map.invalidateSize(); }, 300); }
-  };
+function req(action,data){
+  var url=getUrl(); if(!url){playSound('erro');return Promise.reject(new Error('Configure a URL do Cloud.'))}
+  data=data||{}; data.action=action;
+  return fetch(url,{method:'POST',mode:'cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
+  .then(function(r){return r.text()}).then(function(t){try{return JSON.parse(t)}catch(e){throw new Error('Retorno não JSON: '+t)}})
+}
 
-  function initTabs(){
-    var tabs = document.querySelectorAll('.tab');
-    for(var i=0;i<tabs.length;i++){
-      tabs[i].onclick = function(){ showView(this.getAttribute('data-view')); };
+window.showView=function(id){
+  playSound('click');
+  var views=document.querySelectorAll('.view'), tabs=document.querySelectorAll('.tab'), i;
+  for(i=0;i<views.length;i++)views[i].classList.remove('active');
+  for(i=0;i<tabs.length;i++)tabs[i].classList.remove('active');
+  $(id).classList.add('active');
+  var tab=document.querySelector('[data-view="'+id+'"]'); if(tab)tab.classList.add('active');
+  if(id==='mapa')setTimeout(function(){initMap();map.invalidateSize()},250);
+}
+function initTabs(){var tabs=document.querySelectorAll('.tab');for(var i=0;i<tabs.length;i++){tabs[i].onclick=function(){showView(this.getAttribute('data-view'))}}}
+
+window.saveUrl=function(){var u=val('cloudUrl');if(!u){alert('Cole a URL.');return}localStorage.setItem(LS_URL,u);out('outConfig','URL salva.');playSound('sucesso')}
+window.clearUrl=function(){localStorage.removeItem(LS_URL);setVal('cloudUrl','');out('outConfig','URL limpa.');playSound('click')}
+window.testCloud=function(){
+  req('ping',{}).then(function(r){out('outConfig',r);out('outPainel',r);$('cloudBadge').className='badge '+(r.ok?'ok':'err');$('cloudBadge').textContent=r.ok?'Cloud OK':'Cloud erro';playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outConfig',String(e.message||e));out('outPainel',String(e.message||e));$('cloudBadge').className='badge err';$('cloudBadge').textContent='Cloud erro';playSound('erro')})
+}
+
+window.preencherTeste=function(){setVal('chave','COCHO-FAZENDATESTE01-4W77-2026');setVal('pin','1234');playSound('click')}
+window.validarAcesso=function(){
+  req('validarAcesso',{chave_fazenda:val('chave'),pin:val('pin'),origem_app:'CENTRAL',versao_app:VERSION}).then(function(r){
+    out('outAcesso',r);
+    if(r.ok){saveSession(r);renderSession(r);$('kSessao').textContent=1;playSound('sucesso');baixarBase()}
+    else playSound('erro')
+  }).catch(function(e){out('outAcesso',String(e.message||e));playSound('erro')})
+}
+function renderSession(s){
+  if(s&&s.ok){$('sessaoBox').className='msg success';$('sessaoBox').innerHTML='<b>'+esc(s.nome_fazenda)+'</b><br>'+esc(s.nome_usuario)+' — '+esc(s.tipo_usuario)}
+  else {$('sessaoBox').className='msg';$('sessaoBox').textContent='Nenhuma sessão validada.'}
+}
+window.baixarBase=function(){
+  var s=session(); if(!s||!s.ok){out('outAcesso','Valide acesso primeiro.');playSound('erro');return}
+  req('baixarBaseFazenda',{id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda}).then(function(r){
+    out('outAcesso',r);
+    if(r.ok){
+      produtosCache=r.produtos||[]; estoqueCache=r.estoque||[]; lotesCache=r.lotes||[];
+      renderProdutos(produtosCache);renderEstoque(estoqueCache);renderLotes(lotesCache);
+      updateSelectors();playSound('sucesso');
     }
-  }
+  }).catch(function(e){out('outAcesso',String(e.message||e));playSound('erro')})
+}
 
-  window.saveUrl = function(){
-    var u = val('cloudUrl');
-    if(!u){ alert('Cole a URL do Web App.'); return; }
-    localStorage.setItem(LS_URL,u);
-    out('outConfig','URL salva: ' + u);
-  };
+function sessPayload(extra){var s=session();if(!s||!s.ok)throw new Error('Valide acesso primeiro.');var d={id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda,id_usuario:s.id_usuario,nome_usuario:s.nome_usuario,tipo_usuario:s.tipo_usuario,origem_app:'CENTRAL',versao_app:VERSION};for(var k in extra)d[k]=extra[k];return d}
 
-  window.clearUrl = function(){
-    localStorage.removeItem(LS_URL);
-    setVal('cloudUrl','');
-    out('outConfig','URL limpa.');
-  };
+window.criarProduto=function(){
+  try{
+    var d=sessPayload({nome_produto:val('prod_nome'),tipo_produto:val('prod_tipo'),fabricante:val('prod_fab'),unidade_padrao:val('prod_unid'),kg_por_unidade:val('prod_kgunid'),saldo_minimo_kg:val('prod_min')});
+    req('criarProduto',d).then(function(r){out('outProdutos',r);playSound(r.ok?'sucesso':'erro');listarProdutos()}).catch(function(e){out('outProdutos',String(e.message||e));playSound('erro')})
+  }catch(e){out('outProdutos',String(e.message||e));playSound('erro')}
+}
+window.listarProdutos=function(){
+  try{req('listarProdutosFazenda',sessPayload({})).then(function(r){out('outProdutos',r);if(r.ok){produtosCache=r.produtos||[];renderProdutos(produtosCache);updateSelectors();$('kProdutos').textContent=produtosCache.length;playSound('sucesso')}}).catch(function(e){out('outProdutos',String(e.message||e));playSound('erro')})}catch(e){out('outProdutos',String(e.message||e));playSound('erro')}
+}
+function renderProdutos(arr){
+  var rows='',opts='<option value="">Selecione...</option>';
+  for(var i=0;i<(arr||[]).length;i++){var p=arr[i];rows+='<tr><td>'+esc(p.ID_PRODUTO)+'</td><td>'+esc(p.NOME_PRODUTO)+'</td><td>'+esc(p.TIPO_PRODUTO)+'</td><td>'+esc(p.FABRICANTE)+'</td><td>'+esc(p.UNIDADE_PADRAO)+'</td><td>'+esc(p.STATUS_PRODUTO)+'</td></tr>';opts+='<option value="'+esc(p.ID_PRODUTO)+'">'+esc(p.NOME_PRODUTO)+'</option>'}
+  $('prodRows').innerHTML=rows||'<tr><td colspan="6">Sem produtos.</td></tr>';
+  $('ent_prod').innerHTML=opts;$('sync_prod').innerHTML=opts;
+}
 
-  window.testCloud = function(){
-    req('ping',{}).then(function(r){
-      out('outConfig',r);
-      out('outPainel',r);
-      $('cloudBadge').className = 'badge ' + (r.ok ? 'ok' : 'err');
-      $('cloudBadge').textContent = r.ok ? 'Cloud OK' : 'Cloud erro';
-    }).catch(function(e){
-      out('outConfig',String(e.message || e));
-      out('outPainel',String(e.message || e));
-      $('cloudBadge').className = 'badge err';
-      $('cloudBadge').textContent = 'Cloud erro';
-    });
-  };
+window.registrarEntrada=function(){
+  try{
+    var p=findProduto(val('ent_prod')); if(!p){out('outEntrada','Selecione produto.');playSound('erro');return}
+    var d=sessPayload({id_produto:p.ID_PRODUTO,nome_produto:p.NOME_PRODUTO,tipo_movimento:val('ent_tipo'),quantidade_kg:val('ent_kg'),observacao:val('ent_obs')});
+    req('registrarMovimentacaoEstoque',d).then(function(r){out('outEntrada',r);playSound(r.ok?'sucesso':'erro');listarEstoque();dashboardConsumo()}).catch(function(e){out('outEntrada',String(e.message||e));playSound('erro')})
+  }catch(e){out('outEntrada',String(e.message||e));playSound('erro')}
+}
+window.listarEstoque=function(){
+  try{req('listarEstoqueFazenda',sessPayload({})).then(function(r){out('outEstoque',r);if(r.ok){estoqueCache=r.estoque||[];renderEstoque(estoqueCache);$('kEstoque').textContent=estoqueCache.length;playSound('sucesso')}}).catch(function(e){out('outEstoque',String(e.message||e));playSound('erro')})}catch(e){out('outEstoque',String(e.message||e));playSound('erro')}
+}
+function renderEstoque(arr){
+  var rows='';
+  for(var i=0;i<(arr||[]).length;i++){var e=arr[i];rows+='<tr><td>'+esc(e.NOME_PRODUTO)+'</td><td>'+esc(e.TIPO_PRODUTO)+'</td><td>'+esc(e.SALDO_ATUAL_KG)+'</td><td>'+esc(e.SALDO_MINIMO_KG)+'</td><td>'+esc(e.STATUS_ESTOQUE)+'</td><td>'+esc(e.DATA_ATUALIZACAO_BRASILIA)+'</td></tr>'}
+  $('estRows').innerHTML=rows||'<tr><td colspan="6">Sem estoque.</td></tr>';
+}
+window.listarMovEstoque=function(){
+  try{req('listarMovimentacoesEstoque',sessPayload({})).then(function(r){out('outEstoque',r);playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outEstoque',String(e.message||e));playSound('erro')})}catch(e){out('outEstoque',String(e.message||e));playSound('erro')}
+}
 
-  window.preencherTeste = function(){
-    setVal('chave','COCHO-FAZENDATESTE01-4W77-2026');
-    setVal('pin','1234');
-  };
-
-  window.validarAcesso = function(){
-    req('validarAcesso',{
-      chave_fazenda:val('chave'),
-      pin:val('pin'),
-      origem_app:'CENTRAL',
-      versao_app:VERSION
-    }).then(function(r){
-      out('outAcesso',r);
-      if(r.ok){
-        localStorage.setItem(LS_SESSION,JSON.stringify(r));
-        $('sessaoBox').className = 'msg success';
-        $('sessaoBox').innerHTML = '<b>' + esc(r.nome_fazenda) + '</b><br>' + esc(r.nome_usuario) + ' — ' + esc(r.tipo_usuario);
-        $('kSessao').textContent = 1;
-      }
-    }).catch(function(e){ out('outAcesso',String(e.message || e)); });
-  };
-
-  function buildRegistro(comGps){
-    var s = session();
-    if(!s || !s.ok){ throw new Error('Valide acesso primeiro.'); }
-    return {
-      ID_REGISTRO: uid(comGps ? 'REG-GPS' : 'REG-SEM-GPS'),
-      ID_FAZENDA: s.id_fazenda,
-      CHAVE_FAZENDA: s.chave_fazenda,
-      NOME_FAZENDA: s.nome_fazenda,
-      ID_USUARIO: s.id_usuario,
-      NOME_USUARIO: s.nome_usuario,
-      TIPO_USUARIO: s.tipo_usuario,
-      DATA_HORA_LOCAL: nowBR(),
-      DATA_HORA_BRASILIA: nowBR(),
-      DATA_HORA_UTC: nowUTC(),
-      TIMEZONE_DISPOSITIVO: tz(),
-      LOTE: val('lote'),
-      COCHO: val('cocho'),
-      PRODUTO: val('produto'),
-      TIPO_PRODUTO: 'MINERAL',
-      QUANTIDADE_KG: val('kg'),
-      UNIDADE: 'KG',
-      ESCORE_COCHO: '2',
-      OBSERVACAO: comGps ? 'Teste com GPS pela Central V5.5.1' : 'Teste sem GPS pela Central V5.5.1',
-      GPS_LAT: comGps ? val('lat') : '',
-      GPS_LNG: comGps ? val('lng') : '',
-      GPS_ACURACIA: comGps ? val('acc') : '',
-      STATUS_GPS: comGps ? 'CAPTURADO' : 'SEM_GPS',
-      ORIGEM_APP: 'CENTRAL_TESTE',
-      VERSAO_APP: VERSION
-    };
-  }
-
-  window.syncGps = function(comGps){
-    var r;
-    try { r = buildRegistro(comGps); }
-    catch(e){ out('outSync',String(e.message || e)); return; }
-    var s = session();
-    req('sincronizarRegistrosCocho',{
-      id_fazenda:s.id_fazenda,
-      chave_fazenda:s.chave_fazenda,
-      id_usuario:s.id_usuario,
-      nome_usuario:s.nome_usuario,
-      versao_app:VERSION,
-      registros:[r]
-    }).then(function(resp){
-      testCount++;
-      $('kEnvios').textContent = testCount;
-      out('outSync',resp);
-    }).catch(function(e){ out('outSync',String(e.message || e)); });
-  };
-
-  function initMap(){
-    if(map){ return; }
-    if(typeof L === 'undefined'){
-      $('mapMsg').className = 'msg error';
-      $('mapMsg').textContent = 'Leaflet não carregou. Verifique internet.';
-      return;
+window.dashboardConsumo=function(){
+  try{req('listarDashboardConsumoFazenda',sessPayload({dias:val('cons_dias')})).then(function(r){
+    out('outConsumo',r);
+    if(r.ok){
+      $('consKg').textContent=round(r.kg_consumido_periodo||0);
+      $('consDia').textContent=round(r.consumo_medio_kg_dia||0);
+      $('consAnimais').textContent=r.total_animais_lotes_ativos||0;
+      $('consAnimalDia').textContent=r.consumo_kg_animal_dia===''?'-':round(r.consumo_kg_animal_dia);
+      renderConsProdutos(r.por_produto||{});playSound('sucesso')
     }
-    map = L.map('map').setView([-1.45,-48.48],8);
-    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-      maxZoom:19,
-      attribution:'© OpenStreetMap'
-    });
-    var esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
-      maxZoom:19,
-      attribution:'Tiles © Esri'
-    });
-    osm.addTo(map);
-    L.control.layers({'Padrão':osm,'Satélite Esri':esri},{}).addTo(map);
-  }
+  }).catch(function(e){out('outConsumo',String(e.message||e));playSound('erro')})}catch(e){out('outConsumo',String(e.message||e));playSound('erro')}
+}
+window.dashboardConsumoConsultoria=function(){req('listarDashboardConsumoConsultoria',{}).then(function(r){out('outConsumo',r);playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outConsumo',String(e.message||e));playSound('erro')})}
+function renderConsProdutos(obj){var html='';for(var k in obj){html+='<span class="pill">'+esc(k)+': '+round(obj[k])+' kg</span>'}$('consProdutoBox').innerHTML=html||'<div class="msg">Sem consumo registrado.</div>'}
 
-  function clearMarkers(){
-    if(!map){ return; }
-    for(var i=0;i<markers.length;i++){ map.removeLayer(markers[i]); }
-    markers = [];
-  }
+window.criarLote=function(){
+  try{var d=sessPayload({nome_lote:val('lote_nome'),categoria:val('lote_cat'),quantidade_animais:val('lote_qtd'),pasto_local:val('lote_pasto'),observacoes:val('lote_obs')});
+  req('criarLote',d).then(function(r){out('outLotes',r);playSound(r.ok?'sucesso':'erro');listarLotes()}).catch(function(e){out('outLotes',String(e.message||e));playSound('erro')})}catch(e){out('outLotes',String(e.message||e));playSound('erro')}
+}
+window.listarLotes=function(){
+  try{req('listarLotesFazenda',sessPayload({})).then(function(r){out('outLotes',r);if(r.ok){lotesCache=r.lotes||[];renderLotes(lotesCache);updateSelectors();$('kLotes').textContent=lotesCache.length;playSound('sucesso')}}).catch(function(e){out('outLotes',String(e.message||e));playSound('erro')})}catch(e){out('outLotes',String(e.message||e));playSound('erro')}
+}
+function renderLotes(arr){
+  var rows='',opts='<option value="">Selecione...</option>';
+  for(var i=0;i<(arr||[]).length;i++){var l=arr[i];rows+='<tr><td>'+esc(l.ID_LOTE)+'</td><td>'+esc(l.NOME_LOTE)+'</td><td>'+esc(l.CATEGORIA)+'</td><td>'+esc(l.QUANTIDADE_ANIMAIS)+'</td><td>'+esc(l.STATUS_LOTE)+'</td><td>'+esc(l.PASTO_LOCAL)+'</td></tr>';opts+='<option value="'+esc(l.ID_LOTE)+'">'+esc(l.NOME_LOTE)+'</option>'}
+  $('loteRows').innerHTML=rows||'<tr><td colspan="6">Sem lotes.</td></tr>';$('mov_lote').innerHTML=opts;
+}
+window.registrarMovLote=function(){
+  try{var l=findLote(val('mov_lote'));if(!l){out('outMovLotes','Selecione lote.');playSound('erro');return}
+  var d=sessPayload({id_lote:l.ID_LOTE,nome_lote:l.NOME_LOTE,tipo_movimento:val('mov_tipo'),quantidade_animais:val('mov_qtd'),origem:val('mov_origem'),destino:val('mov_destino'),motivo:val('mov_motivo')});
+  req('registrarMovimentacaoLote',d).then(function(r){out('outMovLotes',r);playSound(r.ok?'sucesso':'erro');listarLotes();listarMovLotes();dashboardConsumo()}).catch(function(e){out('outMovLotes',String(e.message||e));playSound('erro')})}catch(e){out('outMovLotes',String(e.message||e));playSound('erro')}
+}
+window.listarMovLotes=function(){
+  try{req('listarMovimentacoesLote',sessPayload({})).then(function(r){out('outMovLotes',r);if(r.ok)renderMovLotes(r.movimentacoes||[]);playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outMovLotes',String(e.message||e));playSound('erro')})}catch(e){out('outMovLotes',String(e.message||e));playSound('erro')}
+}
+function renderMovLotes(arr){var rows='';for(var i=0;i<(arr||[]).length;i++){var m=arr[i];rows+='<tr><td>'+esc(m.DATA_HORA_BRASILIA)+'</td><td>'+esc(m.NOME_LOTE)+'</td><td>'+esc(m.TIPO_MOVIMENTO)+'</td><td>'+esc(m.QUANTIDADE_ANIMAIS)+'</td><td>'+esc(m.QUANTIDADE_ANTERIOR)+'</td><td>'+esc(m.QUANTIDADE_NOVA)+'</td><td>'+esc(m.ORIGEM)+'</td><td>'+esc(m.DESTINO)+'</td></tr>'}$('movLoteRows').innerHTML=rows||'<tr><td colspan="8">Sem movimentações.</td></tr>'}
 
-  function markerColor(alerta){
-    alerta = String(alerta || 'OK');
-    if(alerta === 'OK'){ return '#198754'; }
-    if(alerta === 'IMPRECISO'){ return '#ffc107'; }
-    return '#dc3545';
-  }
+function initMap(){
+  if(map)return;
+  if(typeof L==='undefined'){$('mapMsg').className='msg error';$('mapMsg').textContent='Leaflet não carregou. Verifique internet.';return}
+  map=L.map('map').setView([-1.45,-48.48],8);
+  var osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'});
+  var esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri'});
+  osm.addTo(map);L.control.layers({'Padrão':osm,'Satélite Esri':esri},{}).addTo(map);
+}
+function clearMarkers(){if(!map)return;for(var i=0;i<markers.length;i++)map.removeLayer(markers[i]);markers=[]}
+function color(alerta){alerta=String(alerta||'OK');if(alerta==='OK')return '#198754';if(alerta==='IMPRECISO')return '#ffc107';return '#dc3545'}
+function addPoint(p){var m=L.circleMarker([Number(p.gps_lat),Number(p.gps_lng)],{radius:9,color:color(p.gps_alerta),fillColor:color(p.gps_alerta),fillOpacity:.85,weight:2});m.bindPopup('<b>'+esc(p.nome_fazenda)+'</b><br>'+esc(p.data_hora_brasilia)+'<br>Lote: '+esc(p.lote)+'<br>Cocho: '+esc(p.cocho)+'<br>Produto: '+esc(p.produto)+'<br>Kg: '+esc(p.quantidade_kg)+'<br>Usuário: '+esc(p.usuario)+'<br>GPS: '+esc(p.gps_alerta));m.addTo(map);markers.push(m)}
+window.carregarMapa=function(){
+  initMap();
+  var mode=val('mapModo'), d={lote:val('fLote'),cocho:val('fCocho'),produto:val('fProduto'),usuario:val('fUsuario'),origem_app:'CENTRAL',versao_app:VERSION};
+  var action='listarPontosMapaConsultoria';
+  try{if(mode==='fazenda'){var sp=sessPayload({});d.id_fazenda=sp.id_fazenda;d.chave_fazenda=sp.chave_fazenda;action='listarPontosMapaFazenda'}}catch(e){out('outMapa',String(e.message||e));playSound('erro');return}
+  req(action,d).then(function(r){out('outMapa',r);clearMarkers();if(r.ok){for(var i=0;i<(r.pontos||[]).length;i++)addPoint(r.pontos[i]);renderSemGps(r.sem_gps||[]);$('kPontos').textContent=r.total_pontos||0;$('kSemGps').textContent=r.total_sem_gps||0;$('mapMsg').className='msg success';$('mapMsg').textContent='Pontos: '+(r.total_pontos||0)+' | Sem GPS: '+(r.total_sem_gps||0);setTimeout(function(){map.invalidateSize();centralizarMapa()},300);playSound('sucesso')}}).catch(function(e){out('outMapa',String(e.message||e));playSound('erro')})
+}
+window.centralizarMapa=function(){if(map&&markers.length){var g=L.featureGroup(markers);map.fitBounds(g.getBounds().pad(.25));playSound('click')}}
+function renderSemGps(arr){var rows='';for(var i=0;i<(arr||[]).length;i++){var r=arr[i];rows+='<tr><td>'+esc(r.id_registro)+'</td><td>'+esc(r.nome_fazenda)+'</td><td>'+esc(r.data_hora_brasilia)+'</td><td>'+esc(r.lote)+'</td><td>'+esc(r.cocho)+'</td><td>'+esc(r.produto)+'</td><td>'+esc(r.usuario)+'</td><td>'+esc(r.motivo||r.gps_alerta)+'</td></tr>'}$('semGpsRows').innerHTML=rows||'<tr><td colspan="8">Nenhum registro sem GPS.</td></tr>'}
 
-  function addMarker(p){
-    var m = L.circleMarker([Number(p.gps_lat),Number(p.gps_lng)],{
-      radius:9,
-      color:markerColor(p.gps_alerta),
-      fillColor:markerColor(p.gps_alerta),
-      fillOpacity:.85,
-      weight:2
-    });
-    m.bindPopup(
-      '<b>' + esc(p.nome_fazenda) + '</b><br>' +
-      esc(p.data_hora_brasilia) + '<br>' +
-      'Lote: ' + esc(p.lote) + '<br>' +
-      'Cocho: ' + esc(p.cocho) + '<br>' +
-      'Produto: ' + esc(p.produto) + '<br>' +
-      'Kg: ' + esc(p.quantidade_kg) + '<br>' +
-      'Usuário: ' + esc(p.usuario) + '<br>' +
-      'GPS: ' + esc(p.gps_alerta)
-    );
-    m.addTo(map);
-    markers.push(m);
-  }
+window.minhaPosicao=function(){
+  playSound('click');initMap();
+  if(!navigator.geolocation){$('mapMsg').className='msg error';$('mapMsg').textContent='Geolocalização não disponível.';playSound('erro');return}
+  $('mapMsg').className='msg';$('mapMsg').textContent='Capturando minha posição...';
+  navigator.geolocation.getCurrentPosition(function(pos){
+    var lat=pos.coords.latitude,lng=pos.coords.longitude,acc=pos.coords.accuracy;
+    if(myMarker)map.removeLayer(myMarker);
+    myMarker=L.circleMarker([lat,lng],{radius:10,color:'#0d6efd',fillColor:'#0d6efd',fillOpacity:.9,weight:3}).addTo(map);
+    myMarker.bindPopup('<b>Minha posição atual</b><br>Lat: '+lat.toFixed(6)+'<br>Lng: '+lng.toFixed(6)+'<br>Acurácia: '+Math.round(acc)+' m<br>'+nowBR()).openPopup();
+    map.setView([lat,lng],16);
+    $('mapMsg').className='msg success';$('mapMsg').textContent='Minha posição capturada. Acurácia: '+Math.round(acc)+' m';
+    playSound('gps');
+  },function(err){$('mapMsg').className='msg error';$('mapMsg').textContent='GPS falhou: '+err.message;playSound('erro')},{enableHighAccuracy:true,timeout:12000,maximumAge:0})
+}
 
-  function renderSemGps(arr){
-    var rows = '';
-    arr = arr || [];
-    for(var i=0;i<arr.length;i++){
-      var r = arr[i];
-      rows += '<tr>' +
-        '<td>' + esc(r.id_registro) + '</td>' +
-        '<td>' + esc(r.nome_fazenda) + '</td>' +
-        '<td>' + esc(r.data_hora_brasilia) + '</td>' +
-        '<td>' + esc(r.lote) + '</td>' +
-        '<td>' + esc(r.cocho) + '</td>' +
-        '<td>' + esc(r.produto) + '</td>' +
-        '<td>' + esc(r.usuario) + '</td>' +
-        '<td>' + esc(r.motivo || r.gps_alerta) + '</td>' +
-      '</tr>';
-    }
-    $('semGpsRows').innerHTML = rows || '<tr><td colspan="8">Nenhum registro sem GPS.</td></tr>';
-  }
+window.syncRegistro=function(comGps){
+  try{
+    var s=sessPayload({}), p=findProduto(val('sync_prod')), prodNome=p?p.NOME_PRODUTO:'SAL MINERAL';
+    var reg={ID_REGISTRO:uid(comGps?'REG-GPS':'REG-SEM-GPS'),ID_FAZENDA:s.id_fazenda,CHAVE_FAZENDA:s.chave_fazenda,NOME_FAZENDA:session().nome_fazenda,ID_USUARIO:s.id_usuario,NOME_USUARIO:s.nome_usuario,TIPO_USUARIO:s.tipo_usuario,DATA_HORA_LOCAL:nowBR(),DATA_HORA_BRASILIA:nowBR(),DATA_HORA_UTC:nowUTC(),LOTE:val('sync_lote'),COCHO:val('sync_cocho'),PRODUTO:prodNome,ID_PRODUTO:p?p.ID_PRODUTO:'',TIPO_PRODUTO:p?p.TIPO_PRODUTO:'MINERAL',QUANTIDADE_KG:val('sync_kg'),UNIDADE:'KG',ESCORE_COCHO:'2',OBSERVACAO:comGps?'Teste com GPS V5.6':'Teste sem GPS V5.6',GPS_LAT:comGps?val('sync_lat'):'',GPS_LNG:comGps?val('sync_lng'):'',GPS_ACURACIA:comGps?val('sync_acc'):'',STATUS_GPS:comGps?'CAPTURADO':'SEM_GPS',ORIGEM_APP:'CENTRAL_TESTE',VERSAO_APP:VERSION};
+    req('sincronizarRegistrosCocho',{id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda,id_usuario:s.id_usuario,nome_usuario:s.nome_usuario,versao_app:VERSION,registros:[reg]}).then(function(r){out('outSync',r);playSound(r.ok?'sucesso':'erro');listarEstoque();dashboardConsumo()}).catch(function(e){out('outSync',String(e.message||e));playSound('erro')})
+  }catch(e){out('outSync',String(e.message||e));playSound('erro')}
+}
 
-  function mapFilters(){
-    return {
-      lote:val('fLote'),
-      cocho:val('fCocho'),
-      produto:val('fProduto'),
-      usuario:val('fUsuario'),
-      origem_app:'CENTRAL',
-      versao_app:VERSION
-    };
-  }
+window.listarSemGps=function(){req('listarRegistrosSemGPS',{}).then(function(r){out('outAlertas',r);playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outAlertas',String(e.message||e));playSound('erro')})}
+window.validarGPSExemplo=function(){req('validarGPSRegistro',{GPS_LAT:'-1.23456',GPS_LNG:'-47.12345',GPS_ACURACIA:'18',STATUS_GPS:'CAPTURADO'}).then(function(r){out('outAlertas',r);playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outAlertas',String(e.message||e));playSound('erro')})}
+window.testarNormalizacao=function(){req('testarNormalizacaoCoordenada',{GPS_LAT:'-123456',GPS_LNG:'-4712345'}).then(function(r){out('outAlertas',r);playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outAlertas',String(e.message||e));playSound('erro')})}
 
-  window.carregarMapa = function(){
-    initMap();
-    var s = session();
-    var d = mapFilters();
-    var action = val('modoMapa') === 'consultoria' ? 'listarPontosMapaConsultoria' : 'listarPontosMapaFazenda';
-    if(action === 'listarPontosMapaFazenda'){
-      if(!s || !s.ok){ out('outMapa','Valide acesso primeiro ou use modo Consultoria.'); return; }
-      d.id_fazenda = s.id_fazenda;
-      d.chave_fazenda = s.chave_fazenda;
-    }
-    req(action,d).then(function(r){
-      out('outMapa',r);
-      clearMarkers();
-      if(r.ok && r.pontos){
-        for(var i=0;i<r.pontos.length;i++){ addMarker(r.pontos[i]); }
-        renderSemGps(r.sem_gps || []);
-        $('kPontos').textContent = r.total_pontos || 0;
-        $('kSemGps').textContent = r.total_sem_gps || 0;
-        $('mapMsg').className = 'msg success';
-        $('mapMsg').textContent = 'Pontos: ' + (r.total_pontos || 0) + ' | Sem GPS: ' + (r.total_sem_gps || 0);
-        setTimeout(function(){ map.invalidateSize(); centralizar(); },250);
-      }
-    }).catch(function(e){ out('outMapa',String(e.message || e)); });
-  };
+function findProduto(id){for(var i=0;i<produtosCache.length;i++)if(String(produtosCache[i].ID_PRODUTO)===String(id))return produtosCache[i];return null}
+function findLote(id){for(var i=0;i<lotesCache.length;i++)if(String(lotesCache[i].ID_LOTE)===String(id))return lotesCache[i];return null}
+function updateSelectors(){renderProdutos(produtosCache);renderLotes(lotesCache)}
+function refreshAll(){listarProdutos();listarEstoque();listarLotes();dashboardConsumo()}
+function round(n){n=Number(n||0);return Math.round(n*100)/100}
+window.refreshAll=refreshAll;
 
-  window.loadMapConsultoria = function(){
-    showView('mapa');
-    setVal('modoMapa','consultoria');
-    setTimeout(function(){ carregarMapa(); },400);
-  };
+function updateNet(){var on=navigator.onLine;$('netBadge').className='badge '+(on?'ok':'err');$('netBadge').textContent=on?'Online':'Offline'}
+function updateHour(){$('hourBadge').textContent='Brasília '+nowBR()}
+function boot(){
+  initTabs();updateNet();updateHour();updateSoundBadge();setInterval(updateHour,1000);window.addEventListener('online',updateNet);window.addEventListener('offline',updateNet);
+  setVal('cloudUrl',localStorage.getItem(LS_URL)||'');
+  var s=session(); if(s&&s.ok){renderSession(s);$('kSessao').textContent=1;setVal('chave',s.chave_fazenda)}
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js?v=5.6').catch(function(){});
+}
+boot();
 
-  window.centralizar = function(){
-    if(map && markers.length){
-      var g = L.featureGroup(markers);
-      map.fitBounds(g.getBounds().pad(.25));
-    }
-  };
-
-  window.listarSemGps = function(){
-    req('listarRegistrosSemGPS',{}).then(function(r){
-      out('outAuditoria',r);
-      renderSemGps(r.registros || []);
-      $('kSemGps').textContent = r.total_sem_gps || 0;
-    }).catch(function(e){ out('outAuditoria',String(e.message || e)); });
-  };
-
-  window.validarGpsExemplo = function(){
-    req('validarGPSRegistro',{
-      GPS_LAT:'-1.23456',
-      GPS_LNG:'-47.12345',
-      GPS_ACURACIA:'18',
-      STATUS_GPS:'CAPTURADO'
-    }).then(function(r){ out('outAuditoria',r); }).catch(function(e){ out('outAuditoria',String(e.message || e)); });
-  };
-
-  function updateNet(){
-    var on = navigator.onLine;
-    $('netBadge').className = 'badge ' + (on ? 'ok' : 'err');
-    $('netBadge').textContent = on ? 'Online' : 'Offline';
-  }
-
-  function updateHour(){
-    $('hourBadge').textContent = 'Brasília ' + nowBR();
-  }
-
-  function boot(){
-    initTabs();
-    updateNet();
-    updateHour();
-    setInterval(updateHour,1000);
-    window.addEventListener('online',updateNet);
-    window.addEventListener('offline',updateNet);
-    setVal('cloudUrl',localStorage.getItem(LS_URL) || '');
-    var s = session();
-    if(s && s.ok){
-      $('sessaoBox').className = 'msg success';
-      $('sessaoBox').innerHTML = '<b>' + esc(s.nome_fazenda) + '</b><br>' + esc(s.nome_usuario) + ' — ' + esc(s.tipo_usuario);
-      $('kSessao').textContent = 1;
-      setVal('chave',s.chave_fazenda);
-    }
-    if('serviceWorker' in navigator){
-      navigator.serviceWorker.register('./service-worker.js?v=5.5.1').catch(function(){});
-    }
-  }
-
-  boot();
 })();
 </script>
 </body>

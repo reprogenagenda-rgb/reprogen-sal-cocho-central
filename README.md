@@ -1,25 +1,24 @@
-# APP COCHO CENTRAL V5.5.1 — HOTFIX MAPA
+# APP COCHO CENTRAL V5.6 — Estoque, Consumo, Lotes, Sons e GPS
 
-## Por que esta versão existe
+## Objetivo
 
-A V5.5 pode ter sido carregada com cache antigo ou index compactado/incompleto no GitHub.
-Esta versão corrige com:
+Central gerencial conectada ao SCRIPT COCHO CLOUD V2.2.
 
-- título visível APP COCHO CENTRAL V5.5.1;
-- index.html completo e legível;
-- quebra de cache no manifest;
-- service-worker novo;
-- mapa padrão OpenStreetMap;
-- mapa satélite Esri;
-- rotas Cloud V2.1:
-  - listarPontosMapaFazenda;
-  - listarPontosMapaConsultoria;
-  - listarRegistrosSemGPS;
-  - validarGPSRegistro.
+Inclui:
 
-## Arquivos a subir
+- Produtos
+- Estoque
+- Entrada de Estoque
+- Dashboard Consumo
+- Lotes
+- Movimentação de Lotes
+- Mapa Satélite
+- Registros sem GPS
+- Sons nos botões
+- Sons de sucesso/alerta/erro/GPS
+- Botão Minha posição / Onde estou
 
-Substitua no repositório da Central:
+## Arquivos a subir no GitHub
 
 - index.html
 - manifest.json
@@ -28,35 +27,41 @@ Substitua no repositório da Central:
 - icons/icon-192.png
 - icons/icon-512.png
 
-## Commit
+## Commit sugerido
 
-Adicionar Central Cocho V5.5.1 hotfix mapa satelite cache
+Adicionar Central Cocho V5.6 estoque consumo lotes sons gps
 
-## Como testar
+## Como abrir sem cache
 
-1. Abra o GitHub e confirme que o index.html tem:
-   APP COCHO CENTRAL V5.5.1 — HOTFIX MAPA
+Use:
 
-2. Abra a URL com:
-   ?v=5.5.1
+```text
+/reprogen-sal-cocho-central/?v=5.6
+```
 
-3. Configure a URL do Cloud V2.1.
+## Teste obrigatório
 
-4. Teste conexão.
+1. Config Cloud → colar URL do Script V2.2 → Testar conexão.
+2. Acesso → validar CHAVE_FAZENDA + PIN.
+3. Produtos → criar SAL MINERAL.
+4. Entrada Estoque → registrar 300 kg.
+5. Estoque → conferir saldo.
+6. Teste Sync → enviar 25 kg de SAL MINERAL.
+7. Estoque → conferir baixa automática.
+8. Dashboard Consumo → atualizar.
+9. Lotes → criar LOTE 01 com quantidade de animais.
+10. Mov. Lotes → registrar movimentação.
+11. Mapa Satélite → carregar mapa.
+12. Mapa Satélite → Onde estou.
 
-5. Valide CHAVE_FAZENDA + PIN.
+## Critério de aprovação
 
-6. Envie teste com GPS.
-
-7. Envie teste sem GPS.
-
-8. Abra Mapa Satélite.
-
-Aprovado se:
-
-- aparecer V5.5.1;
-- mapa abre;
-- satélite Esri aparece;
-- pontos com GPS aparecem;
-- sem GPS aparece na tabela;
-- sem GPS não cai em DADOS_SEM_VINCULO.
+- Cloud V2.2 responde.
+- Produto é criado.
+- Entrada de estoque aumenta saldo.
+- Lançamento de cocho baixa estoque.
+- Dashboard calcula consumo.
+- Lote é criado e movimentado.
+- Mapa continua com pontos.
+- Botão Onde estou centraliza posição.
+- Sons funcionam e podem ser desligados.
