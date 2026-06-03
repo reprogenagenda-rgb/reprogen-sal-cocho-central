@@ -1,10 +1,10 @@
-const CACHE_NAME = 'app-cocho-central-v5-6-cache-v1';
+const CACHE_NAME = 'app-cocho-central-v5-7-cache-v1';
 const CORE_ASSETS = [
   './',
-  './index.html?v=5.6',
-  './manifest.json?v=5.6',
-  './icons/icon-192.png?v=5.6',
-  './icons/icon-512.png?v=5.6'
+  './index.html?v=5.7',
+  './manifest.json?v=5.7',
+  './icons/icon-192.png?v=5.7',
+  './icons/icon-512.png?v=5.7'
 ];
 
 self.addEventListener('install', event => {
@@ -41,6 +41,6 @@ self.addEventListener('fetch', event => {
       const clone = resp.clone();
       caches.open(CACHE_NAME).then(cache => cache.put(req, clone));
       return resp;
-    }).catch(() => caches.match('./index.html?v=5.6')))
+    }).catch(() => caches.match('./index.html?v=5.7')))
   );
 });
