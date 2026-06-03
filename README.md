@@ -1,25 +1,62 @@
-# APP COCHO CENTRAL V5.5 — Mapa Satélite Restaurado
+# APP COCHO CENTRAL V5.5.1 — HOTFIX MAPA
 
-## Objetivo
+## Por que esta versão existe
 
-Correção de regressão da Central Cocho, restaurando mapa padrão, mapa satélite Esri, pontos dos lançamentos, registros sem GPS e filtros por fazenda/lote/cocho/produto/usuário.
+A V5.5 pode ter sido carregada com cache antigo ou index compactado/incompleto no GitHub.
+Esta versão corrige com:
 
-## Requisito
+- título visível APP COCHO CENTRAL V5.5.1;
+- index.html completo e legível;
+- quebra de cache no manifest;
+- service-worker novo;
+- mapa padrão OpenStreetMap;
+- mapa satélite Esri;
+- rotas Cloud V2.1:
+  - listarPontosMapaFazenda;
+  - listarPontosMapaConsultoria;
+  - listarRegistrosSemGPS;
+  - validarGPSRegistro.
 
-Usar com SCRIPT COCHO CLOUD V2.1 — GPS, Mapas e Auditoria Geográfica.
+## Arquivos a subir
 
-## Arquivos para subir
+Substitua no repositório da Central:
 
-index.html, manifest.json, service-worker.js, README.md e pasta icons com icon-192.png e icon-512.png.
+- index.html
+- manifest.json
+- service-worker.js
+- README.md
+- icons/icon-192.png
+- icons/icon-512.png
 
 ## Commit
 
-Adicionar Central Cocho V5.5 com mapa satelite GPS e auditoria
+Adicionar Central Cocho V5.5.1 hotfix mapa satelite cache
 
-## Testes
+## Como testar
 
-1. Config Cloud: colar URL do Cloud V2.1 e testar conexão.
-2. Validar CHAVE_FAZENDA + PIN.
-3. Teste Sync: enviar com GPS e enviar sem GPS.
-4. Mapa: carregar Fazenda e Consultoria, alternar Padrão/Satélite.
-5. Confirmar que com GPS aparece no mapa e sem GPS aparece na lista, sem cair em DADOS_SEM_VINCULO.
+1. Abra o GitHub e confirme que o index.html tem:
+   APP COCHO CENTRAL V5.5.1 — HOTFIX MAPA
+
+2. Abra a URL com:
+   ?v=5.5.1
+
+3. Configure a URL do Cloud V2.1.
+
+4. Teste conexão.
+
+5. Valide CHAVE_FAZENDA + PIN.
+
+6. Envie teste com GPS.
+
+7. Envie teste sem GPS.
+
+8. Abra Mapa Satélite.
+
+Aprovado se:
+
+- aparecer V5.5.1;
+- mapa abre;
+- satélite Esri aparece;
+- pontos com GPS aparecem;
+- sem GPS aparece na tabela;
+- sem GPS não cai em DADOS_SEM_VINCULO.

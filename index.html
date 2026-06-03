@@ -1,3 +1,572 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0f5132"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Cocho Central"><title>APP COCHO CENTRAL V5.5</title><link rel="manifest" href="./manifest.json"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><style>:root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--ink:#10291c;--muted:#607066;--line:#c8dcc9;--r:#dc3545;--am:#ffc107;--b:#0d6efd;--shadow:0 8px 24px rgba(0,0,0,.12)}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}header{position:sticky;top:0;z-index:1000;background:linear-gradient(135deg,var(--g),#0b3d26);color:#fff;padding:12px 14px;box-shadow:var(--shadow)}.header-row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.brand{display:flex;gap:10px;align-items:center}.logo{width:44px;height:44px;border-radius:14px;background:#fff;color:var(--g);display:flex;align-items:center;justify-content:center;font-weight:900}h1{font-size:18px;margin:0}small{opacity:.9}.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;background:#e9ecef;color:#123}.badge.ok{background:#d1e7dd;color:#0f5132}.badge.warn{background:#fff3cd;color:#664d03}.badge.err{background:#f8d7da;color:#842029}.badge.blue{background:#cfe2ff;color:#084298}main{padding:12px;max-width:1280px;margin:0 auto}nav{display:flex;gap:8px;overflow-x:auto;padding:10px 0 12px}.tab{border:1px solid var(--line);background:#fff;color:#123;border-radius:12px;padding:10px 12px;font-weight:800;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.04)}.tab.active{background:var(--g);color:#fff;border-color:var(--g)}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,.06)}.card h2{margin:0 0 10px;font-size:18px;color:var(--g)}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.col{grid-column:span 12}@media(min-width:850px){.col4{grid-column:span 4}.col6{grid-column:span 6}.col8{grid-column:span 8}}label{display:block;font-size:12px;font-weight:800;color:#344;margin:8px 0 4px}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff;font-size:15px}button{border:0;border-radius:12px;padding:10px 12px;font-weight:900;background:var(--g2);color:#fff;cursor:pointer}button.secondary{background:#6c757d}button.danger{background:var(--r)}button.warn{background:#f0ad00;color:#111}button.blue{background:var(--b)}.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.kpi .box{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fbfffb}.kpi .num{font-size:24px;font-weight:900;color:var(--g)}.kpi .lab{font-size:12px;color:var(--muted)}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:850px;background:#fff}th,td{padding:9px;border-bottom:1px solid #e7eee7;text-align:left;font-size:13px}th{background:#eef7ef;color:#0f5132}pre{background:#0b1f16;color:#d8ffe6;padding:12px;border-radius:12px;overflow:auto;white-space:pre-wrap;font-size:12px}.hidden{display:none!important}.notice{padding:10px;border-radius:12px;background:#fff3cd;color:#664d03;border:1px solid #ffe69c;margin:8px 0}.success{padding:10px;border-radius:12px;background:#d1e7dd;color:#0f5132;border:1px solid #badbcc;margin:8px 0}.error{padding:10px;border-radius:12px;background:#f8d7da;color:#842029;border:1px solid #f5c2c7;margin:8px 0}#map{height:560px;border-radius:16px;border:1px solid var(--line);overflow:hidden;background:#dfe8df}.map-legend{display:flex;gap:8px;flex-wrap:wrap;font-size:12px}.dot{display:inline-block;width:12px;height:12px;border-radius:99px;margin-right:4px}.green{background:#198754}.yellow{background:#ffc107}.red{background:#dc3545}.gray{background:#6c757d}.footer{font-size:12px;color:#607066;text-align:center;padding:24px}</style></head><body><header><div class="header-row"><div class="brand"><div class="logo">CO</div><div><h1>APP COCHO CENTRAL V5.5</h1><small>Mapa Satélite • GPS • Cloud V2.1 • Multifazenda</small></div></div><div class="badges"><span id="netBadge" class="badge blue">Online?</span><span id="cloudBadge" class="badge warn">Cloud não testada</span><span id="horaBadge" class="badge ok">Brasília</span></div></div></header><main><nav><button class="tab active" data-tab="painel">Painel</button><button class="tab" data-tab="config">Config Cloud</button><button class="tab" data-tab="fazendas">Fazendas</button><button class="tab" data-tab="usuarios">Usuários</button><button class="tab" data-tab="acesso">Validar Acesso</button><button class="tab" data-tab="sync">Teste Sync</button><button class="tab" data-tab="mapa">Mapa</button><button class="tab" data-tab="auditoria">Auditoria GPS</button></nav><section id="painel" class="view"><div class="grid"><div class="card col4"><h2>Status</h2><div class="kpi"><div class="box"><div id="kFazendas" class="num">0</div><div class="lab">Fazendas locais</div></div><div class="box"><div id="kUsuarios" class="num">0</div><div class="lab">Usuários locais</div></div><div class="box"><div id="kPontos" class="num">0</div><div class="lab">Pontos no mapa</div></div><div class="box"><div id="kSemGPS" class="num">0</div><div class="lab">Registros sem GPS</div></div></div></div><div class="card col8"><h2>Modo Consultoria</h2><div class="btnrow"><button onclick="dashboardConsultoria()">Dashboard Consultoria</button><button onclick="listarPontosConsultoria()" class="blue">Carregar Mapa Consultoria</button><button onclick="dashboardFazendaSelecionada()" class="secondary">Dashboard Fazenda Selecionada</button></div><pre id="outPainel">Aguardando operação...</pre></div></div></section><section id="config" class="view hidden"><div class="grid"><div class="card col6"><h2>Configurar URL do Apps Script</h2><label>URL do Web App /exec</label><input id="cloudUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec"><div class="btnrow"><button onclick="salvarConfig()">Salvar URL</button><button class="blue" onclick="testarCloud()">Testar conexão</button><button class="secondary" onclick="limparConfig()">Limpar</button></div><div class="notice">A Central V5.5 exige o Script Cloud V2.1 para as rotas de mapa/GPS.</div></div><div class="card col6"><h2>Retorno</h2><pre id="outConfig">Nenhum teste ainda.</pre></div></div></section><section id="fazendas" class="view hidden"><div class="grid"><div class="card col6"><h2>Cadastrar Fazenda</h2><label>Nome</label><input id="fz_nome" value="FAZENDA TESTE MAPA"><label>Proprietário</label><input id="fz_prop" value="TESTE"><label>Município</label><input id="fz_mun" value="IRITUIA"><label>Estado</label><input id="fz_uf" value="PA"><label>Atividade</label><input id="fz_atividade" value="PECUARIA"><label>Responsável Técnico</label><input id="fz_resp" value="TOMAZ"><div class="btnrow"><button onclick="criarFazenda()">Criar Fazenda</button></div></div><div class="card col6"><h2>Editar Fazenda sem Duplicar</h2><label>Fazenda</label><select id="editFazendaSel" onchange="preencherEdicaoFazenda()"></select><label>Novo nome</label><input id="edit_nome"><label>Município</label><input id="edit_mun"><label>Estado</label><input id="edit_uf"><label>Status</label><select id="edit_status"><option>ATIVA</option><option>INATIVA</option><option>SUSPENSA</option><option>ARQUIVADA</option></select><label>Motivo</label><input id="edit_motivo" value="Correção pela Central V5.5"><div class="btnrow"><button onclick="atualizarFazenda()">Salvar Alteração</button><button class="warn" onclick="inativarFazenda()">Inativar</button></div></div><div class="card col"><h2>Fazendas locais</h2><div class="table-wrap"><table><thead><tr><th>ID</th><th>Chave</th><th>Nome</th><th>Município</th><th>Status</th></tr></thead><tbody id="fazendaRows"></tbody></table></div><pre id="outFazendas">Aguardando...</pre></div></div></section><section id="usuarios" class="view hidden"><div class="grid"><div class="card col6"><h2>Cadastrar Usuário</h2><label>Fazenda</label><select id="usrFazendaSel"></select><label>Nome</label><input id="usr_nome" value="FUNCIONARIO MAPA"><label>PIN</label><input id="usr_pin" value="1234"><label>Perfil</label><select id="usr_tipo"><option>FUNCIONARIO_CAMPO</option><option>GERENTE</option><option>PROPRIETARIO</option><option>CONSULTOR_MASTER</option><option>VISUALIZADOR</option></select><div class="btnrow"><button onclick="criarUsuario()">Criar Usuário</button></div></div><div class="card col6"><h2>Usuários locais</h2><div class="table-wrap"><table><thead><tr><th>ID</th><th>Nome</th><th>Perfil</th><th>Fazenda</th><th>Status</th></tr></thead><tbody id="usuarioRows"></tbody></table></div></div><div class="card col"><pre id="outUsuarios">Aguardando...</pre></div></div></section><section id="acesso" class="view hidden"><div class="grid"><div class="card col6"><h2>Validar CHAVE_FAZENDA + PIN</h2><label>Chave</label><input id="login_chave"><label>PIN</label><input id="login_pin" value="1234"><div class="btnrow"><button onclick="validarAcesso()">Validar</button><button class="secondary" onclick="preencherLoginSelecionado()">Usar Fazenda Selecionada</button></div></div><div class="card col6"><h2>Sessão</h2><div id="sessaoBox" class="notice">Nenhuma sessão validada.</div><pre id="outAcesso">Aguardando...</pre></div></div></section><section id="sync" class="view hidden"><div class="grid"><div class="card col6"><h2>Teste Sync com GPS</h2><label>Lote</label><input id="sync_lote" value="LOTE 01"><label>Cocho</label><input id="sync_cocho" value="COCHO 01"><label>Produto</label><input id="sync_produto" value="SAL MINERAL"><label>Quantidade kg</label><input id="sync_kg" value="25"><label>Latitude</label><input id="sync_lat" value="-1.23456"><label>Longitude</label><input id="sync_lng" value="-47.12345"><label>Acurácia metros</label><input id="sync_acc" value="18"><div class="btnrow"><button onclick="sincronizarTesteGPS()" class="blue">Enviar com GPS</button><button onclick="sincronizarTesteSemGPS()" class="warn">Enviar sem GPS</button></div><div class="notice">Com GPS deve virar COM_PONTO. Sem GPS deve entrar em REGISTROS_COCHO como SEM_PONTO, não em DADOS_SEM_VINCULO.</div></div><div class="card col6"><h2>Retorno</h2><pre id="outSync">Aguardando...</pre></div></div></section><section id="mapa" class="view hidden"><div class="grid"><div class="card col4"><h2>Filtros do Mapa</h2><label>Modo</label><select id="mapModo"><option value="fazenda">Fazenda selecionada/sessão</option><option value="consultoria">Consultoria geral</option></select><label>Fazenda</label><select id="mapFazendaSel"></select><label>Lote</label><input id="map_lote" placeholder="opcional"><label>Cocho</label><input id="map_cocho" placeholder="opcional"><label>Produto</label><input id="map_produto" placeholder="opcional"><label>Usuário</label><input id="map_usuario" placeholder="opcional"><div class="btnrow"><button onclick="carregarMapa()" class="blue">Carregar Mapa</button><button onclick="centralizarMapa()" class="secondary">Centralizar</button></div><div class="map-legend" style="margin-top:10px"><span><i class="dot green"></i>OK</span><span><i class="dot yellow"></i>Impreciso</span><span><i class="dot red"></i>Alerta</span><span><i class="dot gray"></i>Sem ponto</span></div><div id="mapResumo" class="notice">Aguardando carregar pontos.</div></div><div class="card col8"><h2>Mapa padrão / satélite</h2><div id="map"></div></div><div class="card col"><h2>Registros sem GPS / sem ponto</h2><div class="table-wrap"><table><thead><tr><th>ID</th><th>Fazenda</th><th>Data</th><th>Lote</th><th>Cocho</th><th>Produto</th><th>Usuário</th><th>Motivo</th></tr></thead><tbody id="semGpsRows"></tbody></table></div><pre id="outMapa">Aguardando...</pre></div></div></section><section id="auditoria" class="view hidden"><div class="grid"><div class="card col6"><h2>Registros sem GPS</h2><div class="btnrow"><button onclick="listarSemGPS()">Listar sem GPS</button><button onclick="validarGPSExemplo()" class="secondary">Validar GPS exemplo</button></div></div><div class="card col6"><h2>Retorno auditoria</h2><pre id="outAuditoria">Aguardando...</pre></div></div></section><div class="footer">APP COCHO CENTRAL V5.5 — Cloud V2.1 — Mapa Satélite Restaurado</div></main><script>
-(function(){'use strict';var VERSION='APP COCHO CENTRAL V5.5';var LS={url:'cocho_cloud_url_v21',fazendas:'cocho_central_v55_fazendas',usuarios:'cocho_central_v55_usuarios',sessao:'cocho_central_v55_sessao'};var map=null,markers=[];function $(id){return document.getElementById(id)}function val(id){return ($(id).value||'').trim()}function setVal(id,v){$(id).value=v||''}function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}function save(k,v){localStorage.setItem(k,JSON.stringify(v))}function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}function pretty(o){try{return JSON.stringify(o,null,2)}catch(e){return String(o)}}function out(id,o){$(id).textContent=typeof o==='string'?o:pretty(o)}function nowBR(){try{return new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',hour12:false})}catch(e){return new Date().toLocaleString('pt-BR')}}function nowUTC(){return new Date().toISOString()}function tz(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){return ''}}function uid(p){return p+'-'+Date.now()+'-'+Math.random().toString(36).substr(2,5).toUpperCase()}function getUrl(){return (val('cloudUrl')||localStorage.getItem(LS.url)||'').trim()}function request(action,data){var url=getUrl();if(!url)return Promise.reject(new Error('Configure a URL do Cloud.'));data=data||{};data.action=action;return fetch(url,{method:'POST',mode:'cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)}).then(function(r){return r.text()}).then(function(t){try{return JSON.parse(t)}catch(e){throw new Error('Retorno não JSON: '+t)}})}function setMsg(id,msg,cls){$(id).innerHTML='<div class="'+(cls||'notice')+'">'+msg+'</div>'}window.salvarConfig=function(){var u=val('cloudUrl');if(!u){alert('Cole a URL.');return}localStorage.setItem(LS.url,u);out('outConfig','URL salva.')};window.limparConfig=function(){localStorage.removeItem(LS.url);setVal('cloudUrl','');out('outConfig','URL limpa.')};window.testarCloud=function(){request('ping',{}).then(function(r){out('outConfig',r);$('cloudBadge').className='badge '+(r.ok?'ok':'err');$('cloudBadge').textContent=r.ok?'Cloud OK':'Cloud erro'}).catch(function(e){out('outConfig',String(e.message||e));$('cloudBadge').className='badge err';$('cloudBadge').textContent='Cloud erro'})};function getFazendas(){return load(LS.fazendas,[])}function setFazendas(a){save(LS.fazendas,a);renderFazendas()}function getUsuarios(){return load(LS.usuarios,[])}function setUsuarios(a){save(LS.usuarios,a);renderUsuarios()}function addFazenda(f){if(!f||!f.ID_FAZENDA)return;var a=getFazendas(),ok=false;for(var i=0;i<a.length;i++){if(a[i].ID_FAZENDA===f.ID_FAZENDA){a[i]=f;ok=true;break}}if(!ok)a.push(f);setFazendas(a)}function addUsuario(u){if(!u||!u.ID_USUARIO)return;var a=getUsuarios(),ok=false;for(var i=0;i<a.length;i++){if(a[i].ID_USUARIO===u.ID_USUARIO){a[i]=u;ok=true;break}}if(!ok)a.push(u);setUsuarios(a)}function findFazenda(id){var a=getFazendas();for(var i=0;i<a.length;i++)if(a[i].ID_FAZENDA===id)return a[i];return null}function sessao(){return load(LS.sessao,null)}window.criarFazenda=function(){var d={nome_fazenda:val('fz_nome'),proprietario:val('fz_prop'),municipio:val('fz_mun'),estado:val('fz_uf'),atividade_principal:val('fz_atividade'),responsavel_tecnico:val('fz_resp'),status_fazenda:'ATIVA',id_usuario:'ADMIN',nome_usuario:'TOMAZ',tipo_usuario:'CONSULTOR_MASTER',motivo:'Cadastro pela Central V5.5',origem_app:'CENTRAL',versao_app:VERSION};request('criarFazenda',d).then(function(r){out('outFazendas',r);if(r.ok&&r.fazenda)addFazenda(r.fazenda)}).catch(function(e){out('outFazendas',String(e.message||e))})};window.preencherEdicaoFazenda=function(){var f=findFazenda(val('editFazendaSel'));if(f){setVal('edit_nome',f.NOME_FAZENDA);setVal('edit_mun',f.MUNICIPIO);setVal('edit_uf',f.ESTADO);setVal('edit_status',f.STATUS_FAZENDA||'ATIVA')}};window.atualizarFazenda=function(){var id=val('editFazendaSel');if(!id){alert('Selecione fazenda.');return}request('atualizarFazenda',{id_fazenda:id,NOME_FAZENDA:val('edit_nome'),MUNICIPIO:val('edit_mun'),ESTADO:val('edit_uf'),STATUS_FAZENDA:val('edit_status'),id_usuario:'ADMIN',nome_usuario:'TOMAZ',tipo_usuario:'CONSULTOR_MASTER',motivo:val('edit_motivo'),origem_app:'CENTRAL',versao_app:VERSION}).then(function(r){out('outFazendas',r);if(r.ok&&r.fazenda)addFazenda(r.fazenda)}).catch(function(e){out('outFazendas',String(e.message||e))})};window.inativarFazenda=function(){var id=val('editFazendaSel');if(!id)return;request('inativarFazenda',{id_fazenda:id,id_usuario:'ADMIN',nome_usuario:'TOMAZ',tipo_usuario:'CONSULTOR_MASTER',motivo:'Inativada pela Central V5.5',origem_app:'CENTRAL',versao_app:VERSION}).then(function(r){out('outFazendas',r);if(r.ok&&r.fazenda)addFazenda(r.fazenda)})};window.criarUsuario=function(){var f=findFazenda(val('usrFazendaSel'));if(!f){alert('Selecione fazenda.');return}request('criarUsuario',{nome_usuario:val('usr_nome'),pin:val('usr_pin'),tipo_usuario:val('usr_tipo'),id_fazenda:f.ID_FAZENDA,chave_fazenda:f.CHAVE_FAZENDA,status_usuario:'ATIVO',operador_id_usuario:'ADMIN',operador_nome_usuario:'TOMAZ',operador_tipo_usuario:'CONSULTOR_MASTER',origem_app:'CENTRAL',versao_app:VERSION}).then(function(r){out('outUsuarios',r);if(r.ok&&r.usuario)addUsuario(r.usuario)}).catch(function(e){out('outUsuarios',String(e.message||e))})};window.preencherLoginSelecionado=function(){var f=findFazenda(val('usrFazendaSel')||val('editFazendaSel')||val('mapFazendaSel'));if(f)setVal('login_chave',f.CHAVE_FAZENDA)};window.validarAcesso=function(){request('validarAcesso',{chave_fazenda:val('login_chave'),pin:val('login_pin'),origem_app:'CENTRAL',versao_app:VERSION}).then(function(r){out('outAcesso',r);if(r.ok){save(LS.sessao,r);$('sessaoBox').className='success';$('sessaoBox').innerHTML='<b>'+esc(r.nome_fazenda)+'</b><br>'+esc(r.nome_usuario)+' — '+esc(r.tipo_usuario);addFazenda({ID_FAZENDA:r.id_fazenda,CHAVE_FAZENDA:r.chave_fazenda,NOME_FAZENDA:r.nome_fazenda,STATUS_FAZENDA:'ATIVA'});renderFazendas()}}).catch(function(e){out('outAcesso',String(e.message||e))})};function buildRegistro(comGps){var s=sessao();if(!s||!s.ok)throw new Error('Valide acesso primeiro.');return {ID_REGISTRO:uid(comGps?'REG-GPS':'REG-SEM-GPS'),ID_FAZENDA:s.id_fazenda,CHAVE_FAZENDA:s.chave_fazenda,NOME_FAZENDA:s.nome_fazenda,ID_USUARIO:s.id_usuario,NOME_USUARIO:s.nome_usuario,TIPO_USUARIO:s.tipo_usuario,DATA_HORA_LOCAL:nowBR(),DATA_HORA_BRASILIA:nowBR(),DATA_HORA_UTC:nowUTC(),TIMEZONE_DISPOSITIVO:tz(),LOTE:val('sync_lote'),COCHO:val('sync_cocho'),PRODUTO:val('sync_produto'),TIPO_PRODUTO:'MINERAL',QUANTIDADE_KG:val('sync_kg'),UNIDADE:'KG',ESCORE_COCHO:'2',OBSERVACAO:comGps?'Teste com GPS Central V5.5':'Teste sem GPS Central V5.5',GPS_LAT:comGps?val('sync_lat'):'',GPS_LNG:comGps?val('sync_lng'):'',GPS_ACURACIA:comGps?val('sync_acc'):'',STATUS_GPS:comGps?'CAPTURADO':'SEM_GPS',ORIGEM_APP:'CENTRAL_TESTE',VERSAO_APP:VERSION}}function enviarRegistro(r){var s=sessao();return request('sincronizarRegistrosCocho',{id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda,id_usuario:s.id_usuario,nome_usuario:s.nome_usuario,versao_app:VERSION,registros:[r]})}window.sincronizarTesteGPS=function(){try{enviarRegistro(buildRegistro(true)).then(function(r){out('outSync',r)}).catch(function(e){out('outSync',String(e.message||e))})}catch(e){out('outSync',String(e.message||e))}};window.sincronizarTesteSemGPS=function(){try{enviarRegistro(buildRegistro(false)).then(function(r){out('outSync',r)}).catch(function(e){out('outSync',String(e.message||e))})}catch(e){out('outSync',String(e.message||e))}};window.dashboardConsultoria=function(){request('listarDashboardConsultoria',{origem_app:'CENTRAL',versao_app:VERSION}).then(function(r){out('outPainel',r);if(r.ok&&r.fazendas){for(var i=0;i<r.fazendas.length;i++)addFazenda({ID_FAZENDA:r.fazendas[i].id_fazenda,CHAVE_FAZENDA:r.fazendas[i].chave_fazenda,NOME_FAZENDA:r.fazendas[i].nome_fazenda,MUNICIPIO:r.fazendas[i].municipio,ESTADO:r.fazendas[i].estado,STATUS_FAZENDA:r.fazendas[i].status_fazenda});}}).catch(function(e){out('outPainel',String(e.message||e))})};window.dashboardFazendaSelecionada=function(){var s=sessao(),f=findFazenda(val('mapFazendaSel')||val('editFazendaSel')||val('usrFazendaSel'));var d=f?{id_fazenda:f.ID_FAZENDA,chave_fazenda:f.CHAVE_FAZENDA}:(s?{id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda}:{});request('listarDashboardFazenda',d).then(function(r){out('outPainel',r)}).catch(function(e){out('outPainel',String(e.message||e))})};function initMap(){if(map||typeof L==='undefined')return;map=L.map('map').setView([-1.45,-48.48],8);var osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'});var esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri'});osm.addTo(map);L.control.layers({'Padrão':osm,'Satélite Esri':esri},{}).addTo(map)}function clearMarkers(){if(!map)return;for(var i=0;i<markers.length;i++)map.removeLayer(markers[i]);markers=[]}function color(a){a=String(a||'OK');if(a==='OK')return '#198754';if(a==='IMPRECISO')return '#ffc107';return '#dc3545'}function addPoint(p){var m=L.circleMarker([Number(p.gps_lat),Number(p.gps_lng)],{radius:9,color:color(p.gps_alerta),fillColor:color(p.gps_alerta),fillOpacity:.85,weight:2});m.bindPopup('<b>'+esc(p.nome_fazenda)+'</b><br>'+esc(p.data_hora_brasilia)+'<br>Lote: '+esc(p.lote)+'<br>Cocho: '+esc(p.cocho)+'<br>Produto: '+esc(p.produto)+'<br>Kg: '+esc(p.quantidade_kg)+'<br>Usuário: '+esc(p.usuario)+'<br>GPS: '+esc(p.gps_alerta));m.addTo(map);markers.push(m)}function renderSemGps(arr){var rows='';for(var i=0;i<(arr||[]).length;i++){var r=arr[i];rows+='<tr><td>'+esc(r.id_registro)+'</td><td>'+esc(r.nome_fazenda)+'</td><td>'+esc(r.data_hora_brasilia)+'</td><td>'+esc(r.lote)+'</td><td>'+esc(r.cocho)+'</td><td>'+esc(r.produto)+'</td><td>'+esc(r.usuario)+'</td><td>'+esc(r.motivo||r.gps_alerta)+'</td></tr>'}$('semGpsRows').innerHTML=rows||'<tr><td colspan="8">Nenhum registro sem GPS.</td></tr>'}window.centralizarMapa=function(){if(map&&markers.length){var g=L.featureGroup(markers);map.fitBounds(g.getBounds().pad(.2))}};window.carregarMapa=function(){if(val('mapModo')==='consultoria')listarPontosConsultoria();else listarPontosFazenda()};function filtros(){return {lote:val('map_lote'),cocho:val('map_cocho'),produto:val('map_produto'),usuario:val('map_usuario'),origem_app:'CENTRAL',versao_app:VERSION}}function listarPontosFazenda(){initMap();var s=sessao(),f=findFazenda(val('mapFazendaSel'));var d=f?{id_fazenda:f.ID_FAZENDA,chave_fazenda:f.CHAVE_FAZENDA}:s?{id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda}:{};var fi=filtros();for(var k in fi)d[k]=fi[k];request('listarPontosMapaFazenda',d).then(function(r){plotarMapa(r)}).catch(function(e){out('outMapa',String(e.message||e))})}window.listarPontosConsultoria=function(){initMap();request('listarPontosMapaConsultoria',filtros()).then(function(r){plotarMapa(r);out('outPainel',r)}).catch(function(e){out('outMapa',String(e.message||e));out('outPainel',String(e.message||e))})};function plotarMapa(r){out('outMapa',r);clearMarkers();if(r.ok&&r.pontos){for(var i=0;i<r.pontos.length;i++)addPoint(r.pontos[i]);renderSemGps(r.sem_gps||[]);$('kPontos').textContent=r.total_pontos||0;$('kSemGPS').textContent=r.total_sem_gps||0;setMsg('mapResumo','Pontos: '+(r.total_pontos||0)+' | Sem GPS: '+(r.total_sem_gps||0),'success');setTimeout(function(){map.invalidateSize();centralizarMapa()},250)}else setMsg('mapResumo','Não foi possível carregar mapa.','error')}window.listarSemGPS=function(){request('listarRegistrosSemGPS',{}).then(function(r){out('outAuditoria',r);renderSemGps(r.registros||[])}).catch(function(e){out('outAuditoria',String(e.message||e))})};window.validarGPSExemplo=function(){request('validarGPSRegistro',{GPS_LAT:'-1.23456',GPS_LNG:'-47.12345',GPS_ACURACIA:'18',STATUS_GPS:'CAPTURADO'}).then(function(r){out('outAuditoria',r)}).catch(function(e){out('outAuditoria',String(e.message||e))})};function renderFazendas(){var a=getFazendas(),rows='',opts='<option value="">Selecione...</option>';for(var i=0;i<a.length;i++){rows+='<tr><td>'+esc(a[i].ID_FAZENDA)+'</td><td>'+esc(a[i].CHAVE_FAZENDA)+'</td><td>'+esc(a[i].NOME_FAZENDA)+'</td><td>'+esc(a[i].MUNICIPIO)+'</td><td>'+esc(a[i].STATUS_FAZENDA)+'</td></tr>';opts+='<option value="'+esc(a[i].ID_FAZENDA)+'">'+esc(a[i].NOME_FAZENDA||a[i].ID_FAZENDA)+'</option>'}$('fazendaRows').innerHTML=rows||'<tr><td colspan="5">Sem fazendas locais.</td></tr>';$('editFazendaSel').innerHTML=opts;$('usrFazendaSel').innerHTML=opts;$('mapFazendaSel').innerHTML=opts;$('kFazendas').textContent=a.length}function renderUsuarios(){var a=getUsuarios(),rows='';for(var i=0;i<a.length;i++){rows+='<tr><td>'+esc(a[i].ID_USUARIO)+'</td><td>'+esc(a[i].NOME_USUARIO)+'</td><td>'+esc(a[i].TIPO_USUARIO)+'</td><td>'+esc(a[i].CHAVE_FAZENDA)+'</td><td>'+esc(a[i].STATUS_USUARIO)+'</td></tr>'}$('usuarioRows').innerHTML=rows||'<tr><td colspan="5">Sem usuários locais.</td></tr>';$('kUsuarios').textContent=a.length}function updateNet(){var on=navigator.onLine;$('netBadge').className='badge '+(on?'ok':'err');$('netBadge').textContent=on?'Online':'Offline'}function updateHora(){$('horaBadge').textContent='Brasília '+nowBR()}function initTabs(){var tabs=document.querySelectorAll('.tab');for(var i=0;i<tabs.length;i++){tabs[i].onclick=function(){for(var j=0;j<tabs.length;j++)tabs[j].classList.remove('active');this.classList.add('active');var id=this.getAttribute('data-tab');var views=document.querySelectorAll('.view');for(var k=0;k<views.length;k++)views[k].classList.add('hidden');$(id).classList.remove('hidden');if(id==='mapa'){setTimeout(function(){initMap();map.invalidateSize()},250)}}}}function boot(){initTabs();updateNet();updateHora();setInterval(updateHora,1000);window.addEventListener('online',updateNet);window.addEventListener('offline',updateNet);setVal('cloudUrl',localStorage.getItem(LS.url)||'');renderFazendas();renderUsuarios();var s=sessao();if(s&&s.ok){$('sessaoBox').className='success';$('sessaoBox').innerHTML='<b>'+esc(s.nome_fazenda)+'</b><br>'+esc(s.nome_usuario)+' — '+esc(s.tipo_usuario);setVal('login_chave',s.chave_fazenda)}if('serviceWorker'in navigator)navigator.serviceWorker.register('./service-worker.js').catch(function(){})}boot();})();</script></body></html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f5132">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Cocho Central">
+  <title>APP COCHO CENTRAL V5.5.1</title>
+  <link rel="manifest" href="./manifest.json?v=5.5.1">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    :root {
+      --g:#0f5132; --g2:#198754; --bg:#eef6ef; --card:#fff;
+      --line:#c8dcc9; --ink:#10291c; --muted:#607066;
+      --r:#dc3545; --am:#ffc107; --b:#0d6efd;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); font-family:Arial,Helvetica,sans-serif; color:var(--ink); }
+    header { background:linear-gradient(135deg,var(--g),#0b3d26); color:#fff; padding:12px; position:sticky; top:0; z-index:1000; }
+    .top { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:center; }
+    h1 { margin:0; font-size:18px; }
+    .sub { font-size:12px; opacity:.9; }
+    .badges { display:flex; gap:6px; flex-wrap:wrap; }
+    .badge { border-radius:999px; padding:6px 10px; font-weight:800; font-size:12px; background:#e9ecef; color:#111; }
+    .ok { background:#d1e7dd; color:#0f5132; }
+    .warn { background:#fff3cd; color:#664d03; }
+    .err { background:#f8d7da; color:#842029; }
+    main { max-width:1260px; margin:0 auto; padding:12px; }
+    nav { display:flex; gap:8px; overflow-x:auto; margin-bottom:12px; }
+    .tab { background:#fff; border:1px solid var(--line); color:#123; border-radius:12px; padding:10px 12px; font-weight:800; white-space:nowrap; }
+    .tab.active { background:var(--g); color:#fff; }
+    .view { display:none; }
+    .view.active { display:block; }
+    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:12px; }
+    .card { grid-column:span 12; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; box-shadow:0 4px 16px rgba(0,0,0,.06); }
+    @media(min-width:850px){ .c4{grid-column:span 4;} .c6{grid-column:span 6;} .c8{grid-column:span 8;} }
+    h2 { color:var(--g); margin:0 0 10px; font-size:18px; }
+    label { display:block; margin:8px 0 4px; font-size:12px; font-weight:800; }
+    input,select,textarea { width:100%; border:1px solid var(--line); border-radius:12px; padding:10px; font-size:15px; background:#fff; }
+    button { border:0; border-radius:12px; padding:10px 12px; font-weight:900; background:var(--g2); color:#fff; }
+    button.blue { background:var(--b); }
+    button.gray { background:#6c757d; }
+    button.warnbtn { background:#f0ad00; color:#111; }
+    .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    pre { background:#0b1f16; color:#d8ffe6; padding:12px; border-radius:12px; overflow:auto; white-space:pre-wrap; font-size:12px; }
+    .msg { border-radius:12px; padding:10px; margin:8px 0; background:#fff3cd; color:#664d03; border:1px solid #ffe69c; }
+    .success { background:#d1e7dd; color:#0f5132; border-color:#badbcc; }
+    .error { background:#f8d7da; color:#842029; border-color:#f5c2c7; }
+    .kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    .kpi { border:1px solid var(--line); border-radius:14px; padding:12px; background:#fbfffb; }
+    .num { font-size:24px; font-weight:900; color:var(--g); }
+    .lab { font-size:12px; color:var(--muted); }
+    .tablewrap { overflow:auto; border:1px solid var(--line); border-radius:12px; }
+    table { border-collapse:collapse; width:100%; min-width:850px; background:#fff; }
+    th,td { padding:9px; border-bottom:1px solid #e7eee7; text-align:left; font-size:13px; }
+    th { background:#eef7ef; color:#0f5132; }
+    #map { height:560px; border-radius:16px; border:1px solid var(--line); background:#dfe8df; }
+    .legend { display:flex; gap:10px; flex-wrap:wrap; font-size:12px; margin-top:8px; }
+    .dot { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:4px; }
+    .green{background:#198754;} .yellow{background:#ffc107;} .red{background:#dc3545;} .gray{background:#6c757d;}
+  </style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div>
+      <h1>APP COCHO CENTRAL V5.5.1 — HOTFIX MAPA</h1>
+      <div class="sub">Mapa Satélite • GPS • Cloud V2.1 • Cache corrigido</div>
+    </div>
+    <div class="badges">
+      <span id="netBadge" class="badge">Online?</span>
+      <span id="cloudBadge" class="badge warn">Cloud não testada</span>
+      <span id="hourBadge" class="badge ok">Brasília</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <nav>
+    <button class="tab active" data-view="painel">Painel</button>
+    <button class="tab" data-view="config">Config Cloud</button>
+    <button class="tab" data-view="acesso">Validar Acesso</button>
+    <button class="tab" data-view="sync">Teste Sync GPS</button>
+    <button class="tab" data-view="mapa">Mapa Satélite</button>
+    <button class="tab" data-view="auditoria">Sem GPS</button>
+  </nav>
+
+  <section id="painel" class="view active">
+    <div class="grid">
+      <div class="card c4">
+        <h2>Status</h2>
+        <div class="kpis">
+          <div class="kpi"><div id="kPontos" class="num">0</div><div class="lab">Pontos</div></div>
+          <div class="kpi"><div id="kSemGps" class="num">0</div><div class="lab">Sem GPS</div></div>
+          <div class="kpi"><div id="kEnvios" class="num">0</div><div class="lab">Envios teste</div></div>
+          <div class="kpi"><div id="kSessao" class="num">0</div><div class="lab">Sessão</div></div>
+        </div>
+      </div>
+      <div class="card c8">
+        <h2>Diagnóstico</h2>
+        <div class="msg success">
+          Se esta tela mostra <b>V5.5.1 — HOTFIX MAPA</b>, o index novo abriu corretamente.
+        </div>
+        <div class="row">
+          <button onclick="testCloud()">Testar Cloud</button>
+          <button class="blue" onclick="loadMapConsultoria()">Carregar Mapa Consultoria</button>
+          <button class="gray" onclick="showView('config')">Configurar URL</button>
+        </div>
+        <pre id="outPainel">Aguardando...</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="config" class="view">
+    <div class="grid">
+      <div class="card c6">
+        <h2>Config Cloud V2.1</h2>
+        <label>URL do Web App /exec</label>
+        <input id="cloudUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+        <div class="row">
+          <button onclick="saveUrl()">Salvar URL</button>
+          <button class="blue" onclick="testCloud()">Testar conexão</button>
+          <button class="gray" onclick="clearUrl()">Limpar</button>
+        </div>
+      </div>
+      <div class="card c6">
+        <h2>Retorno</h2>
+        <pre id="outConfig">Aguardando...</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="acesso" class="view">
+    <div class="grid">
+      <div class="card c6">
+        <h2>Validar CHAVE_FAZENDA + PIN</h2>
+        <label>CHAVE_FAZENDA</label>
+        <input id="chave" placeholder="COCHO-...">
+        <label>PIN</label>
+        <input id="pin" value="1234">
+        <div class="row">
+          <button onclick="validarAcesso()">Validar Acesso</button>
+          <button class="gray" onclick="preencherTeste()">Preencher teste</button>
+        </div>
+      </div>
+      <div class="card c6">
+        <h2>Sessão</h2>
+        <div id="sessaoBox" class="msg">Nenhuma sessão validada.</div>
+        <pre id="outAcesso">Aguardando...</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="sync" class="view">
+    <div class="grid">
+      <div class="card c6">
+        <h2>Teste de sincronização GPS</h2>
+        <label>Lote</label><input id="lote" value="LOTE 01">
+        <label>Cocho</label><input id="cocho" value="COCHO 01">
+        <label>Produto</label><input id="produto" value="SAL MINERAL">
+        <label>Quantidade kg</label><input id="kg" value="25">
+        <label>Latitude</label><input id="lat" value="-1.23456">
+        <label>Longitude</label><input id="lng" value="-47.12345">
+        <label>Acurácia</label><input id="acc" value="18">
+        <div class="row">
+          <button class="blue" onclick="syncGps(true)">Enviar com GPS</button>
+          <button class="warnbtn" onclick="syncGps(false)">Enviar sem GPS</button>
+        </div>
+      </div>
+      <div class="card c6">
+        <h2>Retorno</h2>
+        <pre id="outSync">Aguardando...</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="mapa" class="view">
+    <div class="grid">
+      <div class="card c4">
+        <h2>Filtros do Mapa</h2>
+        <label>Modo</label>
+        <select id="modoMapa">
+          <option value="fazenda">Fazenda da sessão</option>
+          <option value="consultoria">Consultoria geral</option>
+        </select>
+        <label>Lote</label><input id="fLote" placeholder="opcional">
+        <label>Cocho</label><input id="fCocho" placeholder="opcional">
+        <label>Produto</label><input id="fProduto" placeholder="opcional">
+        <label>Usuário</label><input id="fUsuario" placeholder="opcional">
+        <div class="row">
+          <button class="blue" onclick="carregarMapa()">Carregar Mapa</button>
+          <button class="gray" onclick="centralizar()">Centralizar</button>
+        </div>
+        <div class="legend">
+          <span><i class="dot green"></i>OK</span>
+          <span><i class="dot yellow"></i>Impreciso</span>
+          <span><i class="dot red"></i>Alerta</span>
+          <span><i class="dot gray"></i>Sem ponto</span>
+        </div>
+        <div id="mapMsg" class="msg">Aguardando pontos.</div>
+      </div>
+      <div class="card c8">
+        <h2>Mapa padrão / satélite</h2>
+        <div id="map"></div>
+      </div>
+      <div class="card">
+        <h2>Registros sem GPS</h2>
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Fazenda</th><th>Data</th><th>Lote</th><th>Cocho</th><th>Produto</th><th>Usuário</th><th>Motivo</th></tr>
+            </thead>
+            <tbody id="semGpsRows"></tbody>
+          </table>
+        </div>
+        <pre id="outMapa">Aguardando...</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="auditoria" class="view">
+    <div class="grid">
+      <div class="card c6">
+        <h2>Auditoria GPS</h2>
+        <div class="row">
+          <button onclick="listarSemGps()">Listar registros sem GPS</button>
+          <button class="gray" onclick="validarGpsExemplo()">Validar GPS exemplo</button>
+        </div>
+      </div>
+      <div class="card c6">
+        <h2>Retorno</h2>
+        <pre id="outAuditoria">Aguardando...</pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  'use strict';
+
+  var VERSION = 'APP COCHO CENTRAL V5.5.1 HOTFIX MAPA';
+  var LS_URL = 'cocho_cloud_url_v551';
+  var LS_SESSION = 'cocho_session_v551';
+  var map = null;
+  var markers = [];
+  var testCount = 0;
+
+  function $(id){ return document.getElementById(id); }
+  function val(id){ return ($(id).value || '').trim(); }
+  function setVal(id,v){ $(id).value = v || ''; }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function pretty(o){ try { return JSON.stringify(o,null,2); } catch(e){ return String(o); } }
+  function out(id,o){ $(id).textContent = typeof o === 'string' ? o : pretty(o); }
+  function nowBR(){ try { return new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',hour12:false}); } catch(e){ return new Date().toLocaleString('pt-BR'); } }
+  function nowUTC(){ return new Date().toISOString(); }
+  function tz(){ try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e){ return ''; } }
+  function uid(p){ return p + '-' + Date.now() + '-' + Math.random().toString(36).substr(2,5).toUpperCase(); }
+  function getUrl(){ return (val('cloudUrl') || localStorage.getItem(LS_URL) || '').trim(); }
+  function session(){ try { return JSON.parse(localStorage.getItem(LS_SESSION) || 'null'); } catch(e){ return null; } }
+
+  function req(action,data){
+    var url = getUrl();
+    if(!url){ return Promise.reject(new Error('Configure a URL do Cloud V2.1.')); }
+    data = data || {};
+    data.action = action;
+    return fetch(url,{
+      method:'POST',
+      mode:'cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(data)
+    }).then(function(r){ return r.text(); }).then(function(t){
+      try { return JSON.parse(t); }
+      catch(e){ throw new Error('Retorno não JSON: ' + t); }
+    });
+  }
+
+  window.showView = function(id){
+    var views = document.querySelectorAll('.view');
+    var tabs = document.querySelectorAll('.tab');
+    for(var i=0;i<views.length;i++){ views[i].classList.remove('active'); }
+    for(var j=0;j<tabs.length;j++){ tabs[j].classList.remove('active'); }
+    $(id).classList.add('active');
+    var tab = document.querySelector('[data-view="'+id+'"]');
+    if(tab){ tab.classList.add('active'); }
+    if(id === 'mapa'){ setTimeout(function(){ initMap(); map.invalidateSize(); }, 300); }
+  };
+
+  function initTabs(){
+    var tabs = document.querySelectorAll('.tab');
+    for(var i=0;i<tabs.length;i++){
+      tabs[i].onclick = function(){ showView(this.getAttribute('data-view')); };
+    }
+  }
+
+  window.saveUrl = function(){
+    var u = val('cloudUrl');
+    if(!u){ alert('Cole a URL do Web App.'); return; }
+    localStorage.setItem(LS_URL,u);
+    out('outConfig','URL salva: ' + u);
+  };
+
+  window.clearUrl = function(){
+    localStorage.removeItem(LS_URL);
+    setVal('cloudUrl','');
+    out('outConfig','URL limpa.');
+  };
+
+  window.testCloud = function(){
+    req('ping',{}).then(function(r){
+      out('outConfig',r);
+      out('outPainel',r);
+      $('cloudBadge').className = 'badge ' + (r.ok ? 'ok' : 'err');
+      $('cloudBadge').textContent = r.ok ? 'Cloud OK' : 'Cloud erro';
+    }).catch(function(e){
+      out('outConfig',String(e.message || e));
+      out('outPainel',String(e.message || e));
+      $('cloudBadge').className = 'badge err';
+      $('cloudBadge').textContent = 'Cloud erro';
+    });
+  };
+
+  window.preencherTeste = function(){
+    setVal('chave','COCHO-FAZENDATESTE01-4W77-2026');
+    setVal('pin','1234');
+  };
+
+  window.validarAcesso = function(){
+    req('validarAcesso',{
+      chave_fazenda:val('chave'),
+      pin:val('pin'),
+      origem_app:'CENTRAL',
+      versao_app:VERSION
+    }).then(function(r){
+      out('outAcesso',r);
+      if(r.ok){
+        localStorage.setItem(LS_SESSION,JSON.stringify(r));
+        $('sessaoBox').className = 'msg success';
+        $('sessaoBox').innerHTML = '<b>' + esc(r.nome_fazenda) + '</b><br>' + esc(r.nome_usuario) + ' — ' + esc(r.tipo_usuario);
+        $('kSessao').textContent = 1;
+      }
+    }).catch(function(e){ out('outAcesso',String(e.message || e)); });
+  };
+
+  function buildRegistro(comGps){
+    var s = session();
+    if(!s || !s.ok){ throw new Error('Valide acesso primeiro.'); }
+    return {
+      ID_REGISTRO: uid(comGps ? 'REG-GPS' : 'REG-SEM-GPS'),
+      ID_FAZENDA: s.id_fazenda,
+      CHAVE_FAZENDA: s.chave_fazenda,
+      NOME_FAZENDA: s.nome_fazenda,
+      ID_USUARIO: s.id_usuario,
+      NOME_USUARIO: s.nome_usuario,
+      TIPO_USUARIO: s.tipo_usuario,
+      DATA_HORA_LOCAL: nowBR(),
+      DATA_HORA_BRASILIA: nowBR(),
+      DATA_HORA_UTC: nowUTC(),
+      TIMEZONE_DISPOSITIVO: tz(),
+      LOTE: val('lote'),
+      COCHO: val('cocho'),
+      PRODUTO: val('produto'),
+      TIPO_PRODUTO: 'MINERAL',
+      QUANTIDADE_KG: val('kg'),
+      UNIDADE: 'KG',
+      ESCORE_COCHO: '2',
+      OBSERVACAO: comGps ? 'Teste com GPS pela Central V5.5.1' : 'Teste sem GPS pela Central V5.5.1',
+      GPS_LAT: comGps ? val('lat') : '',
+      GPS_LNG: comGps ? val('lng') : '',
+      GPS_ACURACIA: comGps ? val('acc') : '',
+      STATUS_GPS: comGps ? 'CAPTURADO' : 'SEM_GPS',
+      ORIGEM_APP: 'CENTRAL_TESTE',
+      VERSAO_APP: VERSION
+    };
+  }
+
+  window.syncGps = function(comGps){
+    var r;
+    try { r = buildRegistro(comGps); }
+    catch(e){ out('outSync',String(e.message || e)); return; }
+    var s = session();
+    req('sincronizarRegistrosCocho',{
+      id_fazenda:s.id_fazenda,
+      chave_fazenda:s.chave_fazenda,
+      id_usuario:s.id_usuario,
+      nome_usuario:s.nome_usuario,
+      versao_app:VERSION,
+      registros:[r]
+    }).then(function(resp){
+      testCount++;
+      $('kEnvios').textContent = testCount;
+      out('outSync',resp);
+    }).catch(function(e){ out('outSync',String(e.message || e)); });
+  };
+
+  function initMap(){
+    if(map){ return; }
+    if(typeof L === 'undefined'){
+      $('mapMsg').className = 'msg error';
+      $('mapMsg').textContent = 'Leaflet não carregou. Verifique internet.';
+      return;
+    }
+    map = L.map('map').setView([-1.45,-48.48],8);
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      maxZoom:19,
+      attribution:'© OpenStreetMap'
+    });
+    var esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
+      maxZoom:19,
+      attribution:'Tiles © Esri'
+    });
+    osm.addTo(map);
+    L.control.layers({'Padrão':osm,'Satélite Esri':esri},{}).addTo(map);
+  }
+
+  function clearMarkers(){
+    if(!map){ return; }
+    for(var i=0;i<markers.length;i++){ map.removeLayer(markers[i]); }
+    markers = [];
+  }
+
+  function markerColor(alerta){
+    alerta = String(alerta || 'OK');
+    if(alerta === 'OK'){ return '#198754'; }
+    if(alerta === 'IMPRECISO'){ return '#ffc107'; }
+    return '#dc3545';
+  }
+
+  function addMarker(p){
+    var m = L.circleMarker([Number(p.gps_lat),Number(p.gps_lng)],{
+      radius:9,
+      color:markerColor(p.gps_alerta),
+      fillColor:markerColor(p.gps_alerta),
+      fillOpacity:.85,
+      weight:2
+    });
+    m.bindPopup(
+      '<b>' + esc(p.nome_fazenda) + '</b><br>' +
+      esc(p.data_hora_brasilia) + '<br>' +
+      'Lote: ' + esc(p.lote) + '<br>' +
+      'Cocho: ' + esc(p.cocho) + '<br>' +
+      'Produto: ' + esc(p.produto) + '<br>' +
+      'Kg: ' + esc(p.quantidade_kg) + '<br>' +
+      'Usuário: ' + esc(p.usuario) + '<br>' +
+      'GPS: ' + esc(p.gps_alerta)
+    );
+    m.addTo(map);
+    markers.push(m);
+  }
+
+  function renderSemGps(arr){
+    var rows = '';
+    arr = arr || [];
+    for(var i=0;i<arr.length;i++){
+      var r = arr[i];
+      rows += '<tr>' +
+        '<td>' + esc(r.id_registro) + '</td>' +
+        '<td>' + esc(r.nome_fazenda) + '</td>' +
+        '<td>' + esc(r.data_hora_brasilia) + '</td>' +
+        '<td>' + esc(r.lote) + '</td>' +
+        '<td>' + esc(r.cocho) + '</td>' +
+        '<td>' + esc(r.produto) + '</td>' +
+        '<td>' + esc(r.usuario) + '</td>' +
+        '<td>' + esc(r.motivo || r.gps_alerta) + '</td>' +
+      '</tr>';
+    }
+    $('semGpsRows').innerHTML = rows || '<tr><td colspan="8">Nenhum registro sem GPS.</td></tr>';
+  }
+
+  function mapFilters(){
+    return {
+      lote:val('fLote'),
+      cocho:val('fCocho'),
+      produto:val('fProduto'),
+      usuario:val('fUsuario'),
+      origem_app:'CENTRAL',
+      versao_app:VERSION
+    };
+  }
+
+  window.carregarMapa = function(){
+    initMap();
+    var s = session();
+    var d = mapFilters();
+    var action = val('modoMapa') === 'consultoria' ? 'listarPontosMapaConsultoria' : 'listarPontosMapaFazenda';
+    if(action === 'listarPontosMapaFazenda'){
+      if(!s || !s.ok){ out('outMapa','Valide acesso primeiro ou use modo Consultoria.'); return; }
+      d.id_fazenda = s.id_fazenda;
+      d.chave_fazenda = s.chave_fazenda;
+    }
+    req(action,d).then(function(r){
+      out('outMapa',r);
+      clearMarkers();
+      if(r.ok && r.pontos){
+        for(var i=0;i<r.pontos.length;i++){ addMarker(r.pontos[i]); }
+        renderSemGps(r.sem_gps || []);
+        $('kPontos').textContent = r.total_pontos || 0;
+        $('kSemGps').textContent = r.total_sem_gps || 0;
+        $('mapMsg').className = 'msg success';
+        $('mapMsg').textContent = 'Pontos: ' + (r.total_pontos || 0) + ' | Sem GPS: ' + (r.total_sem_gps || 0);
+        setTimeout(function(){ map.invalidateSize(); centralizar(); },250);
+      }
+    }).catch(function(e){ out('outMapa',String(e.message || e)); });
+  };
+
+  window.loadMapConsultoria = function(){
+    showView('mapa');
+    setVal('modoMapa','consultoria');
+    setTimeout(function(){ carregarMapa(); },400);
+  };
+
+  window.centralizar = function(){
+    if(map && markers.length){
+      var g = L.featureGroup(markers);
+      map.fitBounds(g.getBounds().pad(.25));
+    }
+  };
+
+  window.listarSemGps = function(){
+    req('listarRegistrosSemGPS',{}).then(function(r){
+      out('outAuditoria',r);
+      renderSemGps(r.registros || []);
+      $('kSemGps').textContent = r.total_sem_gps || 0;
+    }).catch(function(e){ out('outAuditoria',String(e.message || e)); });
+  };
+
+  window.validarGpsExemplo = function(){
+    req('validarGPSRegistro',{
+      GPS_LAT:'-1.23456',
+      GPS_LNG:'-47.12345',
+      GPS_ACURACIA:'18',
+      STATUS_GPS:'CAPTURADO'
+    }).then(function(r){ out('outAuditoria',r); }).catch(function(e){ out('outAuditoria',String(e.message || e)); });
+  };
+
+  function updateNet(){
+    var on = navigator.onLine;
+    $('netBadge').className = 'badge ' + (on ? 'ok' : 'err');
+    $('netBadge').textContent = on ? 'Online' : 'Offline';
+  }
+
+  function updateHour(){
+    $('hourBadge').textContent = 'Brasília ' + nowBR();
+  }
+
+  function boot(){
+    initTabs();
+    updateNet();
+    updateHour();
+    setInterval(updateHour,1000);
+    window.addEventListener('online',updateNet);
+    window.addEventListener('offline',updateNet);
+    setVal('cloudUrl',localStorage.getItem(LS_URL) || '');
+    var s = session();
+    if(s && s.ok){
+      $('sessaoBox').className = 'msg success';
+      $('sessaoBox').innerHTML = '<b>' + esc(s.nome_fazenda) + '</b><br>' + esc(s.nome_usuario) + ' — ' + esc(s.tipo_usuario);
+      $('kSessao').textContent = 1;
+      setVal('chave',s.chave_fazenda);
+    }
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('./service-worker.js?v=5.5.1').catch(function(){});
+    }
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>
