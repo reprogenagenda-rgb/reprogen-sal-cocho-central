@@ -1,36 +1,25 @@
-# APP COCHO CENTRAL V5.4
+# APP COCHO CENTRAL V5.5 — Mapa Satélite Restaurado
 
-Central conectada ao SCRIPT COCHO CLOUD V2.0.
+## Objetivo
 
-## Arquivos para subir no GitHub
+Correção de regressão da Central Cocho, restaurando mapa padrão, mapa satélite Esri, pontos dos lançamentos, registros sem GPS e filtros por fazenda/lote/cocho/produto/usuário.
 
-- index.html
-- manifest.json
-- service-worker.js
-- README.md
-- icons/icon-192.png
-- icons/icon-512.png
+## Requisito
 
-## Configuração inicial
+Usar com SCRIPT COCHO CLOUD V2.1 — GPS, Mapas e Auditoria Geográfica.
 
-1. Abra a Central pelo GitHub Pages.
-2. Vá em Config Cloud.
-3. Cole a URL do Web App do Apps Script Cloud V2.0.
-4. Clique em Salvar URL.
-5. Clique em Testar conexão.
+## Arquivos para subir
 
-## Testes obrigatórios
+index.html, manifest.json, service-worker.js, README.md e pasta icons com icon-192.png e icon-512.png.
 
-1. Cloud OK.
-2. Criar fazenda.
-3. Editar fazenda sem duplicar.
-4. Criar usuário.
-5. Validar CHAVE_FAZENDA + PIN.
-6. Enviar registro teste via POST.
-7. Confirmar se entrou em REGISTROS_COCHO.
-8. Confirmar SYNC_LOG.
-9. Confirmar AUDITORIA.
+## Commit
 
-## Mensagem de commit
+Adicionar Central Cocho V5.5 com mapa satelite GPS e auditoria
 
-Adicionar Central Cocho V5.4 com cloud multifazenda usuarios e sync
+## Testes
+
+1. Config Cloud: colar URL do Cloud V2.1 e testar conexão.
+2. Validar CHAVE_FAZENDA + PIN.
+3. Teste Sync: enviar com GPS e enviar sem GPS.
+4. Mapa: carregar Fazenda e Consultoria, alternar Padrão/Satélite.
+5. Confirmar que com GPS aparece no mapa e sem GPS aparece na lista, sem cair em DADOS_SEM_VINCULO.
