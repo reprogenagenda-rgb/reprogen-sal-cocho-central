@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#0f5132">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cocho Central">
-<title>APP COCHO CENTRAL V5.7</title>
-<link rel="manifest" href="./manifest.json?v=5.7">
+<title>APP COCHO CENTRAL V5.8.2</title>
+<link rel="manifest" href="./manifest.json?v=5.8.2">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -51,8 +51,8 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <header>
   <div class="top">
     <div>
-      <h1>APP COCHO CENTRAL V5.7</h1>
-      <div class="sub">Estoque • Consumo Preciso • Lotes Inteligentes • Cochos Fixos • Áreas • Mapa</div>
+      <h1>APP COCHO CENTRAL V5.8.2</h1>
+      <div class="sub">Estoque • Consumo • Lotes • Mapas • Acesso Multi-Propriedade</div>
     </div>
     <div class="badges">
       <span id="netBadge" class="badge">Online?</span>
@@ -67,19 +67,24 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <nav id="tabs">
   <button class="tab active" data-view="painel">Painel</button>
   <button class="tab" data-view="config">Config Cloud</button>
-  <button class="tab" data-view="acesso">Acesso</button>
-  <button class="tab" data-view="produtos">Produtos</button>
+  <button class="tab" data-view="acesso">Acesso / Sessão</button>
+  <button class="tab" data-view="fazendas">Fazendas</button>
+  <button class="tab" data-view="geraracesso">Gerar Acesso</button>
+  <button class="tab" data-view="usuarios">Usuários</button>
+  <button class="tab" data-view="cartao">Cartão</button>
+  <button class="tab" data-view="produtos">Produtos da Fazenda</button>
   <button class="tab" data-view="estoque">Estoque</button>
   <button class="tab" data-view="entrada">Entrada Estoque</button>
   <button class="tab" data-view="consumo">Dashboard Consumo</button>
-  <button class="tab" data-view="lotes">Lotes</button>
+  <button class="tab" data-view="lotes">Lotes da Fazenda</button>
   <button class="tab" data-view="movlotes">Mov. Lotes</button>
-  <button class="tab" data-view="cochosfixos">Cochos Fixos</button>
+  <button class="tab" data-view="cochosfixos">Cochos da Fazenda</button>
   <button class="tab" data-view="areasfazenda">Áreas</button>
   <button class="tab" data-view="mapa">Mapa Satélite</button>
   <button class="tab" data-view="sync">Teste Sync</button>
   <button class="tab" data-view="alertas">Alertas</button>
 </nav>
+<div id="fazendaAtivaTopo" class="fazendaAtiva">Nenhuma fazenda ativa. Valide em Acesso / Sessão antes de operar produtos, lotes, cochos, áreas, estoque ou mapa.</div>
 
 <section id="painel" class="view active">
   <div class="grid">
@@ -100,8 +105,8 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
       </div>
     </div>
     <div class="card c8">
-      <h2>Fluxo recomendado de teste V5.6</h2>
-      <div class="msg success">Cloud V2.3 deve responder em Config Cloud. Depois valide acesso e teste Produtos → Entrada → Estoque → Consumo → Lotes → Cochos Fixos → Mapa.</div>
+      <h2>Fluxo recomendado de teste V5.8.2</h2>
+      <div class="msg success">Cloud V2.4.1 deve responder em Config Cloud. Depois valide Acesso/Sessão, confira Fazenda Ativa e use Cadastros da Fazenda sempre vinculados à propriedade.</div>
       <div class="row">
         <button onclick="testCloud()">Testar Cloud</button>
         <button onclick="showView('acesso')" class="blue">Validar Acesso</button>
@@ -116,7 +121,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <section id="config" class="view">
   <div class="grid">
     <div class="card c6">
-      <h2>Config Cloud V2.2</h2>
+      <h2>Config Cloud V2.4.1</h2>
       <label>URL do Web App /exec</label>
       <input id="cloudUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
       <div class="row">
@@ -124,7 +129,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
         <button class="blue" onclick="testCloud()">Testar conexão</button>
         <button class="gray" onclick="clearUrl()">Limpar</button>
       </div>
-      <div class="msg">A Central V5.7 consome o SCRIPT COCHO CLOUD V2.3.</div>
+      <div class="msg">A Central V5.8.2 consome o SCRIPT COCHO CLOUD V2.4.1.</div>
     </div>
     <div class="card c6">
       <h2>Retorno</h2>
@@ -136,7 +141,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <section id="acesso" class="view">
   <div class="grid">
     <div class="card c5">
-      <h2>Validar CHAVE_FAZENDA + PIN</h2>
+      <h2>Acesso / Sessão da Fazenda</h2>
       <label>CHAVE_FAZENDA</label>
       <input id="chave" placeholder="COCHO-...">
       <label>PIN</label>
@@ -155,10 +160,111 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
   </div>
 </section>
 
+
+<section id="fazendas" class="view">
+  <div class="grid">
+    <div class="card c5">
+      <h2>Cadastrar Fazenda / Proprietário</h2>
+      <label>Nome da Fazenda</label><input id="faz_nome" placeholder="FAZENDA SÃO LÁZARO">
+      <label>Proprietário</label><input id="faz_prop" placeholder="Nome do proprietário">
+      <label>CPF/CNPJ</label><input id="faz_doc" placeholder="opcional">
+      <label>Município</label><input id="faz_mun" placeholder="IRITUIA">
+      <label>Estado</label><input id="faz_uf" value="PA">
+      <label>PIN Fazenda</label><input id="faz_pin" placeholder="deixe vazio para gerar automático">
+      <div class="row">
+        <button onclick="gerarChaveNova()" class="blue">Gerar Chave</button>
+        <button onclick="criarFazendaAcesso()">Criar Fazenda</button>
+        <button onclick="listarFazendasAcesso()" class="gray">Listar Fazendas</button>
+      </div>
+      <label>CHAVE_FAZENDA gerada/manual</label><input id="faz_chave" placeholder="COCHO-...">
+    </div>
+    <div class="card c7">
+      <h2>Fazendas cadastradas</h2>
+      <div class="tablewrap"><table><thead><tr><th>Fazenda</th><th>Proprietário</th><th>Chave</th><th>PIN</th><th>Status</th></tr></thead><tbody id="fazRows"><tr><td colspan="5">Sem listagem.</td></tr></tbody></table></div>
+      <pre id="outFazendas">Aguardando...</pre>
+    </div>
+
+      </div>
+</section>
+
+<section id="geraracesso" class="view">
+  <div class="grid">
+    <div class="card c6">
+      <h2>Gerador de Acesso por Propriedade</h2>
+      <div class="msg success">Fluxo guiado: cria a propriedade, gera CHAVE_FAZENDA/PIN, cria proprietário e opcionalmente operador de campo. Tudo fica preso à propriedade.</div>
+      <label>Nome da Fazenda / Propriedade</label><input id="ga_fazenda" placeholder="FAZENDA SÃO LÁZARO">
+      <label>Proprietário</label><input id="ga_prop" placeholder="Nome do proprietário">
+      <label>CPF/CNPJ</label><input id="ga_doc" placeholder="opcional">
+      <label>Município</label><input id="ga_mun" placeholder="IRITUIA">
+      <label>Estado</label><input id="ga_uf" value="PA">
+      <label>Login do Proprietário</label><input id="ga_login_prop" placeholder="joao.silva">
+      <label>PIN do Proprietário</label><input id="ga_pin_prop" placeholder="deixe vazio para gerar">
+      <label>Operador de Campo Inicial (opcional)</label><input id="ga_operador" placeholder="MARCELO">
+      <label>Login do Operador</label><input id="ga_login_op" placeholder="marcelo">
+      <label>PIN do Operador</label><input id="ga_pin_op" placeholder="deixe vazio para gerar">
+      <div class="row">
+        <button onclick="gerarAcessoPropriedade()" class="blue">Gerar Acesso Completo</button>
+        <button onclick="copiarCartaoGerado()" class="gray">Copiar Cartão</button>
+        <button onclick="preencherGeradorTeste()" class="warnbtn">Preencher Teste</button>
+      </div>
+      <div class="small">Regra: a propriedade é a raiz; lotes, cochos, operadores, produtos, estoque, mapa e lançamentos serão sempre filtrados por CHAVE_FAZENDA.</div>
+    </div>
+    <div class="card c6">
+      <h2>Cartão Gerado</h2>
+      <pre id="outGerarAcesso">Aguardando...</pre>
+    </div>
+  </div>
+</section>
+
+<section id="usuarios" class="view">
+  <div class="grid">
+<div class="card c5">
+      <h2>Criar Usuário da Fazenda</h2>
+      <label>CHAVE_FAZENDA</label><input id="usr_chave" placeholder="COCHO-...">
+      <label>Nome do Usuário</label><input id="usr_nome" placeholder="MARCELO / PROPRIETÁRIO">
+      <label>Login</label><input id="usr_login" placeholder="marcelo">
+      <label>PIN Usuário</label><input id="usr_pin" placeholder="deixe vazio para gerar">
+      <label>Perfil</label>
+      <select id="usr_perfil">
+        <option>PROPRIETARIO</option><option>GERENTE_FAZENDA</option><option selected>FUNCIONARIO_CAMPO</option><option>VISUALIZADOR</option><option>ADMIN_CONSULTORIA</option>
+      </select>
+      <div class="row">
+        <button onclick="criarUsuarioAcesso()">Criar Usuário</button>
+        <button onclick="listarUsuariosAcesso()" class="blue">Listar Usuários</button>
+      </div>
+    </div>
+    <div class="card c7">
+      <h2>Usuários da Fazenda</h2>
+      <div class="tablewrap"><table><thead><tr><th>Nome</th><th>Login</th><th>Perfil</th><th>PIN</th><th>Status</th></tr></thead><tbody id="usrRows"><tr><td colspan="5">Sem listagem.</td></tr></tbody></table></div>
+      <pre id="outUsuarios">Aguardando...</pre>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section id="cartao" class="view">
+  <div class="grid">
+    <div class="card c5">
+      <h2>Cartão de Acesso da Propriedade</h2>
+      <div class="msg">O cartão apenas organiza os dados para enviar ao proprietário ou operador. Ele não edita cadastro.</div>
+      <label>CHAVE_FAZENDA</label><input id="cartao_chave" placeholder="COCHO-...">
+      <div class="row">
+        <button onclick="gerarCartaoAcesso()" class="blue">Gerar Cartão</button>
+        <button onclick="copiarCartao()" class="gray">Copiar Cartão</button>
+      </div>
+      <div class="small">Regra: Acesso/Sessão entra no sistema; Fazendas cadastra propriedade; Usuários cadastra operador; Cartão só copia os dados de acesso.</div>
+    </div>
+    <div class="card c7">
+      <h2>Cartão Gerado</h2>
+      <pre id="outCartao">Aguardando...</pre>
+    </div>
+  </div>
+</section>
+
 <section id="produtos" class="view">
   <div class="grid">
     <div class="card c5">
-      <h2>Cadastrar Produto</h2>
+      <h2>Cadastrar Produto da Fazenda Ativa</h2>
       <label>Nome do Produto</label><input id="prod_nome" value="SAL MINERAL">
       <label>Tipo</label>
       <select id="prod_tipo">
@@ -250,7 +356,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <section id="lotes" class="view">
   <div class="grid">
     <div class="card c5">
-      <h2>Cadastrar Lote</h2>
+      <h2>Cadastrar Lote Fixo da Fazenda Ativa</h2>
       <label>Nome do Lote</label><input id="lote_nome" value="LOTE 01">
       <label>Categoria</label>
       <select id="lote_cat">
@@ -279,14 +385,16 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
       <label>Lote</label><select id="mov_lote"></select>
       <label>Tipo Movimento</label>
       <select id="mov_tipo">
-        <option>TROCA_PASTO</option><option>TRANSFERENCIA_PARCIAL</option><option>ENTRADA</option><option>SAIDA</option><option>AJUSTE</option><option>MORTE</option><option>VENDA</option><option>COMPRA</option><option>ENCERRAMENTO</option>
+        <option>TROCA_PASTO</option><option>TRANSFERENCIA</option><option>ENTRADA</option><option>SAIDA</option><option>AJUSTE</option><option>MORTE</option><option>VENDA</option><option>COMPRA</option><option>DESCARTE</option><option>ENCERRAMENTO</option>
       </select>
+      <label>Modo</label><select id="mov_modo"><option>PARCIAL</option><option>TOTAL</option></select>
       <label>Quantidade de animais</label><input id="mov_qtd" value="10">
       <label>Origem</label><input id="mov_origem" value="PASTO 01">
       <label>Destino / Pasto</label><input id="mov_destino" value="PASTO 02">
-      <label>Lote destino para TRANSFERENCIA_PARCIAL</label><input id="mov_lote_destino" value="LOTE 02" placeholder="Ex.: LOTE 02">
-      <div class="small">TROCA_PASTO não altera quantidade. TRANSFERENCIA_PARCIAL subtrai da origem e soma/cria o lote destino.</div>
-      <label>Motivo</label><input id="mov_motivo" value="Movimentação pela Central V5.6">
+      <label>Lote destino para TRANSFERÊNCIA</label><input id="mov_lote_destino" value="LOTE 02" placeholder="Ex.: LOTE 02">
+      <label>Peso médio kg (opcional)</label><input id="mov_peso_medio" placeholder="Ex.: 280">
+      <div class="small">TROCA_PASTO não altera quantidade. TRANSFERÊNCIA PARCIAL subtrai parte da origem. TRANSFERÊNCIA TOTAL zera/encerra a origem e soma/cria destino. SAÍDA/VENDA/MORTE/DESCARTE também podem ser TOTAL ou PARCIAL.</div>
+      <label>Motivo</label><input id="mov_motivo" value="Movimentação pela Central V5.8.2">
       <div class="row">
         <button onclick="registrarMovLote()">Registrar Movimentação</button>
         <button onclick="listarMovLotes()" class="blue">Listar Movimentos</button>
@@ -294,7 +402,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
     </div>
     <div class="card c7">
       <h2>Movimentações</h2>
-      <div class="tablewrap"><table><thead><tr><th>Data</th><th>Lote</th><th>Tipo</th><th>Qtd</th><th>Anterior</th><th>Novo</th><th>Origem</th><th>Destino</th></tr></thead><tbody id="movLoteRows"></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th>Data</th><th>Lote</th><th>Tipo</th><th>Modo</th><th>Qtd</th><th>Anterior</th><th>Novo</th><th>Origem</th><th>Destino</th></tr></thead><tbody id="movLoteRows"></tbody></table></div>
       <pre id="outMovLotes">Aguardando...</pre>
     </div>
   </div>
@@ -304,7 +412,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <section id="cochosfixos" class="view">
   <div class="grid">
     <div class="card c5">
-      <h2>Cadastrar Cocho Fixo</h2>
+      <h2>Cadastrar Cocho Fixo da Fazenda Ativa</h2>
       <label>Nome do Cocho</label><input id="cf_nome" value="COCHO 01">
       <label>Código</label><input id="cf_codigo" value="COCHO 01">
       <label>Tipo</label><select id="cf_tipo"><option>SAL_MINERAL</option><option>PROTEINADO</option><option>AGUA</option><option>RACAO</option><option>MULTIUSO</option><option>OUTRO</option></select>
@@ -435,14 +543,14 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
   </div>
 </section>
 
-<div class="footer">APP COCHO CENTRAL V5.7 — Cloud V2.3 — Lotes inteligentes, consumo preciso, cochos fixos e áreas</div>
+<div class="footer">APP COCHO CENTRAL V5.8.2 — Cloud V2.4.1 — Cadastros fixos por propriedade e menu sem redundância</div>
 </main>
 
 <script>
 (function(){
 'use strict';
 
-var VERSION='APP COCHO CENTRAL V5.7';
+var VERSION='APP COCHO CENTRAL V5.8.2';
 var LS_URL='cocho_cloud_url_v57';
 var LS_SESSION='cocho_session_v57';
 var LS_SOUND='cocho_sound_v57';
@@ -496,11 +604,19 @@ window.toggleSound=function(){
 }
 function updateSoundBadge(){var on=soundOn();$('soundBadge').className='badge '+(on?'bluebg':'warn');$('soundBadge').textContent=on?'Som ativo':'Som desligado';if($('soundVol'))$('soundVol').value=String(soundVolume())}
 
+function erroFetchMsg(action,e){
+  var msg=String(e&&e.message||e||'Falha desconhecida');
+  if(msg.indexOf('Failed to fetch')>=0||msg.indexOf('NetworkError')>=0||msg.indexOf('Load failed')>=0){
+    return 'Falha ao buscar dados no Cloud ('+action+'). Verifique: URL /exec, nova implantação do Apps Script, permissão Qualquer pessoa com o link, internet e se a rota existe no Script V2.4.1.';
+  }
+  return msg;
+}
 function req(action,data){
-  var url=getUrl(); if(!url){playSound('erro');return Promise.reject(new Error('Configure a URL do Cloud.'))}
+  var url=getUrl(); if(!url){playSound('erro');return Promise.reject(new Error('URL do Cloud não configurada. Cole a URL /exec em Config Cloud.'))}
+  if(url.indexOf('/exec')<0){return Promise.reject(new Error('URL do Cloud parece inválida. Use a URL terminada em /exec do Web App.'))}
   data=data||{}; data.action=action;
   return fetch(url,{method:'POST',mode:'cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
-  .then(function(r){return r.text()}).then(function(t){try{return JSON.parse(t)}catch(e){throw new Error('Retorno não JSON: '+t)}})
+  .then(function(r){return r.text().then(function(t){if(!r.ok)throw new Error('HTTP '+r.status+': '+t);try{return JSON.parse(t)}catch(e){throw new Error('Retorno não JSON: '+String(t).substr(0,400))}})})
 }
 
 window.showView=function(id){
@@ -609,15 +725,18 @@ function renderLotes(arr){
   for(var i=0;i<(arr||[]).length;i++){var l=arr[i];rows+='<tr><td>'+esc(l.ID_LOTE)+'</td><td>'+esc(l.NOME_LOTE)+'</td><td>'+esc(l.CATEGORIA)+'</td><td>'+esc(l.QUANTIDADE_ANIMAIS)+'</td><td>'+esc(l.STATUS_LOTE)+'</td><td>'+esc(l.PASTO_LOCAL)+'</td></tr>';opts+='<option value="'+esc(l.ID_LOTE)+'">'+esc(l.NOME_LOTE)+'</option>'}
   $('loteRows').innerHTML=rows||'<tr><td colspan="6">Sem lotes.</td></tr>';$('mov_lote').innerHTML=opts;
 }
+var movEnviando=false;
 window.registrarMovLote=function(){
+  if(movEnviando){out('outMovLotes','Aguarde: movimentação em envio. Clique duplo bloqueado.');playSound('alerta');return}
   try{var l=findLote(val('mov_lote'));if(!l){out('outMovLotes','Selecione lote.');playSound('erro');return}
-  var d=sessPayload({id_lote:l.ID_LOTE,nome_lote:l.NOME_LOTE,tipo_movimento:val('mov_tipo'),quantidade_animais:val('mov_qtd'),origem:val('mov_origem'),destino:val('mov_destino'),nome_lote_destino:val('mov_lote_destino'),motivo:val('mov_motivo')});
-  req('registrarMovimentacaoLote',d).then(function(r){out('outMovLotes',r);playSound(r.ok?'sucesso':'erro');listarLotes();listarMovLotes();dashboardConsumo()}).catch(function(e){out('outMovLotes',String(e.message||e));playSound('erro')})}catch(e){out('outMovLotes',String(e.message||e));playSound('erro')}
+  movEnviando=true;
+  var d=sessPayload({id_lote:l.ID_LOTE,nome_lote:l.NOME_LOTE,tipo_movimento:val('mov_tipo'),modo_movimentacao:val('mov_modo'),id_operacao_cliente:uid('OPMOV'),quantidade_animais:val('mov_qtd'),origem:val('mov_origem'),destino:val('mov_destino'),nome_lote_destino:val('mov_lote_destino'),peso_medio_kg:val('mov_peso_medio'),motivo:val('mov_motivo')});
+  req('registrarMovimentacaoLote',d).then(function(r){out('outMovLotes',r);playSound(r.ok?'sucesso':'erro');listarLotes();listarMovLotes();dashboardConsumo()}).catch(function(e){out('outMovLotes',erroFetchMsg('registrarMovimentacaoLote',e));playSound('erro')}).then(function(){movEnviando=false})}catch(e){movEnviando=false;out('outMovLotes',String(e.message||e));playSound('erro')}
 }
 window.listarMovLotes=function(){
   try{req('listarMovimentacoesLote',sessPayload({})).then(function(r){out('outMovLotes',r);if(r.ok)renderMovLotes(r.movimentacoes||[]);playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outMovLotes',String(e.message||e));playSound('erro')})}catch(e){out('outMovLotes',String(e.message||e));playSound('erro')}
 }
-function renderMovLotes(arr){var rows='';for(var i=0;i<(arr||[]).length;i++){var m=arr[i];rows+='<tr><td>'+esc(m.DATA_HORA_BRASILIA)+'</td><td>'+esc(m.NOME_LOTE)+'</td><td>'+esc(m.TIPO_MOVIMENTO)+'</td><td>'+esc(m.QUANTIDADE_ANIMAIS)+'</td><td>'+esc(m.QUANTIDADE_ANTERIOR)+'</td><td>'+esc(m.QUANTIDADE_NOVA)+'</td><td>'+esc(m.ORIGEM)+'</td><td>'+esc(m.DESTINO)+'</td></tr>'}$('movLoteRows').innerHTML=rows||'<tr><td colspan="8">Sem movimentações.</td></tr>'}
+function renderMovLotes(arr){var rows='';for(var i=0;i<(arr||[]).length;i++){var m=arr[i];rows+='<tr><td>'+esc(m.DATA_HORA_BRASILIA)+'</td><td>'+esc(m.NOME_LOTE)+'</td><td>'+esc(m.TIPO_MOVIMENTO)+'</td><td>'+esc(m.MODO_MOVIMENTACAO||'')+'</td><td>'+esc(m.QUANTIDADE_ANIMAIS)+'</td><td>'+esc(m.QUANTIDADE_ANTERIOR)+'</td><td>'+esc(m.QUANTIDADE_NOVA)+'</td><td>'+esc(m.ORIGEM)+'</td><td>'+esc(m.DESTINO)+'</td></tr>'}$('movLoteRows').innerHTML=rows||'<tr><td colspan="9">Sem movimentações.</td></tr>'}
 
 function initMap(){
   if(map)return;
@@ -635,33 +754,44 @@ function addAreaFazenda(a){try{var geo=a.GEOJSON_SIMPLIFICADO||'';if(!geo)return
 function addPoint(p){var m=L.circleMarker([Number(p.gps_lat),Number(p.gps_lng)],{radius:9,color:color(p.gps_alerta),fillColor:color(p.gps_alerta),fillOpacity:.85,weight:2});m.bindPopup('<b>'+esc(p.nome_fazenda)+'</b><br>'+esc(p.data_hora_brasilia)+'<br>Lote: '+esc(p.lote)+'<br>Cocho: '+esc(p.cocho)+'<br>Produto: '+esc(p.produto)+'<br>Kg: '+esc(p.quantidade_kg)+'<br>Usuário: '+esc(p.usuario)+'<br>GPS: '+esc(p.gps_alerta));m.addTo(map);markers.push(m)}
 window.carregarMapa=function(){
   initMap();
+  $('mapMsg').className='msg';$('mapMsg').textContent='Carregando mapa base e camadas...';
   var mode=val('mapModo'), d={lote:val('fLote'),cocho:val('fCocho'),produto:val('fProduto'),usuario:val('fUsuario'),origem_app:'CENTRAL',versao_app:VERSION};
   var action='listarPontosMapaConsultoria';
-  try{if(mode==='fazenda'){var sp=sessPayload({});d.id_fazenda=sp.id_fazenda;d.chave_fazenda=sp.chave_fazenda;action='baixarMapaFazenda'}}catch(e){out('outMapa',String(e.message||e));playSound('erro');return}
+  try{
+    if(mode==='fazenda'){
+      var sp=sessPayload({});d.id_fazenda=sp.id_fazenda;d.chave_fazenda=sp.chave_fazenda;action='baixarMapaFazendaLeve';
+      d.carregar_cochos=$('lyrCochos').checked?'SIM':'NAO';d.carregar_areas=$('lyrAreas').checked?'SIM':'NAO';
+    }
+  }catch(e){out('outMapa',String(e.message||e));playSound('erro');return}
   req(action,d).then(function(r){out('outMapa',r);clearMarkers();if(r.ok){
     var pontos=r.pontos_lancamentos||r.pontos||[];
     var sem=r.sem_gps||[];
+    var erros=r.erros_camadas||[];
     if($('lyrLanc').checked){for(var i=0;i<pontos.length;i++)addPoint(pontos[i])}
     if($('lyrCochos').checked){cochosFixosCache=r.cochos_fixos||cochosFixosCache||[];for(var c=0;c<cochosFixosCache.length;c++)addCochoFixo(cochosFixosCache[c])}
     if($('lyrAreas').checked){areasCache=r.areas_fazenda||areasCache||[];for(var a=0;a<areasCache.length;a++)addAreaFazenda(areasCache[a])}
-    renderSemGps(sem);$('kPontos').textContent=(pontos.length||r.total_pontos||0);$('kSemGps').textContent=sem.length||r.total_sem_gps||0;$('mapMsg').className='msg success';$('mapMsg').textContent='Lançamentos: '+pontos.length+' | Cochos fixos: '+(cochosFixosCache.length||0)+' | Áreas: '+(areasCache.length||0)+' | Sem GPS: '+sem.length;setTimeout(function(){map.invalidateSize();centralizarMapa()},300);playSound('sucesso')}
-  }).catch(function(e){out('outMapa',String(e.message||e));playSound('erro')})
+    renderSemGps(sem);$('kPontos').textContent=(pontos.length||r.total_pontos||0);$('kSemGps').textContent=sem.length||r.total_sem_gps||0;
+    $('mapMsg').className=erros.length?'msg':'msg success';
+    $('mapMsg').textContent='Mapa base OK | Lançamentos: '+pontos.length+' | Cochos fixos: '+(cochosFixosCache.length||0)+' | Áreas: '+(areasCache.length||0)+' | Sem GPS: '+sem.length+(erros.length?' | Atenção: erro em camada específica, veja diagnóstico abaixo.':'');
+    setTimeout(function(){map.invalidateSize();centralizarMapa()},300);playSound('sucesso')}
+  }).catch(function(e){var msg=erroFetchMsg(action,e);out('outMapa',msg);$('mapMsg').className='msg error';$('mapMsg').textContent=msg;playSound('erro')})
 }
+
 window.centralizarMapa=function(){if(map){var all=markers.concat(cochoMarkers).concat(areaLayers);if(all.length){var g=L.featureGroup(all);map.fitBounds(g.getBounds().pad(.25));playSound('click')}}}
 function renderSemGps(arr){var rows='';for(var i=0;i<(arr||[]).length;i++){var r=arr[i];rows+='<tr><td>'+esc(r.id_registro)+'</td><td>'+esc(r.nome_fazenda)+'</td><td>'+esc(r.data_hora_brasilia)+'</td><td>'+esc(r.lote)+'</td><td>'+esc(r.cocho)+'</td><td>'+esc(r.produto)+'</td><td>'+esc(r.usuario)+'</td><td>'+esc(r.motivo||r.gps_alerta)+'</td></tr>'}$('semGpsRows').innerHTML=rows||'<tr><td colspan="8">Nenhum registro sem GPS.</td></tr>'}
 
 
 window.criarCochoFixo=function(){
-  try{var d=sessPayload({nome_cocho:val('cf_nome'),codigo_cocho:val('cf_codigo'),tipo_cocho:val('cf_tipo'),pasto_local:val('cf_pasto'),latitude:val('cf_lat'),longitude:val('cf_lng'),acuracia:val('cf_acc'),observacoes:val('cf_obs')});req('criarCochoFixo',d).then(function(r){out('outCochosFixos',r);playSound(r.ok?'sucesso':'erro');listarCochosFixos()}).catch(function(e){out('outCochosFixos',String(e.message||e));playSound('erro')})}catch(e){out('outCochosFixos',String(e.message||e));playSound('erro')}
+  try{var d=sessPayload({nome_cocho:val('cf_nome'),codigo_cocho:val('cf_codigo'),tipo_cocho:val('cf_tipo'),pasto_local:val('cf_pasto'),latitude:val('cf_lat'),longitude:val('cf_lng'),acuracia:val('cf_acc'),observacoes:val('cf_obs')});req('criarCochoFixo',d).then(function(r){out('outCochosFixos',r);playSound(r.ok?'sucesso':'erro');listarCochosFixos()}).catch(function(e){out('outCochosFixos',erroFetchMsg('cochosFixos',e));playSound('erro')})}catch(e){out('outCochosFixos',String(e.message||e));playSound('erro')}
 }
-window.listarCochosFixos=function(){try{req('listarCochosFixosFazenda',sessPayload({})).then(function(r){out('outCochosFixos',r);if(r.ok){cochosFixosCache=r.cochos_fixos||[];renderCochosFixos(cochosFixosCache);playSound('sucesso')}}).catch(function(e){out('outCochosFixos',String(e.message||e));playSound('erro')})}catch(e){out('outCochosFixos',String(e.message||e));playSound('erro')}}
+window.listarCochosFixos=function(){try{req('listarCochosFixosFazenda',sessPayload({})).then(function(r){out('outCochosFixos',r);if(r.ok){cochosFixosCache=r.cochos_fixos||[];renderCochosFixos(cochosFixosCache);playSound('sucesso')}}).catch(function(e){out('outCochosFixos',erroFetchMsg('cochosFixos',e));playSound('erro')})}catch(e){out('outCochosFixos',String(e.message||e));playSound('erro')}}
 function renderCochosFixos(arr){var rows='';for(var i=0;i<(arr||[]).length;i++){var c=arr[i];rows+='<tr><td>'+esc(c.ID_COCHO_FIXO)+'</td><td>'+esc(c.NOME_COCHO)+'</td><td>'+esc(c.TIPO_COCHO)+'</td><td>'+esc(c.PASTO_LOCAL)+'</td><td>'+esc(c.LATITUDE)+'</td><td>'+esc(c.LONGITUDE)+'</td><td>'+esc(c.STATUS_COCHO)+'</td></tr>'}$('cochoFixoRows').innerHTML=rows||'<tr><td colspan="7">Sem cochos fixos.</td></tr>'}
 window.usarMinhaPosicaoCocho=function(){playSound('click');if(!navigator.geolocation){out('outCochosFixos','Geolocalização não disponível.');playSound('erro');return}navigator.geolocation.getCurrentPosition(function(pos){setVal('cf_lat',pos.coords.latitude.toFixed(6));setVal('cf_lng',pos.coords.longitude.toFixed(6));setVal('cf_acc',Math.round(pos.coords.accuracy));out('outCochosFixos','Posição capturada para cadastrar cocho fixo. Confira e clique em Criar Cocho.');playSound('gps')},function(err){out('outCochosFixos','GPS falhou: '+err.message);playSound('erro')},{enableHighAccuracy:true,timeout:12000,maximumAge:0})}
 
 window.criarAreaFazenda=function(){
-  try{var geo=val('area_geo');var d=sessPayload({nome_area:val('area_nome'),tipo_area:val('area_tipo'),cor_area:val('area_cor'),area_ha:val('area_ha'),geojson_simplificado:geo,observacoes:val('area_obs')});req('criarAreaFazenda',d).then(function(r){out('outAreas',r);playSound(r.ok?'sucesso':'erro');listarAreasFazenda()}).catch(function(e){out('outAreas',String(e.message||e));playSound('erro')})}catch(e){out('outAreas',String(e.message||e));playSound('erro')}
+  try{var geo=val('area_geo');var d=sessPayload({nome_area:val('area_nome'),tipo_area:val('area_tipo'),cor_area:val('area_cor'),area_ha:val('area_ha'),geojson_simplificado:geo,observacoes:val('area_obs')});req('criarAreaFazenda',d).then(function(r){out('outAreas',r);playSound(r.ok?'sucesso':'erro');listarAreasFazenda()}).catch(function(e){out('outAreas',erroFetchMsg('listar/criarAreasFazenda',e));playSound('erro')})}catch(e){out('outAreas',String(e.message||e));playSound('erro')}
 }
-window.listarAreasFazenda=function(){try{req('listarAreasFazenda',sessPayload({})).then(function(r){out('outAreas',r);if(r.ok){areasCache=r.areas||[];renderAreas(areasCache);playSound('sucesso')}}).catch(function(e){out('outAreas',String(e.message||e));playSound('erro')})}catch(e){out('outAreas',String(e.message||e));playSound('erro')}}
+window.listarAreasFazenda=function(){try{req('listarAreasFazenda',sessPayload({})).then(function(r){out('outAreas',r);if(r.ok){areasCache=r.areas||[];renderAreas(areasCache);playSound('sucesso')}}).catch(function(e){out('outAreas',erroFetchMsg('listar/criarAreasFazenda',e));playSound('erro')})}catch(e){out('outAreas',String(e.message||e));playSound('erro')}}
 function renderAreas(arr){var rows='';for(var i=0;i<(arr||[]).length;i++){var a=arr[i];rows+='<tr><td>'+esc(a.ID_AREA)+'</td><td>'+esc(a.NOME_AREA)+'</td><td>'+esc(a.TIPO_AREA)+'</td><td>'+esc(a.AREA_HA)+'</td><td>'+esc(a.STATUS_AREA)+'</td><td>'+esc(a.DATA_ATUALIZACAO_BRASILIA)+'</td></tr>'}$('areaRows').innerHTML=rows||'<tr><td colspan="6">Sem áreas.</td></tr>'}
 window.preencherAreaExemplo=function(){var lat=-1.23456,lng=-47.12345;var g={type:'Feature',properties:{nome:val('area_nome')||'PASTO 01'},geometry:{type:'Polygon',coordinates:[[[lng,lat],[lng+.004,lat],[lng+.004,lat+.004],[lng,lat+.004],[lng,lat]]]}};setVal('area_geo',JSON.stringify(g));playSound('click')}
 
@@ -692,6 +822,62 @@ window.listarSemGps=function(){req('listarRegistrosSemGPS',{}).then(function(r){
 window.validarGPSExemplo=function(){req('validarGPSRegistro',{GPS_LAT:'-1.23456',GPS_LNG:'-47.12345',GPS_ACURACIA:'18',STATUS_GPS:'CAPTURADO'}).then(function(r){out('outAlertas',r);playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outAlertas',String(e.message||e));playSound('erro')})}
 window.testarNormalizacao=function(){req('testarNormalizacaoCoordenada',{GPS_LAT:'-123456',GPS_LNG:'-4712345'}).then(function(r){out('outAlertas',r);playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outAlertas',String(e.message||e));playSound('erro')})}
 
+
+
+var cartaoGeradoPropriedade='';
+window.preencherGeradorTeste=function(){
+  setVal('ga_fazenda','FAZENDA TESTE ACESSO');setVal('ga_prop','PROPRIETARIO TESTE');setVal('ga_doc','');setVal('ga_mun','IRITUIA');setVal('ga_uf','PA');setVal('ga_login_prop','proprietario.teste');setVal('ga_pin_prop','');setVal('ga_operador','MARCELO TESTE');setVal('ga_login_op','marcelo.teste');setVal('ga_pin_op','');playSound('click');
+}
+window.gerarAcessoPropriedade=function(){
+  var payload={
+    nome_fazenda:val('ga_fazenda'),proprietario:val('ga_prop'),cpf_cnpj:val('ga_doc'),municipio:val('ga_mun'),estado:val('ga_uf'),
+    login_proprietario:val('ga_login_prop'),pin_proprietario:val('ga_pin_prop'),
+    nome_operador:val('ga_operador'),login_operador:val('ga_login_op'),pin_operador:val('ga_pin_op'),
+    link_central:location.href.split('#')[0],link_app_campo:'',origem_app:'CENTRAL',versao_app:VERSION
+  };
+  req('gerarAcessoPropriedade',payload).then(function(r){
+    if(r.ok){
+      cartaoGeradoPropriedade=r.cartao_texto||'';
+      out('outGerarAcesso',cartaoGeradoPropriedade||r);
+      if(r.chave_fazenda){setVal('faz_chave',r.chave_fazenda);setVal('usr_chave',r.chave_fazenda);setVal('cartao_chave',r.chave_fazenda);setVal('chave',r.chave_fazenda)}
+      if(r.pin_fazenda)setVal('pin',r.pin_fazenda);
+      listarFazendasAcesso();
+      playSound('sucesso');
+    }else{out('outGerarAcesso',r);playSound('erro')}
+  }).catch(function(e){out('outGerarAcesso',erroFetchMsg('gerarAcessoPropriedade',e));playSound('erro')})
+}
+window.copiarCartaoGerado=function(){
+  if(!cartaoGeradoPropriedade){out('outGerarAcesso','Gere o acesso primeiro.');playSound('erro');return}
+  if(navigator.clipboard){navigator.clipboard.writeText(cartaoGeradoPropriedade).then(function(){out('outGerarAcesso','Cartão copiado.\n\n'+cartaoGeradoPropriedade);playSound('sucesso')}).catch(function(){out('outGerarAcesso',cartaoGeradoPropriedade);playSound('alerta')})}else{out('outGerarAcesso',cartaoGeradoPropriedade);playSound('alerta')}
+}
+
+var cartaoAtual='';
+window.gerarChaveNova=function(){
+  var nome=val('faz_nome')||'FAZENDA';
+  req('gerarChaveFazenda',{nome_fazenda:nome,origem_app:'CENTRAL',versao_app:VERSION}).then(function(r){out('outFazendas',r);if(r.ok){setVal('faz_chave',r.chave_fazenda);setVal('usr_chave',r.chave_fazenda);setVal('cartao_chave',r.chave_fazenda);playSound('sucesso')}else playSound('erro')}).catch(function(e){out('outFazendas',erroFetchMsg('gerarChaveFazenda',e));playSound('erro')})
+}
+window.criarFazendaAcesso=function(){
+  var d={nome_fazenda:val('faz_nome'),proprietario:val('faz_prop'),cpf_cnpj:val('faz_doc'),municipio:val('faz_mun'),estado:val('faz_uf'),chave_fazenda:val('faz_chave'),pin_fazenda:val('faz_pin'),origem_app:'CENTRAL',versao_app:VERSION};
+  req('criarFazenda',d).then(function(r){out('outFazendas',r);if(r.ok){setVal('faz_chave',r.chave_fazenda);setVal('faz_pin',r.pin_fazenda);setVal('usr_chave',r.chave_fazenda);listarFazendasAcesso();playSound('sucesso')}else playSound('erro')}).catch(function(e){out('outFazendas',erroFetchMsg('criarFazenda',e));playSound('erro')})
+}
+window.listarFazendasAcesso=function(){
+  req('listarFazendas',{somente_ativas:'SIM'}).then(function(r){out('outFazendas',r);if(r.ok){var rows='';var a=r.fazendas||[];for(var i=0;i<a.length;i++){rows+='<tr><td>'+esc(a[i].NOME_FAZENDA)+'</td><td>'+esc(a[i].PROPRIETARIO)+'</td><td>'+esc(a[i].CHAVE_FAZENDA)+'</td><td>'+esc(a[i].PIN_FAZENDA_MASCARADO||a[i].PIN_FAZENDA||'')+'</td><td>'+esc(a[i].STATUS_FAZENDA)+'</td></tr>'}$('fazRows').innerHTML=rows||'<tr><td colspan="5">Sem fazendas.</td></tr>';playSound('sucesso')}else playSound('erro')}).catch(function(e){out('outFazendas',erroFetchMsg('listarFazendas',e));playSound('erro')})
+}
+window.criarUsuarioAcesso=function(){
+  var d={chave_fazenda:val('usr_chave'),nome_usuario:val('usr_nome'),login_usuario:val('usr_login'),pin:val('usr_pin'),perfil_usuario:val('usr_perfil'),origem_app:'CENTRAL',versao_app:VERSION};
+  req('criarUsuarioFazenda',d).then(function(r){out('outUsuarios',r);if(r.ok){setVal('usr_pin',r.pin_usuario);listarUsuariosAcesso();playSound('sucesso')}else playSound('erro')}).catch(function(e){out('outUsuarios',erroFetchMsg('criarUsuarioFazenda',e));playSound('erro')})
+}
+window.listarUsuariosAcesso=function(){
+  req('listarUsuariosFazenda',{chave_fazenda:val('usr_chave')||val('faz_chave')}).then(function(r){out('outUsuarios',r);if(r.ok){var rows='';var a=r.usuarios||[];for(var i=0;i<a.length;i++){rows+='<tr><td>'+esc(a[i].NOME_USUARIO)+'</td><td>'+esc(a[i].LOGIN_USUARIO)+'</td><td>'+esc(a[i].PERFIL_USUARIO||a[i].TIPO_USUARIO)+'</td><td>'+esc(a[i].PIN?String(a[i].PIN).charAt(0)+'***':'')+'</td><td>'+esc(a[i].STATUS_USUARIO)+'</td></tr>'}$('usrRows').innerHTML=rows||'<tr><td colspan="5">Sem usuários.</td></tr>';playSound('sucesso')}else playSound('erro')}).catch(function(e){out('outUsuarios',erroFetchMsg('listarUsuariosFazenda',e));playSound('erro')})
+}
+window.gerarCartaoAcesso=function(){
+  req('gerarCartaoAcesso',{chave_fazenda:val('cartao_chave')||val('usr_chave')||val('faz_chave')}).then(function(r){out($('outCartao')?'outCartao':'outUsuarios',r);if(r.ok){cartaoAtual=r.cartao_texto||'';if($('outCartao'))out('outCartao',cartaoAtual);else out('outUsuarios',cartaoAtual);playSound('sucesso')}else playSound('erro')}).catch(function(e){out($('outCartao')?'outCartao':'outUsuarios',erroFetchMsg('gerarCartaoAcesso',e));playSound('erro')})
+}
+window.copiarCartao=function(){
+  if(!cartaoAtual){out($('outCartao')?'outCartao':'outUsuarios','Gere o cartão primeiro.');playSound('erro');return}
+  if(navigator.clipboard){navigator.clipboard.writeText(cartaoAtual).then(function(){out($('outCartao')?'outCartao':'outUsuarios','Cartão copiado.\n\n'+cartaoAtual);playSound('sucesso')}).catch(function(){out($('outCartao')?'outCartao':'outUsuarios',cartaoAtual);playSound('alerta')})}else{out($('outCartao')?'outCartao':'outUsuarios',cartaoAtual);playSound('alerta')}
+}
+
 function findProduto(id){for(var i=0;i<produtosCache.length;i++)if(String(produtosCache[i].ID_PRODUTO)===String(id))return produtosCache[i];return null}
 function findLote(id){for(var i=0;i<lotesCache.length;i++)if(String(lotesCache[i].ID_LOTE)===String(id))return lotesCache[i];return null}
 function updateSelectors(){renderProdutos(produtosCache);renderLotes(lotesCache)}
@@ -707,7 +893,7 @@ function boot(){
   initTabs();updateNet();updateHour();updateSoundBadge();setInterval(updateHour,1000);window.addEventListener('online',updateNet);window.addEventListener('offline',updateNet);
   setVal('cloudUrl',localStorage.getItem(LS_URL)||'');
   var s=session(); if(s&&s.ok){renderSession(s);$('kSessao').textContent=1;setVal('chave',s.chave_fazenda)}
-  if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js?v=5.7').catch(function(){});
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js?v=5.8.2').catch(function(){});
 }
 boot();
 

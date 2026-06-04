@@ -1,46 +1,5 @@
-const CACHE_NAME = 'app-cocho-central-v5-7-cache-v1';
-const CORE_ASSETS = [
-  './',
-  './index.html?v=5.7',
-  './manifest.json?v=5.7',
-  './icons/icon-192.png?v=5.7',
-  './icons/icon-512.png?v=5.7'
-];
-
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_ASSETS)).then(() => self.skipWaiting())
-  );
-});
-
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.map(key => {
-      if (key !== CACHE_NAME) return caches.delete(key);
-    }))).then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener('fetch', event => {
-  const req = event.request;
-  const url = new URL(req.url);
-
-  if (
-    url.origin.includes('script.google.com') ||
-    url.origin.includes('googleusercontent.com') ||
-    url.origin.includes('tile.openstreetmap.org') ||
-    url.origin.includes('arcgisonline.com') ||
-    url.origin.includes('unpkg.com')
-  ) {
-    event.respondWith(fetch(req));
-    return;
-  }
-
-  event.respondWith(
-    caches.match(req).then(cached => cached || fetch(req).then(resp => {
-      const clone = resp.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put(req, clone));
-      return resp;
-    }).catch(() => caches.match('./index.html?v=5.7')))
-  );
-});
+const CACHE='app-cocho-central-v5-8-1';
+const ASSETS=['./','./index.html','./manifest.json','./icons/icon-192.png','./icons/icon-512.png'];
+self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).catch(()=>{}));});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(k=>k!==CACHE?caches.delete(k):null))).then(()=>self.clients.claim()));});
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy)).catch(()=>{});return r;}).catch(()=>caches.match(e.request).then(r=>r||caches.match('./index.html'))));});
