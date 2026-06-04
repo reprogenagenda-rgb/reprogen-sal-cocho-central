@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0f5132">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cocho Central">
-<title>APP COCHO CENTRAL V5.8.5.1.1</title>
+<title>APP COCHO CENTRAL V5.8.5.2</title>
 <link rel="manifest" href="./manifest.json?v=5.8.5.1">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -51,7 +51,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <header>
   <div class="top">
     <div>
-      <h1>APP COCHO CENTRAL V5.8.5.1.1</h1>
+      <h1>APP COCHO CENTRAL V5.8.5.2</h1>
       <div class="sub">Estoque • Consumo • Lotes • Mapas • Acesso Multi-Propriedade</div>
     </div>
     <div class="badges">
@@ -105,7 +105,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
       </div>
     </div>
     <div class="card c8">
-      <h2>Fluxo recomendado de teste V5.8.5.1</h2>
+      <h2>Fluxo recomendado de teste V5.8.5.2</h2>
       <div class="msg success">A Central agora lê a versão real do Cloud pelo ping. Depois valide Acesso/Sessão e confira Fazenda Ativa no topo antes de operar cadastros da propriedade.</div>
       <div class="row">
         <button onclick="testCloud()">Testar Cloud</button>
@@ -129,7 +129,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
         <button class="blue" onclick="testCloud()">Testar conexão</button>
         <button class="gray" onclick="clearUrl()">Limpar</button>
       </div>
-      <div class="msg">A Central V5.8.5.1 usa Duplicidade Zero: login obrigatório, ID_OPERACAO_CLIENTE e bloqueio de clique duplo. Esperado: SCRIPT COCHO CLOUD V2.4.4.</div>
+      <div class="msg">A Central V5.8.5.2 usa Duplicidade Zero: login obrigatório, ID_OPERACAO_CLIENTE e bloqueio de clique duplo. Esperado: SCRIPT COCHO CLOUD V2.4.4.2.</div>
     </div>
     <div class="card c6">
       <h2>Retorno</h2>
@@ -547,14 +547,14 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
   </div>
 </section>
 
-<div class="footer">APP COCHO CENTRAL V5.8.5.1.1 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Login obrigatório por usuário, sessão ativa e leitura real do Script</div>
+<div class="footer">APP COCHO CENTRAL V5.8.5.2 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Login obrigatório por usuário, sessão ativa e leitura real do Script</div>
 </main>
 
 <script>
 (function(){
 'use strict';
 
-var VERSION='APP COCHO CENTRAL V5.8.5.1.1';
+var VERSION='APP COCHO CENTRAL V5.8.5.2';
 var LS_URL='cocho_cloud_url_v57';
 var LS_SESSION='cocho_session_v57';
 var LS_SOUND='cocho_sound_v57';
@@ -967,7 +967,7 @@ boot();
 
 <script>
 /* =========================================================
- * HOTFIX CENTRAL V5.8.5.1 — DUPLICIDADE ZERO
+ * HOTFIX CENTRAL V5.8.5.2 — DUPLICIDADE ZERO
  * - gera ID_OPERACAO_CLIENTE para ações críticas;
  * - evita clique duplo no front;
  * - envia operação idempotente para o Script V2.4.4.
@@ -1065,7 +1065,7 @@ boot();
     try{
       var s=sessPayload({}), p=findProduto(val('sync_prod')), prodNome=p?p.NOME_PRODUTO:'SAL MINERAL';
       var idReg=opId(comGps?'REG-GPS':'REG-SEM-GPS');
-      var reg={ID_REGISTRO:idReg,ID_OPERACAO_CLIENTE:idReg,ID_FAZENDA:s.id_fazenda,CHAVE_FAZENDA:s.chave_fazenda,NOME_FAZENDA:session().nome_fazenda,ID_USUARIO:s.id_usuario,NOME_USUARIO:s.nome_usuario,TIPO_USUARIO:s.tipo_usuario,DATA_HORA_LOCAL:nowBR(),DATA_HORA_BRASILIA:nowBR(),DATA_HORA_UTC:nowUTC(),LOTE:val('sync_lote'),COCHO:val('sync_cocho'),PRODUTO:prodNome,ID_PRODUTO:p?p.ID_PRODUTO:'',TIPO_PRODUTO:p?p.TIPO_PRODUTO:'MINERAL',QUANTIDADE_KG:val('sync_kg'),UNIDADE:'KG',ESCORE_COCHO:'2',OBSERVACAO:comGps?'Teste com GPS V5.8.5.1':'Teste sem GPS V5.8.5.1',GPS_LAT:comGps?val('sync_lat'):'',GPS_LNG:comGps?val('sync_lng'):'',GPS_ACURACIA:comGps?val('sync_acc'):'',STATUS_GPS:comGps?'CAPTURADO':'SEM_GPS',ORIGEM_APP:'CENTRAL_TESTE',VERSAO_APP:VERSION};
+      var reg={ID_REGISTRO:idReg,ID_OPERACAO_CLIENTE:idReg,ID_FAZENDA:s.id_fazenda,CHAVE_FAZENDA:s.chave_fazenda,NOME_FAZENDA:session().nome_fazenda,ID_USUARIO:s.id_usuario,NOME_USUARIO:s.nome_usuario,TIPO_USUARIO:s.tipo_usuario,DATA_HORA_LOCAL:nowBR(),DATA_HORA_BRASILIA:nowBR(),DATA_HORA_UTC:nowUTC(),LOTE:val('sync_lote'),COCHO:val('sync_cocho'),PRODUTO:prodNome,ID_PRODUTO:p?p.ID_PRODUTO:'',TIPO_PRODUTO:p?p.TIPO_PRODUTO:'MINERAL',QUANTIDADE_KG:val('sync_kg'),UNIDADE:'KG',ESCORE_COCHO:'2',OBSERVACAO:comGps?'Teste com GPS V5.8.5.2':'Teste sem GPS V5.8.5.2',GPS_LAT:comGps?val('sync_lat'):'',GPS_LNG:comGps?val('sync_lng'):'',GPS_ACURACIA:comGps?val('sync_acc'):'',STATUS_GPS:comGps?'CAPTURADO':'SEM_GPS',ORIGEM_APP:'CENTRAL_TESTE',VERSAO_APP:VERSION};
       reqSeguro('syncRegistro','outSync','sincronizarRegistrosCocho',{id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda,id_usuario:s.id_usuario,nome_usuario:s.nome_usuario,origem_app:'CENTRAL_TESTE',versao_app:VERSION,registros:[reg]},function(r){ if(r&&r.ok&&!r.duplicado){listarEstoque();dashboardConsumo();} });
     }catch(e){out('outSync',String(e.message||e));playSound('erro')}
   };
@@ -1075,7 +1075,7 @@ boot();
 
 <script>
 /* =========================================================
- * HOTFIX CENTRAL V5.8.5.1 — ENVIO SEGURO
+ * HOTFIX CENTRAL V5.8.5.2 — ENVIO SEGURO
  * Corrige Gerar Acesso preso em “Aguardando...” porque o
  * hotfix anterior chamava função req fora do escopo. Esta versão
  * usa fetch próprio, timeout, destrava a tela e mantém deduplicação.
@@ -1097,7 +1097,7 @@ boot();
       var done=false;
       var timer=setTimeout(function(){
         if(done)return; done=true;
-        reject(new Error('TEMPO_EXCEDIDO: o Apps Script não respondeu em '+Math.round(timeoutMs/1000)+' segundos. Verifique se gravou antes de reenviar.'));
+        reject(new Error('TEMPO_EXCEDIDO: o Apps Script não respondeu em '+Math.round(timeoutMs/1000)+' segundos. Verifique em Fazendas > Listar Fazendas antes de reenviar.'));
       }, timeoutMs||60000);
       fetch(url,{method:'POST',mode:'cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
         .then(function(r){return r.text().then(function(t){
@@ -1132,7 +1132,7 @@ boot();
       link_central:location.href.split('#')[0],
       link_app_campo:'',
       origem_app:'CENTRAL',
-      versao_app:'APP COCHO CENTRAL V5.8.5.1',
+      versao_app:'APP COCHO CENTRAL V5.8.5.2',
       id_operacao_cliente:makeOpId()
     };
     if(!payload.nome_fazenda || !payload.proprietario || !payload.login_proprietario){
@@ -1141,7 +1141,7 @@ boot();
     }
     envioGerarAcesso=true;
     print('outGerarAcesso','Enviando operação segura...\nID_OPERACAO_CLIENTE: '+payload.id_operacao_cliente+'\nAguarde. Não clique novamente.');
-    fetchComTimeout('gerarAcessoPropriedade',payload,60000).then(function(r){
+    fetchComTimeout('gerarAcessoPropriedade',payload,90000).then(function(r){
       if(r && r.ok && !r.duplicado){
         var cartao=r.cartao_texto||JSON.stringify(r,null,2);
         window.cartaoGeradoPropriedade=cartao;

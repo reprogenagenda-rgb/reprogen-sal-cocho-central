@@ -1,9 +1,12 @@
-# APP COCHO CENTRAL V5.8.5.1 — Envio Seguro
+# APP COCHO CENTRAL V5.8.5.2 — Gerar Acesso Corrigido
 
-Hotfix para Gerar Acesso não ficar preso em “Aguardando...”.
+Hotfix focado no módulo Gerar Acesso.
 
-Correções:
-- fetch próprio com timeout de 60s;
-- destravamento do botão;
-- instrução pós-falha para verificar em Fazendas;
-- mantém Duplicidade Zero com ID_OPERACAO_CLIENTE.
+## Mudanças
+- Espera SCRIPT COCHO CLOUD V2.4.4.2.
+- Mantém timeout seguro.
+- Exibe retorno do Script com etapa em caso de erro.
+- Abre com cache novo.
+
+## Commit sugerido
+Corrige Gerar Acesso na Central Cocho V5.8.5.2
