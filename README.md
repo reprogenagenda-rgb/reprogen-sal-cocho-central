@@ -1,21 +1,11 @@
-# APP COCHO CENTRAL V5.8.2 — Gerador de Acesso por Propriedade
+# APP COCHO CENTRAL V5.8.3 — Sessão Ativa e Cloud Dinâmico
 
-Evolução sobre a V5.8.1.
+Hotfix sobre a V5.8.2.
 
-## Principal evolução
-- Nova aba **Gerar Acesso**.
-- Cria a propriedade, gera CHAVE_FAZENDA/PIN, cria usuário proprietário e operador inicial.
-- Gera cartão de acesso pronto para copiar e enviar.
-- Mantém regra: fazenda/propriedade é a raiz do sistema.
-- Lotes, cochos, operadores, produtos, estoque, áreas e mapa ficam vinculados à CHAVE_FAZENDA.
-
-## Arquivos para GitHub Pages
-- index.html
-- manifest.json
-- service-worker.js
-- README.md
-- icons/icon-192.png
-- icons/icon-512.png
-
-## Commit sugerido
-Atualiza Central Cocho V5.8.2 com gerador de acesso por propriedade
+## Correções
+- Após validar acesso, aplica sessão ativa global.
+- Remove o aviso 'Nenhuma fazenda ativa' quando há sessão validada.
+- Mostra no topo: Fazenda ativa | Usuário | Perfil.
+- Restaura a sessão ao recarregar a página.
+- Lê a versão real do Script pela rota ping, sem depender de texto fixo.
+- Mantém cadastros fixos por propriedade e isolamento por CHAVE_FAZENDA.

@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#0f5132">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cocho Central">
-<title>APP COCHO CENTRAL V5.8.2</title>
-<link rel="manifest" href="./manifest.json?v=5.8.2">
+<title>APP COCHO CENTRAL V5.8.3</title>
+<link rel="manifest" href="./manifest.json?v=5.8.3">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -51,7 +51,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <header>
   <div class="top">
     <div>
-      <h1>APP COCHO CENTRAL V5.8.2</h1>
+      <h1>APP COCHO CENTRAL V5.8.3</h1>
       <div class="sub">Estoque • Consumo • Lotes • Mapas • Acesso Multi-Propriedade</div>
     </div>
     <div class="badges">
@@ -106,7 +106,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
     </div>
     <div class="card c8">
       <h2>Fluxo recomendado de teste V5.8.2</h2>
-      <div class="msg success">Cloud V2.4.1 deve responder em Config Cloud. Depois valide Acesso/Sessão, confira Fazenda Ativa e use Cadastros da Fazenda sempre vinculados à propriedade.</div>
+      <div class="msg success">A Central agora lê a versão real do Cloud pelo ping. Depois valide Acesso/Sessão e confira Fazenda Ativa no topo antes de operar cadastros da propriedade.</div>
       <div class="row">
         <button onclick="testCloud()">Testar Cloud</button>
         <button onclick="showView('acesso')" class="blue">Validar Acesso</button>
@@ -121,7 +121,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <section id="config" class="view">
   <div class="grid">
     <div class="card c6">
-      <h2>Config Cloud V2.4.1</h2>
+      <h2>Config Cloud — leitura real do Script</h2>
       <label>URL do Web App /exec</label>
       <input id="cloudUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
       <div class="row">
@@ -129,7 +129,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
         <button class="blue" onclick="testCloud()">Testar conexão</button>
         <button class="gray" onclick="clearUrl()">Limpar</button>
       </div>
-      <div class="msg">A Central V5.8.2 consome o SCRIPT COCHO CLOUD V2.4.1.</div>
+      <div class="msg">A Central V5.8.3 lê a versão real do Script pelo ping. Esperado: SCRIPT COCHO CLOUD V2.4.2.</div>
     </div>
     <div class="card c6">
       <h2>Retorno</h2>
@@ -150,6 +150,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
         <button onclick="validarAcesso()">Validar Acesso</button>
         <button onclick="preencherTeste()" class="gray">Preencher Teste</button>
         <button onclick="baixarBase()" class="blue">Baixar Base</button>
+        <button onclick="limparSessao()" class="red">Sair/Limpar Sessão</button>
       </div>
     </div>
     <div class="card c7">
@@ -543,14 +544,14 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
   </div>
 </section>
 
-<div class="footer">APP COCHO CENTRAL V5.8.2 — Cloud V2.4.1 — Cadastros fixos por propriedade e menu sem redundância</div>
+<div class="footer">APP COCHO CENTRAL V5.8.3 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Sessão ativa corrigida e leitura real do Script</div>
 </main>
 
 <script>
 (function(){
 'use strict';
 
-var VERSION='APP COCHO CENTRAL V5.8.2';
+var VERSION='APP COCHO CENTRAL V5.8.3';
 var LS_URL='cocho_cloud_url_v57';
 var LS_SESSION='cocho_session_v57';
 var LS_SOUND='cocho_sound_v57';
@@ -607,7 +608,7 @@ function updateSoundBadge(){var on=soundOn();$('soundBadge').className='badge '+
 function erroFetchMsg(action,e){
   var msg=String(e&&e.message||e||'Falha desconhecida');
   if(msg.indexOf('Failed to fetch')>=0||msg.indexOf('NetworkError')>=0||msg.indexOf('Load failed')>=0){
-    return 'Falha ao buscar dados no Cloud ('+action+'). Verifique: URL /exec, nova implantação do Apps Script, permissão Qualquer pessoa com o link, internet e se a rota existe no Script V2.4.1.';
+    return 'Falha ao buscar dados no Cloud ('+action+'). Verifique: URL /exec, nova implantação do Apps Script, permissão Qualquer pessoa com o link, internet e se a rota existe no Script V2.4.2.';
   }
   return msg;
 }
@@ -632,22 +633,82 @@ function initTabs(){var tabs=document.querySelectorAll('.tab');for(var i=0;i<tab
 
 window.saveUrl=function(){var u=val('cloudUrl');if(!u){alert('Cole a URL.');return}localStorage.setItem(LS_URL,u);out('outConfig','URL salva.');playSound('sucesso')}
 window.clearUrl=function(){localStorage.removeItem(LS_URL);setVal('cloudUrl','');out('outConfig','URL limpa.');playSound('click')}
+function aplicarVersaoCloud(r){
+  var v=(r&&(r.versao||r.version||r.SCRIPT_VERSION))?String(r.versao||r.version||r.SCRIPT_VERSION):'';
+  if(v){
+    $('cloudBadge').className='badge ok';
+    $('cloudBadge').textContent='Cloud OK';
+    if($('cloudVersionFooter'))$('cloudVersionFooter').textContent=v;
+    localStorage.setItem('APP_COCHO_CLOUD_VERSION',v);
+  }else{
+    if($('cloudVersionFooter'))$('cloudVersionFooter').textContent='Cloud respondeu, versão não informada';
+  }
+}
 window.testCloud=function(){
-  req('ping',{}).then(function(r){out('outConfig',r);out('outPainel',r);$('cloudBadge').className='badge '+(r.ok?'ok':'err');$('cloudBadge').textContent=r.ok?'Cloud OK':'Cloud erro';playSound(r.ok?'sucesso':'erro')}).catch(function(e){out('outConfig',String(e.message||e));out('outPainel',String(e.message||e));$('cloudBadge').className='badge err';$('cloudBadge').textContent='Cloud erro';playSound('erro')})
+  req('ping',{}).then(function(r){
+    out('outConfig',r);out('outPainel',r);
+    aplicarVersaoCloud(r);
+    if(!(r&&r.ok)){$('cloudBadge').className='badge err';$('cloudBadge').textContent='Cloud erro'}
+    playSound(r&&r.ok?'sucesso':'erro')
+  }).catch(function(e){
+    var msg=String(e.message||e);
+    out('outConfig',msg);out('outPainel',msg);
+    $('cloudBadge').className='badge err';$('cloudBadge').textContent='Cloud erro';
+    if($('cloudVersionFooter'))$('cloudVersionFooter').textContent='Cloud não confirmado';
+    playSound('erro')
+  })
 }
 
 window.preencherTeste=function(){setVal('chave','COCHO-FAZENDATESTE01-4W77-2026');setVal('pin','1234');playSound('click')}
 window.validarAcesso=function(){
   req('validarAcesso',{chave_fazenda:val('chave'),pin:val('pin'),origem_app:'CENTRAL',versao_app:VERSION}).then(function(r){
     out('outAcesso',r);
-    if(r.ok){saveSession(r);renderSession(r);$('kSessao').textContent=1;playSound('sucesso');baixarBase()}
+    if(r.ok){aplicarSessaoAtiva(r);playSound('sucesso');baixarBase()}
     else playSound('erro')
   }).catch(function(e){out('outAcesso',String(e.message||e));playSound('erro')})
 }
+function perfilSessao(s){return s?(s.tipo_usuario||s.perfil_usuario||s.PERFIL_USUARIO||''):''}
+function atualizarFazendaAtivaTopo(s){
+  var el=$('fazendaAtivaTopo');
+  if(s&&s.ok){
+    el.className='fazendaAtiva success';
+    el.innerHTML='<b>Fazenda ativa:</b> '+esc(s.nome_fazenda||'')+' | '+esc(s.nome_usuario||'')+' | '+esc(perfilSessao(s));
+    $('kSessao').textContent=1;
+  }else{
+    el.className='fazendaAtiva';
+    el.textContent='Nenhuma fazenda ativa. Valide em Acesso / Sessão antes de operar produtos, lotes, cochos, áreas, estoque ou mapa.';
+    $('kSessao').textContent=0;
+  }
+}
+function aplicarSessaoAtiva(r){
+  if(!r||!r.ok)return;
+  var s={
+    ok:true,
+    id_fazenda:r.id_fazenda||r.ID_FAZENDA||'',
+    chave_fazenda:r.chave_fazenda||r.CHAVE_FAZENDA||val('chave'),
+    nome_fazenda:r.nome_fazenda||r.NOME_FAZENDA||'',
+    id_usuario:r.id_usuario||r.ID_USUARIO||'',
+    nome_usuario:r.nome_usuario||r.NOME_USUARIO||'',
+    tipo_usuario:r.tipo_usuario||r.perfil_usuario||r.PERFIL_USUARIO||'',
+    perfil_usuario:r.perfil_usuario||r.tipo_usuario||r.PERFIL_USUARIO||'',
+    permissoes:r.permissoes||r.PERMISSOES||[],
+    data_hora_brasilia:r.data_hora_brasilia||r.DATA_HORA_BRASILIA||nowBR(),
+    status:r.status||r.STATUS||'ATIVO'
+  };
+  saveSession(s);
+  renderSession(s);
+  setVal('chave',s.chave_fazenda);
+  return s;
+}
 function renderSession(s){
-  if(s&&s.ok){$('sessaoBox').className='msg success';$('sessaoBox').innerHTML='<b>'+esc(s.nome_fazenda)+'</b><br>'+esc(s.nome_usuario)+' — '+esc(s.tipo_usuario)}
+  atualizarFazendaAtivaTopo(s);
+  if(s&&s.ok){
+    $('sessaoBox').className='msg success';
+    $('sessaoBox').innerHTML='<b>'+esc(s.nome_fazenda)+'</b><br>'+esc(s.nome_usuario)+' — '+esc(perfilSessao(s))+'<br><span class="small">CHAVE: '+esc(s.chave_fazenda)+'</span>';
+  }
   else {$('sessaoBox').className='msg';$('sessaoBox').textContent='Nenhuma sessão validada.'}
 }
+window.limparSessao=function(){localStorage.removeItem(LS_SESSION);renderSession(null);out('outAcesso','Sessão limpa. Valide novamente para operar.');playSound('click')}
 window.baixarBase=function(){
   var s=session(); if(!s||!s.ok){out('outAcesso','Valide acesso primeiro.');playSound('erro');return}
   req('baixarBaseFazenda',{id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda}).then(function(r){
@@ -660,7 +721,7 @@ window.baixarBase=function(){
   }).catch(function(e){out('outAcesso',String(e.message||e));playSound('erro')})
 }
 
-function sessPayload(extra){var s=session();if(!s||!s.ok)throw new Error('Valide acesso primeiro.');var d={id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda,id_usuario:s.id_usuario,nome_usuario:s.nome_usuario,tipo_usuario:s.tipo_usuario,origem_app:'CENTRAL',versao_app:VERSION};for(var k in extra)d[k]=extra[k];return d}
+function sessPayload(extra){var s=session();if(!s||!s.ok)throw new Error('Valide acesso primeiro.');var d={id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda,id_usuario:s.id_usuario,nome_usuario:s.nome_usuario,tipo_usuario:perfilSessao(s),origem_app:'CENTRAL',versao_app:VERSION};for(var k in extra)d[k]=extra[k];return d}
 
 window.criarProduto=function(){
   try{
@@ -892,8 +953,9 @@ function updateHour(){$('hourBadge').textContent='Brasília '+nowBR()}
 function boot(){
   initTabs();updateNet();updateHour();updateSoundBadge();setInterval(updateHour,1000);window.addEventListener('online',updateNet);window.addEventListener('offline',updateNet);
   setVal('cloudUrl',localStorage.getItem(LS_URL)||'');
-  var s=session(); if(s&&s.ok){renderSession(s);$('kSessao').textContent=1;setVal('chave',s.chave_fazenda)}
-  if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js?v=5.8.2').catch(function(){});
+  var cv=localStorage.getItem('APP_COCHO_CLOUD_VERSION')||''; if(cv&&$('cloudVersionFooter'))$('cloudVersionFooter').textContent=cv;
+  var s=session(); if(s&&s.ok){renderSession(s);setVal('chave',s.chave_fazenda)} else {renderSession(null)}
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js?v=5.8.3').catch(function(){});
 }
 boot();
 
