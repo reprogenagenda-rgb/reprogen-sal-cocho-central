@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0f5132">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cocho Central">
-<title>APP COCHO CENTRAL V5.8.3</title>
+<title>APP COCHO CENTRAL V5.8.4</title>
 <link rel="manifest" href="./manifest.json?v=5.8.3">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -51,7 +51,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <header>
   <div class="top">
     <div>
-      <h1>APP COCHO CENTRAL V5.8.3</h1>
+      <h1>APP COCHO CENTRAL V5.8.4</h1>
       <div class="sub">Estoque • Consumo • Lotes • Mapas • Acesso Multi-Propriedade</div>
     </div>
     <div class="badges">
@@ -129,7 +129,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
         <button class="blue" onclick="testCloud()">Testar conexão</button>
         <button class="gray" onclick="clearUrl()">Limpar</button>
       </div>
-      <div class="msg">A Central V5.8.3 lê a versão real do Script pelo ping. Esperado: SCRIPT COCHO CLOUD V2.4.2.</div>
+      <div class="msg">A Central V5.8.4 lê a versão real do Script pelo ping. Esperado: SCRIPT COCHO CLOUD V2.4.3. Acesso seguro exige CHAVE_FAZENDA + LOGIN_USUARIO + PIN_USUARIO.</div>
     </div>
     <div class="card c6">
       <h2>Retorno</h2>
@@ -144,8 +144,11 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
       <h2>Acesso / Sessão da Fazenda</h2>
       <label>CHAVE_FAZENDA</label>
       <input id="chave" placeholder="COCHO-...">
-      <label>PIN</label>
+      <label>LOGIN_USUARIO</label>
+      <input id="login" placeholder="ex.: marcelo ou joao.silva">
+      <label>PIN_USUARIO</label>
       <input id="pin" value="1234">
+      <div class="small">Regra V5.8.4: acesso operacional deve usar CHAVE_FAZENDA + LOGIN_USUARIO + PIN_USUARIO. O PIN da fazenda fica reservado para validação/recuperação do proprietário.</div>
       <div class="row">
         <button onclick="validarAcesso()">Validar Acesso</button>
         <button onclick="preencherTeste()" class="gray">Preencher Teste</button>
@@ -395,7 +398,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
       <label>Lote destino para TRANSFERÊNCIA</label><input id="mov_lote_destino" value="LOTE 02" placeholder="Ex.: LOTE 02">
       <label>Peso médio kg (opcional)</label><input id="mov_peso_medio" placeholder="Ex.: 280">
       <div class="small">TROCA_PASTO não altera quantidade. TRANSFERÊNCIA PARCIAL subtrai parte da origem. TRANSFERÊNCIA TOTAL zera/encerra a origem e soma/cria destino. SAÍDA/VENDA/MORTE/DESCARTE também podem ser TOTAL ou PARCIAL.</div>
-      <label>Motivo</label><input id="mov_motivo" value="Movimentação pela Central V5.8.2">
+      <label>Motivo</label><input id="mov_motivo" value="Movimentação pela Central V5.8.4">
       <div class="row">
         <button onclick="registrarMovLote()">Registrar Movimentação</button>
         <button onclick="listarMovLotes()" class="blue">Listar Movimentos</button>
@@ -544,14 +547,14 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
   </div>
 </section>
 
-<div class="footer">APP COCHO CENTRAL V5.8.3 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Sessão ativa corrigida e leitura real do Script</div>
+<div class="footer">APP COCHO CENTRAL V5.8.4 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Login obrigatório por usuário, sessão ativa e leitura real do Script</div>
 </main>
 
 <script>
 (function(){
 'use strict';
 
-var VERSION='APP COCHO CENTRAL V5.8.3';
+var VERSION='APP COCHO CENTRAL V5.8.4';
 var LS_URL='cocho_cloud_url_v57';
 var LS_SESSION='cocho_session_v57';
 var LS_SOUND='cocho_sound_v57';
@@ -659,9 +662,9 @@ window.testCloud=function(){
   })
 }
 
-window.preencherTeste=function(){setVal('chave','COCHO-FAZENDATESTE01-4W77-2026');setVal('pin','1234');playSound('click')}
+window.preencherTeste=function(){setVal('chave','COCHO-FAZENDATESTE01-4W77-2026');setVal('login','marcelo.teste');setVal('pin','1234');playSound('click')}
 window.validarAcesso=function(){
-  req('validarAcesso',{chave_fazenda:val('chave'),pin:val('pin'),origem_app:'CENTRAL',versao_app:VERSION}).then(function(r){
+  req('validarAcesso',{chave_fazenda:val('chave'),login_usuario:val('login'),pin_usuario:val('pin'),pin:val('pin'),origem_app:'CENTRAL',versao_app:VERSION}).then(function(r){
     out('outAcesso',r);
     if(r.ok){aplicarSessaoAtiva(r);playSound('sucesso');baixarBase()}
     else playSound('erro')
