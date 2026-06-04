@@ -1,14 +1,12 @@
-# APP COCHO CENTRAL V5.8.4 — Login obrigatório por usuário
+# APP COCHO CENTRAL V5.8.5 — Duplicidade Zero
 
-Evolução de segurança: acesso operacional por CHAVE_FAZENDA + LOGIN_USUARIO + PIN_USUARIO.
+Evolui a V5.8.4 com proteção contra duplicidade operacional:
 
-## Atualização
-1. Substituir `index.html`, `manifest.json`, `service-worker.js`, `README.md` e `icons/` no GitHub Pages.
-2. Abrir a Central com `?v=5.8.4` para quebrar cache.
-3. Testar Cloud e validar sessão com login do usuário.
+- ID_OPERACAO_CLIENTE nas ações críticas;
+- bloqueio de clique duplo no front;
+- proteção de produto/lote/cocho/área duplicados por fazenda;
+- geração de acesso protegida contra reenvio;
+- sync de registros com ID_REGISTRO/ID_OPERACAO_CLIENTE.
 
-## Teste mínimo
-- Proprietário: CHAVE_FAZENDA + login do proprietário + PIN do proprietário.
-- Operador: CHAVE_FAZENDA + login do operador + PIN do operador.
-
-O PIN da fazenda fica reservado para validação/recuperação e não deve substituir o login do usuário em operação normal.
+Abra com quebra de cache:
+`index.html?v=5.8.5-duplicidade-zero`

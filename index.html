@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0f5132">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cocho Central">
-<title>APP COCHO CENTRAL V5.8.4</title>
+<title>APP COCHO CENTRAL V5.8.5</title>
 <link rel="manifest" href="./manifest.json?v=5.8.3">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -51,7 +51,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <header>
   <div class="top">
     <div>
-      <h1>APP COCHO CENTRAL V5.8.4</h1>
+      <h1>APP COCHO CENTRAL V5.8.5</h1>
       <div class="sub">Estoque • Consumo • Lotes • Mapas • Acesso Multi-Propriedade</div>
     </div>
     <div class="badges">
@@ -105,7 +105,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
       </div>
     </div>
     <div class="card c8">
-      <h2>Fluxo recomendado de teste V5.8.2</h2>
+      <h2>Fluxo recomendado de teste V5.8.5</h2>
       <div class="msg success">A Central agora lê a versão real do Cloud pelo ping. Depois valide Acesso/Sessão e confira Fazenda Ativa no topo antes de operar cadastros da propriedade.</div>
       <div class="row">
         <button onclick="testCloud()">Testar Cloud</button>
@@ -129,7 +129,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
         <button class="blue" onclick="testCloud()">Testar conexão</button>
         <button class="gray" onclick="clearUrl()">Limpar</button>
       </div>
-      <div class="msg">A Central V5.8.4 lê a versão real do Script pelo ping. Esperado: SCRIPT COCHO CLOUD V2.4.3. Acesso seguro exige CHAVE_FAZENDA + LOGIN_USUARIO + PIN_USUARIO.</div>
+      <div class="msg">A Central V5.8.5 usa Duplicidade Zero: login obrigatório, ID_OPERACAO_CLIENTE e bloqueio de clique duplo. Esperado: SCRIPT COCHO CLOUD V2.4.4.</div>
     </div>
     <div class="card c6">
       <h2>Retorno</h2>
@@ -547,14 +547,14 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
   </div>
 </section>
 
-<div class="footer">APP COCHO CENTRAL V5.8.4 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Login obrigatório por usuário, sessão ativa e leitura real do Script</div>
+<div class="footer">APP COCHO CENTRAL V5.8.5 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Login obrigatório por usuário, sessão ativa e leitura real do Script</div>
 </main>
 
 <script>
 (function(){
 'use strict';
 
-var VERSION='APP COCHO CENTRAL V5.8.4';
+var VERSION='APP COCHO CENTRAL V5.8.5';
 var LS_URL='cocho_cloud_url_v57';
 var LS_SESSION='cocho_session_v57';
 var LS_SOUND='cocho_sound_v57';
@@ -964,5 +964,113 @@ boot();
 
 })();
 </script>
+
+<script>
+/* =========================================================
+ * HOTFIX CENTRAL V5.8.5 — DUPLICIDADE ZERO
+ * - gera ID_OPERACAO_CLIENTE para ações críticas;
+ * - evita clique duplo no front;
+ * - envia operação idempotente para o Script V2.4.4.
+ * ========================================================= */
+(function(){
+  var busyOps = {};
+  function opId(prefix){
+    try { return uid(prefix || 'OP'); } catch(e) { return (prefix||'OP')+'-'+Date.now()+'-'+Math.random().toString(36).slice(2,8).toUpperCase(); }
+  }
+  function busy(key, msgId){
+    if (busyOps[key]) { if (msgId && window.out) out(msgId, 'Operação já em envio. Aguarde para evitar duplicidade.'); if (window.playSound) playSound('alerta'); return true; }
+    busyOps[key]=true; return false;
+  }
+  function free(key){ busyOps[key]=false; }
+  function reqSeguro(key, msgId, action, payload, onOk, onFim){
+    if (busy(key,msgId)) return;
+    payload = payload || {};
+    payload.id_operacao_cliente = payload.id_operacao_cliente || payload.ID_OPERACAO_CLIENTE || opId(key.toUpperCase());
+    if (msgId && window.out) out(msgId, 'Enviando operação segura: '+payload.id_operacao_cliente);
+    req(action,payload).then(function(r){
+      if (msgId && window.out) out(msgId,r);
+      if (r && r.duplicado && window.playSound) playSound('alerta'); else if(window.playSound) playSound(r&&r.ok?'sucesso':'erro');
+      if (onOk) onOk(r,payload);
+    }).catch(function(e){
+      if (msgId && window.out) out(msgId, (window.erroFetchMsg?erroFetchMsg(action,e):String(e.message||e)) );
+      if(window.playSound) playSound('erro');
+    }).then(function(){ free(key); if(onFim)onFim(); });
+  }
+  window.gerarIdOperacaoCliente = opId;
+
+  window.gerarAcessoPropriedade=function(){
+    var payload={
+      nome_fazenda:val('ga_fazenda'),proprietario:val('ga_prop'),cpf_cnpj:val('ga_doc'),municipio:val('ga_mun'),estado:val('ga_uf'),
+      login_proprietario:val('ga_login_prop'),pin_proprietario:val('ga_pin_prop'),
+      nome_operador:val('ga_operador'),login_operador:val('ga_login_op'),pin_operador:val('ga_pin_op'),
+      link_central:location.href.split('#')[0],link_app_campo:'',origem_app:'CENTRAL',versao_app:VERSION,
+      id_operacao_cliente:opId('OP-GERAR-ACESSO')
+    };
+    reqSeguro('gerarAcesso','outGerarAcesso','gerarAcessoPropriedade',payload,function(r){
+      if(r&&r.ok&&!r.duplicado){
+        cartaoGeradoPropriedade=r.cartao_texto||'';
+        if(cartaoGeradoPropriedade)out('outGerarAcesso',cartaoGeradoPropriedade);
+        if(r.chave_fazenda){setVal('faz_chave',r.chave_fazenda);setVal('usr_chave',r.chave_fazenda);setVal('cartao_chave',r.chave_fazenda);setVal('chave',r.chave_fazenda)}
+        if(r.pin_fazenda)setVal('pin',r.pin_fazenda);
+        if(window.listarFazendasAcesso)listarFazendasAcesso();
+      }
+    });
+  };
+
+  window.criarProduto=function(){
+    try{
+      var d=sessPayload({nome_produto:val('prod_nome'),tipo_produto:val('prod_tipo'),fabricante:val('prod_fab'),unidade_padrao:val('prod_unid'),kg_por_unidade:val('prod_kgunid'),saldo_minimo_kg:val('prod_min'),id_operacao_cliente:opId('OP-PRODUTO')});
+      reqSeguro('criarProduto','outProdutos','criarProduto',d,function(r){ if(r&&r.ok&&!r.duplicado)listarProdutos(); });
+    }catch(e){out('outProdutos',String(e.message||e));playSound('erro')}
+  };
+
+  window.registrarEntrada=function(){
+    try{
+      var p=findProduto(val('ent_prod')); if(!p){out('outEntrada','Selecione produto.');playSound('erro');return}
+      var d=sessPayload({id_produto:p.ID_PRODUTO,nome_produto:p.NOME_PRODUTO,tipo_movimento:val('ent_tipo'),quantidade_kg:val('ent_kg'),observacao:val('ent_obs'),id_operacao_cliente:opId('OP-ESTOQUE')});
+      reqSeguro('entradaEstoque','outEntrada','registrarMovimentacaoEstoque',d,function(r){ if(r&&r.ok&&!r.duplicado){listarEstoque();dashboardConsumo();} });
+    }catch(e){out('outEntrada',String(e.message||e));playSound('erro')}
+  };
+
+  window.criarLote=function(){
+    try{
+      var d=sessPayload({nome_lote:val('lote_nome'),categoria:val('lote_cat'),quantidade_animais:val('lote_qtd'),peso_medio_kg:val('lote_peso_medio'),pasto_local:val('lote_pasto'),observacoes:val('lote_obs'),id_operacao_cliente:opId('OP-LOTE')});
+      reqSeguro('criarLote','outLotes','criarLote',d,function(r){ if(r&&r.ok&&!r.duplicado)listarLotes(); });
+    }catch(e){out('outLotes',String(e.message||e));playSound('erro')}
+  };
+
+  window.registrarMovLote=function(){
+    try{
+      var l=findLote(val('mov_lote')); if(!l){out('outMovLotes','Selecione lote origem.');playSound('erro');return}
+      var d=sessPayload({id_lote:l.ID_LOTE,nome_lote:l.NOME_LOTE,tipo_movimento:val('mov_tipo'),modo_movimentacao:val('mov_modo'),id_operacao_cliente:opId('OP-MOV-LOTE'),quantidade_animais:val('mov_qtd'),origem:val('mov_origem'),destino:val('mov_destino'),nome_lote_destino:val('mov_lote_destino'),peso_medio_kg:val('mov_peso_medio'),motivo:val('mov_motivo')});
+      reqSeguro('movLote','outMovLotes','registrarMovimentacaoLote',d,function(r){ if(r&&r.ok&&!r.duplicado){listarLotes();listarMovLotes();dashboardConsumo();} });
+    }catch(e){out('outMovLotes',String(e.message||e));playSound('erro')}
+  };
+
+  window.criarCochoFixo=function(){
+    try{
+      var d=sessPayload({nome_cocho:val('cf_nome'),codigo_cocho:val('cf_codigo'),tipo_cocho:val('cf_tipo'),pasto_local:val('cf_pasto'),latitude:val('cf_lat'),longitude:val('cf_lng'),acuracia:val('cf_acc'),observacoes:val('cf_obs'),id_operacao_cliente:opId('OP-COCHO')});
+      reqSeguro('criarCocho','outCochosFixos','criarCochoFixo',d,function(r){ if(r&&r.ok&&!r.duplicado)listarCochosFixos(); });
+    }catch(e){out('outCochosFixos',String(e.message||e));playSound('erro')}
+  };
+
+  window.criarAreaFazenda=function(){
+    try{
+      var d=sessPayload({nome_area:val('area_nome'),tipo_area:val('area_tipo'),cor_area:val('area_cor'),area_ha:val('area_ha'),geojson_simplificado:val('area_geo'),observacoes:val('area_obs'),id_operacao_cliente:opId('OP-AREA')});
+      reqSeguro('criarArea','outAreas','criarAreaFazenda',d,function(r){ if(r&&r.ok&&!r.duplicado)listarAreasFazenda(); });
+    }catch(e){out('outAreas',String(e.message||e));playSound('erro')}
+  };
+
+  window.syncRegistro=function(comGps){
+    try{
+      var s=sessPayload({}), p=findProduto(val('sync_prod')), prodNome=p?p.NOME_PRODUTO:'SAL MINERAL';
+      var idReg=opId(comGps?'REG-GPS':'REG-SEM-GPS');
+      var reg={ID_REGISTRO:idReg,ID_OPERACAO_CLIENTE:idReg,ID_FAZENDA:s.id_fazenda,CHAVE_FAZENDA:s.chave_fazenda,NOME_FAZENDA:session().nome_fazenda,ID_USUARIO:s.id_usuario,NOME_USUARIO:s.nome_usuario,TIPO_USUARIO:s.tipo_usuario,DATA_HORA_LOCAL:nowBR(),DATA_HORA_BRASILIA:nowBR(),DATA_HORA_UTC:nowUTC(),LOTE:val('sync_lote'),COCHO:val('sync_cocho'),PRODUTO:prodNome,ID_PRODUTO:p?p.ID_PRODUTO:'',TIPO_PRODUTO:p?p.TIPO_PRODUTO:'MINERAL',QUANTIDADE_KG:val('sync_kg'),UNIDADE:'KG',ESCORE_COCHO:'2',OBSERVACAO:comGps?'Teste com GPS V5.8.5':'Teste sem GPS V5.8.5',GPS_LAT:comGps?val('sync_lat'):'',GPS_LNG:comGps?val('sync_lng'):'',GPS_ACURACIA:comGps?val('sync_acc'):'',STATUS_GPS:comGps?'CAPTURADO':'SEM_GPS',ORIGEM_APP:'CENTRAL_TESTE',VERSAO_APP:VERSION};
+      reqSeguro('syncRegistro','outSync','sincronizarRegistrosCocho',{id_fazenda:s.id_fazenda,chave_fazenda:s.chave_fazenda,id_usuario:s.id_usuario,nome_usuario:s.nome_usuario,origem_app:'CENTRAL_TESTE',versao_app:VERSION,registros:[reg]},function(r){ if(r&&r.ok&&!r.duplicado){listarEstoque();dashboardConsumo();} });
+    }catch(e){out('outSync',String(e.message||e));playSound('erro')}
+  };
+})();
+</script>
+
 </body>
 </html>
