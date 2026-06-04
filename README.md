@@ -1,12 +1,9 @@
-# APP COCHO CENTRAL V5.8.5 — Duplicidade Zero
+# APP COCHO CENTRAL V5.8.5.1 — Envio Seguro
 
-Evolui a V5.8.4 com proteção contra duplicidade operacional:
+Hotfix para Gerar Acesso não ficar preso em “Aguardando...”.
 
-- ID_OPERACAO_CLIENTE nas ações críticas;
-- bloqueio de clique duplo no front;
-- proteção de produto/lote/cocho/área duplicados por fazenda;
-- geração de acesso protegida contra reenvio;
-- sync de registros com ID_REGISTRO/ID_OPERACAO_CLIENTE.
-
-Abra com quebra de cache:
-`index.html?v=5.8.5-duplicidade-zero`
+Correções:
+- fetch próprio com timeout de 60s;
+- destravamento do botão;
+- instrução pós-falha para verificar em Fazendas;
+- mantém Duplicidade Zero com ID_OPERACAO_CLIENTE.
