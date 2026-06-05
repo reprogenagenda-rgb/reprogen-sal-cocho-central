@@ -1,25 +1,33 @@
-# APP COCHO CENTRAL V6.3 SUPABASE — Lançamentos + Histórico por Cocho
-
-## Objetivo
-A Central passa a registrar o coração do sistema: qual cocho foi abastecido, produto/sal, kg colocados, operador, data/hora Brasília, GPS e histórico por cocho.
+# APP COCHO CENTRAL V6.2 SUPABASE — Lotes + Cochos GPS
 
 ## SUPABASE — fazer agora
-Primeiro teste SEM rodar SQL. Rode `SQL_OPCIONAL_V6_3_LANCAMENTOS_COCHO.sql` somente se aparecer erro de coluna inexistente em `lancamentos_cocho`.
+Primeiro teste SEM rodar SQL.
 
-## GITHUB
-Substituir: index.html, manifest.json, service-worker.js, README.md, icons/ e o SQL opcional.
+Rode `SQL_OPCIONAL_AJUSTE_LOTES_COCHOS_GPS.sql` somente se aparecer erro de coluna inexistente em lotes ou cochos.
 
-Commit: `Atualiza Central Cocho V6.3 Lancamentos Historico Cocho`
+## GITHUB — subir agora
+Substituir:
+- index.html
+- manifest.json
+- service-worker.js
+- README.md
+- icons/
+- SQL_OPCIONAL_AJUSTE_LOTES_COCHOS_GPS.sql
 
-URL com cache: `https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.3-lancamentos-historico`
+Mensagem de commit:
+`Atualiza Central Cocho V6.2 Lotes e Cochos GPS`
 
-## Teste
+Abrir com quebra de cache:
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.2-lotes-cochos-gps`
+
+## Teste oficial
 1. Testar Supabase.
-2. Ativar propriedade.
-3. Carregar base.
-4. Abrir Lançamentos.
-5. Preencher teste.
-6. Capturar GPS.
-7. Salvar lançamento.
-8. Listar lançamentos.
-9. Consultar Histórico.
+2. Lotes → Preencher Teste → Criar Lote.
+3. Lotes → Listar Lotes.
+4. Cochos GPS → Preencher Teste.
+5. Cochos GPS → Capturar GPS atual.
+6. Cochos GPS → Criar Cocho.
+7. Cochos GPS → Listar Cochos.
+8. Base Campo → Montar Base Campo.
+
+Resultado esperado: usuários 1, produtos 1, lotes 1, cochos 1, áreas 0.
