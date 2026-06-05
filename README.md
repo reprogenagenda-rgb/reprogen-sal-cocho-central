@@ -1,8 +1,12 @@
-# APP COCHO CENTRAL V6.0.1 SUPABASE — SW Fix
+# APP COCHO CENTRAL V6.1 SUPABASE — Pré-Campo
 
-Correção crítica da V6.0: o Service Worker antigo podia retornar o próprio `index.html` quando uma chamada externa falhava, fazendo a Central mostrar um bloco gigante de HTML como erro do Supabase.
+## SUPABASE — fazer agora
+Nada.
+- Rodar novo schema? NÃO.
+- Rodar policies? NÃO.
+- Alterar tabela? NÃO.
 
-## Subir no GitHub
+## GITHUB — subir agora
 Substituir:
 - index.html
 - manifest.json
@@ -11,21 +15,16 @@ Substituir:
 - icons/
 
 Mensagem de commit:
-`Corrige Service Worker da Central Cocho V6.0.1 Supabase`
+`Atualiza Central Cocho V6.1 Supabase Pré-Campo`
 
 Abrir com quebra de cache:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.0.1-sw-fix`
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.1-supabase-pre-campo`
 
-## Importante no Android
-Depois de subir:
-1. Feche a aba antiga.
-2. Abra a URL com `?v=6.0.1-sw-fix`.
-3. Se ainda aparecer HTML no erro, vá em Config Supabase > Limpar, salve novamente URL/key e teste.
-4. Em último caso, remova o app instalado e instale novamente, pois o service worker antigo pode estar preso no navegador.
-
-## Config Supabase
-SUPABASE_URL:
-`https://wxnsyozjiosbdwxpodb.supabase.co`
-
-SUPABASE_PUBLISHABLE_KEY:
-cole a chave completa `sb_publishable_...`
+## Teste
+1. Supabase OK.
+2. Propriedade ativa.
+3. Listar usuários.
+4. Listar produtos.
+5. Abrir Base Campo.
+6. Montar Base Campo.
+7. Baixar JSON da Base.

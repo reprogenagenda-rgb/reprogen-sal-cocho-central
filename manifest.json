@@ -1,7 +1,7 @@
 {
-  "name": "APP COCHO CENTRAL V6.0.1 SUPABASE",
-  "short_name": "COCHO V6.0.1",
-  "start_url": "./index.html?v=6.0.1",
+  "name": "APP COCHO CENTRAL V6.1 SUPABASE",
+  "short_name": "COCHO V6.1",
+  "start_url": "./index.html?v=6.1",
   "scope": "./",
   "display": "standalone",
   "background_color": "#eef6ef",

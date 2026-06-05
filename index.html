@@ -4,465 +4,75 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="COCHO V6">
-<title>APP COCHO CENTRAL V6.0.1 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=6.0.1">
+<title>APP COCHO CENTRAL V6.1 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=6.1">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{
-  --g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;
-  --r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060;--dark:#071b12;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
-header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,var(--g),#082114);color:#fff;padding:10px 12px;box-shadow:0 2px 8px rgba(0,0,0,.16)}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-h1{font-size:18px;margin:0;font-weight:900;letter-spacing:.3px}
-.sub{font-size:12px;opacity:.9;margin-top:2px}
-.badges{display:flex;gap:6px;flex-wrap:wrap}
-.badge{display:inline-block;background:#e9fff0;color:#083b21;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}
-.badge.warn{background:#fff3cd;color:#5b4300}.badge.err{background:#f8d7da;color:#842029}.badge.blue{background:#dbeafe;color:#123a75}
-main{max-width:1180px;margin:0 auto;padding:12px}
-nav{display:flex;gap:8px;overflow:auto;padding:10px 0}
-.tab{border:1px solid var(--line);background:#fff;border-radius:13px;padding:10px 14px;font-weight:900;color:var(--ink);white-space:nowrap}
-.tab.active{background:var(--g);color:#fff;border-color:var(--g)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 3px 12px rgba(0,0,0,.04)}
-.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}
-.col-12{grid-column:span 12}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}
-@media(max-width:760px){.col-6,.col-4,.col-3{grid-column:span 12}}
-label{display:block;font-size:12px;font-weight:900;color:#234b36;margin:4px 0}
-input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:14px;color:var(--ink)}
-textarea{min-height:80px}
-button{border:0;border-radius:12px;padding:11px 14px;font-weight:900;background:var(--g2);color:#fff;margin:4px 4px 4px 0}
-button.blue{background:var(--b)}button.gray{background:#6c757d}button.warn{background:#f0ad00;color:#222}button.red{background:var(--r)}
-button:disabled{opacity:.55}
-.small{font-size:12px;color:var(--muted)}
-.okbox{background:#e7f6eb;border:1px solid #b8dfc1;border-radius:12px;padding:10px;margin:8px 0}
-.warnbox{background:#fff3cd;border:1px solid #ffe08a;border-radius:12px;padding:10px;margin:8px 0}
-.errbox{background:#f8d7da;border:1px solid #f1aeb5;border-radius:12px;padding:10px;margin:8px 0}
-pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:auto;white-space:pre-wrap;font-size:12px;min-height:44px}
-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}
-th,td{border-bottom:1px solid #e7efe9;padding:8px;text-align:left;font-size:13px}
-th{background:#edf7ef;color:#1c5135;font-weight:900}
-tr:hover{background:#f8fcf9}
-.hidden{display:none}
-.footer{text-align:center;color:#607060;font-size:12px;margin:18px 0}
-.pill{display:inline-block;padding:3px 8px;border-radius:99px;background:#edf7ef;border:1px solid #cfe3d2;font-size:12px;font-weight:800}
+:root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,var(--g),#082114);color:#fff;padding:8px 10px;box-shadow:0 2px 8px rgba(0,0,0,.16)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}h1{font-size:17px;margin:0;font-weight:900}.sub{font-size:11px;opacity:.9;margin-top:2px}
+.badges{display:flex;gap:5px;flex-wrap:wrap}.badge{display:inline-block;background:#e9fff0;color:#083b21;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:800}.badge.warn{background:#fff3cd;color:#5b4300}.badge.err{background:#f8d7da;color:#842029}.badge.blue{background:#dbeafe;color:#123a75}
+main{max-width:1180px;margin:0 auto;padding:8px}nav{display:flex;gap:6px;overflow:auto;padding:7px 0}.tab{border:1px solid var(--line);background:#fff;border-radius:11px;padding:8px 10px;font-weight:900;color:var(--ink);white-space:nowrap;font-size:13px}.tab.active{background:var(--g);color:#fff;border-color:var(--g)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:11px;margin:8px 0;box-shadow:0 3px 12px rgba(0,0,0,.04)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}.col-12{grid-column:span 12}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}
+@media(max-width:760px){.col-6,.col-4,.col-3{grid-column:span 12}h1{font-size:16px}.sub{font-size:11px}.kpirow{grid-template-columns:repeat(2,1fr)!important}table{min-width:640px}.tablewrap{overflow-x:auto}}
+label{display:block;font-size:12px;font-weight:900;color:#234b36;margin:4px 0}input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:14px;color:var(--ink)}textarea{min-height:80px}
+button{border:0;border-radius:12px;padding:10px 12px;font-weight:900;background:var(--g2);color:#fff;margin:4px 4px 4px 0;font-size:14px}button.blue{background:var(--b)}button.gray{background:#6c757d}button.warn{background:#f0ad00;color:#222}button.red{background:var(--r)}button:disabled{opacity:.55}
+.small{font-size:12px;color:var(--muted)}.okbox{background:#e7f6eb;border:1px solid #b8dfc1;border-radius:12px;padding:10px;margin:8px 0}.warnbox{background:#fff3cd;border:1px solid #ffe08a;border-radius:12px;padding:10px;margin:8px 0}.errbox{background:#f8d7da;border:1px solid #f1aeb5;border-radius:12px;padding:10px;margin:8px 0}
+pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:auto;white-space:pre-wrap;font-size:12px;min-height:44px}table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{border-bottom:1px solid #e7efe9;padding:8px;text-align:left;font-size:13px}th{background:#edf7ef;color:#1c5135;font-weight:900}
+.hidden{display:none}.footer{text-align:center;color:#607060;font-size:12px;margin:18px 0}.sessionbar{background:#dff3e5;border:1px solid #b9dfc3;border-radius:14px;padding:10px;margin:8px 0;font-size:13px}.sessionbar b{color:#0f5132}.kpirow{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}.kpi b{font-size:18px}
 </style>
 </head>
 <body>
-<header>
- <div class="top">
-  <div>
-   <h1>APP COCHO CENTRAL V6.0.1 SUPABASE</h1>
-   <div class="sub">Fundação Supabase • Propriedades • Usuários • Produtos • Duplicidade no banco</div>
-  </div>
-  <div class="badges">
-   <span id="netBadge" class="badge">Online?</span>
-   <span id="cloudBadge" class="badge warn">Supabase não testado</span>
-   <span id="sessBadge" class="badge blue">Sem propriedade ativa</span>
-   <span id="hourBadge" class="badge">Brasília</span>
-  </div>
- </div>
-</header>
-
+<header><div class="top"><div><h1>APP COCHO CENTRAL V6.1 SUPABASE</h1><div class="sub">Pré-Campo • Propriedades • Usuários • Produtos • Base offline</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
- <button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button>
- <button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button>
- <button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button>
- <button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button>
- <button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button>
- <button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
+<button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
 </nav>
+<div class="sessionbar" id="sessionCompact"><b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button></div>
 
-<div id="view-painel" class="view">
- <div class="okbox" id="activeBox">Nenhuma propriedade ativa. Crie/lista propriedades e selecione uma.</div>
- <div class="card">
-  <h2>Painel V6.0 — Fundação Supabase</h2>
-  <p>Esta versão não usa Apps Script. Ela conecta direto ao Supabase pelo navegador usando <b>Project URL</b> + <b>Publishable Key</b>.</p>
-  <div class="grid">
-   <div class="card col-3"><b id="kProps">0</b><br><span class="small">Propriedades carregadas</span></div>
-   <div class="card col-3"><b id="kUsers">0</b><br><span class="small">Usuários da propriedade</span></div>
-   <div class="card col-3"><b id="kProd">0</b><br><span class="small">Produtos da propriedade</span></div>
-   <div class="card col-3"><b id="kPing">-</b><br><span class="small">Resposta Supabase</span></div>
-  </div>
-  <button class="blue" onclick="testSupabase()">Testar Supabase</button>
-  <button onclick="listarPropriedades()">Listar Propriedades</button>
-  <button class="gray" onclick="loadSession()">Recarregar Sessão</button>
-  <pre id="painelOut">Aguardando teste...</pre>
- </div>
-</div>
+<div id="view-painel" class="view"><div class="card"><h2>Painel V6.1 — Pré-Campo</h2><p>Base Supabase aprovada. Esta versão melhora mobile e prepara a base para o futuro App Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kPing">-</b><br><span class="small">Resposta</span></div><div class="kpi"><b id="kBase">-</b><br><span class="small">Base Campo</span></div><div class="kpi"><b>V6.1</b><br><span class="small">Versão</span></div></div><button class="blue" onclick="testSupabase()">Testar Supabase</button><button onclick="listarPropriedades()">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
 
-<div id="view-config" class="view hidden">
- <div class="card">
-  <h2>Config Supabase</h2>
-  <div class="warnbox">
-   Use apenas <b>Project URL</b> e <b>Publishable Key / anon public</b>. Nunca cole <b>secret key</b> ou <b>service_role</b> no app.
-  </div>
-  <label>SUPABASE_URL</label>
-  <input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodb.supabase.co" placeholder="https://xxxx.supabase.co">
-  <label>SUPABASE_PUBLISHABLE_KEY</label>
-  <textarea id="supabaseKey" placeholder="sb_publishable_... ou anon public key"></textarea>
-  <button onclick="saveConfig()">Salvar Config</button>
-  <button class="blue" onclick="testSupabase()">Testar conexão</button>
-  <button class="gray" onclick="clearConfig()">Limpar</button>
-  <pre id="configOut">Cole a publishable key completa e teste. V6.0.1 corrige Service Worker para não transformar erro do Supabase em HTML da Central.</pre>
- </div>
- <div class="card">
-  <h3>Políticas RLS para teste</h3>
-  <p class="small">Se a conexão der erro de permissão, execute no SQL Editor o arquivo <b>SUPABASE_POLICIES_DEV_TESTE_APP_COCHO.sql</b>. Essas políticas são temporárias para desenvolvimento e não devem ser usadas em produção real.</p>
- </div>
-</div>
+<div id="view-config" class="view hidden"><div class="card"><h2>Config Supabase</h2><div class="warnbox">Use apenas <b>Project URL</b> e <b>Publishable Key / anon public</b>. Nunca cole secret key ou service_role.</div><label>SUPABASE_URL</label><input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodbf.supabase.co"><label>SUPABASE_PUBLISHABLE_KEY</label><textarea id="supabaseKey" placeholder="sb_publishable_..."></textarea><button onclick="saveConfig()">Salvar Config</button><button class="blue" onclick="testSupabase()">Testar conexão</button><button class="gray" onclick="clearConfig()">Limpar</button><pre id="configOut">Cole a publishable key completa e teste.</pre></div></div>
 
-<div id="view-propriedades" class="view hidden">
- <div class="card">
-  <h2>Criar Propriedade</h2>
-  <div class="grid">
-   <div class="col-6"><label>Nome da propriedade</label><input id="p_nome" placeholder="FAZENDA TESTE SUPABASE"></div>
-   <div class="col-6"><label>Proprietário</label><input id="p_prop" placeholder="TESTE PROPRIETÁRIO"></div>
-   <div class="col-4"><label>Município</label><input id="p_mun" value="IRITUIA"></div>
-   <div class="col-4"><label>Estado</label><input id="p_uf" value="PA"></div>
-   <div class="col-4"><label>Área ha</label><input id="p_area" type="number" step="0.01" placeholder="opcional"></div>
-   <div class="col-12"><label>Observações</label><input id="p_obs" placeholder="opcional"></div>
-  </div>
-  <button onclick="criarPropriedade(this)">Criar Propriedade</button>
-  <button class="blue" onclick="listarPropriedades(this)">Listar Propriedades</button>
-  <button class="warn" onclick="preencherTesteProp()">Preencher Teste</button>
-  <pre id="propOut">Sem operação.</pre>
- </div>
- <div class="card">
-  <h3>Propriedades</h3>
-  <div id="propTable"></div>
- </div>
-</div>
+<div id="view-propriedades" class="view hidden"><div class="card"><h2>Criar Propriedade</h2><div class="grid"><div class="col-6"><label>Nome da propriedade</label><input id="p_nome" placeholder="FAZENDA TESTE SUPABASE"></div><div class="col-6"><label>Proprietário</label><input id="p_prop" placeholder="TESTE PROPRIETÁRIO"></div><div class="col-4"><label>Município</label><input id="p_mun" value="IRITUIA"></div><div class="col-4"><label>Estado</label><input id="p_uf" value="PA"></div><div class="col-4"><label>Área ha</label><input id="p_area" type="number" step="0.01" placeholder="opcional"></div><div class="col-12"><label>Observações</label><input id="p_obs" placeholder="opcional"></div></div><button onclick="criarPropriedade(this)">Criar Propriedade</button><button class="blue" onclick="listarPropriedades(this)">Listar Propriedades</button><button class="warn" onclick="preencherTesteProp()">Preencher Teste</button><pre id="propOut">Sem operação.</pre></div><div class="card tablewrap"><h3>Propriedades</h3><div id="propTable"></div></div></div>
 
-<div id="view-usuarios" class="view hidden">
- <div class="card">
-  <h2>Usuários da Propriedade Ativa</h2>
-  <div class="small">Propriedade ativa: <b id="u_prop_ativa">-</b></div>
-  <div class="grid">
-   <div class="col-6"><label>Nome do usuário</label><input id="u_nome" placeholder="MARCELO"></div>
-   <div class="col-6"><label>Login</label><input id="u_login" placeholder="marcelo"></div>
-   <div class="col-4"><label>PIN mascarado</label><input id="u_pin" placeholder="5***"></div>
-   <div class="col-4"><label>Perfil</label><select id="u_perfil"><option>FUNCIONARIO_CAMPO</option><option>PROPRIETARIO</option><option>ADMIN_CONSULTORIA</option></select></div>
-   <div class="col-4"><label>Status</label><select id="u_status"><option>ATIVO</option><option>INATIVO</option></select></div>
-  </div>
-  <button onclick="criarUsuario(this)">Criar Usuário</button>
-  <button class="blue" onclick="listarUsuarios(this)">Listar Usuários</button>
-  <button class="warn" onclick="preencherTesteUser()">Preencher Teste</button>
-  <pre id="userOut">Sem operação.</pre>
- </div>
- <div class="card">
-  <h3>Usuários</h3>
-  <div id="userTable"></div>
- </div>
-</div>
+<div id="view-usuarios" class="view hidden"><div class="card"><h2>Usuários da Propriedade Ativa</h2><div class="small">Propriedade ativa: <b id="u_prop_ativa">-</b></div><div class="grid"><div class="col-6"><label>Nome do usuário</label><input id="u_nome" placeholder="MARCELO"></div><div class="col-6"><label>Login</label><input id="u_login" placeholder="marcelo"></div><div class="col-4"><label>PIN</label><input id="u_pin" placeholder="5544"></div><div class="col-4"><label>Perfil</label><select id="u_perfil"><option>FUNCIONARIO_CAMPO</option><option>PROPRIETARIO</option><option>ADMIN_CONSULTORIA</option></select></div><div class="col-4"><label>Status</label><select id="u_status"><option>ATIVO</option><option>INATIVO</option></select></div></div><button onclick="criarUsuario(this)">Criar Usuário</button><button class="blue" onclick="listarUsuarios(this)">Listar Usuários</button><button class="warn" onclick="preencherTesteUser()">Preencher Teste</button><pre id="userOut">Sem operação.</pre></div><div class="card tablewrap"><h3>Usuários</h3><div id="userTable"></div></div></div>
 
-<div id="view-produtos" class="view hidden">
- <div class="card">
-  <h2>Produtos da Propriedade Ativa</h2>
-  <div class="small">Propriedade ativa: <b id="pr_prop_ativa">-</b></div>
-  <div class="grid">
-   <div class="col-6"><label>Nome do produto</label><input id="prod_nome" placeholder="SAL MINERAL TESTE 01"></div>
-   <div class="col-6"><label>Tipo</label><select id="prod_tipo"><option>SAL_MINERAL</option><option>SUPLEMENTO</option><option>CONCENTRADO</option><option>FORRAGEM</option><option>OUTRO</option></select></div>
-   <div class="col-4"><label>Fabricante</label><input id="prod_fab" placeholder="opcional"></div>
-   <div class="col-4"><label>Unidade padrão</label><input id="prod_un" value="SACO"></div>
-   <div class="col-2"><label>Kg por unidade</label><input id="prod_kg" type="number" step="0.001" value="30"></div>
-   <div class="col-2"><label>Saldo mínimo kg</label><input id="prod_min" type="number" step="0.001" value="60"></div>
-  </div>
-  <button onclick="criarProduto(this)">Criar Produto</button>
-  <button class="blue" onclick="listarProdutos(this)">Listar Produtos</button>
-  <button class="warn" onclick="preencherTesteProduto()">Preencher Teste</button>
-  <pre id="prodOut">Sem operação.</pre>
- </div>
- <div class="card">
-  <h3>Produtos</h3>
-  <div id="prodTable"></div>
- </div>
-</div>
+<div id="view-produtos" class="view hidden"><div class="card"><h2>Produtos da Propriedade Ativa</h2><div class="small">Propriedade ativa: <b id="pr_prop_ativa">-</b></div><div class="grid"><div class="col-6"><label>Nome do produto</label><input id="prod_nome" placeholder="SAL MINERAL TESTE 01"></div><div class="col-6"><label>Tipo</label><select id="prod_tipo"><option>SAL_MINERAL</option><option>SUPLEMENTO</option><option>CONCENTRADO</option><option>FORRAGEM</option><option>OUTRO</option></select></div><div class="col-4"><label>Fabricante</label><input id="prod_fab" placeholder="opcional"></div><div class="col-4"><label>Unidade padrão</label><input id="prod_un" value="SACO"></div><div class="col-2"><label>Kg por unidade</label><input id="prod_kg" type="number" step="0.001" value="30"></div><div class="col-2"><label>Saldo mínimo kg</label><input id="prod_min" type="number" step="0.001" value="60"></div></div><button onclick="criarProduto(this)">Criar Produto</button><button class="blue" onclick="listarProdutos(this)">Listar Produtos</button><button class="warn" onclick="preencherTesteProduto()">Preencher Teste</button><pre id="prodOut">Sem operação.</pre></div><div class="card tablewrap"><h3>Produtos</h3><div id="prodTable"></div></div></div>
 
-<div id="view-diagnostico" class="view hidden">
- <div class="card">
-  <h2>Diagnóstico Supabase</h2>
-  <button class="blue" onclick="testSupabase()">Testar conexão</button>
-  <button onclick="diagnostico()">Diagnóstico completo</button>
-  <button class="gray" onclick="downloadLocalState()">Baixar estado local</button>
-  <pre id="diagOut">Sem diagnóstico.</pre>
- </div>
-</div>
+<div id="view-campo" class="view hidden"><div class="card"><h2>Base para App Campo V1.0</h2><p class="small">Mostra o que o App Campo deverá baixar antes do serviço para funcionar offline.</p><div class="sessionbar"><b>Propriedade ativa:</b> <span id="campoPropAtiva">-</span><br><b>Chave:</b> <span id="campoChave">-</span><br><b>Última atualização:</b> <span id="campoAtualizacao">-</span></div><div class="kpirow"><div class="kpi"><b id="bcUsuarios">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="bcProdutos">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="bcLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="bcCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="bcAreas">0</b><br><span class="small">Áreas</span></div><div class="kpi"><b id="bcStatus">-</b><br><span class="small">Status</span></div></div><button class="blue" onclick="montarBaseCampo(this)">Montar Base Campo</button><button onclick="baixarBaseCampo()">Baixar JSON da Base</button><button class="gray" onclick="limparBaseCampo()">Limpar Base Local</button><pre id="campoOut">Monte a base depois de ativar uma propriedade.</pre></div><div class="card"><h3>Preparação do App Campo</h3><div class="okbox">Fluxo correto: <b>baixar base antes do serviço</b> → <b>operar offline no campo</b> → <b>sincronizar depois</b>.</div></div></div>
 
-<div class="footer">APP COCHO CENTRAL V6.0.1 SUPABASE — Fundação • HTML single-file • GitHub Pages • Supabase</div>
+<div id="view-diagnostico" class="view hidden"><div class="card"><h2>Diagnóstico</h2><button class="blue" onclick="testSupabase()">Testar conexão</button><button onclick="diagnostico()">Diagnóstico completo</button><button class="gray" onclick="downloadLocalState()">Baixar estado local</button><pre id="diagOut">Sem diagnóstico.</pre></div></div>
+<div class="footer">APP COCHO CENTRAL V6.1 SUPABASE — Pré-Campo • HTML single-file • GitHub Pages • Supabase</div>
 </main>
-
 <script>
-(function(){
-'use strict';
-var APP_VERSION='APP COCHO CENTRAL V6.0.1 SUPABASE — FUNDAÇÃO';
-var DEFAULT_URL='https://wxnsyozjiosbdwxpodb.supabase.co';
-var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
-var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
-var sbClient=null;
-var session={propriedade:null, usuario:null};
-
-function $(id){return document.getElementById(id);}
-function nowBR(){try{return new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'});}catch(e){return new Date().toLocaleString();}}
-function setOut(id,obj){$(id).textContent=(typeof obj==='string')?obj:JSON.stringify(obj,null,2);}
-function normalizar(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'');}
-function genId(prefix){return prefix+'-'+Date.now()+'-'+Math.random().toString(36).slice(2,7).toUpperCase();}
-function genChave(nome){return 'COCHO-'+normalizar(nome).slice(0,18)+'-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+new Date().getFullYear();}
-function maskPin(v){v=String(v||''); if(!v) return ''; return v.charAt(0)+'***';}
-function btnLock(btn,txt){if(btn){btn.disabled=true;btn.dataset.old=btn.textContent;btn.textContent=txt||'Enviando...';}}
-function btnUnlock(btn){if(btn){btn.disabled=false;btn.textContent=btn.dataset.old||btn.textContent;}}
-function withTimeout(promise,ms){return Promise.race([promise,new Promise(function(_,reject){setTimeout(function(){reject(new Error('TEMPO_EXCEDIDO'));},ms||30000);})]);}
-function cfg(){try{return JSON.parse(localStorage.getItem(LS_CFG)||'{}');}catch(e){return {};}}
-function saveCfg(o){localStorage.setItem(LS_CFG,JSON.stringify(o||{}));}
-function updateBadges(){
-  $('netBadge').textContent=navigator.onLine?'Online':'Offline';
-  $('netBadge').className='badge '+(navigator.onLine?'':'err');
-  $('hourBadge').textContent='Brasília '+nowBR();
-  if(session.propriedade){
-    $('sessBadge').textContent=session.propriedade.nome_fazenda||'Propriedade ativa';
-    $('activeBox').innerHTML='Propriedade ativa: <b>'+esc(session.propriedade.nome_fazenda)+'</b> • '+esc(session.propriedade.chave_fazenda||'');
-    $('u_prop_ativa').textContent=session.propriedade.nome_fazenda+' | '+session.propriedade.chave_fazenda;
-    $('pr_prop_ativa').textContent=session.propriedade.nome_fazenda+' | '+session.propriedade.chave_fazenda;
-  }else{
-    $('sessBadge').textContent='Sem propriedade ativa';
-    $('activeBox').textContent='Nenhuma propriedade ativa. Crie/lista propriedades e selecione uma.';
-    $('u_prop_ativa').textContent='-';
-    $('pr_prop_ativa').textContent='-';
-  }
-}
-function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});}
-function getClient(){
-  var c=cfg();
-  var url=String(c.url||'').trim();
-  var key=String(c.key||'').trim();
-  if(!url || !key) throw new Error('CONFIG_SUPABASE_OBRIGATORIA');
-  if(!window.supabase || !window.supabase.createClient) throw new Error('BIBLIOTECA_SUPABASE_NAO_CARREGOU');
-  if(!sbClient || sbClient._cochoUrl!==url || sbClient._cochoKey!==key){
-    sbClient=window.supabase.createClient(url,key);
-    sbClient._cochoUrl=url; sbClient._cochoKey=key;
-  }
-  return sbClient;
-}
-function loadConfig(){
-  var c=cfg();
-  $('supabaseUrl').value=c.url||DEFAULT_URL;
-  $('supabaseKey').value=c.key||'';
-}
-window.saveConfig=function(){
-  saveCfg({url:$('supabaseUrl').value.trim(), key:$('supabaseKey').value.trim(), savedAt:nowBR()});
-  sbClient=null;
-  setOut('configOut','Configuração salva. Agora clique em Testar conexão.');
-};
-window.clearConfig=function(){localStorage.removeItem(LS_CFG); sbClient=null; loadConfig(); setOut('configOut','Configuração limpa.');};
-window.showTab=function(tab){
-  var vs=document.querySelectorAll('.view'), ts=document.querySelectorAll('.tab'), i;
-  for(i=0;i<vs.length;i++)vs[i].classList.add('hidden');
-  for(i=0;i<ts.length;i++)ts[i].classList.remove('active');
-  $('view-'+tab).classList.remove('hidden');
-  document.querySelector('[data-tab="'+tab+'"]').classList.add('active');
-  updateBadges();
-};
-window.testSupabase=function(btn){
-  var t0=Date.now();
-  btnLock(btn,'Testando...');
-  try{
-    var sb=getClient();
-    withTimeout(sb.from('propriedades').select('id').limit(1),20000).then(function(res){
-      var ms=Date.now()-t0;
-      if(res.error) throw res.error;
-      $('cloudBadge').textContent='Supabase OK';
-      $('cloudBadge').className='badge';
-      $('kPing').textContent=ms+' ms';
-      var out={ok:true, app:APP_VERSION, supabase:'OK', tempo_ms:ms, data_hora_brasilia:nowBR()};
-      setOut('configOut',out); setOut('painelOut',out); setOut('diagOut',out);
-    }).catch(function(e){
-      $('cloudBadge').textContent='Supabase erro';
-      $('cloudBadge').className='badge err';
-      var msg=String(e.message||e);
-      var out={ok:false, erro:msg, orientacao:'Confira URL/key. Se erro for permissão/RLS, rode SUPABASE_POLICIES_DEV_TESTE_APP_COCHO.sql no SQL Editor.'};
-      setOut('configOut',out); setOut('painelOut',out); setOut('diagOut',out);
-    }).finally(function(){btnUnlock(btn); updateBadges();});
-  }catch(e){setOut('configOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);}
-};
-window.diagnostico=function(btn){
-  btnLock(btn,'Diagnosticando...');
-  var sb;
-  try{sb=getClient();}catch(e){setOut('diagOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
-  var t0=Date.now();
-  var tabelas=['propriedades','usuarios_app','produtos','estoque','lotes','cochos','areas_fazenda'];
-  var tarefas=tabelas.map(function(t){return sb.from(t).select('id',{count:'exact',head:true}).then(function(r){return [t,!r.error,r.error?r.error.message:'OK',r.count];});});
-  withTimeout(Promise.all(tarefas),30000).then(function(rows){
-    var obj={ok:true,versao:APP_VERSION,tempo_ms:Date.now()-t0,tabelas:{},data_hora_brasilia:nowBR()};
-    rows.forEach(function(r){obj.tabelas[r[0]]={ok:r[1],mensagem:r[2],count:r[3]};});
-    setOut('diagOut',obj);
-  }).catch(function(e){setOut('diagOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
-};
-window.criarPropriedade=function(btn){
-  btnLock(btn,'Criando...');
-  var sb;
-  try{sb=getClient();}catch(e){setOut('propOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
-  var nome=$('p_nome').value.trim();
-  if(!nome){setOut('propOut',{ok:false,erro:'NOME_PROPRIEDADE_OBRIGATORIO'});btnUnlock(btn);return;}
-  var dados={
-    chave_fazenda: genChave(nome),
-    nome_fazenda:nome,
-    proprietario:$('p_prop').value.trim(),
-    municipio:$('p_mun').value.trim()||'IRITUIA',
-    estado:$('p_uf').value.trim()||'PA',
-    area_ha:$('p_area').value?Number($('p_area').value):null,
-    observacoes:$('p_obs').value.trim(),
-    status_fazenda:'ATIVA',
-    pin_fazenda_mascarado:maskPin(String(Math.floor(1000+Math.random()*9000)))
-  };
-  withTimeout(sb.from('propriedades').insert(dados).select('id,chave_fazenda,nome_fazenda,proprietario,municipio,estado,status_fazenda,pin_fazenda_mascarado').single(),30000).then(function(r){
-    if(r.error) throw r.error;
-    session.propriedade=r.data; saveSession(); updateBadges();
-    setOut('propOut',{ok:true,mensagem:'Propriedade criada.',propriedade:r.data});
-    listarPropriedades();
-  }).catch(function(e){setOut('propOut',{ok:false,erro:String(e.message||e),detalhe:e});}).finally(function(){btnUnlock(btn);});
-};
-window.listarPropriedades=function(btn){
-  btnLock(btn,'Listando...');
-  var sb; try{sb=getClient();}catch(e){setOut('propOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
-  withTimeout(sb.from('propriedades').select('id,chave_fazenda,nome_fazenda,proprietario,municipio,estado,status_fazenda,pin_fazenda_mascarado,created_at').order('created_at',{ascending:false}).limit(100),30000).then(function(r){
-    if(r.error) throw r.error;
-    $('kProps').textContent=(r.data||[]).length;
-    renderProps(r.data||[]);
-    setOut('propOut',{ok:true,total:(r.data||[]).length,propriedades:r.data});
-  }).catch(function(e){setOut('propOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
-};
-function renderProps(rows){
-  var html='<table><tr><th>Propriedade</th><th>Proprietário</th><th>Município</th><th>Chave</th><th>Status</th><th>Ação</th></tr>';
-  rows.forEach(function(x){
-    html+='<tr><td>'+esc(x.nome_fazenda)+'</td><td>'+esc(x.proprietario)+'</td><td>'+esc(x.municipio)+'/'+esc(x.estado)+'</td><td>'+esc(x.chave_fazenda)+'</td><td>'+esc(x.status_fazenda)+'</td><td><button onclick="setPropAtiva(\''+x.id+'\')">Ativar</button></td></tr>';
-  });
-  html+='</table>';
-  $('propTable').innerHTML=html;
-  window._props=rows;
-}
-window.setPropAtiva=function(id){
-  var rows=window._props||[];
-  for(var i=0;i<rows.length;i++){if(rows[i].id===id){session.propriedade=rows[i];saveSession();updateBadges();setOut('propOut',{ok:true,mensagem:'Propriedade ativa definida.',propriedade:rows[i]});return;}}
-};
-function saveSession(){localStorage.setItem(LS_SESSION,JSON.stringify(session));}
-function loadSession(){try{session=JSON.parse(localStorage.getItem(LS_SESSION)||'{}')||{};}catch(e){session={};} updateBadges();}
-window.loadSession=loadSession;
-window.preencherTesteProp=function(){
-  $('p_nome').value='FAZENDA TESTE SUPABASE';
-  $('p_prop').value='TESTE PROPRIETÁRIO';
-  $('p_mun').value='IRITUIA';
-  $('p_uf').value='PA';
-  $('p_area').value='';
-  $('p_obs').value='Teste inicial da Central V6.0 Supabase';
-};
-window.preencherTesteUser=function(){
-  $('u_nome').value='MARCELO';
-  $('u_login').value='marcelo';
-  $('u_pin').value='5***';
-  $('u_perfil').value='FUNCIONARIO_CAMPO';
-};
-window.preencherTesteProduto=function(){
-  $('prod_nome').value='SAL MINERAL TESTE 01';
-  $('prod_tipo').value='SAL_MINERAL';
-  $('prod_fab').value='';
-  $('prod_un').value='SACO';
-  $('prod_kg').value='30';
-  $('prod_min').value='60';
-};
-function propRequired(outId){if(!session.propriedade || !session.propriedade.id){setOut(outId,{ok:false,erro:'PROPRIEDADE_ATIVA_OBRIGATORIA',orientacao:'Vá em Propriedades, liste e ative uma propriedade.'});return false;}return true;}
-window.criarUsuario=function(btn){
-  if(!propRequired('userOut'))return;
-  btnLock(btn,'Criando...');
-  var sb; try{sb=getClient();}catch(e){setOut('userOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
-  var dados={
-    propriedade_id:session.propriedade.id,
-    chave_fazenda:session.propriedade.chave_fazenda,
-    nome_usuario:$('u_nome').value.trim(),
-    login_usuario:$('u_login').value.trim(),
-    pin_mascarado:$('u_pin').value.trim(),
-    perfil_usuario:$('u_perfil').value,
-    status_usuario:$('u_status').value
-  };
-  if(!dados.nome_usuario || !dados.login_usuario){setOut('userOut',{ok:false,erro:'NOME_E_LOGIN_OBRIGATORIOS'});btnUnlock(btn);return;}
-  withTimeout(sb.from('usuarios_app').insert(dados).select('id,nome_usuario,login_usuario,perfil_usuario,status_usuario,pin_mascarado').single(),30000).then(function(r){
-    if(r.error) throw r.error;
-    setOut('userOut',{ok:true,mensagem:'Usuário criado.',usuario:r.data});
-    listarUsuarios();
-  }).catch(function(e){
-    var msg=String(e.message||e);
-    var dup=msg.indexOf('duplicate')>=0 || msg.indexOf('unique')>=0;
-    setOut('userOut',{ok:false,duplicado:dup,erro:dup?'LOGIN_DUPLICADO_NA_PROPRIEDADE':msg,mensagem:dup?'Já existe usuário ativo com este login nesta propriedade.':msg});
-  }).finally(function(){btnUnlock(btn);});
-};
-window.listarUsuarios=function(btn){
-  if(!propRequired('userOut'))return;
-  btnLock(btn,'Listando...');
-  var sb; try{sb=getClient();}catch(e){setOut('userOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
-  withTimeout(sb.from('usuarios_app').select('id,nome_usuario,login_usuario,perfil_usuario,pin_mascarado,status_usuario,created_at').eq('propriedade_id',session.propriedade.id).order('created_at',{ascending:true}),30000).then(function(r){
-    if(r.error) throw r.error;
-    $('kUsers').textContent=(r.data||[]).length;
-    renderUsers(r.data||[]);
-    setOut('userOut',{ok:true,total:(r.data||[]).length,usuarios:r.data});
-  }).catch(function(e){setOut('userOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
-};
-function renderUsers(rows){
-  var html='<table><tr><th>Nome</th><th>Login</th><th>Perfil</th><th>PIN</th><th>Status</th></tr>';
-  rows.forEach(function(x){html+='<tr><td>'+esc(x.nome_usuario)+'</td><td>'+esc(x.login_usuario)+'</td><td>'+esc(x.perfil_usuario)+'</td><td>'+esc(x.pin_mascarado)+'</td><td>'+esc(x.status_usuario)+'</td></tr>';});
-  html+='</table>'; $('userTable').innerHTML=html;
-}
-window.criarProduto=function(btn){
-  if(!propRequired('prodOut'))return;
-  btnLock(btn,'Criando...');
-  var sb; try{sb=getClient();}catch(e){setOut('prodOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
-  var dados={
-    propriedade_id:session.propriedade.id,
-    nome_produto:$('prod_nome').value.trim(),
-    tipo_produto:$('prod_tipo').value,
-    fabricante:$('prod_fab').value.trim(),
-    unidade_padrao:$('prod_un').value.trim()||'SACO',
-    kg_por_unidade:Number($('prod_kg').value||0),
-    saldo_minimo_kg:Number($('prod_min').value||0),
-    status_produto:'ATIVO'
-  };
-  if(!dados.nome_produto){setOut('prodOut',{ok:false,erro:'NOME_PRODUTO_OBRIGATORIO'});btnUnlock(btn);return;}
-  withTimeout(sb.from('produtos').insert(dados).select('id,nome_produto,tipo_produto,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto').single(),30000).then(function(r){
-    if(r.error) throw r.error;
-    setOut('prodOut',{ok:true,mensagem:'Produto criado.',produto:r.data});
-    listarProdutos();
-  }).catch(function(e){
-    var msg=String(e.message||e);
-    var dup=msg.indexOf('duplicate')>=0 || msg.indexOf('ux_produtos_ativos')>=0 || msg.indexOf('unique')>=0;
-    setOut('prodOut',{ok:false,duplicado:dup,erro:dup?'PRODUTO_DUPLICADO':msg,mensagem:dup?'Produto já existe nesta propriedade.':msg});
-  }).finally(function(){btnUnlock(btn);});
-};
-window.listarProdutos=function(btn){
-  if(!propRequired('prodOut'))return;
-  btnLock(btn,'Listando...');
-  var sb; try{sb=getClient();}catch(e){setOut('prodOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
-  withTimeout(sb.from('produtos').select('id,nome_produto,tipo_produto,fabricante,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto,created_at').eq('propriedade_id',session.propriedade.id).order('created_at',{ascending:false}),30000).then(function(r){
-    if(r.error) throw r.error;
-    $('kProd').textContent=(r.data||[]).length;
-    renderProdutos(r.data||[]);
-    setOut('prodOut',{ok:true,total:(r.data||[]).length,produtos:r.data});
-  }).catch(function(e){setOut('prodOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
-};
-function renderProdutos(rows){
-  var html='<table><tr><th>Produto</th><th>Tipo</th><th>Unidade</th><th>Kg/un</th><th>Mínimo kg</th><th>Status</th></tr>';
-  rows.forEach(function(x){html+='<tr><td>'+esc(x.nome_produto)+'</td><td>'+esc(x.tipo_produto)+'</td><td>'+esc(x.unidade_padrao)+'</td><td>'+esc(x.kg_por_unidade)+'</td><td>'+esc(x.saldo_minimo_kg)+'</td><td>'+esc(x.status_produto)+'</td></tr>';});
-  html+='</table>'; $('prodTable').innerHTML=html;
-}
-window.downloadLocalState=function(){
-  var data={config:cfg(),session:session,exported_at:nowBR(),app:APP_VERSION};
-  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='app_cocho_v6_estado_local.json'; a.click();
-};
-window.addEventListener('online',updateBadges); window.addEventListener('offline',updateBadges);
-loadConfig(); loadSession(); updateBadges(); setInterval(updateBadges,10000);
+(function(){'use strict';
+var APP_VERSION='APP COCHO CENTRAL V6.1 SUPABASE — PRÉ-CAMPO', DEFAULT_URL='https://wxnsyozjiosbdwxpodbf.supabase.co', LS_CFG='APP_COCHO_SUPABASE_CFG_V1', LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1', BASE_CAMPO_LS='APP_COCHO_BASE_CAMPO_V1', sbClient=null, session={propriedade:null,usuario:null};
+function $(id){return document.getElementById(id)} function nowBR(){try{return new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})}catch(e){return new Date().toLocaleString()}} function setOut(id,obj){$(id).textContent=(typeof obj==='string')?obj:JSON.stringify(obj,null,2)} function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})} function normalizar(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'')} function genChave(nome){return 'COCHO-'+normalizar(nome).slice(0,18)+'-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+new Date().getFullYear()} function btnLock(btn,txt){if(btn){btn.disabled=true;btn.dataset.old=btn.textContent;btn.textContent=txt||'Enviando...'}} function btnUnlock(btn){if(btn){btn.disabled=false;btn.textContent=btn.dataset.old||btn.textContent}} function withTimeout(p,ms){return Promise.race([p,new Promise(function(_,rej){setTimeout(function(){rej(new Error('TEMPO_EXCEDIDO'))},ms||30000)})])}
+function cfg(){try{return JSON.parse(localStorage.getItem(LS_CFG)||'{}')}catch(e){return {}}} function saveCfg(o){localStorage.setItem(LS_CFG,JSON.stringify(o||{}))} function getClient(){var c=cfg(),url=String(c.url||'').trim(),key=String(c.key||'').trim(); if(!url||!key)throw new Error('CONFIG_SUPABASE_OBRIGATORIA'); if(!window.supabase)throw new Error('BIBLIOTECA_SUPABASE_NAO_CARREGOU'); if(!sbClient||sbClient._u!==url||sbClient._k!==key){sbClient=window.supabase.createClient(url,key);sbClient._u=url;sbClient._k=key} return sbClient}
+function updateBadges(){ $('netBadge').textContent=navigator.onLine?'Online':'Offline';$('netBadge').className='badge '+(navigator.onLine?'':'err');$('hourBadge').textContent='Brasília '+nowBR(); if(session.propriedade){$('sessBadge').textContent=session.propriedade.nome_fazenda||'Propriedade ativa'; $('u_prop_ativa').textContent=(session.propriedade.nome_fazenda||'-')+' | '+(session.propriedade.chave_fazenda||'-'); $('pr_prop_ativa').textContent=$('u_prop_ativa').textContent; $('sessionCompact').innerHTML='<b>Sessão:</b> '+esc(session.propriedade.nome_fazenda)+' • <b>Chave:</b> '+esc(session.propriedade.chave_fazenda)+' <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button>'}else{$('sessBadge').textContent='Sem propriedade ativa';$('u_prop_ativa').textContent='-';$('pr_prop_ativa').textContent='-';$('sessionCompact').innerHTML='<b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button>'} renderBaseCampo(JSON.parse(localStorage.getItem(BASE_CAMPO_LS)||'{}'))}
+window.showTab=function(tab){Array.prototype.forEach.call(document.querySelectorAll('.view'),function(v){v.classList.add('hidden')});Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(t){t.classList.remove('active')});$('view-'+tab).classList.remove('hidden');document.querySelector('[data-tab="'+tab+'"]').classList.add('active');updateBadges()}
+function loadConfig(){var c=cfg();$('supabaseUrl').value=c.url||DEFAULT_URL;$('supabaseKey').value=c.key||''} window.saveConfig=function(){saveCfg({url:$('supabaseUrl').value.trim(),key:$('supabaseKey').value.trim(),savedAt:nowBR()});sbClient=null;setOut('configOut','Configuração salva. Clique em Testar conexão.')}; window.clearConfig=function(){localStorage.removeItem(LS_CFG);sbClient=null;loadConfig();setOut('configOut','Configuração limpa.')}
+window.testSupabase=function(btn){var t=Date.now();btnLock(btn,'Testando...');try{withTimeout(getClient().from('propriedades').select('id').limit(1),20000).then(function(r){if(r.error)throw r.error;var ms=Date.now()-t;$('cloudBadge').textContent='Supabase OK';$('cloudBadge').className='badge';$('kPing').textContent=ms+' ms';var out={ok:true,app:APP_VERSION,supabase:'OK',tempo_ms:ms,data_hora_brasilia:nowBR()};setOut('configOut',out);setOut('painelOut',out);setOut('diagOut',out)}).catch(function(e){$('cloudBadge').textContent='Supabase erro';$('cloudBadge').className='badge err';var out={ok:false,erro:String(e.message||e)};setOut('configOut',out);setOut('painelOut',out);setOut('diagOut',out)}).finally(function(){btnUnlock(btn);updateBadges()})}catch(e){setOut('configOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn)}}
+window.listarPropriedades=function(btn){btnLock(btn,'Listando...');try{withTimeout(getClient().from('propriedades').select('id,chave_fazenda,nome_fazenda,proprietario,municipio,estado,status_fazenda,pin_fazenda_mascarado,created_at').order('created_at',{ascending:false}).limit(100),30000).then(function(r){if(r.error)throw r.error;$('kProps').textContent=(r.data||[]).length;renderProps(r.data||[]);setOut('propOut',{ok:true,total:(r.data||[]).length,propriedades:r.data})}).catch(function(e){setOut('propOut',{ok:false,erro:String(e.message||e)})}).finally(function(){btnUnlock(btn)})}catch(e){setOut('propOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn)}}
+function renderProps(rows){var h='<table><tr><th>Propriedade</th><th>Proprietário</th><th>Município</th><th>Chave</th><th>Status</th><th>Ação</th></tr>';rows.forEach(function(x){h+='<tr><td>'+esc(x.nome_fazenda)+'</td><td>'+esc(x.proprietario)+'</td><td>'+esc(x.municipio)+'/'+esc(x.estado)+'</td><td>'+esc(x.chave_fazenda)+'</td><td>'+esc(x.status_fazenda)+'</td><td><button onclick="setPropAtiva(\\''+x.id+'\\')">Ativar</button></td></tr>'});$('propTable').innerHTML=h+'</table>';window._props=rows}
+window.setPropAtiva=function(id){(window._props||[]).forEach(function(x){if(x.id===id){session.propriedade=x;localStorage.setItem(LS_SESSION,JSON.stringify(session));updateBadges();setOut('propOut',{ok:true,mensagem:'Propriedade ativa definida.',propriedade:x})}})}
+window.criarPropriedade=function(btn){btnLock(btn,'Criando...');var nome=$('p_nome').value.trim();if(!nome){setOut('propOut',{ok:false,erro:'NOME_OBRIGATORIO'});btnUnlock(btn);return}var d={chave_fazenda:genChave(nome),nome_fazenda:nome,proprietario:$('p_prop').value.trim(),municipio:$('p_mun').value.trim()||'IRITUIA',estado:$('p_uf').value.trim()||'PA',area_ha:$('p_area').value?Number($('p_area').value):null,observacoes:$('p_obs').value.trim(),status_fazenda:'ATIVA',pin_fazenda_mascarado:'4***'};withTimeout(getClient().from('propriedades').insert(d).select('id,chave_fazenda,nome_fazenda,proprietario,municipio,estado,status_fazenda,pin_fazenda_mascarado').single(),30000).then(function(r){if(r.error)throw r.error;session.propriedade=r.data;localStorage.setItem(LS_SESSION,JSON.stringify(session));updateBadges();setOut('propOut',{ok:true,mensagem:'Propriedade criada.',propriedade:r.data});listarPropriedades()}).catch(function(e){setOut('propOut',{ok:false,erro:String(e.message||e)})}).finally(function(){btnUnlock(btn)})}
+function propRequired(out){if(!session.propriedade||!session.propriedade.id){setOut(out,{ok:false,erro:'PROPRIEDADE_ATIVA_OBRIGATORIA'});return false}return true}
+window.criarUsuario=function(btn){if(!propRequired('userOut'))return;btnLock(btn,'Criando...');var d={propriedade_id:session.propriedade.id,chave_fazenda:session.propriedade.chave_fazenda,nome_usuario:$('u_nome').value.trim(),login_usuario:$('u_login').value.trim(),pin_mascarado:$('u_pin').value.trim(),perfil_usuario:$('u_perfil').value,status_usuario:$('u_status').value};withTimeout(getClient().from('usuarios_app').insert(d).select('id,nome_usuario,login_usuario,perfil_usuario,status_usuario,pin_mascarado').single(),30000).then(function(r){if(r.error)throw r.error;setOut('userOut',{ok:true,mensagem:'Usuário criado.',usuario:r.data});listarUsuarios()}).catch(function(e){var m=String(e.message||e),dup=m.indexOf('duplicate')>=0||m.indexOf('unique')>=0;setOut('userOut',{ok:false,duplicado:dup,erro:dup?'LOGIN_DUPLICADO_NA_PROPRIEDADE':m,mensagem:dup?'Já existe usuário ativo com este login nesta propriedade.':m})}).finally(function(){btnUnlock(btn)})}
+window.listarUsuarios=function(btn){if(!propRequired('userOut'))return;btnLock(btn,'Listando...');withTimeout(getClient().from('usuarios_app').select('id,nome_usuario,login_usuario,perfil_usuario,pin_mascarado,status_usuario,created_at').eq('propriedade_id',session.propriedade.id).order('created_at',{ascending:true}),30000).then(function(r){if(r.error)throw r.error;$('kUsers').textContent=(r.data||[]).length;var h='<table><tr><th>Nome</th><th>Login</th><th>Perfil</th><th>PIN</th><th>Status</th></tr>';(r.data||[]).forEach(function(x){h+='<tr><td>'+esc(x.nome_usuario)+'</td><td>'+esc(x.login_usuario)+'</td><td>'+esc(x.perfil_usuario)+'</td><td>'+esc(x.pin_mascarado)+'</td><td>'+esc(x.status_usuario)+'</td></tr>'});$('userTable').innerHTML=h+'</table>';setOut('userOut',{ok:true,total:(r.data||[]).length,usuarios:r.data})}).catch(function(e){setOut('userOut',{ok:false,erro:String(e.message||e)})}).finally(function(){btnUnlock(btn)})}
+window.criarProduto=function(btn){if(!propRequired('prodOut'))return;btnLock(btn,'Criando...');var d={propriedade_id:session.propriedade.id,nome_produto:$('prod_nome').value.trim(),tipo_produto:$('prod_tipo').value,fabricante:$('prod_fab').value.trim(),unidade_padrao:$('prod_un').value.trim()||'SACO',kg_por_unidade:Number($('prod_kg').value||0),saldo_minimo_kg:Number($('prod_min').value||0),status_produto:'ATIVO'};withTimeout(getClient().from('produtos').insert(d).select('id,nome_produto,tipo_produto,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto').single(),30000).then(function(r){if(r.error)throw r.error;setOut('prodOut',{ok:true,mensagem:'Produto criado.',produto:r.data});listarProdutos()}).catch(function(e){var m=String(e.message||e),dup=m.indexOf('duplicate')>=0||m.indexOf('unique')>=0;setOut('prodOut',{ok:false,duplicado:dup,erro:dup?'PRODUTO_DUPLICADO':m,mensagem:dup?'Produto já existe nesta propriedade.':m})}).finally(function(){btnUnlock(btn)})}
+window.listarProdutos=function(btn){if(!propRequired('prodOut'))return;btnLock(btn,'Listando...');withTimeout(getClient().from('produtos').select('id,nome_produto,tipo_produto,fabricante,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto,created_at').eq('propriedade_id',session.propriedade.id).order('created_at',{ascending:false}),30000).then(function(r){if(r.error)throw r.error;$('kProd').textContent=(r.data||[]).length;var h='<table><tr><th>Produto</th><th>Tipo</th><th>Unidade</th><th>Kg/un</th><th>Mínimo kg</th><th>Status</th></tr>';(r.data||[]).forEach(function(x){h+='<tr><td>'+esc(x.nome_produto)+'</td><td>'+esc(x.tipo_produto)+'</td><td>'+esc(x.unidade_padrao)+'</td><td>'+esc(x.kg_por_unidade)+'</td><td>'+esc(x.saldo_minimo_kg)+'</td><td>'+esc(x.status_produto)+'</td></tr>'});$('prodTable').innerHTML=h+'</table>';setOut('prodOut',{ok:true,total:(r.data||[]).length,produtos:r.data})}).catch(function(e){setOut('prodOut',{ok:false,erro:String(e.message||e)})}).finally(function(){btnUnlock(btn)})}
+function renderBaseCampo(b){b=b||{};$('campoPropAtiva').textContent=(b.propriedade&&b.propriedade.nome_fazenda)||((session.propriedade&&session.propriedade.nome_fazenda)||'-');$('campoChave').textContent=(b.propriedade&&b.propriedade.chave_fazenda)||((session.propriedade&&session.propriedade.chave_fazenda)||'-');$('campoAtualizacao').textContent=b.gerado_em_brasilia||'-';$('bcUsuarios').textContent=(b.usuarios||[]).length||0;$('bcProdutos').textContent=(b.produtos||[]).length||0;$('bcLotes').textContent=(b.lotes||[]).length||0;$('bcCochos').textContent=(b.cochos||[]).length||0;$('bcAreas').textContent=(b.areas_fazenda||[]).length||0;$('bcStatus').textContent=b.propriedade?'OK':'-';$('kBase').textContent=b.propriedade?'OK':'-'}
+window.montarBaseCampo=function(btn){if(!propRequired('campoOut'))return;btnLock(btn,'Montando...');var pid=session.propriedade.id,sb=getClient(),tasks=[sb.from('usuarios_app').select('id,nome_usuario,login_usuario,perfil_usuario,status_usuario').eq('propriedade_id',pid),sb.from('produtos').select('id,nome_produto,tipo_produto,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto').eq('propriedade_id',pid),sb.from('lotes').select('*').eq('propriedade_id',pid),sb.from('cochos').select('*').eq('propriedade_id',pid),sb.from('areas_fazenda').select('*').eq('propriedade_id',pid)];withTimeout(Promise.all(tasks),45000).then(function(res){for(var i=0;i<res.length;i++){if(res[i].error)throw res[i].error}var base={app:'APP COCHO CAMPO BASE V1',origem:'CENTRAL V6.1 SUPABASE',gerado_em_brasilia:nowBR(),propriedade:session.propriedade,usuarios:res[0].data||[],produtos:res[1].data||[],lotes:res[2].data||[],cochos:res[3].data||[],areas_fazenda:res[4].data||[]};localStorage.setItem(BASE_CAMPO_LS,JSON.stringify(base));renderBaseCampo(base);setOut('campoOut',{ok:true,mensagem:'Base Campo montada.',resumo:{usuarios:base.usuarios.length,produtos:base.produtos.length,lotes:base.lotes.length,cochos:base.cochos.length,areas:base.areas_fazenda.length}})}).catch(function(e){setOut('campoOut',{ok:false,erro:String(e.message||e)})}).finally(function(){btnUnlock(btn)})}
+window.baixarBaseCampo=function(){var raw=localStorage.getItem(BASE_CAMPO_LS);if(!raw){setOut('campoOut',{ok:false,erro:'BASE_CAMPO_NAO_MONTADA'});return}var blob=new Blob([raw],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='base_campo_'+(((session.propriedade||{}).chave_fazenda)||'sem_fazenda')+'.json';a.click()}
+window.limparBaseCampo=function(){localStorage.removeItem(BASE_CAMPO_LS);renderBaseCampo({});setOut('campoOut',{ok:true,mensagem:'Base Campo local limpa.'})}
+window.limparSessao=function(){session={propriedade:null,usuario:null};localStorage.removeItem(LS_SESSION);updateBadges();setOut('painelOut',{ok:true,mensagem:'Sessão local limpa.'})}
+window.preencherTesteProp=function(){$('p_nome').value='FAZENDA TESTE SUPABASE 01';$('p_prop').value='TESTE SUPABASE';$('p_mun').value='IRITUIA';$('p_uf').value='PA'}; window.preencherTesteUser=function(){$('u_nome').value='MARCELO';$('u_login').value='marcelo';$('u_pin').value='5544';$('u_perfil').value='FUNCIONARIO_CAMPO'}; window.preencherTesteProduto=function(){$('prod_nome').value='SAL MINERAL TESTE 01';$('prod_tipo').value='SAL_MINERAL';$('prod_un').value='SACO';$('prod_kg').value='30';$('prod_min').value='60'}
+window.diagnostico=function(){setOut('diagOut',{app:APP_VERSION,config:cfg(),session:session,data_hora_brasilia:nowBR()})}; window.downloadLocalState=function(){var data={config:cfg(),session:session,base_campo:JSON.parse(localStorage.getItem(BASE_CAMPO_LS)||'{}'),app:APP_VERSION};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='app_cocho_v6_1_estado_local.json';a.click()}
+function loadSession(){try{session=JSON.parse(localStorage.getItem(LS_SESSION)||'{}')||{}}catch(e){session={}}} loadConfig(); loadSession(); updateBadges(); setInterval(updateBadges,10000); window.addEventListener('online',updateBadges);window.addEventListener('offline',updateBadges);
 })();
 </script>
-</body>
-</html>
+</body></html>
