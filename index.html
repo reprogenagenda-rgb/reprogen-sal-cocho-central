@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
-<title>APP COCHO CENTRAL V6.2 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=6.2">
+<title>APP COCHO CENTRAL V6.2.1 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=6.2.1">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060}
@@ -25,14 +25,14 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>APP COCHO CENTRAL V6.2 SUPABASE</h1><div class="sub">Lotes • Cochos GPS • Pré-Campo • Base offline</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
+<header><div class="top"><div><h1>APP COCHO CENTRAL V6.2.1 SUPABASE</h1><div class="sub">Lotes • Cochos GPS • Pré-Campo • Base offline</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
 <button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
 </nav>
 <div class="sessionbar" id="sessionCompact"><b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button></div>
 
-<div id="view-painel" class="view"><div class="card"><h2>Painel V6.2 — Lotes + Cochos GPS</h2><p>Cadastro de lotes e cochos com ponto de geolocalização para preparar o App Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kBase">-</b><br><span class="small">Base Campo</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
+<div id="view-painel" class="view"><div class="card"><h2>Painel V6.2.1 — Lotes + Cochos GPS</h2><p>Cadastro de lotes e cochos com ponto de geolocalização para preparar o App Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kBase">-</b><br><span class="small">Base Campo</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
 
 <div id="view-config" class="view hidden"><div class="card"><h2>Config Supabase</h2><div class="warnbox">Use apenas Project URL e Publishable Key / anon public. Nunca cole secret key ou service_role.</div><label>SUPABASE_URL</label><input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodbf.supabase.co"><label>SUPABASE_PUBLISHABLE_KEY</label><textarea id="supabaseKey" placeholder="sb_publishable_..."></textarea><button onclick="saveConfig()">Salvar Config</button><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button class="gray" onclick="clearConfig()">Limpar</button><pre id="configOut">Cole a publishable key completa e teste.</pre></div></div>
 
@@ -50,12 +50,12 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <div id="view-campo" class="view hidden"><div class="card"><h2>Base para App Campo V1.0</h2><p class="small">Mostra o que o App Campo deverá baixar antes do serviço para funcionar offline.</p><div class="sessionbar"><b>Propriedade ativa:</b> <span id="campoPropAtiva">-</span><br><b>Chave:</b> <span id="campoChave">-</span><br><b>Última atualização:</b> <span id="campoAtualizacao">-</span></div><div class="kpirow"><div class="kpi"><b id="bcUsuarios">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="bcProdutos">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="bcLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="bcCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="bcAreas">0</b><br><span class="small">Áreas</span></div><div class="kpi"><b id="bcStatus">-</b><br><span class="small">Status</span></div></div><button class="blue" onclick="montarBaseCampo(this)">Montar Base Campo</button><button onclick="baixarBaseCampo()">Baixar JSON da Base</button><button class="gray" onclick="limparBaseCampo()">Limpar Base Local</button><pre id="campoOut">Monte a base depois de ativar uma propriedade.</pre></div></div>
 
 <div id="view-diagnostico" class="view hidden"><div class="card"><h2>Diagnóstico</h2><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button onclick="diagnostico()">Diagnóstico completo</button><button class="gray" onclick="downloadLocalState()">Baixar estado local</button><pre id="diagOut">Sem diagnóstico.</pre></div></div>
-<div class="footer">APP COCHO CENTRAL V6.2 SUPABASE — Botões Fix • HTML single-file • GitHub Pages • Supabase</div>
+<div class="footer">APP COCHO CENTRAL V6.2.1 SUPABASE — Botões Fix • HTML single-file • GitHub Pages • Supabase</div>
 </main>
 <script>
 (function(){
 'use strict';
-var APP_VERSION='APP COCHO CENTRAL V6.2 SUPABASE — BOTÕES FIX';
+var APP_VERSION='APP COCHO CENTRAL V6.2.1 SUPABASE — BOTÕES FIX';
 var DEFAULT_URL='https://wxnsyozjiosbdwxpodbf.supabase.co';
 var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
 var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
@@ -64,6 +64,8 @@ var sbClient=null;
 var session={propriedade:null,usuario:null};
 
 function $(id){return document.getElementById(id);}
+function setTxt(id,val){var el=$(id); if(el){el.textContent=val;}}
+function setHTML(id,val){var el=$(id); if(el){el.innerHTML=val;}}
 function nowBR(){try{return new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'});}catch(e){return new Date().toLocaleString();}}
 function setOut(id,obj){var el=$(id);if(el){el.textContent=(typeof obj==='string')?obj:JSON.stringify(obj,null,2);}}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});}
@@ -82,19 +84,19 @@ function getClient(){
   return sbClient;
 }
 function updateBadges(){
-  $('netBadge').textContent=navigator.onLine?'Online':'Offline';
+  setTxt('netBadge',navigator.onLine?'Online':'Offline');
   $('netBadge').className='badge '+(navigator.onLine?'':'err');
-  $('hourBadge').textContent='Brasília '+nowBR();
+  setTxt('hourBadge','Brasília '+nowBR());
   if(session.propriedade){
-    $('sessBadge').textContent=session.propriedade.nome_fazenda||'Propriedade ativa';
-    $('u_prop_ativa').textContent=(session.propriedade.nome_fazenda||'-')+' | '+(session.propriedade.chave_fazenda||'-');
-    $('pr_prop_ativa').textContent=$('u_prop_ativa').textContent; if($('l_prop_ativa')){$('l_prop_ativa').textContent=$('u_prop_ativa').textContent;} if($('c_prop_ativa')){$('c_prop_ativa').textContent=$('u_prop_ativa').textContent;}
-    $('sessionCompact').innerHTML='<b>Sessão:</b> '+esc(session.propriedade.nome_fazenda)+' • <b>Chave:</b> '+esc(session.propriedade.chave_fazenda)+' <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button>';
+    setTxt('sessBadge',session.propriedade.nome_fazenda||'Propriedade ativa');
+    setTxt('u_prop_ativa',(session.propriedade.nome_fazenda||'-')+' | '+(session.propriedade.chave_fazenda||'-'));
+    var _lab=(session.propriedade.nome_fazenda||'-')+' | '+(session.propriedade.chave_fazenda||'-'); setTxt('pr_prop_ativa',_lab); setTxt('l_prop_ativa',_lab); setTxt('c_prop_ativa',_lab);
+    setHTML('sessionCompact','<b>Sessão:</b> '+esc(session.propriedade.nome_fazenda)+' • <b>Chave:</b> '+esc(session.propriedade.chave_fazenda)+' <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button>');
   }else{
-    $('sessBadge').textContent='Sem propriedade ativa';
+    setTxt('sessBadge','Sem propriedade ativa');
     $('u_prop_ativa').textContent='-';
     $('pr_prop_ativa').textContent='-'; if($('l_prop_ativa')){$('l_prop_ativa').textContent='-';} if($('c_prop_ativa')){$('c_prop_ativa').textContent='-';}
-    $('sessionCompact').innerHTML='<b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button>';
+    setHTML('sessionCompact','<b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button>');
   }
   try{renderBaseCampo(JSON.parse(localStorage.getItem(BASE_CAMPO_LS)||'{}'));}catch(e){}
 }
@@ -116,11 +118,11 @@ window.testSupabase=function(btn){
     withTimeout(getClient().from('propriedades').select('id').limit(1),20000).then(function(r){
       if(r.error){throw r.error;}
       var ms=Date.now()-t;
-      $('cloudBadge').textContent='Supabase OK';$('cloudBadge').className='badge';$('kPing').textContent=ms+' ms';
+      setTxt('cloudBadge','Supabase OK');$('cloudBadge').className='badge';$('kPing').textContent=ms+' ms';
       var out={ok:true,app:APP_VERSION,supabase:'OK',tempo_ms:ms,data_hora_brasilia:nowBR()};
       setOut('configOut',out);setOut('painelOut',out);setOut('diagOut',out);
     }).catch(function(e){
-      $('cloudBadge').textContent='Supabase erro';$('cloudBadge').className='badge err';
+      setTxt('cloudBadge','Supabase erro');$('cloudBadge').className='badge err';
       var out={ok:false,erro:String(e.message||e)};
       setOut('configOut',out);setOut('painelOut',out);setOut('diagOut',out);
     }).finally(function(){btnUnlock(btn);updateBadges();});
@@ -226,7 +228,17 @@ window.listarCochos=function(btn){
 function renderCochos(rows){var h='<table><tr><th>Cocho</th><th>Código</th><th>Tipo</th><th>GPS</th><th>Precisão</th><th>Raio</th><th>Status</th></tr>';rows.forEach(function(x){var gps=(x.gps_lat&&x.gps_lng)?('<span class="gpsok">'+esc(x.gps_lat)+', '+esc(x.gps_lng)+'</span>'):'<span class="gpsbad">SEM GPS</span>';h+='<tr><td>'+esc(x.nome_cocho)+'</td><td>'+esc(x.codigo_cocho)+'</td><td>'+esc(x.tipo_cocho)+'</td><td>'+gps+'</td><td>'+esc(x.gps_precisao_m||'')+'</td><td>'+esc(x.raio_aceito_m||50)+' m</td><td>'+esc(x.status_cocho)+'</td></tr>';});$('cochoTable').innerHTML=h+'</table>';}
 
 function renderBaseCampo(b){
-  b=b||{};$('campoPropAtiva').textContent=(b.propriedade&&b.propriedade.nome_fazenda)||((session.propriedade&&session.propriedade.nome_fazenda)||'-');$('campoChave').textContent=(b.propriedade&&b.propriedade.chave_fazenda)||((session.propriedade&&session.propriedade.chave_fazenda)||'-');$('campoAtualizacao').textContent=b.gerado_em_brasilia||'-';$('bcUsuarios').textContent=(b.usuarios||[]).length||0;$('bcProdutos').textContent=(b.produtos||[]).length||0;$('bcLotes').textContent=(b.lotes||[]).length||0;$('bcCochos').textContent=(b.cochos||[]).length||0;$('bcAreas').textContent=(b.areas_fazenda||[]).length||0;$('bcStatus').textContent=b.propriedade?'OK':'-';$('kBase').textContent=b.propriedade?'OK':'-';
+  b=b||{};
+  setTxt('campoPropAtiva',(b.propriedade&&b.propriedade.nome_fazenda)||((session.propriedade&&session.propriedade.nome_fazenda)||'-'));
+  setTxt('campoChave',(b.propriedade&&b.propriedade.chave_fazenda)||((session.propriedade&&session.propriedade.chave_fazenda)||'-'));
+  setTxt('campoAtualizacao',b.gerado_em_brasilia||'-');
+  setTxt('bcUsuarios',(b.usuarios||[]).length||0);
+  setTxt('bcProdutos',(b.produtos||[]).length||0);
+  setTxt('bcLotes',(b.lotes||[]).length||0);
+  setTxt('bcCochos',(b.cochos||[]).length||0);
+  setTxt('bcAreas',(b.areas_fazenda||[]).length||0);
+  setTxt('bcStatus',b.propriedade?'OK':'-');
+  setTxt('kBase',b.propriedade?'OK':'-');
 }
 window.montarBaseCampo=function(btn){
   if(!propRequired('campoOut')){return;}btnLock(btn,'Montando...');

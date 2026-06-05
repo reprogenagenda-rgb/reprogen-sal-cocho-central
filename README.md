@@ -1,33 +1,24 @@
-# APP COCHO CENTRAL V6.2 SUPABASE — Lotes + Cochos GPS
+# APP COCHO CENTRAL V6.2.1 SUPABASE — DOM Safe
 
-## SUPABASE — fazer agora
-Primeiro teste SEM rodar SQL.
+## Objetivo
+Hotfix da V6.2. Corrige erro visual/JavaScript: `Cannot set properties of null (setting 'textContent')`.
 
-Rode `SQL_OPCIONAL_AJUSTE_LOTES_COCHOS_GPS.sql` somente se aparecer erro de coluna inexistente em lotes ou cochos.
+## SUPABASE
+Não mexer no Supabase agora. Esse erro não é do banco; é do código da página.
 
-## GITHUB — subir agora
-Substituir:
-- index.html
-- manifest.json
-- service-worker.js
-- README.md
-- icons/
-- SQL_OPCIONAL_AJUSTE_LOTES_COCHOS_GPS.sql
+## GITHUB
+Substituir: index.html, manifest.json, service-worker.js, README.md e icons.
 
 Mensagem de commit:
-`Atualiza Central Cocho V6.2 Lotes e Cochos GPS`
+`Corrige Central Cocho V6.2.1 DOM Safe`
 
-Abrir com quebra de cache:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.2-lotes-cochos-gps`
+URL de quebra de cache:
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.2.1-dom-safe`
 
-## Teste oficial
-1. Testar Supabase.
-2. Lotes → Preencher Teste → Criar Lote.
-3. Lotes → Listar Lotes.
-4. Cochos GPS → Preencher Teste.
-5. Cochos GPS → Capturar GPS atual.
-6. Cochos GPS → Criar Cocho.
-7. Cochos GPS → Listar Cochos.
-8. Base Campo → Montar Base Campo.
-
-Resultado esperado: usuários 1, produtos 1, lotes 1, cochos 1, áreas 0.
+## Teste
+1. Abrir a URL com quebra de cache.
+2. Testar Supabase.
+3. Listar propriedades.
+4. Ativar propriedade.
+5. Criar/Listar Lote.
+6. Capturar GPS e criar Cocho.
