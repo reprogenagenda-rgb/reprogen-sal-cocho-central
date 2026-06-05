@@ -5,97 +5,463 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Cocho Central">
-<title>APP COCHO CENTRAL V5.8.6</title>
-<link rel="manifest" href="./manifest.json?v=5.8.6">
+<meta name="apple-mobile-web-app-title" content="COCHO V6">
+<title>APP COCHO CENTRAL V6.0 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=6.0.0">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--ink:#10291c;--mut:#66776d;--line:#d6e5d9;--r:#dc3545;--b:#0d6efd;--y:#ffc107;--dark:#111827}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,var(--g),#052e1b);color:#fff;padding:12px 14px;box-shadow:0 2px 10px rgba(0,0,0,.15)}.top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}h1{font-size:18px;margin:0}.sub{font-size:12px;opacity:.9}.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{background:#fff;color:#123;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700}.ok{background:#d1e7dd}.warn{background:#fff3cd}.err{background:#f8d7da}.blue{background:#cfe2ff}.tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 8px;background:#e6f2e8;border-bottom:1px solid var(--line)}.tab{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 14px;font-weight:700;white-space:nowrap}.tab.active{background:var(--g);color:#fff}main{max-width:1100px;margin:0 auto;padding:10px}.notice{background:#d1e7dd;border:1px solid #badbcc;border-radius:12px;padding:10px;margin-bottom:10px;font-weight:700}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}.col6{grid-column:span 6}.col4{grid-column:span 4}.col12{grid-column:span 12}@media(max-width:800px){.col6,.col4{grid-column:span 12}}label{display:block;font-size:12px;font-weight:800;margin:7px 0 3px;color:#244d35}input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;font-size:15px;background:#fff}button{border:0;border-radius:12px;padding:11px 14px;font-weight:800;margin:4px 4px 4px 0}.btn{background:var(--g2);color:#fff}.btnb{background:var(--b);color:#fff}.btng{background:#6c757d;color:#fff}.btny{background:var(--y);color:#111}.btnr{background:var(--r);color:#fff}button:disabled{opacity:.55}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.kpi b{font-size:26px}table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{padding:10px;border-bottom:1px solid #e8efe9;text-align:left;font-size:13px}th{background:#eef7ef;color:#17462b}.pre{background:#07120c;color:#d7ffe0;border-radius:12px;padding:12px;white-space:pre-wrap;overflow:auto;max-height:360px;font-family:Consolas,monospace;font-size:12px}.small{font-size:12px;color:var(--mut)}footer{text-align:center;font-size:12px;color:#63766a;padding:20px}.hide{display:none}
+:root{
+  --g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;
+  --r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060;--dark:#071b12;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,var(--g),#082114);color:#fff;padding:10px 12px;box-shadow:0 2px 8px rgba(0,0,0,.16)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+h1{font-size:18px;margin:0;font-weight:900;letter-spacing:.3px}
+.sub{font-size:12px;opacity:.9;margin-top:2px}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{display:inline-block;background:#e9fff0;color:#083b21;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}
+.badge.warn{background:#fff3cd;color:#5b4300}.badge.err{background:#f8d7da;color:#842029}.badge.blue{background:#dbeafe;color:#123a75}
+main{max-width:1180px;margin:0 auto;padding:12px}
+nav{display:flex;gap:8px;overflow:auto;padding:10px 0}
+.tab{border:1px solid var(--line);background:#fff;border-radius:13px;padding:10px 14px;font-weight:900;color:var(--ink);white-space:nowrap}
+.tab.active{background:var(--g);color:#fff;border-color:var(--g)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 3px 12px rgba(0,0,0,.04)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}
+.col-12{grid-column:span 12}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}
+@media(max-width:760px){.col-6,.col-4,.col-3{grid-column:span 12}}
+label{display:block;font-size:12px;font-weight:900;color:#234b36;margin:4px 0}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:14px;color:var(--ink)}
+textarea{min-height:80px}
+button{border:0;border-radius:12px;padding:11px 14px;font-weight:900;background:var(--g2);color:#fff;margin:4px 4px 4px 0}
+button.blue{background:var(--b)}button.gray{background:#6c757d}button.warn{background:#f0ad00;color:#222}button.red{background:var(--r)}
+button:disabled{opacity:.55}
+.small{font-size:12px;color:var(--muted)}
+.okbox{background:#e7f6eb;border:1px solid #b8dfc1;border-radius:12px;padding:10px;margin:8px 0}
+.warnbox{background:#fff3cd;border:1px solid #ffe08a;border-radius:12px;padding:10px;margin:8px 0}
+.errbox{background:#f8d7da;border:1px solid #f1aeb5;border-radius:12px;padding:10px;margin:8px 0}
+pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:auto;white-space:pre-wrap;font-size:12px;min-height:44px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}
+th,td{border-bottom:1px solid #e7efe9;padding:8px;text-align:left;font-size:13px}
+th{background:#edf7ef;color:#1c5135;font-weight:900}
+tr:hover{background:#f8fcf9}
+.hidden{display:none}
+.footer{text-align:center;color:#607060;font-size:12px;margin:18px 0}
+.pill{display:inline-block;padding:3px 8px;border-radius:99px;background:#edf7ef;border:1px solid #cfe3d2;font-size:12px;font-weight:800}
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>APP COCHO CENTRAL V5.8.6</h1><div class="sub">Modo Leve • Cloud Otimizado • Acesso Multi-Propriedade</div></div><div class="badges"><span id="netBadge" class="badge ok">Online</span><span id="cloudBadge" class="badge warn">Cloud não testado</span><span id="soundBadge" class="badge blue">Som ativo</span><span id="hourBadge" class="badge ok">Brasília</span></div></div></header>
-<nav class="tabs" id="tabs"></nav>
+<header>
+ <div class="top">
+  <div>
+   <h1>APP COCHO CENTRAL V6.0 SUPABASE</h1>
+   <div class="sub">Fundação Supabase • Propriedades • Usuários • Produtos • Duplicidade no banco</div>
+  </div>
+  <div class="badges">
+   <span id="netBadge" class="badge">Online?</span>
+   <span id="cloudBadge" class="badge warn">Supabase não testado</span>
+   <span id="sessBadge" class="badge blue">Sem propriedade ativa</span>
+   <span id="hourBadge" class="badge">Brasília</span>
+  </div>
+ </div>
+</header>
+
 <main>
-<div id="sessionNotice" class="notice">Nenhuma fazenda ativa. Valide em Acesso / Sessão antes de operar.</div>
-<section id="view"></section>
+<nav>
+ <button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button>
+ <button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button>
+ <button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button>
+ <button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button>
+ <button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button>
+ <button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
+</nav>
+
+<div id="view-painel" class="view">
+ <div class="okbox" id="activeBox">Nenhuma propriedade ativa. Crie/lista propriedades e selecione uma.</div>
+ <div class="card">
+  <h2>Painel V6.0 — Fundação Supabase</h2>
+  <p>Esta versão não usa Apps Script. Ela conecta direto ao Supabase pelo navegador usando <b>Project URL</b> + <b>Publishable Key</b>.</p>
+  <div class="grid">
+   <div class="card col-3"><b id="kProps">0</b><br><span class="small">Propriedades carregadas</span></div>
+   <div class="card col-3"><b id="kUsers">0</b><br><span class="small">Usuários da propriedade</span></div>
+   <div class="card col-3"><b id="kProd">0</b><br><span class="small">Produtos da propriedade</span></div>
+   <div class="card col-3"><b id="kPing">-</b><br><span class="small">Resposta Supabase</span></div>
+  </div>
+  <button class="blue" onclick="testSupabase()">Testar Supabase</button>
+  <button onclick="listarPropriedades()">Listar Propriedades</button>
+  <button class="gray" onclick="loadSession()">Recarregar Sessão</button>
+  <pre id="painelOut">Aguardando teste...</pre>
+ </div>
+</div>
+
+<div id="view-config" class="view hidden">
+ <div class="card">
+  <h2>Config Supabase</h2>
+  <div class="warnbox">
+   Use apenas <b>Project URL</b> e <b>Publishable Key / anon public</b>. Nunca cole <b>secret key</b> ou <b>service_role</b> no app.
+  </div>
+  <label>SUPABASE_URL</label>
+  <input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodb.supabase.co" placeholder="https://xxxx.supabase.co">
+  <label>SUPABASE_PUBLISHABLE_KEY</label>
+  <textarea id="supabaseKey" placeholder="sb_publishable_... ou anon public key"></textarea>
+  <button onclick="saveConfig()">Salvar Config</button>
+  <button class="blue" onclick="testSupabase()">Testar conexão</button>
+  <button class="gray" onclick="clearConfig()">Limpar</button>
+  <pre id="configOut">Cole a publishable key e teste.</pre>
+ </div>
+ <div class="card">
+  <h3>Políticas RLS para teste</h3>
+  <p class="small">Se a conexão der erro de permissão, execute no SQL Editor o arquivo <b>SUPABASE_POLICIES_DEV_TESTE_APP_COCHO.sql</b>. Essas políticas são temporárias para desenvolvimento e não devem ser usadas em produção real.</p>
+ </div>
+</div>
+
+<div id="view-propriedades" class="view hidden">
+ <div class="card">
+  <h2>Criar Propriedade</h2>
+  <div class="grid">
+   <div class="col-6"><label>Nome da propriedade</label><input id="p_nome" placeholder="FAZENDA TESTE SUPABASE"></div>
+   <div class="col-6"><label>Proprietário</label><input id="p_prop" placeholder="TESTE PROPRIETÁRIO"></div>
+   <div class="col-4"><label>Município</label><input id="p_mun" value="IRITUIA"></div>
+   <div class="col-4"><label>Estado</label><input id="p_uf" value="PA"></div>
+   <div class="col-4"><label>Área ha</label><input id="p_area" type="number" step="0.01" placeholder="opcional"></div>
+   <div class="col-12"><label>Observações</label><input id="p_obs" placeholder="opcional"></div>
+  </div>
+  <button onclick="criarPropriedade(this)">Criar Propriedade</button>
+  <button class="blue" onclick="listarPropriedades(this)">Listar Propriedades</button>
+  <button class="warn" onclick="preencherTesteProp()">Preencher Teste</button>
+  <pre id="propOut">Sem operação.</pre>
+ </div>
+ <div class="card">
+  <h3>Propriedades</h3>
+  <div id="propTable"></div>
+ </div>
+</div>
+
+<div id="view-usuarios" class="view hidden">
+ <div class="card">
+  <h2>Usuários da Propriedade Ativa</h2>
+  <div class="small">Propriedade ativa: <b id="u_prop_ativa">-</b></div>
+  <div class="grid">
+   <div class="col-6"><label>Nome do usuário</label><input id="u_nome" placeholder="MARCELO"></div>
+   <div class="col-6"><label>Login</label><input id="u_login" placeholder="marcelo"></div>
+   <div class="col-4"><label>PIN mascarado</label><input id="u_pin" placeholder="5***"></div>
+   <div class="col-4"><label>Perfil</label><select id="u_perfil"><option>FUNCIONARIO_CAMPO</option><option>PROPRIETARIO</option><option>ADMIN_CONSULTORIA</option></select></div>
+   <div class="col-4"><label>Status</label><select id="u_status"><option>ATIVO</option><option>INATIVO</option></select></div>
+  </div>
+  <button onclick="criarUsuario(this)">Criar Usuário</button>
+  <button class="blue" onclick="listarUsuarios(this)">Listar Usuários</button>
+  <button class="warn" onclick="preencherTesteUser()">Preencher Teste</button>
+  <pre id="userOut">Sem operação.</pre>
+ </div>
+ <div class="card">
+  <h3>Usuários</h3>
+  <div id="userTable"></div>
+ </div>
+</div>
+
+<div id="view-produtos" class="view hidden">
+ <div class="card">
+  <h2>Produtos da Propriedade Ativa</h2>
+  <div class="small">Propriedade ativa: <b id="pr_prop_ativa">-</b></div>
+  <div class="grid">
+   <div class="col-6"><label>Nome do produto</label><input id="prod_nome" placeholder="SAL MINERAL TESTE 01"></div>
+   <div class="col-6"><label>Tipo</label><select id="prod_tipo"><option>SAL_MINERAL</option><option>SUPLEMENTO</option><option>CONCENTRADO</option><option>FORRAGEM</option><option>OUTRO</option></select></div>
+   <div class="col-4"><label>Fabricante</label><input id="prod_fab" placeholder="opcional"></div>
+   <div class="col-4"><label>Unidade padrão</label><input id="prod_un" value="SACO"></div>
+   <div class="col-2"><label>Kg por unidade</label><input id="prod_kg" type="number" step="0.001" value="30"></div>
+   <div class="col-2"><label>Saldo mínimo kg</label><input id="prod_min" type="number" step="0.001" value="60"></div>
+  </div>
+  <button onclick="criarProduto(this)">Criar Produto</button>
+  <button class="blue" onclick="listarProdutos(this)">Listar Produtos</button>
+  <button class="warn" onclick="preencherTesteProduto()">Preencher Teste</button>
+  <pre id="prodOut">Sem operação.</pre>
+ </div>
+ <div class="card">
+  <h3>Produtos</h3>
+  <div id="prodTable"></div>
+ </div>
+</div>
+
+<div id="view-diagnostico" class="view hidden">
+ <div class="card">
+  <h2>Diagnóstico Supabase</h2>
+  <button class="blue" onclick="testSupabase()">Testar conexão</button>
+  <button onclick="diagnostico()">Diagnóstico completo</button>
+  <button class="gray" onclick="downloadLocalState()">Baixar estado local</button>
+  <pre id="diagOut">Sem diagnóstico.</pre>
+ </div>
+</div>
+
+<div class="footer">APP COCHO CENTRAL V6.0 SUPABASE — Fundação • HTML single-file • GitHub Pages • Supabase</div>
 </main>
-<footer id="footer">APP COCHO CENTRAL V5.8.6 — aguardando Cloud</footer>
+
 <script>
 (function(){
-var VERSION='APP COCHO CENTRAL V5.8.6';
-var EXPECTED='SCRIPT COCHO CLOUD V2.4.5';
-var STORE_URL='cocho_cloud_url_v586';
-var STORE_SESS='cocho_sessao_v586';
-var cloudUrl=localStorage.getItem(STORE_URL)||'';
-var sess=loadJSON(STORE_SESS)||null;
-var cloudVersion='Cloud não confirmado';
-var lastRet='Aguardando...';
-var tabs=['Painel','Config Cloud','Acesso / Sessão','Fazendas','Gerar Acesso','Usuários','Produtos da Fazenda'];
-var active='Painel';
-var soundOn=true;
-var sending={};
-function $(id){return document.getElementById(id)}
-function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
-function loadJSON(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}
-function saveJSON(k,o){localStorage.setItem(k,JSON.stringify(o))}
-function qs(obj){var a=[]; for(var k in obj){ if(obj[k]!==undefined && obj[k]!==null) a.push(encodeURIComponent(k)+'='+encodeURIComponent(obj[k])); } return a.join('&')}
-function genOp(mod){var lg=sess&&sess.login_usuario?sess.login_usuario:'anon';return 'OP-'+new Date().toISOString().replace(/[-:.TZ]/g,'').slice(0,14)+'-'+lg.replace(/[^a-z0-9]/gi,'').slice(0,10)+'-'+mod+'-'+Math.random().toString(36).slice(2,6).toUpperCase()}
-function beep(){if(!soundOn)return;try{var A=window.AudioContext||window.webkitAudioContext;var a=new A();var o=a.createOscillator();var g=a.createGain();o.frequency.value=650;g.gain.value=.12;o.connect(g);g.connect(a.destination);o.start();setTimeout(function(){o.stop();a.close()},80)}catch(e){}}
-function renderTabs(){var html='';for(var i=0;i<tabs.length;i++){html+='<button class="tab '+(tabs[i]===active?'active':'')+'" onclick="App.go(\''+tabs[i]+'\')">'+tabs[i]+'</button>'} $('tabs').innerHTML=html}
-function setRet(o){lastRet=typeof o==='string'?o:JSON.stringify(o,null,2);var el=$('ret'); if(el) el.textContent=lastRet}
-function updateTop(){ $('netBadge').textContent=navigator.onLine?'Online':'Offline'; $('netBadge').className='badge '+(navigator.onLine?'ok':'err'); $('cloudBadge').textContent=cloudVersion.indexOf('V2.4.5')>=0?'Cloud OK':'Cloud não testado'; $('cloudBadge').className='badge '+(cloudVersion.indexOf('V2.4.5')>=0?'ok':'warn'); $('soundBadge').textContent=soundOn?'Som ativo':'Som desligado'; var d=new Date(); $('hourBadge').textContent='Brasília '+d.toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'}); if(sess){$('sessionNotice').textContent='Fazenda ativa: '+sess.nome_fazenda+' | '+sess.nome_usuario+' | '+sess.perfil_usuario; $('sessionNotice').style.display='block'}else{$('sessionNotice').textContent='Nenhuma fazenda ativa. Valide em Acesso / Sessão antes de operar.'} $('footer').textContent=VERSION+' — '+cloudVersion+' — Modo Leve e envio seguro'}
-function callCloud(params, timeoutMs, lockKey, cb){
- if(!cloudUrl){setRet('URL do Cloud não configurada.'); return}
- if(lockKey && sending[lockKey]){setRet('Operação já em envio. Aguarde para evitar duplicidade.'); return}
- if(lockKey) sending[lockKey]=true;
- setRet('Aguardando...'); beep();
- var done=false; var t=setTimeout(function(){ if(done)return; done=true; if(lockKey) sending[lockKey]=false; setRet('TEMPO_EXCEDIDO\nO Apps Script não respondeu no tempo esperado. Verifique se a operação foi gravada antes de reenviar.'); }, timeoutMs||70000);
- var url=cloudUrl+(cloudUrl.indexOf('?')>=0?'&':'?')+qs(params)+'&_ts='+Date.now();
- fetch(url).then(function(r){return r.text()}).then(function(txt){ if(done)return; done=true; clearTimeout(t); if(lockKey) sending[lockKey]=false; var o; try{o=JSON.parse(txt)}catch(e){o={ok:false,erro:'JSON_INVALIDO',retorno:txt}}; setRet(o); if(cb)cb(o); }).catch(function(e){ if(done)return; done=true; clearTimeout(t); if(lockKey) sending[lockKey]=false; setRet(String(e)); });
+'use strict';
+var APP_VERSION='APP COCHO CENTRAL V6.0 SUPABASE — FUNDAÇÃO';
+var DEFAULT_URL='https://wxnsyozjiosbdwxpodb.supabase.co';
+var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
+var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
+var sbClient=null;
+var session={propriedade:null, usuario:null};
+
+function $(id){return document.getElementById(id);}
+function nowBR(){try{return new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'});}catch(e){return new Date().toLocaleString();}}
+function setOut(id,obj){$(id).textContent=(typeof obj==='string')?obj:JSON.stringify(obj,null,2);}
+function normalizar(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'');}
+function genId(prefix){return prefix+'-'+Date.now()+'-'+Math.random().toString(36).slice(2,7).toUpperCase();}
+function genChave(nome){return 'COCHO-'+normalizar(nome).slice(0,18)+'-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+new Date().getFullYear();}
+function maskPin(v){v=String(v||''); if(!v) return ''; return v.charAt(0)+'***';}
+function btnLock(btn,txt){if(btn){btn.disabled=true;btn.dataset.old=btn.textContent;btn.textContent=txt||'Enviando...';}}
+function btnUnlock(btn){if(btn){btn.disabled=false;btn.textContent=btn.dataset.old||btn.textContent;}}
+function withTimeout(promise,ms){return Promise.race([promise,new Promise(function(_,reject){setTimeout(function(){reject(new Error('TEMPO_EXCEDIDO'));},ms||30000);})]);}
+function cfg(){try{return JSON.parse(localStorage.getItem(LS_CFG)||'{}');}catch(e){return {};}}
+function saveCfg(o){localStorage.setItem(LS_CFG,JSON.stringify(o||{}));}
+function updateBadges(){
+  $('netBadge').textContent=navigator.onLine?'Online':'Offline';
+  $('netBadge').className='badge '+(navigator.onLine?'':'err');
+  $('hourBadge').textContent='Brasília '+nowBR();
+  if(session.propriedade){
+    $('sessBadge').textContent=session.propriedade.nome_fazenda||'Propriedade ativa';
+    $('activeBox').innerHTML='Propriedade ativa: <b>'+esc(session.propriedade.nome_fazenda)+'</b> • '+esc(session.propriedade.chave_fazenda||'');
+    $('u_prop_ativa').textContent=session.propriedade.nome_fazenda+' | '+session.propriedade.chave_fazenda;
+    $('pr_prop_ativa').textContent=session.propriedade.nome_fazenda+' | '+session.propriedade.chave_fazenda;
+  }else{
+    $('sessBadge').textContent='Sem propriedade ativa';
+    $('activeBox').textContent='Nenhuma propriedade ativa. Crie/lista propriedades e selecione uma.';
+    $('u_prop_ativa').textContent='-';
+    $('pr_prop_ativa').textContent='-';
+  }
 }
-function requireSess(){ if(!sess){setRet('Valide Acesso / Sessão primeiro.'); return false} return true }
-function baseParams(action){return {action:action,CHAVE_FAZENDA:sess?sess.chave_fazenda:'',LOGIN_USUARIO:sess?sess.login_usuario:''}}
-function cardRet(){return '<div class="card"><h3>Retorno</h3><pre id="ret" class="pre">'+esc(lastRet)+'</pre></div>'}
-function input(id,label,val,type){return '<label>'+label+'</label><input id="'+id+'" type="'+(type||'text')+'" value="'+esc(val||'')+'">'}
-function select(id,label,opts,val){var h='<label>'+label+'</label><select id="'+id+'">';for(var i=0;i<opts.length;i++)h+='<option '+(opts[i]===val?'selected':'')+'>'+opts[i]+'</option>';return h+'</select>'}
-function render(){renderTabs();updateTop();var h='';
- if(active==='Painel') h=viewPainel();
- else if(active==='Config Cloud') h=viewConfig();
- else if(active==='Acesso / Sessão') h=viewAcesso();
- else if(active==='Fazendas') h=viewFazendas();
- else if(active==='Gerar Acesso') h=viewGerarAcesso();
- else if(active==='Usuários') h=viewUsuarios();
- else if(active==='Produtos da Fazenda') h=viewProdutos();
- $('view').innerHTML=h; updateTop(); }
-function viewPainel(){return '<div class="card"><h2>Status Geral — Modo Leve</h2><div class="grid"><div class="kpi col4"><b>'+(sess?1:0)+'</b><br>Sessão</div><div class="kpi col4"><b id="kprod">0</b><br>Produtos</div><div class="kpi col4"><b id="ktempo">-</b><br>Tempo Cloud</div></div><div class="row"><button class="btn" onclick="App.testCloud()">Testar Cloud</button><button class="btnb" onclick="App.go(\'Produtos da Fazenda\')">Testar Produtos</button><button class="btng" onclick="App.toggleSound()">Liga/Desliga Som</button></div></div>'+cardRet()}
-function viewConfig(){return '<div class="card"><h2>Config Cloud — leitura real do Script</h2>'+input('cloudUrl','URL do Web App /exec',cloudUrl)+'<div class="row"><button class="btn" onclick="App.saveUrl()">Salvar URL</button><button class="btnb" onclick="App.testCloud()">Testar conexão</button><button class="btng" onclick="App.clearUrl()">Limpar</button></div><div class="notice">Esperado: '+EXPECTED+' — Modo Leve.</div></div>'+cardRet()}
-function viewAcesso(){return '<div class="card"><h2>Acesso / Sessão da Fazenda</h2>'+input('a_chave','CHAVE_FAZENDA',sess?sess.chave_fazenda:'')+input('a_login','LOGIN_USUARIO',sess?sess.login_usuario:'')+input('a_pin','PIN_USUARIO','','password')+'<div class="row"><button class="btn" onclick="App.validar()">Validar Acesso</button><button class="btng" onclick="App.preencherTeste()">Preencher Teste</button><button class="btnr" onclick="App.sair()">Sair/Limpar Sessão</button></div></div>'+cardRet()}
-function viewFazendas(){return '<div class="card"><h2>Fazendas — rota leve</h2><div class="row"><button class="btnb" onclick="App.listarFazendas()">Listar Fazendas</button></div><div id="tableBox"></div></div>'+cardRet()}
-function viewGerarAcesso(){return '<div class="card"><h2>Gerador de Acesso por Propriedade</h2>'+input('g_fazenda','Nome da Fazenda / Propriedade','FAZENDA MODO LEVE TESTE')+input('g_prop','Proprietário','TESTE MODO LEVE')+input('g_mun','Município','IRITUIA')+input('g_uf','Estado','PA')+input('g_loginp','Login do Proprietário','teste.leve')+input('g_pinp','PIN do Proprietário','')+input('g_oper','Operador inicial','OPERADOR LEVE')+input('g_logino','Login do Operador','operador.leve')+input('g_pino','PIN do Operador','')+'<div class="row"><button class="btnb" onclick="App.gerarAcesso()">Gerar Acesso Completo</button><button class="btng" onclick="App.copyRet()">Copiar Cartão</button></div></div>'+cardRet()}
-function viewUsuarios(){return '<div class="card"><h2>Usuários — rota leve</h2>'+input('u_chave','CHAVE_FAZENDA',sess?sess.chave_fazenda:'')+input('u_nome','Nome do Usuário','MARCELO')+input('u_login','Login','marcelo')+input('u_pin','PIN Usuário','')+select('u_perfil','Perfil',['FUNCIONARIO_CAMPO','PROPRIETARIO','GERENTE_FAZENDA','VISUALIZADOR'],'FUNCIONARIO_CAMPO')+'<div class="row"><button class="btn" onclick="App.criarUsuario()">Criar Usuário</button><button class="btnb" onclick="App.listarUsuarios(false)">Listar Usuários Ativos</button><button class="btng" onclick="App.listarUsuarios(true)">Listar Todos</button><button class="btny" onclick="App.verificarDupUsuarios()">Verificar Duplicidades</button><button class="btng" onclick="App.corrigirDupUsuarios()">Corrigir Duplicidades</button></div><div id="tableBox"></div></div>'+cardRet()}
-function viewProdutos(){return '<div class="card"><h2>Produtos da Fazenda — Modo Leve</h2>'+input('p_nome','Nome do Produto','SAL MINERAL TESTE 01')+select('p_tipo','Tipo',['SAL_MINERAL','PROTEINADO','ENERGETICO','CONCENTRADO','OUTRO'],'SAL_MINERAL')+input('p_fab','Fabricante','')+input('p_un','Unidade padrão','SACO')+input('p_kg','Kg por unidade/saco','30','number')+input('p_min','Saldo mínimo kg','60','number')+'<div class="row"><button class="btn" onclick="App.criarProduto()">Criar Produto</button><button class="btnb" onclick="App.listarProdutos()">Listar Produtos</button></div><div id="tableBox"></div></div>'+cardRet()}
-function table(rows,cols){var h='<table><thead><tr>';for(var i=0;i<cols.length;i++)h+='<th>'+cols[i][1]+'</th>';h+='</tr></thead><tbody>';for(var r=0;r<rows.length;r++){h+='<tr>';for(var c=0;c<cols.length;c++)h+='<td>'+esc(rows[r][cols[c][0]])+'</td>';h+='</tr>'}return h+'</tbody></table>'}
-window.App={
- go:function(t){active=t;render()},
- toggleSound:function(){soundOn=!soundOn;updateTop();beep()},
- saveUrl:function(){cloudUrl=$('cloudUrl').value.trim();localStorage.setItem(STORE_URL,cloudUrl);setRet('URL salva.');updateTop()},
- clearUrl:function(){localStorage.removeItem(STORE_URL);cloudUrl='';setRet('URL limpa.');updateTop()},
- testCloud:function(){callCloud({action:'ping'},30000,'ping',function(o){if(o&&o.versao)cloudVersion=o.versao;updateTop()})},
- validar:function(){callCloud({action:'validarAcesso',CHAVE_FAZENDA:$('a_chave').value,LOGIN_USUARIO:$('a_login').value,PIN_USUARIO:$('a_pin').value},45000,'login',function(o){if(o&&o.ok){sess=o;saveJSON(STORE_SESS,sess);updateTop();render()}})},
- preencherTeste:function(){if($('a_chave'))$('a_chave').value='COCHO-FAZENDASTESTE02-KR63-2026'; if($('a_login'))$('a_login').value='marcelo'; if($('a_pin'))$('a_pin').value='5544'},
- sair:function(){sess=null;localStorage.removeItem(STORE_SESS);render();setRet('Sessão limpa.')},
- listarFazendas:function(){callCloud({action:'listarFazendasLeve'},45000,'fazendas',function(o){if(o&&o.fazendas){$('tableBox').innerHTML=table(o.fazendas,[['NOME_FAZENDA','Fazenda'],['PROPRIETARIO','Proprietário'],['CHAVE_FAZENDA','Chave'],['PIN_FAZENDA','PIN']])}})},
- gerarAcesso:function(){callCloud({action:'gerarAcessoPropriedade',NOME_FAZENDA:$('g_fazenda').value,PROPRIETARIO:$('g_prop').value,MUNICIPIO:$('g_mun').value,ESTADO:$('g_uf').value,LOGIN_PROPRIETARIO:$('g_loginp').value,PIN_PROPRIETARIO:$('g_pinp').value,OPERADOR_INICIAL:$('g_oper').value,LOGIN_OPERADOR:$('g_logino').value,PIN_OPERADOR:$('g_pino').value,ID_OPERACAO_CLIENTE:genOp('GERARACESSO')},90000,'gerarAcesso')},
- copyRet:function(){try{navigator.clipboard.writeText(lastRet);setRet('Retorno copiado.')}catch(e){setRet('Não foi possível copiar.') }},
- criarUsuario:function(){callCloud({action:'criarUsuarioLeve',CHAVE_FAZENDA:$('u_chave').value,NOME_USUARIO:$('u_nome').value,LOGIN_USUARIO:$('u_login').value,PIN_USUARIO:$('u_pin').value,PERFIL_USUARIO:$('u_perfil').value,ID_OPERACAO_CLIENTE:genOp('USUARIO')},60000,'criarUsuario')},
- listarUsuarios:function(todos){var chave=$('u_chave')?$('u_chave').value:(sess?sess.chave_fazenda:'');callCloud({action:'listarUsuariosLeve',CHAVE_FAZENDA:chave,TODOS:todos?'SIM':'NAO'},50000,'listarUsuarios',function(o){if(o&&o.usuarios){$('tableBox').innerHTML=table(o.usuarios,[['NOME_USUARIO','Nome'],['LOGIN_USUARIO','Login'],['PERFIL_USUARIO','Perfil'],['PIN','PIN'],['STATUS_USUARIO','Status']])}})},
- verificarDupUsuarios:function(){var chave=$('u_chave').value;callCloud({action:'verificarDuplicidadesUsuariosLeve',CHAVE_FAZENDA:chave},60000,'verDupUsuarios')},
- corrigirDupUsuarios:function(){var chave=$('u_chave').value;callCloud({action:'corrigirDuplicidadesUsuariosLeve',CHAVE_FAZENDA:chave},70000,'corrDupUsuarios')},
- criarProduto:function(){if(!requireSess())return;callCloud({action:'criarProdutoLeve',CHAVE_FAZENDA:sess.chave_fazenda,LOGIN_USUARIO:sess.login_usuario,NOME_PRODUTO:$('p_nome').value,TIPO_PRODUTO:$('p_tipo').value,FABRICANTE:$('p_fab').value,UNIDADE_PADRAO:$('p_un').value,KG_POR_UNIDADE:$('p_kg').value,SALDO_MINIMO_KG:$('p_min').value,ID_OPERACAO_CLIENTE:genOp('PRODUTO')},60000,'criarProduto')},
- listarProdutos:function(){if(!requireSess())return;callCloud({action:'listarProdutosLeve',CHAVE_FAZENDA:sess.chave_fazenda},45000,'listarProdutos',function(o){if(o&&o.produtos){$('tableBox').innerHTML=table(o.produtos,[['NOME_PRODUTO','Produto'],['TIPO_PRODUTO','Tipo'],['UNIDADE_PADRAO','Unidade'],['KG_POR_UNIDADE','Kg/Un'],['SALDO_MINIMO_KG','Mínimo'],['STATUS_PRODUTO','Status']])}})}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});}
+function getClient(){
+  var c=cfg();
+  var url=String(c.url||'').trim();
+  var key=String(c.key||'').trim();
+  if(!url || !key) throw new Error('CONFIG_SUPABASE_OBRIGATORIA');
+  if(!window.supabase || !window.supabase.createClient) throw new Error('BIBLIOTECA_SUPABASE_NAO_CARREGOU');
+  if(!sbClient || sbClient._cochoUrl!==url || sbClient._cochoKey!==key){
+    sbClient=window.supabase.createClient(url,key);
+    sbClient._cochoUrl=url; sbClient._cochoKey=key;
+  }
+  return sbClient;
+}
+function loadConfig(){
+  var c=cfg();
+  $('supabaseUrl').value=c.url||DEFAULT_URL;
+  $('supabaseKey').value=c.key||'';
+}
+window.saveConfig=function(){
+  saveCfg({url:$('supabaseUrl').value.trim(), key:$('supabaseKey').value.trim(), savedAt:nowBR()});
+  sbClient=null;
+  setOut('configOut','Configuração salva. Agora clique em Testar conexão.');
 };
-window.addEventListener('online',updateTop);window.addEventListener('offline',updateTop);setInterval(updateTop,1000);render();
+window.clearConfig=function(){localStorage.removeItem(LS_CFG); sbClient=null; loadConfig(); setOut('configOut','Configuração limpa.');};
+window.showTab=function(tab){
+  var vs=document.querySelectorAll('.view'), ts=document.querySelectorAll('.tab'), i;
+  for(i=0;i<vs.length;i++)vs[i].classList.add('hidden');
+  for(i=0;i<ts.length;i++)ts[i].classList.remove('active');
+  $('view-'+tab).classList.remove('hidden');
+  document.querySelector('[data-tab="'+tab+'"]').classList.add('active');
+  updateBadges();
+};
+window.testSupabase=function(btn){
+  var t0=Date.now();
+  btnLock(btn,'Testando...');
+  try{
+    var sb=getClient();
+    withTimeout(sb.from('propriedades').select('id').limit(1),20000).then(function(res){
+      var ms=Date.now()-t0;
+      if(res.error) throw res.error;
+      $('cloudBadge').textContent='Supabase OK';
+      $('cloudBadge').className='badge';
+      $('kPing').textContent=ms+' ms';
+      var out={ok:true, app:APP_VERSION, supabase:'OK', tempo_ms:ms, data_hora_brasilia:nowBR()};
+      setOut('configOut',out); setOut('painelOut',out); setOut('diagOut',out);
+    }).catch(function(e){
+      $('cloudBadge').textContent='Supabase erro';
+      $('cloudBadge').className='badge err';
+      var msg=String(e.message||e);
+      var out={ok:false, erro:msg, orientacao:'Confira URL/key. Se erro for permissão/RLS, rode SUPABASE_POLICIES_DEV_TESTE_APP_COCHO.sql no SQL Editor.'};
+      setOut('configOut',out); setOut('painelOut',out); setOut('diagOut',out);
+    }).finally(function(){btnUnlock(btn); updateBadges();});
+  }catch(e){setOut('configOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);}
+};
+window.diagnostico=function(btn){
+  btnLock(btn,'Diagnosticando...');
+  var sb;
+  try{sb=getClient();}catch(e){setOut('diagOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
+  var t0=Date.now();
+  var tabelas=['propriedades','usuarios_app','produtos','estoque','lotes','cochos','areas_fazenda'];
+  var tarefas=tabelas.map(function(t){return sb.from(t).select('id',{count:'exact',head:true}).then(function(r){return [t,!r.error,r.error?r.error.message:'OK',r.count];});});
+  withTimeout(Promise.all(tarefas),30000).then(function(rows){
+    var obj={ok:true,versao:APP_VERSION,tempo_ms:Date.now()-t0,tabelas:{},data_hora_brasilia:nowBR()};
+    rows.forEach(function(r){obj.tabelas[r[0]]={ok:r[1],mensagem:r[2],count:r[3]};});
+    setOut('diagOut',obj);
+  }).catch(function(e){setOut('diagOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
+};
+window.criarPropriedade=function(btn){
+  btnLock(btn,'Criando...');
+  var sb;
+  try{sb=getClient();}catch(e){setOut('propOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
+  var nome=$('p_nome').value.trim();
+  if(!nome){setOut('propOut',{ok:false,erro:'NOME_PROPRIEDADE_OBRIGATORIO'});btnUnlock(btn);return;}
+  var dados={
+    chave_fazenda: genChave(nome),
+    nome_fazenda:nome,
+    proprietario:$('p_prop').value.trim(),
+    municipio:$('p_mun').value.trim()||'IRITUIA',
+    estado:$('p_uf').value.trim()||'PA',
+    area_ha:$('p_area').value?Number($('p_area').value):null,
+    observacoes:$('p_obs').value.trim(),
+    status_fazenda:'ATIVA',
+    pin_fazenda_mascarado:maskPin(String(Math.floor(1000+Math.random()*9000)))
+  };
+  withTimeout(sb.from('propriedades').insert(dados).select('id,chave_fazenda,nome_fazenda,proprietario,municipio,estado,status_fazenda,pin_fazenda_mascarado').single(),30000).then(function(r){
+    if(r.error) throw r.error;
+    session.propriedade=r.data; saveSession(); updateBadges();
+    setOut('propOut',{ok:true,mensagem:'Propriedade criada.',propriedade:r.data});
+    listarPropriedades();
+  }).catch(function(e){setOut('propOut',{ok:false,erro:String(e.message||e),detalhe:e});}).finally(function(){btnUnlock(btn);});
+};
+window.listarPropriedades=function(btn){
+  btnLock(btn,'Listando...');
+  var sb; try{sb=getClient();}catch(e){setOut('propOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
+  withTimeout(sb.from('propriedades').select('id,chave_fazenda,nome_fazenda,proprietario,municipio,estado,status_fazenda,pin_fazenda_mascarado,created_at').order('created_at',{ascending:false}).limit(100),30000).then(function(r){
+    if(r.error) throw r.error;
+    $('kProps').textContent=(r.data||[]).length;
+    renderProps(r.data||[]);
+    setOut('propOut',{ok:true,total:(r.data||[]).length,propriedades:r.data});
+  }).catch(function(e){setOut('propOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
+};
+function renderProps(rows){
+  var html='<table><tr><th>Propriedade</th><th>Proprietário</th><th>Município</th><th>Chave</th><th>Status</th><th>Ação</th></tr>';
+  rows.forEach(function(x){
+    html+='<tr><td>'+esc(x.nome_fazenda)+'</td><td>'+esc(x.proprietario)+'</td><td>'+esc(x.municipio)+'/'+esc(x.estado)+'</td><td>'+esc(x.chave_fazenda)+'</td><td>'+esc(x.status_fazenda)+'</td><td><button onclick="setPropAtiva(\''+x.id+'\')">Ativar</button></td></tr>';
+  });
+  html+='</table>';
+  $('propTable').innerHTML=html;
+  window._props=rows;
+}
+window.setPropAtiva=function(id){
+  var rows=window._props||[];
+  for(var i=0;i<rows.length;i++){if(rows[i].id===id){session.propriedade=rows[i];saveSession();updateBadges();setOut('propOut',{ok:true,mensagem:'Propriedade ativa definida.',propriedade:rows[i]});return;}}
+};
+function saveSession(){localStorage.setItem(LS_SESSION,JSON.stringify(session));}
+function loadSession(){try{session=JSON.parse(localStorage.getItem(LS_SESSION)||'{}')||{};}catch(e){session={};} updateBadges();}
+window.loadSession=loadSession;
+window.preencherTesteProp=function(){
+  $('p_nome').value='FAZENDA TESTE SUPABASE';
+  $('p_prop').value='TESTE PROPRIETÁRIO';
+  $('p_mun').value='IRITUIA';
+  $('p_uf').value='PA';
+  $('p_area').value='';
+  $('p_obs').value='Teste inicial da Central V6.0 Supabase';
+};
+window.preencherTesteUser=function(){
+  $('u_nome').value='MARCELO';
+  $('u_login').value='marcelo';
+  $('u_pin').value='5***';
+  $('u_perfil').value='FUNCIONARIO_CAMPO';
+};
+window.preencherTesteProduto=function(){
+  $('prod_nome').value='SAL MINERAL TESTE 01';
+  $('prod_tipo').value='SAL_MINERAL';
+  $('prod_fab').value='';
+  $('prod_un').value='SACO';
+  $('prod_kg').value='30';
+  $('prod_min').value='60';
+};
+function propRequired(outId){if(!session.propriedade || !session.propriedade.id){setOut(outId,{ok:false,erro:'PROPRIEDADE_ATIVA_OBRIGATORIA',orientacao:'Vá em Propriedades, liste e ative uma propriedade.'});return false;}return true;}
+window.criarUsuario=function(btn){
+  if(!propRequired('userOut'))return;
+  btnLock(btn,'Criando...');
+  var sb; try{sb=getClient();}catch(e){setOut('userOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
+  var dados={
+    propriedade_id:session.propriedade.id,
+    chave_fazenda:session.propriedade.chave_fazenda,
+    nome_usuario:$('u_nome').value.trim(),
+    login_usuario:$('u_login').value.trim(),
+    pin_mascarado:$('u_pin').value.trim(),
+    perfil_usuario:$('u_perfil').value,
+    status_usuario:$('u_status').value
+  };
+  if(!dados.nome_usuario || !dados.login_usuario){setOut('userOut',{ok:false,erro:'NOME_E_LOGIN_OBRIGATORIOS'});btnUnlock(btn);return;}
+  withTimeout(sb.from('usuarios_app').insert(dados).select('id,nome_usuario,login_usuario,perfil_usuario,status_usuario,pin_mascarado').single(),30000).then(function(r){
+    if(r.error) throw r.error;
+    setOut('userOut',{ok:true,mensagem:'Usuário criado.',usuario:r.data});
+    listarUsuarios();
+  }).catch(function(e){
+    var msg=String(e.message||e);
+    var dup=msg.indexOf('duplicate')>=0 || msg.indexOf('unique')>=0;
+    setOut('userOut',{ok:false,duplicado:dup,erro:dup?'LOGIN_DUPLICADO_NA_PROPRIEDADE':msg,mensagem:dup?'Já existe usuário ativo com este login nesta propriedade.':msg});
+  }).finally(function(){btnUnlock(btn);});
+};
+window.listarUsuarios=function(btn){
+  if(!propRequired('userOut'))return;
+  btnLock(btn,'Listando...');
+  var sb; try{sb=getClient();}catch(e){setOut('userOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
+  withTimeout(sb.from('usuarios_app').select('id,nome_usuario,login_usuario,perfil_usuario,pin_mascarado,status_usuario,created_at').eq('propriedade_id',session.propriedade.id).order('created_at',{ascending:true}),30000).then(function(r){
+    if(r.error) throw r.error;
+    $('kUsers').textContent=(r.data||[]).length;
+    renderUsers(r.data||[]);
+    setOut('userOut',{ok:true,total:(r.data||[]).length,usuarios:r.data});
+  }).catch(function(e){setOut('userOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
+};
+function renderUsers(rows){
+  var html='<table><tr><th>Nome</th><th>Login</th><th>Perfil</th><th>PIN</th><th>Status</th></tr>';
+  rows.forEach(function(x){html+='<tr><td>'+esc(x.nome_usuario)+'</td><td>'+esc(x.login_usuario)+'</td><td>'+esc(x.perfil_usuario)+'</td><td>'+esc(x.pin_mascarado)+'</td><td>'+esc(x.status_usuario)+'</td></tr>';});
+  html+='</table>'; $('userTable').innerHTML=html;
+}
+window.criarProduto=function(btn){
+  if(!propRequired('prodOut'))return;
+  btnLock(btn,'Criando...');
+  var sb; try{sb=getClient();}catch(e){setOut('prodOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
+  var dados={
+    propriedade_id:session.propriedade.id,
+    nome_produto:$('prod_nome').value.trim(),
+    tipo_produto:$('prod_tipo').value,
+    fabricante:$('prod_fab').value.trim(),
+    unidade_padrao:$('prod_un').value.trim()||'SACO',
+    kg_por_unidade:Number($('prod_kg').value||0),
+    saldo_minimo_kg:Number($('prod_min').value||0),
+    status_produto:'ATIVO'
+  };
+  if(!dados.nome_produto){setOut('prodOut',{ok:false,erro:'NOME_PRODUTO_OBRIGATORIO'});btnUnlock(btn);return;}
+  withTimeout(sb.from('produtos').insert(dados).select('id,nome_produto,tipo_produto,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto').single(),30000).then(function(r){
+    if(r.error) throw r.error;
+    setOut('prodOut',{ok:true,mensagem:'Produto criado.',produto:r.data});
+    listarProdutos();
+  }).catch(function(e){
+    var msg=String(e.message||e);
+    var dup=msg.indexOf('duplicate')>=0 || msg.indexOf('ux_produtos_ativos')>=0 || msg.indexOf('unique')>=0;
+    setOut('prodOut',{ok:false,duplicado:dup,erro:dup?'PRODUTO_DUPLICADO':msg,mensagem:dup?'Produto já existe nesta propriedade.':msg});
+  }).finally(function(){btnUnlock(btn);});
+};
+window.listarProdutos=function(btn){
+  if(!propRequired('prodOut'))return;
+  btnLock(btn,'Listando...');
+  var sb; try{sb=getClient();}catch(e){setOut('prodOut',{ok:false,erro:String(e.message||e)});btnUnlock(btn);return;}
+  withTimeout(sb.from('produtos').select('id,nome_produto,tipo_produto,fabricante,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto,created_at').eq('propriedade_id',session.propriedade.id).order('created_at',{ascending:false}),30000).then(function(r){
+    if(r.error) throw r.error;
+    $('kProd').textContent=(r.data||[]).length;
+    renderProdutos(r.data||[]);
+    setOut('prodOut',{ok:true,total:(r.data||[]).length,produtos:r.data});
+  }).catch(function(e){setOut('prodOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
+};
+function renderProdutos(rows){
+  var html='<table><tr><th>Produto</th><th>Tipo</th><th>Unidade</th><th>Kg/un</th><th>Mínimo kg</th><th>Status</th></tr>';
+  rows.forEach(function(x){html+='<tr><td>'+esc(x.nome_produto)+'</td><td>'+esc(x.tipo_produto)+'</td><td>'+esc(x.unidade_padrao)+'</td><td>'+esc(x.kg_por_unidade)+'</td><td>'+esc(x.saldo_minimo_kg)+'</td><td>'+esc(x.status_produto)+'</td></tr>';});
+  html+='</table>'; $('prodTable').innerHTML=html;
+}
+window.downloadLocalState=function(){
+  var data={config:cfg(),session:session,exported_at:nowBR(),app:APP_VERSION};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='app_cocho_v6_estado_local.json'; a.click();
+};
+window.addEventListener('online',updateBadges); window.addEventListener('offline',updateBadges);
+loadConfig(); loadSession(); updateBadges(); setInterval(updateBadges,10000);
 })();
 </script>
 </body>

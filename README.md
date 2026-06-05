@@ -1,22 +1,51 @@
-# APP COCHO CENTRAL V5.8.6 — Modo Leve e Cloud Otimizado
+# APP COCHO CENTRAL V6.0 SUPABASE — Fundação
 
-Compatível com SCRIPT COCHO CLOUD V2.4.5 — Modo Leve e Rotas Otimizadas.
+Esta é a primeira Central Supabase separada da linha Apps Script.
 
-## Upload GitHub Pages
-Substituir no repositório:
+## Arquivos
 - index.html
 - manifest.json
 - service-worker.js
-- README.md
+- icons/
+- SUPABASE_POLICIES_DEV_TESTE_APP_COCHO.sql
+
+## Objetivo
+Testar a fundação:
+1. Config Supabase
+2. Testar conexão
+3. Criar/Listar propriedades
+4. Ativar propriedade
+5. Criar/Listar usuários
+6. Criar/Listar produtos
+7. Bloquear produto duplicado pelo índice do banco
+
+## Antes de testar
+Você já criou as tabelas com `SUPABASE_SCHEMA_APP_COCHO_V1.sql`.
+
+Como as tabelas estão com RLS ativo, para teste inicial rode no SQL Editor:
+
+`SUPABASE_POLICIES_DEV_TESTE_APP_COCHO.sql`
+
+Atenção: essas políticas são temporárias de desenvolvimento e liberam acesso via publishable/anon key. Para produção, substituir por Supabase Auth + políticas por usuário/propriedade.
+
+## GitHub Pages
+Subir:
+- index.html
+- manifest.json
+- service-worker.js
 - icons/icon-192.png
 - icons/icon-512.png
 
-Abrir com quebra de cache:
-https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=5.8.6-modo-leve
+Mensagem de commit:
+`Cria Central Cocho V6.0 Supabase Fundação`
 
-## Teste
-1. Config Cloud → Testar conexão
-2. Acesso / Sessão → Validar login
-3. Produtos da Fazenda → Criar SAL MINERAL TESTE 01
-4. Produtos da Fazenda → Criar novamente e confirmar PRODUTO_DUPLICADO
-5. Usuários → Listar Usuários Ativos
+Abrir:
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.0.0-supabase`
+
+## Configuração
+Na Central:
+- Config Supabase
+- SUPABASE_URL: https://wxnsyozjiosbdwxpodb.supabase.co
+- SUPABASE_PUBLISHABLE_KEY: sua chave sb_publishable_...
+- Salvar Config
+- Testar conexão
