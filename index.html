@@ -6,12 +6,12 @@
 <meta name="theme-color" content="#0f5132">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cocho Central">
-<title>APP COCHO CENTRAL V5.8.5.3</title>
-<link rel="manifest" href="./manifest.json?v=5.8.5.1">
+<title>APP COCHO CENTRAL V5.8.5.4</title>
+<link rel="manifest" href="./manifest.json?v=5.8.5.4">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 
-/* V5.8.5.3 — Limpeza de duplicidade existente de usuários */
+/* V5.8.5.4 — Limpeza de duplicidade existente de usuários */
 (function(){
   function chaveUsuarios(){ return val('usr_chave') || (window.sessaoAtual && window.sessaoAtual.chave_fazenda) || val('ac_chave') || val('faz_chave'); }
   window.listarUsuariosAcesso = function(){
@@ -41,7 +41,7 @@
   };
   window.corrigirDupUsuarios = function(){
     if(!confirm('Marcar usuários duplicados antigos como DUPLICADO_INATIVO? O primeiro registro será mantido ativo e a ação ficará auditada.')) return;
-    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.3'}).then(function(r){
+    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.4'}).then(function(r){
       out('outUsuarios',r);
       if(r.ok){listarUsuariosAcesso();playSound('sucesso')} else playSound('erro')
     }).catch(function(e){out('outUsuarios',erroFetchMsg('corrigirDuplicidadesUsuarios',e));playSound('erro')});
@@ -90,7 +90,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <header>
   <div class="top">
     <div>
-      <h1>APP COCHO CENTRAL V5.8.5.3</h1>
+      <h1>APP COCHO CENTRAL V5.8.5.4</h1>
       <div class="sub">Estoque • Consumo • Lotes • Mapas • Acesso Multi-Propriedade</div>
     </div>
     <div class="badges">
@@ -168,7 +168,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
         <button class="blue" onclick="testCloud()">Testar conexão</button>
         <button class="gray" onclick="clearUrl()">Limpar</button>
       </div>
-      <div class="msg">A Central V5.8.5.2 usa Duplicidade Zero: login obrigatório, ID_OPERACAO_CLIENTE e bloqueio de clique duplo. Esperado: SCRIPT COCHO CLOUD V2.4.4.3.</div>
+      <div class="msg">A Central V5.8.5.2 usa Duplicidade Zero: login obrigatório, ID_OPERACAO_CLIENTE e bloqueio de clique duplo. Esperado: SCRIPT COCHO CLOUD V2.4.4.4.</div>
     </div>
     <div class="card c6">
       <h2>Retorno</h2>
@@ -589,14 +589,14 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
   </div>
 </section>
 
-<div class="footer">APP COCHO CENTRAL V5.8.5.3 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Login obrigatório por usuário, sessão ativa e leitura real do Script</div>
+<div class="footer">APP COCHO CENTRAL V5.8.5.4 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Login obrigatório por usuário, sessão ativa e leitura real do Script</div>
 </main>
 
 <script>
 (function(){
 'use strict';
 
-var VERSION='APP COCHO CENTRAL V5.8.5.3';
+var VERSION='APP COCHO CENTRAL V5.8.5.4';
 var LS_URL='cocho_cloud_url_v57';
 var LS_SESSION='cocho_session_v57';
 var LS_SOUND='cocho_sound_v57';
@@ -1000,14 +1000,14 @@ function boot(){
   setVal('cloudUrl',localStorage.getItem(LS_URL)||'');
   var cv=localStorage.getItem('APP_COCHO_CLOUD_VERSION')||''; if(cv&&$('cloudVersionFooter'))$('cloudVersionFooter').textContent=cv;
   var s=session(); if(s&&s.ok){renderSession(s);setVal('chave',s.chave_fazenda)} else {renderSession(null)}
-  if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js?v=5.8.5.1').catch(function(){});
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js?v=5.8.5.4').catch(function(){});
 }
 boot();
 
 })();
 
 
-/* V5.8.5.3 — Limpeza de duplicidade existente de usuários */
+/* V5.8.5.4 — Limpeza de duplicidade existente de usuários */
 (function(){
   function chaveUsuarios(){ return val('usr_chave') || (window.sessaoAtual && window.sessaoAtual.chave_fazenda) || val('ac_chave') || val('faz_chave'); }
   window.listarUsuariosAcesso = function(){
@@ -1037,7 +1037,7 @@ boot();
   };
   window.corrigirDupUsuarios = function(){
     if(!confirm('Marcar usuários duplicados antigos como DUPLICADO_INATIVO? O primeiro registro será mantido ativo e a ação ficará auditada.')) return;
-    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.3'}).then(function(r){
+    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.4'}).then(function(r){
       out('outUsuarios',r);
       if(r.ok){listarUsuariosAcesso();playSound('sucesso')} else playSound('erro')
     }).catch(function(e){out('outUsuarios',erroFetchMsg('corrigirDuplicidadesUsuarios',e));playSound('erro')});
@@ -1153,7 +1153,7 @@ boot();
 })();
 
 
-/* V5.8.5.3 — Limpeza de duplicidade existente de usuários */
+/* V5.8.5.4 — Limpeza de duplicidade existente de usuários */
 (function(){
   function chaveUsuarios(){ return val('usr_chave') || (window.sessaoAtual && window.sessaoAtual.chave_fazenda) || val('ac_chave') || val('faz_chave'); }
   window.listarUsuariosAcesso = function(){
@@ -1183,7 +1183,7 @@ boot();
   };
   window.corrigirDupUsuarios = function(){
     if(!confirm('Marcar usuários duplicados antigos como DUPLICADO_INATIVO? O primeiro registro será mantido ativo e a ação ficará auditada.')) return;
-    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.3'}).then(function(r){
+    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.4'}).then(function(r){
       out('outUsuarios',r);
       if(r.ok){listarUsuariosAcesso();playSound('sucesso')} else playSound('erro')
     }).catch(function(e){out('outUsuarios',erroFetchMsg('corrigirDuplicidadesUsuarios',e));playSound('erro')});
@@ -1252,7 +1252,7 @@ boot();
       link_central:location.href.split('#')[0],
       link_app_campo:'',
       origem_app:'CENTRAL',
-      versao_app:'APP COCHO CENTRAL V5.8.5.3',
+      versao_app:'APP COCHO CENTRAL V5.8.5.4',
       id_operacao_cliente:makeOpId()
     };
     if(!payload.nome_fazenda || !payload.proprietario || !payload.login_proprietario){
@@ -1284,7 +1284,7 @@ boot();
 })();
 
 
-/* V5.8.5.3 — Limpeza de duplicidade existente de usuários */
+/* V5.8.5.4 — Limpeza de duplicidade existente de usuários */
 (function(){
   function chaveUsuarios(){ return val('usr_chave') || (window.sessaoAtual && window.sessaoAtual.chave_fazenda) || val('ac_chave') || val('faz_chave'); }
   window.listarUsuariosAcesso = function(){
@@ -1314,10 +1314,98 @@ boot();
   };
   window.corrigirDupUsuarios = function(){
     if(!confirm('Marcar usuários duplicados antigos como DUPLICADO_INATIVO? O primeiro registro será mantido ativo e a ação ficará auditada.')) return;
-    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.3'}).then(function(r){
+    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.4'}).then(function(r){
       out('outUsuarios',r);
       if(r.ok){listarUsuariosAcesso();playSound('sucesso')} else playSound('erro')
     }).catch(function(e){out('outUsuarios',erroFetchMsg('corrigirDuplicidadesUsuarios',e));playSound('erro')});
+  };
+})();
+
+
+
+/* =========================================================
+ * HOTFIX CENTRAL V5.8.5.4 — USUÁRIOS COM ENVIO SEGURO
+ * - lista/verifica/corrige usuários com timeout;
+ * - não deixa tela presa em "Aguardando...";
+ * - mostra orientação clara se Apps Script demorar;
+ * - mantém funções aprovadas da V5.8.5.2/V5.8.5.3.
+ * ========================================================= */
+(function(){
+  var busyUsuarios={};
+  function q(id){return document.getElementById(id)}
+  function v(id){var e=q(id);return e?(e.value||'').trim():''}
+  function print(id,o){var e=q(id); if(!e)return; try{e.textContent=(typeof o==='string')?o:JSON.stringify(o,null,2)}catch(err){e.textContent=String(o)}}
+  function cloudUrl(){return (v('cloudUrl')||localStorage.getItem('APP_COCHO_CLOUD_URL')||localStorage.getItem('cocho_cloud_url')||'').trim()}
+  function chaveUsuariosSegura(){return v('usr_chave') || (window.sessaoAtual && window.sessaoAtual.chave_fazenda) || v('chave') || v('faz_chave') || v('cartao_chave')}
+  function fetchSeguroUsuarios(action,payload,timeoutMs){
+    return new Promise(function(resolve,reject){
+      var url=cloudUrl();
+      if(!url){reject(new Error('URL do Cloud não configurada. Cole a URL /exec em Config Cloud.'));return}
+      if(url.indexOf('/exec')<0){reject(new Error('URL inválida. Use a URL do Web App terminada em /exec.'));return}
+      payload=payload||{}; payload.action=action;
+      var done=false;
+      var timer=setTimeout(function(){
+        if(done)return; done=true;
+        reject(new Error('TEMPO_EXCEDIDO: o Apps Script não respondeu em '+Math.round((timeoutMs||60000)/1000)+' segundos. Atualize a tela e clique em Listar Todos para verificar se a operação foi concluída.'));
+      }, timeoutMs||60000);
+      fetch(url,{method:'POST',mode:'cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+        .then(function(r){return r.text().then(function(t){
+          if(done)return; done=true; clearTimeout(timer);
+          if(!r.ok){reject(new Error('HTTP '+r.status+': '+t));return}
+          try{resolve(JSON.parse(t))}catch(e){reject(new Error('Retorno não JSON: '+String(t).substr(0,500)))}
+        })})
+        .catch(function(e){if(done)return; done=true; clearTimeout(timer); reject(e)});
+    });
+  }
+  function bloquear(key,outId,msg){
+    if(busyUsuarios[key]){print(outId,msg||'Operação de usuários já em envio. Aguarde para evitar duplicidade.'); try{playSound&&playSound('alerta')}catch(e){} return true}
+    busyUsuarios[key]=true; return false;
+  }
+  function liberar(key){busyUsuarios[key]=false}
+  function renderUsuariosSeguro(a){
+    var rows=''; a=a||[];
+    for(var i=0;i<a.length;i++){
+      var u=a[i]||{};
+      rows+='<tr><td>'+esc(u.NOME_USUARIO||'')+'</td><td>'+esc(u.LOGIN_USUARIO||'')+'</td><td>'+esc(u.PERFIL_USUARIO||u.TIPO_USUARIO||'')+'</td><td>'+esc(u.PIN?String(u.PIN).charAt(0)+'***':'')+'</td><td>'+esc(u.STATUS_USUARIO||'')+'</td></tr>';
+    }
+    if(q('usrRows'))q('usrRows').innerHTML=rows||'<tr><td colspan="5">Sem usuários.</td></tr>';
+  }
+  window.renderUsuarios=renderUsuariosSeguro;
+  window.listarUsuariosAcesso=function(){
+    var key='listarAtivos'; if(bloquear(key,'outUsuarios'))return;
+    print('outUsuarios','Listando usuários ativos...');
+    fetchSeguroUsuarios('listarUsuariosFazenda',{chave_fazenda:chaveUsuariosSegura(), incluir_duplicados:'NAO', incluir_inativos:'NAO'},60000)
+      .then(function(r){print('outUsuarios',r); if(r&&r.ok){renderUsuariosSeguro(r.usuarios||[]); try{playSound&&playSound('sucesso')}catch(e){}} else {try{playSound&&playSound('erro')}catch(e){}}})
+      .catch(function(e){print('outUsuarios',String(e&&e.message||e)); try{playSound&&playSound('erro')}catch(er){}})
+      .then(function(){liberar(key)});
+  };
+  window.listarUsuariosTodos=function(){
+    var key='listarTodos'; if(bloquear(key,'outUsuarios'))return;
+    print('outUsuarios','Listando todos os usuários, incluindo inativos/duplicados...');
+    fetchSeguroUsuarios('listarUsuariosFazenda',{chave_fazenda:chaveUsuariosSegura(), incluir_duplicados:'SIM', incluir_inativos:'SIM'},60000)
+      .then(function(r){print('outUsuarios',r); if(r&&r.ok){renderUsuariosSeguro(r.usuarios||[]); try{playSound&&playSound('sucesso')}catch(e){}} else {try{playSound&&playSound('erro')}catch(e){}}})
+      .catch(function(e){print('outUsuarios',String(e&&e.message||e)); try{playSound&&playSound('erro')}catch(er){}})
+      .then(function(){liberar(key)});
+  };
+  window.verificarDupUsuarios=function(){
+    var key='verificarDup'; if(bloquear(key,'outUsuarios'))return;
+    print('outUsuarios','Verificando duplicidades de usuários...');
+    fetchSeguroUsuarios('verificarDuplicidadesUsuarios',{chave_fazenda:chaveUsuariosSegura()},60000)
+      .then(function(r){print('outUsuarios',r); try{playSound&&playSound((r&&r.total_grupos_duplicados)?'alerta':(r&&r.ok?'sucesso':'erro'))}catch(e){}})
+      .catch(function(e){print('outUsuarios',String(e&&e.message||e)); try{playSound&&playSound('erro')}catch(er){}})
+      .then(function(){liberar(key)});
+  };
+  window.corrigirDupUsuarios=function(){
+    if(!confirm('Marcar usuários duplicados antigos como DUPLICADO_INATIVO? O primeiro registro será mantido ativo e a ação ficará auditada.')) return;
+    var key='corrigirDup'; if(bloquear(key,'outUsuarios'))return;
+    print('outUsuarios','Corrigindo duplicidades... Aguarde. Não clique novamente.');
+    fetchSeguroUsuarios('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuariosSegura(), motivo:'Limpeza de duplicidade pela Central V5.8.5.4', origem_app:'CENTRAL', versao_app:'APP COCHO CENTRAL V5.8.5.4'},90000)
+      .then(function(r){print('outUsuarios',r); if(r&&r.ok){try{listarUsuariosAcesso()}catch(e){} try{playSound&&playSound('sucesso')}catch(e){}} else {try{playSound&&playSound('erro')}catch(e){}}})
+      .catch(function(e){
+        print('outUsuarios',String(e&&e.message||e)+'\n\nAção recomendada:\n1. Clique em Listar Todos.\n2. Confira se os duplicados viraram DUPLICADO_INATIVO.\n3. Se não corrigiu, tente novamente uma única vez.');
+        try{playSound&&playSound('erro')}catch(er){}
+      })
+      .then(function(){liberar(key)});
   };
 })();
 
