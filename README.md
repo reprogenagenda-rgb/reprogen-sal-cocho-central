@@ -1,51 +1,31 @@
-# APP COCHO CENTRAL V6.0 SUPABASE — Fundação
+# APP COCHO CENTRAL V6.0.1 SUPABASE — SW Fix
 
-Esta é a primeira Central Supabase separada da linha Apps Script.
+Correção crítica da V6.0: o Service Worker antigo podia retornar o próprio `index.html` quando uma chamada externa falhava, fazendo a Central mostrar um bloco gigante de HTML como erro do Supabase.
 
-## Arquivos
+## Subir no GitHub
+Substituir:
 - index.html
 - manifest.json
 - service-worker.js
+- README.md
 - icons/
-- SUPABASE_POLICIES_DEV_TESTE_APP_COCHO.sql
-
-## Objetivo
-Testar a fundação:
-1. Config Supabase
-2. Testar conexão
-3. Criar/Listar propriedades
-4. Ativar propriedade
-5. Criar/Listar usuários
-6. Criar/Listar produtos
-7. Bloquear produto duplicado pelo índice do banco
-
-## Antes de testar
-Você já criou as tabelas com `SUPABASE_SCHEMA_APP_COCHO_V1.sql`.
-
-Como as tabelas estão com RLS ativo, para teste inicial rode no SQL Editor:
-
-`SUPABASE_POLICIES_DEV_TESTE_APP_COCHO.sql`
-
-Atenção: essas políticas são temporárias de desenvolvimento e liberam acesso via publishable/anon key. Para produção, substituir por Supabase Auth + políticas por usuário/propriedade.
-
-## GitHub Pages
-Subir:
-- index.html
-- manifest.json
-- service-worker.js
-- icons/icon-192.png
-- icons/icon-512.png
 
 Mensagem de commit:
-`Cria Central Cocho V6.0 Supabase Fundação`
+`Corrige Service Worker da Central Cocho V6.0.1 Supabase`
 
-Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.0.0-supabase`
+Abrir com quebra de cache:
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.0.1-sw-fix`
 
-## Configuração
-Na Central:
-- Config Supabase
-- SUPABASE_URL: https://wxnsyozjiosbdwxpodb.supabase.co
-- SUPABASE_PUBLISHABLE_KEY: sua chave sb_publishable_...
-- Salvar Config
-- Testar conexão
+## Importante no Android
+Depois de subir:
+1. Feche a aba antiga.
+2. Abra a URL com `?v=6.0.1-sw-fix`.
+3. Se ainda aparecer HTML no erro, vá em Config Supabase > Limpar, salve novamente URL/key e teste.
+4. Em último caso, remova o app instalado e instale novamente, pois o service worker antigo pode estar preso no navegador.
+
+## Config Supabase
+SUPABASE_URL:
+`https://wxnsyozjiosbdwxpodb.supabase.co`
+
+SUPABASE_PUBLISHABLE_KEY:
+cole a chave completa `sb_publishable_...`

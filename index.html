@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#0f5132">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="COCHO V6">
-<title>APP COCHO CENTRAL V6.0 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=6.0.0">
+<title>APP COCHO CENTRAL V6.0.1 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=6.0.1">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
@@ -55,7 +55,7 @@ tr:hover{background:#f8fcf9}
 <header>
  <div class="top">
   <div>
-   <h1>APP COCHO CENTRAL V6.0 SUPABASE</h1>
+   <h1>APP COCHO CENTRAL V6.0.1 SUPABASE</h1>
    <div class="sub">Fundação Supabase • Propriedades • Usuários • Produtos • Duplicidade no banco</div>
   </div>
   <div class="badges">
@@ -108,7 +108,7 @@ tr:hover{background:#f8fcf9}
   <button onclick="saveConfig()">Salvar Config</button>
   <button class="blue" onclick="testSupabase()">Testar conexão</button>
   <button class="gray" onclick="clearConfig()">Limpar</button>
-  <pre id="configOut">Cole a publishable key e teste.</pre>
+  <pre id="configOut">Cole a publishable key completa e teste. V6.0.1 corrige Service Worker para não transformar erro do Supabase em HTML da Central.</pre>
  </div>
  <div class="card">
   <h3>Políticas RLS para teste</h3>
@@ -193,13 +193,13 @@ tr:hover{background:#f8fcf9}
  </div>
 </div>
 
-<div class="footer">APP COCHO CENTRAL V6.0 SUPABASE — Fundação • HTML single-file • GitHub Pages • Supabase</div>
+<div class="footer">APP COCHO CENTRAL V6.0.1 SUPABASE — Fundação • HTML single-file • GitHub Pages • Supabase</div>
 </main>
 
 <script>
 (function(){
 'use strict';
-var APP_VERSION='APP COCHO CENTRAL V6.0 SUPABASE — FUNDAÇÃO';
+var APP_VERSION='APP COCHO CENTRAL V6.0.1 SUPABASE — FUNDAÇÃO';
 var DEFAULT_URL='https://wxnsyozjiosbdwxpodb.supabase.co';
 var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
 var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
