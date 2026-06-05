@@ -1,35 +1,25 @@
-# APP COCHO CENTRAL V6.1.1 SUPABASE — Botões Fix
+# APP COCHO CENTRAL V6.3 SUPABASE — Lançamentos + Histórico por Cocho
 
 ## Objetivo
-Hotfix da V6.1. Corrige erro de JavaScript que impedia os botões de responderem.
+A Central passa a registrar o coração do sistema: qual cocho foi abastecido, produto/sal, kg colocados, operador, data/hora Brasília, GPS e histórico por cocho.
 
 ## SUPABASE — fazer agora
-Nada.
-- Rodar novo schema? NÃO.
-- Rodar policies? NÃO.
-- Alterar tabela? NÃO.
+Primeiro teste SEM rodar SQL. Rode `SQL_OPCIONAL_V6_3_LANCAMENTOS_COCHO.sql` somente se aparecer erro de coluna inexistente em `lancamentos_cocho`.
 
-## GITHUB — subir agora
-Substituir:
-- index.html
-- manifest.json
-- service-worker.js
-- README.md
-- icons/
+## GITHUB
+Substituir: index.html, manifest.json, service-worker.js, README.md, icons/ e o SQL opcional.
 
-Mensagem de commit:
-`Corrige botões da Central Cocho V6.1.1 Supabase`
+Commit: `Atualiza Central Cocho V6.3 Lancamentos Historico Cocho`
 
-Abrir com quebra de cache:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.1.1-botoes-fix`
+URL com cache: `https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.3-lancamentos-historico`
 
 ## Teste
-1. Abrir com quebra de cache.
-2. Clicar em Config Supabase.
-3. Clicar em Painel.
-4. Clicar em Testar Supabase.
-5. Clicar em Listar Propriedades.
-6. Ativar a propriedade.
-7. Listar Usuários.
-8. Listar Produtos.
-9. Abrir Base Campo e clicar Montar Base Campo.
+1. Testar Supabase.
+2. Ativar propriedade.
+3. Carregar base.
+4. Abrir Lançamentos.
+5. Preencher teste.
+6. Capturar GPS.
+7. Salvar lançamento.
+8. Listar lançamentos.
+9. Consultar Histórico.
