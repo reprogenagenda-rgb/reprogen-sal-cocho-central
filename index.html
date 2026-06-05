@@ -6,10 +6,49 @@
 <meta name="theme-color" content="#0f5132">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cocho Central">
-<title>APP COCHO CENTRAL V5.8.5.2</title>
+<title>APP COCHO CENTRAL V5.8.5.3</title>
 <link rel="manifest" href="./manifest.json?v=5.8.5.1">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+
+/* V5.8.5.3 — Limpeza de duplicidade existente de usuários */
+(function(){
+  function chaveUsuarios(){ return val('usr_chave') || (window.sessaoAtual && window.sessaoAtual.chave_fazenda) || val('ac_chave') || val('faz_chave'); }
+  window.listarUsuariosAcesso = function(){
+    req('listarUsuariosFazenda',{chave_fazenda:chaveUsuarios(), incluir_duplicados:'NAO', incluir_inativos:'NAO'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){renderUsuarios(r.usuarios||[]);playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('listarUsuariosFazenda',e));playSound('erro')});
+  };
+  window.listarUsuariosTodos = function(){
+    req('listarUsuariosFazenda',{chave_fazenda:chaveUsuarios(), incluir_duplicados:'SIM', incluir_inativos:'SIM'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){renderUsuarios(r.usuarios||[]);playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('listarUsuariosFazenda',e));playSound('erro')});
+  };
+  window.renderUsuarios = function(a){
+    var rows='';
+    for(var i=0;i<a.length;i++){
+      rows+='<tr><td>'+esc(a[i].NOME_USUARIO)+'</td><td>'+esc(a[i].LOGIN_USUARIO)+'</td><td>'+esc(a[i].PERFIL_USUARIO||a[i].TIPO_USUARIO)+'</td><td>'+esc(a[i].PIN?String(a[i].PIN).charAt(0)+'***':'')+'</td><td>'+esc(a[i].STATUS_USUARIO)+'</td></tr>'
+    }
+    $('usrRows').innerHTML=rows||'<tr><td colspan="5">Sem usuários.</td></tr>';
+  };
+  window.verificarDupUsuarios = function(){
+    req('verificarDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios()}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){playSound(r.total_grupos_duplicados?'alerta':'sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('verificarDuplicidadesUsuarios',e));playSound('erro')});
+  };
+  window.corrigirDupUsuarios = function(){
+    if(!confirm('Marcar usuários duplicados antigos como DUPLICADO_INATIVO? O primeiro registro será mantido ativo e a ação ficará auditada.')) return;
+    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.3'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){listarUsuariosAcesso();playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('corrigirDuplicidadesUsuarios',e));playSound('erro')});
+  };
+})();
+
+</script>
 
 <style>
 :root{
@@ -51,7 +90,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
 <header>
   <div class="top">
     <div>
-      <h1>APP COCHO CENTRAL V5.8.5.2</h1>
+      <h1>APP COCHO CENTRAL V5.8.5.3</h1>
       <div class="sub">Estoque • Consumo • Lotes • Mapas • Acesso Multi-Propriedade</div>
     </div>
     <div class="badges">
@@ -129,7 +168,7 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
         <button class="blue" onclick="testCloud()">Testar conexão</button>
         <button class="gray" onclick="clearUrl()">Limpar</button>
       </div>
-      <div class="msg">A Central V5.8.5.2 usa Duplicidade Zero: login obrigatório, ID_OPERACAO_CLIENTE e bloqueio de clique duplo. Esperado: SCRIPT COCHO CLOUD V2.4.4.2.</div>
+      <div class="msg">A Central V5.8.5.2 usa Duplicidade Zero: login obrigatório, ID_OPERACAO_CLIENTE e bloqueio de clique duplo. Esperado: SCRIPT COCHO CLOUD V2.4.4.3.</div>
     </div>
     <div class="card c6">
       <h2>Retorno</h2>
@@ -234,7 +273,10 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
       </select>
       <div class="row">
         <button onclick="criarUsuarioAcesso()">Criar Usuário</button>
-        <button onclick="listarUsuariosAcesso()" class="blue">Listar Usuários</button>
+        <button onclick="listarUsuariosAcesso()" class="blue">Listar Usuários Ativos</button>
+        <button onclick="listarUsuariosTodos()" class="gray">Listar Todos</button>
+        <button onclick="verificarDupUsuarios()" class="warnbtn">Verificar Duplicidades</button>
+        <button onclick="corrigirDupUsuarios()" class="gray">Corrigir Duplicidades</button>
       </div>
     </div>
     <div class="card c7">
@@ -547,14 +589,14 @@ table{border-collapse:collapse;width:100%;min-width:900px}th,td{border-bottom:1p
   </div>
 </section>
 
-<div class="footer">APP COCHO CENTRAL V5.8.5.2 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Login obrigatório por usuário, sessão ativa e leitura real do Script</div>
+<div class="footer">APP COCHO CENTRAL V5.8.5.3 — <span id="cloudVersionFooter">Cloud não confirmado</span> — Login obrigatório por usuário, sessão ativa e leitura real do Script</div>
 </main>
 
 <script>
 (function(){
 'use strict';
 
-var VERSION='APP COCHO CENTRAL V5.8.5.2';
+var VERSION='APP COCHO CENTRAL V5.8.5.3';
 var LS_URL='cocho_cloud_url_v57';
 var LS_SESSION='cocho_session_v57';
 var LS_SOUND='cocho_sound_v57';
@@ -963,6 +1005,45 @@ function boot(){
 boot();
 
 })();
+
+
+/* V5.8.5.3 — Limpeza de duplicidade existente de usuários */
+(function(){
+  function chaveUsuarios(){ return val('usr_chave') || (window.sessaoAtual && window.sessaoAtual.chave_fazenda) || val('ac_chave') || val('faz_chave'); }
+  window.listarUsuariosAcesso = function(){
+    req('listarUsuariosFazenda',{chave_fazenda:chaveUsuarios(), incluir_duplicados:'NAO', incluir_inativos:'NAO'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){renderUsuarios(r.usuarios||[]);playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('listarUsuariosFazenda',e));playSound('erro')});
+  };
+  window.listarUsuariosTodos = function(){
+    req('listarUsuariosFazenda',{chave_fazenda:chaveUsuarios(), incluir_duplicados:'SIM', incluir_inativos:'SIM'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){renderUsuarios(r.usuarios||[]);playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('listarUsuariosFazenda',e));playSound('erro')});
+  };
+  window.renderUsuarios = function(a){
+    var rows='';
+    for(var i=0;i<a.length;i++){
+      rows+='<tr><td>'+esc(a[i].NOME_USUARIO)+'</td><td>'+esc(a[i].LOGIN_USUARIO)+'</td><td>'+esc(a[i].PERFIL_USUARIO||a[i].TIPO_USUARIO)+'</td><td>'+esc(a[i].PIN?String(a[i].PIN).charAt(0)+'***':'')+'</td><td>'+esc(a[i].STATUS_USUARIO)+'</td></tr>'
+    }
+    $('usrRows').innerHTML=rows||'<tr><td colspan="5">Sem usuários.</td></tr>';
+  };
+  window.verificarDupUsuarios = function(){
+    req('verificarDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios()}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){playSound(r.total_grupos_duplicados?'alerta':'sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('verificarDuplicidadesUsuarios',e));playSound('erro')});
+  };
+  window.corrigirDupUsuarios = function(){
+    if(!confirm('Marcar usuários duplicados antigos como DUPLICADO_INATIVO? O primeiro registro será mantido ativo e a ação ficará auditada.')) return;
+    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.3'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){listarUsuariosAcesso();playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('corrigirDuplicidadesUsuarios',e));playSound('erro')});
+  };
+})();
+
 </script>
 
 <script>
@@ -1070,6 +1151,45 @@ boot();
     }catch(e){out('outSync',String(e.message||e));playSound('erro')}
   };
 })();
+
+
+/* V5.8.5.3 — Limpeza de duplicidade existente de usuários */
+(function(){
+  function chaveUsuarios(){ return val('usr_chave') || (window.sessaoAtual && window.sessaoAtual.chave_fazenda) || val('ac_chave') || val('faz_chave'); }
+  window.listarUsuariosAcesso = function(){
+    req('listarUsuariosFazenda',{chave_fazenda:chaveUsuarios(), incluir_duplicados:'NAO', incluir_inativos:'NAO'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){renderUsuarios(r.usuarios||[]);playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('listarUsuariosFazenda',e));playSound('erro')});
+  };
+  window.listarUsuariosTodos = function(){
+    req('listarUsuariosFazenda',{chave_fazenda:chaveUsuarios(), incluir_duplicados:'SIM', incluir_inativos:'SIM'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){renderUsuarios(r.usuarios||[]);playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('listarUsuariosFazenda',e));playSound('erro')});
+  };
+  window.renderUsuarios = function(a){
+    var rows='';
+    for(var i=0;i<a.length;i++){
+      rows+='<tr><td>'+esc(a[i].NOME_USUARIO)+'</td><td>'+esc(a[i].LOGIN_USUARIO)+'</td><td>'+esc(a[i].PERFIL_USUARIO||a[i].TIPO_USUARIO)+'</td><td>'+esc(a[i].PIN?String(a[i].PIN).charAt(0)+'***':'')+'</td><td>'+esc(a[i].STATUS_USUARIO)+'</td></tr>'
+    }
+    $('usrRows').innerHTML=rows||'<tr><td colspan="5">Sem usuários.</td></tr>';
+  };
+  window.verificarDupUsuarios = function(){
+    req('verificarDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios()}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){playSound(r.total_grupos_duplicados?'alerta':'sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('verificarDuplicidadesUsuarios',e));playSound('erro')});
+  };
+  window.corrigirDupUsuarios = function(){
+    if(!confirm('Marcar usuários duplicados antigos como DUPLICADO_INATIVO? O primeiro registro será mantido ativo e a ação ficará auditada.')) return;
+    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.3'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){listarUsuariosAcesso();playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('corrigirDuplicidadesUsuarios',e));playSound('erro')});
+  };
+})();
+
 </script>
 
 
@@ -1132,7 +1252,7 @@ boot();
       link_central:location.href.split('#')[0],
       link_app_campo:'',
       origem_app:'CENTRAL',
-      versao_app:'APP COCHO CENTRAL V5.8.5.2',
+      versao_app:'APP COCHO CENTRAL V5.8.5.3',
       id_operacao_cliente:makeOpId()
     };
     if(!payload.nome_fazenda || !payload.proprietario || !payload.login_proprietario){
@@ -1162,6 +1282,45 @@ boot();
     }).then(function(){ envioGerarAcesso=false; });
   };
 })();
+
+
+/* V5.8.5.3 — Limpeza de duplicidade existente de usuários */
+(function(){
+  function chaveUsuarios(){ return val('usr_chave') || (window.sessaoAtual && window.sessaoAtual.chave_fazenda) || val('ac_chave') || val('faz_chave'); }
+  window.listarUsuariosAcesso = function(){
+    req('listarUsuariosFazenda',{chave_fazenda:chaveUsuarios(), incluir_duplicados:'NAO', incluir_inativos:'NAO'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){renderUsuarios(r.usuarios||[]);playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('listarUsuariosFazenda',e));playSound('erro')});
+  };
+  window.listarUsuariosTodos = function(){
+    req('listarUsuariosFazenda',{chave_fazenda:chaveUsuarios(), incluir_duplicados:'SIM', incluir_inativos:'SIM'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){renderUsuarios(r.usuarios||[]);playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('listarUsuariosFazenda',e));playSound('erro')});
+  };
+  window.renderUsuarios = function(a){
+    var rows='';
+    for(var i=0;i<a.length;i++){
+      rows+='<tr><td>'+esc(a[i].NOME_USUARIO)+'</td><td>'+esc(a[i].LOGIN_USUARIO)+'</td><td>'+esc(a[i].PERFIL_USUARIO||a[i].TIPO_USUARIO)+'</td><td>'+esc(a[i].PIN?String(a[i].PIN).charAt(0)+'***':'')+'</td><td>'+esc(a[i].STATUS_USUARIO)+'</td></tr>'
+    }
+    $('usrRows').innerHTML=rows||'<tr><td colspan="5">Sem usuários.</td></tr>';
+  };
+  window.verificarDupUsuarios = function(){
+    req('verificarDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios()}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){playSound(r.total_grupos_duplicados?'alerta':'sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('verificarDuplicidadesUsuarios',e));playSound('erro')});
+  };
+  window.corrigirDupUsuarios = function(){
+    if(!confirm('Marcar usuários duplicados antigos como DUPLICADO_INATIVO? O primeiro registro será mantido ativo e a ação ficará auditada.')) return;
+    req('corrigirDuplicidadesUsuarios',{chave_fazenda:chaveUsuarios(), motivo:'Limpeza de duplicidade pela Central V5.8.5.3'}).then(function(r){
+      out('outUsuarios',r);
+      if(r.ok){listarUsuariosAcesso();playSound('sucesso')} else playSound('erro')
+    }).catch(function(e){out('outUsuarios',erroFetchMsg('corrigirDuplicidadesUsuarios',e));playSound('erro')});
+  };
+})();
+
 </script>
 
 </body>
