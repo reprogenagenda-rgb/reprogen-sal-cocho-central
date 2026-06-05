@@ -1,1 +1,10 @@
-{"name":"APP COCHO CENTRAL","short_name":"Cocho Central","start_url":"./index.html?v=5.8.5.5-usuarios-seguro?v=5.8.5.5-limpeza-usuarios","display":"standalone","background_color":"#eef6ef","theme_color":"#0f5132","icons":[{"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"}]}
+{
+  "name":"APP COCHO CENTRAL",
+  "short_name":"Cocho Central",
+  "start_url":"./index.html?v=5.8.6-modo-leve",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#eef6ef",
+  "theme_color":"#0f5132",
+  "icons":[{"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"}]
+}
