@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
-<title>APP COCHO CENTRAL V6.3.1 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=6.3.1.1">
+<title>APP COCHO CENTRAL V6.4.1 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=6.4.1.1">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060}
@@ -25,14 +25,14 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>APP COCHO CENTRAL V6.3.1 SUPABASE</h1><div class="sub">Lotes • Cochos GPS • Lançamentos • Histórico</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
+<header><div class="top"><div><h1>APP COCHO CENTRAL V6.4.1 SUPABASE</h1><div class="sub">Histórico GPS • Produto/operador • Dentro/Fora do Raio</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
 <button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
 </nav>
 <div class="sessionbar" id="sessionCompact"><b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button></div>
 
-<div id="view-painel" class="view"><div class="card"><h2>Painel V6.3.1 — Lançamentos + Histórico por Cocho</h2><p>Mantém a base aprovada e adiciona o registro de abastecimento: qual cocho recebeu sal/suplemento, quantos kg, operador, GPS e histórico.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
+<div id="view-painel" class="view"><div class="card"><h2>Painel V6.4.1 — Histórico aprimorado + GPS dentro/fora do raio</h2><p>Mantém a base aprovada e aprimora o histórico: nomes de cocho/produto/operador, distância GPS do lançamento até o cocho e classificação dentro/fora do raio.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
 
 <div id="view-config" class="view hidden"><div class="card"><h2>Config Supabase</h2><div class="warnbox">Use apenas Project URL e Publishable Key / anon public. Nunca cole secret key ou service_role.</div><label>SUPABASE_URL</label><input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodbf.supabase.co"><label>SUPABASE_PUBLISHABLE_KEY</label><textarea id="supabaseKey" placeholder="sb_publishable_..."></textarea><button onclick="saveConfig()">Salvar Config</button><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button class="gray" onclick="clearConfig()">Limpar</button><pre id="configOut">Cole a publishable key completa e teste.</pre></div></div>
 
@@ -103,12 +103,12 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <div id="view-campo" class="view hidden"><div class="card"><h2>Base para App Campo V1.0</h2><p class="small">Mostra o que o App Campo deverá baixar antes do serviço para funcionar offline.</p><div class="sessionbar"><b>Propriedade ativa:</b> <span id="campoPropAtiva">-</span><br><b>Chave:</b> <span id="campoChave">-</span><br><b>Última atualização:</b> <span id="campoAtualizacao">-</span></div><div class="kpirow"><div class="kpi"><b id="bcUsuarios">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="bcProdutos">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="bcLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="bcCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="bcAreas">0</b><br><span class="small">Áreas</span></div><div class="kpi"><b id="bcStatus">-</b><br><span class="small">Status</span></div></div><button class="blue" onclick="montarBaseCampo(this)">Montar Base Campo</button><button onclick="baixarBaseCampo()">Baixar JSON da Base</button><button class="gray" onclick="limparBaseCampo()">Limpar Base Local</button><pre id="campoOut">Monte a base depois de ativar uma propriedade.</pre></div></div>
 
 <div id="view-diagnostico" class="view hidden"><div class="card"><h2>Diagnóstico</h2><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button onclick="diagnostico()">Diagnóstico completo</button><button class="gray" onclick="downloadLocalState()">Baixar estado local</button><pre id="diagOut">Sem diagnóstico.</pre></div></div>
-<div class="footer">APP COCHO CENTRAL V6.3.1 SUPABASE — Botões Fix • HTML single-file • GitHub Pages • Supabase</div>
+<div class="footer">APP COCHO CENTRAL V6.4.1 SUPABASE — Botões Fix • HTML single-file • GitHub Pages • Supabase</div>
 </main>
 <script>
 (function(){
 'use strict';
-var APP_VERSION='APP COCHO CENTRAL V6.3.1 SUPABASE — BOTÕES FIX';
+var APP_VERSION='APP COCHO CENTRAL V6.4.1 SUPABASE — BOTÕES FIX';
 var DEFAULT_URL='https://wxnsyozjiosbdwxpodbf.supabase.co';
 var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
 var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
@@ -363,7 +363,7 @@ window.criarLancamento=function(btn){
     status_gps:temGps?'COM_GPS':'SEM_GPS',
     observacoes:$('lan_obs').value.trim(),
     id_operacao_cliente:$('lan_op').value.trim(),
-    origem_lancamento:'CENTRAL_V6_3_1_TESTE',
+    origem_lancamento:'CENTRAL_V6_4_1_TESTE',
     status_sync:'SINCRONIZADO'
   };
   withTimeout(getClient().from('lancamentos_cocho').insert(d).select('*').single(),30000).then(function(r){
@@ -372,7 +372,7 @@ window.criarLancamento=function(btn){
     listarLancamentos();
   }).catch(function(e){
     var m=String(e.message||e),dup=m.indexOf('duplicate')>=0||m.indexOf('unique')>=0;
-    setOut('lanOut',{ok:false,duplicado:dup,erro:dup?'OPERACAO_DUPLICADA':m,mensagem:dup?'Este lançamento já foi recebido anteriormente.':m,orientacao:'Se aparecer coluna inexistente, rode o SQL opcional da V6.3.1.'});
+    setOut('lanOut',{ok:false,duplicado:dup,erro:dup?'OPERACAO_DUPLICADA':m,mensagem:dup?'Este lançamento já foi recebido anteriormente.':m,orientacao:'Se aparecer coluna inexistente, rode o SQL opcional da V6.4.1.'});
   }).finally(function(){btnUnlock(btn);});
 };
 window.listarLancamentos=function(btn){
@@ -382,20 +382,59 @@ window.listarLancamentos=function(btn){
     if(r.error){throw r.error;}
     var rows=r.data||[];
     setTxt('kLanc',rows.length);
-    renderLancamentos(rows,'lanTable');
+    getBaseEntidades(function(ctx){renderLancamentos(rows,'lanTable',ctx);});
     setOut('lanOut',{ok:true,total:rows.length,lancamentos:rows});
   }).catch(function(e){setOut('lanOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
 };
-function nomeCochoPorId(id){
-  var arr=window._cochosLanc||[];
-  for(var i=0;i<arr.length;i++){if(arr[i].id===id){return (arr[i].nome_cocho||'')+(arr[i].codigo_cocho?' | '+arr[i].codigo_cocho:'');}}
-  return id||'';
+function getBaseEntidades(callback){
+  var pid=session.propriedade&&session.propriedade.id;
+  if(!pid){callback({cochos:[],produtos:[],usuarios:[]});return;}
+  var sb=getClient();
+  Promise.all([
+    sb.from('cochos').select('*').eq('propriedade_id',pid),
+    sb.from('produtos').select('*').eq('propriedade_id',pid),
+    sb.from('usuarios_app').select('*').eq('propriedade_id',pid)
+  ]).then(function(res){
+    callback({
+      cochos:(res[0]&&!res[0].error)?res[0].data||[]:[],
+      produtos:(res[1]&&!res[1].error)?res[1].data||[],
+      usuarios:(res[2]&&!res[2].error)?res[2].data||[]
+    });
+  }).catch(function(){callback({cochos:[],produtos:[],usuarios:[]});});
 }
-function renderLancamentos(rows,target){
-  var h='<table><tr><th>Data</th><th>Cocho</th><th>Produto</th><th>Kg</th><th>GPS</th><th>Status GPS</th><th>Operação</th><th>Obs</th></tr>';
+function mapaPorId(arr){var m={};(arr||[]).forEach(function(x){m[x.id]=x;});return m;}
+function nomeCochoObj(c){return c?((c.nome_cocho||'')+(c.codigo_cocho?' | '+c.codigo_cocho:'')):'-';}
+function nomeProdutoObj(p){return p?((p.nome_produto||'')+(p.tipo_produto?' | '+p.tipo_produto:'')):'-';}
+function nomeUsuarioObj(u){return u?((u.nome_usuario||'')+(u.login_usuario?' | '+u.login_usuario:'')):'-';}
+function rad(n){return n*Math.PI/180;}
+function distanciaMetros(lat1,lng1,lat2,lng2){
+  lat1=Number(lat1);lng1=Number(lng1);lat2=Number(lat2);lng2=Number(lng2);
+  if(!lat1||!lng1||!lat2||!lng2){return null;}
+  var R=6371000;
+  var dLat=rad(lat2-lat1), dLng=rad(lng2-lng1);
+  var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(rad(lat1))*Math.cos(rad(lat2))*Math.sin(dLng/2)*Math.sin(dLng/2);
+  var c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+  return R*c;
+}
+function classificarGpsLancamento(x,cocho){
+  var raio=(cocho&&cocho.raio_aceito_m)?Number(cocho.raio_aceito_m):50;
+  if(!x.gps_lat||!x.gps_lng){return {status:'SEM_GPS',dist:null,raio:raio};}
+  if(x.gps_precisao_m && Number(x.gps_precisao_m)>100){return {status:'GPS_IMPRECISO',dist:null,raio:raio};}
+  if(!cocho||!cocho.gps_lat||!cocho.gps_lng){return {status:'COCHO_SEM_GPS',dist:null,raio:raio};}
+  var d=distanciaMetros(cocho.gps_lat,cocho.gps_lng,x.gps_lat,x.gps_lng);
+  if(d===null){return {status:'SEM_GPS',dist:null,raio:raio};}
+  return {status:(d<=raio?'DENTRO_DO_RAIO':'FORA_DO_RAIO'),dist:d,raio:raio};
+}
+function renderLancamentos(rows,target,ctx){
+  ctx=ctx||{cochos:[],produtos:[],usuarios:[]};
+  var cochos=mapaPorId(ctx.cochos), produtos=mapaPorId(ctx.produtos), usuarios=mapaPorId(ctx.usuarios);
+  var h='<table><tr><th>Data</th><th>Cocho</th><th>Produto</th><th>Operador</th><th>Kg</th><th>GPS</th><th>Distância</th><th>Status raio</th><th>Operação</th><th>Obs</th></tr>';
   rows.forEach(function(x){
+    var c=cochos[x.cocho_id], p=produtos[x.produto_id], u=usuarios[x.usuario_id];
     var gps=(x.gps_lat&&x.gps_lng)?(x.gps_lat+', '+x.gps_lng):'SEM GPS';
-    h+='<tr><td>'+esc(x.data_hora_brasilia||x.created_at||'')+'</td><td>'+esc(nomeCochoPorId(x.cocho_id))+'</td><td>'+esc(x.produto_id||'')+'</td><td>'+esc(x.quantidade_kg||0)+'</td><td>'+esc(gps)+'</td><td>'+esc(x.status_gps||'')+'</td><td>'+esc(x.id_operacao_cliente||'')+'</td><td>'+esc(x.observacoes||'')+'</td></tr>';
+    var cls=classificarGpsLancamento(x,c);
+    var dist=cls.dist===null?'-':(cls.dist.toFixed(1)+' m');
+    h+='<tr><td>'+esc(x.data_hora_brasilia||x.created_at||'')+'</td><td>'+esc(nomeCochoObj(c)||x.cocho_id||'')+'</td><td>'+esc(nomeProdutoObj(p)||x.produto_id||'')+'</td><td>'+esc(nomeUsuarioObj(u)||x.usuario_id||'')+'</td><td>'+esc(x.quantidade_kg||0)+'</td><td>'+esc(gps)+'</td><td>'+esc(dist)+'</td><td>'+esc(cls.status)+'</td><td>'+esc(x.id_operacao_cliente||'')+'</td><td>'+esc(x.observacoes||'')+'</td></tr>';
   });
   setHTML(target,h+'</table>');
 }
@@ -408,17 +447,30 @@ window.consultarHistorico=function(btn){
   if($('hist_fim').value){q=q.lte('created_at',$('hist_fim').value+'T23:59:59');}
   withTimeout(q,30000).then(function(r){
     if(r.error){throw r.error;}
-    var rows=r.data||[],total=0,ids={},ultimo='-';
-    rows.forEach(function(x){total+=Number(x.quantidade_kg||0); if(x.cocho_id){ids[x.cocho_id]=true;}});
-    if(rows.length){ultimo=rows[0].data_hora_brasilia||rows[0].created_at||'-';}
-    setTxt('histTotalKg',total.toFixed(3).replace('.',','));
-    setTxt('histTotalLanc',rows.length);
-    setTxt('histCochos',Object.keys(ids).length);
-    setTxt('histMedia',rows.length?(total/rows.length).toFixed(3).replace('.',','):'0');
-    setTxt('histUltimo',ultimo);
-    setTxt('histStatus','OK');
-    renderLancamentos(rows,'histTable');
-    setOut('histOut',{ok:true,total_lancamentos:rows.length,total_kg:total,cochos:Object.keys(ids).length});
+    var rows=r.data||[];
+    getBaseEntidades(function(ctx){
+      var total=0,ids={},ultimo='-',dentro=0,fora=0,sem=0,impreciso=0,cochoSemGps=0;
+      var cochosMap=mapaPorId(ctx.cochos);
+      rows.forEach(function(x){
+        total+=Number(x.quantidade_kg||0);
+        if(x.cocho_id){ids[x.cocho_id]=true;}
+        var cls=classificarGpsLancamento(x,cochosMap[x.cocho_id]);
+        if(cls.status==='DENTRO_DO_RAIO'){dentro++;}
+        else if(cls.status==='FORA_DO_RAIO'){fora++;}
+        else if(cls.status==='GPS_IMPRECISO'){impreciso++;}
+        else if(cls.status==='COCHO_SEM_GPS'){cochoSemGps++;}
+        else {sem++;}
+      });
+      if(rows.length){ultimo=rows[0].data_hora_brasilia||rows[0].created_at||'-';}
+      setTxt('histTotalKg',total.toFixed(3).replace('.',','));
+      setTxt('histTotalLanc',rows.length);
+      setTxt('histCochos',Object.keys(ids).length);
+      setTxt('histMedia',rows.length?(total/rows.length).toFixed(3).replace('.',','):'0');
+      setTxt('histUltimo',ultimo);
+      setTxt('histStatus','OK');
+      renderLancamentos(rows,'histTable',ctx);
+      setOut('histOut',{ok:true,total_lancamentos:rows.length,total_kg:total,cochos:Object.keys(ids).length,gps:{dentro_do_raio:dentro,fora_do_raio:fora,sem_gps:sem,gps_impreciso:impreciso,cocho_sem_gps:cochoSemGps}});
+    });
   }).catch(function(e){setOut('histOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
 };
 
