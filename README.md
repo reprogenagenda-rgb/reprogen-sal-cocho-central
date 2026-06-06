@@ -1,32 +1,29 @@
-# APP COCHO CENTRAL V6.5 SUPABASE — Relatório por Cocho e Consumo
+# APP COCHO CENTRAL V6.5.1 SUPABASE — Consumo Animais Fix
 
-## Base preservada
-Evolução sobre a Central V6.4.2 aprovada:
-- Supabase OK
-- Propriedade ativa
-- Histórico GPS funcionando
-- Produto/operador em nome
-- Distância e status do raio
-- Compatibilidade com Campo V1.1.7
+## Diagnóstico
+A V6.5 calculou corretamente 930 kg e 8 lançamentos, mas mostrou:
+`animais_vinculados: 0`
+`kg_animal_dia: 0`
 
-## O que entrou
-Nova aba **Relatórios** com:
-- filtro por data inicial e final;
-- filtro por cocho;
-- filtro por produto;
-- total kg no período;
-- total de lançamentos;
-- cochos abastecidos;
-- animais vinculados ao lote do cocho;
-- dias analisados;
-- consumo kg/animal/dia com 4 casas decimais;
-- tabela por cocho;
-- exportação CSV.
+Isso ocorreu porque o relatório não encontrou o vínculo explícito cocho → lote/quantidade de animais.
+
+## Correção
+A V6.5.1 melhora o cálculo:
+- lê vários possíveis nomes de vínculo do cocho com lote: lote_id, id_lote, lote_atual_id, lote_vinculado_id;
+- se houver apenas 1 lote na fazenda, usa fallback seguro `FALLBACK_LOTE_UNICO`;
+- adiciona campo manual opcional `Qtd. animais manual`;
+- exibe origem dos animais e origem do lote no relatório;
+- exporta essas informações no CSV.
+
+## Como testar no banco atual
+Como a Fazenda Teste tem 1 lote e 1 cocho, o relatório deve conseguir usar fallback do lote único.
+Se ainda aparecer 0, informe manualmente `30` no campo Qtd. animais manual.
 
 ## Regra de cálculo
-`kg/animal/dia = kg total do cocho / quantidade de animais do lote vinculado / dias analisados`
+`kg/animal/dia = kg total / animais / dias`
 
-Se o cocho não tiver lote vinculado ou o lote não tiver quantidade de animais, o consumo fica `0,0000` e deve ser corrigido no cadastro.
+Exemplo:
+`930 kg / 30 animais / 1 dia = 31,0000 kg/animal/dia`
 
 ## SUPABASE
 Não precisa rodar SQL novo.
@@ -41,20 +38,10 @@ Substituir no repositório da Central:
 - icons/icon-512.png
 
 Mensagem de commit:
-`Atualiza Central Cocho V6.5 relatorio consumo`
+`Corrige consumo animais Central Cocho V6.5.1`
 
 Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.5-relatorio-consumo`
-
-## Teste
-1. Abrir Central V6.5.
-2. Testar Supabase.
-3. Ativar FAZENDA TESTE SUPABASE 01.
-4. Ir em Relatórios.
-5. Gerar relatório sem filtro.
-6. Conferir 930 kg e 8 lançamentos no banco teste.
-7. Conferir consumo kg/animal/dia.
-8. Exportar CSV.
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.5.1-consumo-animais-fix`
 
 ## Validação técnica
 JS validado com node --check: True

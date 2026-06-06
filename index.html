@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
-<title>APP COCHO CENTRAL V6.5 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=6.5">
+<title>APP COCHO CENTRAL V6.5.1 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=6.5.1">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060}
@@ -25,7 +25,7 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>APP COCHO CENTRAL V6.5 SUPABASE</h1><div class="sub">Histórico GPS • Relatório por Cocho • Consumo kg/animal/dia</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
+<header><div class="top"><div><h1>APP COCHO CENTRAL V6.5.1 SUPABASE</h1><div class="sub">Histórico GPS • Relatório por Cocho • Consumo kg/animal/dia</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
 <button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="relatorios" onclick="showTab('relatorios')">Relatórios</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
@@ -110,6 +110,7 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
       <div class="col-3"><label>Data final</label><input id="rel_fim" type="date"></div>
       <div class="col-3"><label>Cocho</label><select id="rel_cocho"><option value="">Todos os cochos</option></select></div>
       <div class="col-3"><label>Produto</label><select id="rel_produto"><option value="">Todos os produtos</option></select></div>
+      <div class="col-3"><label>Qtd. animais manual (opcional)</label><input id="rel_animais_manual" type="number" min="0" placeholder="ex.: 30"></div>
     </div>
     <button class="blue" onclick="gerarRelatorioConsumo(this)">Gerar Relatório</button>
     <button onclick="exportarRelatorioConsumoCSV()">Exportar CSV</button>
@@ -132,12 +133,12 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <div id="view-campo" class="view hidden"><div class="card"><h2>Base para App Campo V1.0</h2><p class="small">Mostra o que o App Campo deverá baixar antes do serviço para funcionar offline.</p><div class="sessionbar"><b>Propriedade ativa:</b> <span id="campoPropAtiva">-</span><br><b>Chave:</b> <span id="campoChave">-</span><br><b>Última atualização:</b> <span id="campoAtualizacao">-</span></div><div class="kpirow"><div class="kpi"><b id="bcUsuarios">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="bcProdutos">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="bcLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="bcCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="bcAreas">0</b><br><span class="small">Áreas</span></div><div class="kpi"><b id="bcStatus">-</b><br><span class="small">Status</span></div></div><button class="blue" onclick="montarBaseCampo(this)">Montar Base Campo</button><button onclick="baixarBaseCampo()">Baixar JSON da Base</button><button class="gray" onclick="limparBaseCampo()">Limpar Base Local</button><pre id="campoOut">Monte a base depois de ativar uma propriedade.</pre></div></div>
 
 <div id="view-diagnostico" class="view hidden"><div class="card"><h2>Diagnóstico</h2><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button onclick="diagnostico()">Diagnóstico completo</button><button class="gray" onclick="downloadLocalState()">Baixar estado local</button><pre id="diagOut">Sem diagnóstico.</pre></div></div>
-<div class="footer">APP COCHO CENTRAL V6.5 SUPABASE — Botões Fix • HTML single-file • GitHub Pages • Supabase</div>
+<div class="footer">APP COCHO CENTRAL V6.5.1 SUPABASE — Botões Fix • HTML single-file • GitHub Pages • Supabase</div>
 </main>
 <script>
 (function(){
 'use strict';
-var APP_VERSION='APP COCHO CENTRAL V6.5 SUPABASE — BOTÕES FIX';
+var APP_VERSION='APP COCHO CENTRAL V6.5.1 SUPABASE — BOTÕES FIX';
 var DEFAULT_URL='https://wxnsyozjiosbdwxpodbf.supabase.co';
 var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
 var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
@@ -512,6 +513,19 @@ function numeroAnimaisLote(l){
   for(var i=0;i<campos.length;i++){var n=Number(l[campos[i]]||0); if(n>0){return n;}}
   return 0;
 }
+
+function idLoteDoCocho(c){
+  if(!c){return '';}
+  return c.lote_id||c.id_lote||c.lote_atual_id||c.lote_vinculado_id||c.lote||'';
+}
+function loteDoCocho(c,lotes){
+  var lid=idLoteDoCocho(c);
+  var map=mapaPorId(lotes||[]);
+  if(lid && map[lid]){return {lote:map[lid],origem:'VINCULO_COCHO_LOTE'};}
+  if((lotes||[]).length===1){return {lote:lotes[0],origem:'FALLBACK_LOTE_UNICO'};}
+  return {lote:null,origem:'SEM_LOTE_VINCULADO'};
+}
+
 function dtLanc(x){
   var v=x.data_hora_iso||x.created_at||x.data_hora_brasilia||'';
   var d=new Date(v);
@@ -580,35 +594,35 @@ window.gerarRelatorioConsumo=function(btn){
       });
       var out=[],totalKg=0,totalLanc=0,totalAnimais=0,cochosCount=0;
       Object.keys(grupos).forEach(function(k){
-        var g=grupos[k], c=cochos[g.cocho_id], lote=c?lotes[c.lote_id]:null, animais=numeroAnimaisLote(lote);
+        var g=grupos[k], c=cochos[g.cocho_id], loteres=loteDoCocho(c,ctx.lotes), lote=loteres.lote, animaisManual=Number(($('rel_animais_manual')&&$('rel_animais_manual').value)||0), animais=animaisManual>0?animaisManual:numeroAnimaisLote(lote);
         var consumo=(animais>0&&dias>0)?(g.kg/animais/dias):0;
         totalKg+=g.kg; totalLanc+=g.lanc; cochosCount++; totalAnimais+=animais;
         var prods=Object.keys(g.produtos).map(function(pid){return nomeProdutoObj(produtos[pid]);}).join(' / ');
-        out.push({cocho:nomeCochoObj(c),lote:lote?(lote.nome_lote||''):'',animais:animais,dias:dias,kg_total:g.kg,lancamentos:g.lanc,media_kg_lanc:g.lanc?(g.kg/g.lanc):0,kg_animal_dia:consumo,produtos:prods,dentro:g.dentro,fora:g.fora,sem_gps:g.sem,gps_impreciso:g.impreciso,cocho_sem_gps:g.cocho_sem_gps});
+        out.push({cocho:nomeCochoObj(c),lote:lote?(lote.nome_lote||''):'',origem_lote:loteres.origem,animais:animais,animais_origem:(animaisManual>0?'MANUAL':(lote?'LOTE':'NAO_INFORMADO')),dias:dias,kg_total:g.kg,lancamentos:g.lanc,media_kg_lanc:g.lanc?(g.kg/g.lanc):0,kg_animal_dia:consumo,produtos:prods,dentro:g.dentro,fora:g.fora,sem_gps:g.sem,gps_impreciso:g.impreciso,cocho_sem_gps:g.cocho_sem_gps});
       });
       out.sort(function(a,b){return b.kg_total-a.kg_total;});
       _relatorioConsumoRows=out;
       var consumoMedio=(totalAnimais>0&&dias>0)?(totalKg/totalAnimais/dias):0;
       setTxt('relKgTotal',fmt3(totalKg)); setTxt('relLanc',totalLanc); setTxt('relCochos',cochosCount); setTxt('relAnimais',totalAnimais); setTxt('relDias',dias); setTxt('relConsumoMedio',fmt4(consumoMedio));
       renderRelatorioConsumo(out);
-      setOut('relOut',{ok:true,total_lancamentos:totalLanc,total_kg:totalKg,cochos:cochosCount,animais_vinculados:totalAnimais,dias_analisados:dias,kg_animal_dia:Number(consumoMedio.toFixed(4)),observacao:'Consumo usa animais do lote vinculado ao cocho. Se não houver lote/quantidade, consumo fica 0.'});
+      setOut('relOut',{ok:true,total_lancamentos:totalLanc,total_kg:totalKg,cochos:cochosCount,animais_vinculados:totalAnimais,dias_analisados:dias,kg_animal_dia:Number(consumoMedio.toFixed(4)),observacao:'Consumo usa animais do lote vinculado ao cocho. Se houver apenas 1 lote, usa fallback lote único. Também é possível informar Qtd. animais manual.'});
     });
   }).catch(function(e){setOut('relOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
 };
 function renderRelatorioConsumo(rows){
-  var h='<table><tr><th>Cocho</th><th>Lote</th><th>Animais</th><th>Dias</th><th>Kg total</th><th>Lanç.</th><th>Kg/lanç.</th><th>Kg/animal/dia</th><th>Produtos</th><th>GPS raio</th></tr>';
+  var h='<table><tr><th>Cocho</th><th>Lote</th><th>Animais</th><th>Origem</th><th>Dias</th><th>Kg total</th><th>Lanç.</th><th>Kg/lanç.</th><th>Kg/animal/dia</th><th>Produtos</th><th>GPS raio</th></tr>';
   rows.forEach(function(x){
     var gps='Dentro: '+x.dentro+' | Fora: '+x.fora+' | Sem: '+x.sem_gps+' | Impreciso: '+x.gps_impreciso;
-    h+='<tr><td>'+esc(x.cocho)+'</td><td>'+esc(x.lote||'-')+'</td><td>'+esc(x.animais)+'</td><td>'+esc(x.dias)+'</td><td>'+esc(fmt3(x.kg_total))+'</td><td>'+esc(x.lancamentos)+'</td><td>'+esc(fmt3(x.media_kg_lanc))+'</td><td><b>'+esc(fmt4(x.kg_animal_dia))+'</b></td><td>'+esc(x.produtos||'-')+'</td><td>'+esc(gps)+'</td></tr>';
+    h+='<tr><td>'+esc(x.cocho)+'</td><td>'+esc(x.lote||'-')+'</td><td>'+esc(x.animais)+'</td><td>'+esc(x.animais_origem+' / '+x.origem_lote)+'</td><td>'+esc(x.dias)+'</td><td>'+esc(fmt3(x.kg_total))+'</td><td>'+esc(x.lancamentos)+'</td><td>'+esc(fmt3(x.media_kg_lanc))+'</td><td><b>'+esc(fmt4(x.kg_animal_dia))+'</b></td><td>'+esc(x.produtos||'-')+'</td><td>'+esc(gps)+'</td></tr>';
   });
   setHTML('relTable',h+'</table>');
 }
 window.exportarRelatorioConsumoCSV=function(){
   if(!_relatorioConsumoRows||!_relatorioConsumoRows.length){setOut('relOut',{ok:false,erro:'GERAR_RELATORIO_ANTES'});return;}
-  var head=['Cocho','Lote','Animais','Dias','Kg total','Lançamentos','Kg por lançamento','Kg animal dia','Produtos','Dentro raio','Fora raio','Sem GPS','GPS impreciso','Cocho sem GPS'];
+  var head=['Cocho','Lote','Animais','Origem animais','Origem lote','Dias','Kg total','Lançamentos','Kg por lançamento','Kg animal dia','Produtos','Dentro raio','Fora raio','Sem GPS','GPS impreciso','Cocho sem GPS'];
   var linhas=[head.map(csvCell).join(';')];
   _relatorioConsumoRows.forEach(function(x){
-    linhas.push([x.cocho,x.lote,x.animais,x.dias,fmt3(x.kg_total),x.lancamentos,fmt3(x.media_kg_lanc),fmt4(x.kg_animal_dia),x.produtos,x.dentro,x.fora,x.sem_gps,x.gps_impreciso,x.cocho_sem_gps].map(csvCell).join(';'));
+    linhas.push([x.cocho,x.lote,x.animais,x.animais_origem,x.origem_lote,x.dias,fmt3(x.kg_total),x.lancamentos,fmt3(x.media_kg_lanc),fmt4(x.kg_animal_dia),x.produtos,x.dentro,x.fora,x.sem_gps,x.gps_impreciso,x.cocho_sem_gps].map(csvCell).join(';'));
   });
   var blob=new Blob([linhas.join('\n')],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');
   a.href=URL.createObjectURL(blob); a.download='relatorio_consumo_cocho_v6_5.csv'; a.click();
