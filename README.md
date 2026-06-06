@@ -1,37 +1,25 @@
-# APP COCHO CENTRAL V6.8 SUPABASE — Estoque do Produto
+# APP COCHO CENTRAL V6.8.1 SUPABASE — Estoque Cloud Fix
 
-## Base preservada
-Evolução sobre a Central V6.7 aprovada:
-- Fechamento por período.
-- Custo total e R$/animal/dia.
-- Campo V1.1.7 preservado.
-
-## O que entrou
-Nova aba **Estoque**:
-- registrar entrada de produto em kg;
-- preço R$/kg opcional na entrada;
-- ajuste positivo/negativo;
-- saídas automáticas calculadas pelos abastecimentos já sincronizados;
-- saldo por produto;
-- valor estimado do estoque;
-- alerta OK / BAIXO / ZERADO;
-- exportação CSV.
-
-## Regra
-`saldo kg = entradas kg - ajustes negativos kg - saídas por abastecimento`
-
-`valor estoque = saldo kg × preço kg`
-
-## Compatibilidade Supabase
-A versão tenta gravar em `movimentacoes_estoque`.
-Se a tabela/coluna não aceitar, salva a movimentação localmente na Central como fallback e avisa no JSON.
+## Objetivo
+Corrigir a etapa observada na V6.8: a lógica funcionou, mas a entrada ficou em fallback local. Esta versão padroniza `movimentacoes_estoque` para gravar em nuvem.
 
 ## SUPABASE
-Não precisa rodar SQL para testar.
-Para uso definitivo em nuvem, depois padronizamos a tabela `movimentacoes_estoque`.
+Para estoque 100% em nuvem, rode o arquivo:
+`SQL_OPCIONAL_V6_8_1_ESTOQUE_CLOUD_FIX.sql`
 
-## GITHUB
-Substituir no repositório da Central:
+## Teste
+1. Rodar SQL V6.8.1 no Supabase.
+2. Abrir Central V6.8.1.
+3. Ir em Estoque.
+4. Registrar entrada de 1000 kg.
+5. Ver JSON: `destino: CLOUD_SUPABASE`.
+6. Atualizar estoque.
+7. Conferir `movimentos_cloud: 1` ou mais.
+8. Saídas devem continuar 930 kg.
+9. Saldo esperado: 70 kg, se houver só uma entrada de 1000 kg.
+
+## GitHub
+Substituir:
 - index.html
 - manifest.json
 - service-worker.js
@@ -40,21 +28,9 @@ Substituir no repositório da Central:
 - icons/icon-512.png
 
 Mensagem de commit:
-`Atualiza Central Cocho V6.8 estoque produto`
+`Corrige estoque cloud Central Cocho V6.8.1`
 
 Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.8-estoque-produto`
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.8.1-estoque-cloud-fix`
 
-## Teste
-1. Abrir Central V6.8.
-2. Ativar Fazenda Teste.
-3. Ir em Estoque.
-4. Selecionar produto.
-5. Registrar entrada, exemplo: 1000 kg.
-6. Atualizar estoque.
-7. Confirmar saídas automáticas de 930 kg.
-8. Conferir saldo de 70 kg.
-9. Exportar CSV.
-
-## Validação técnica
 JS validado com node --check: True
