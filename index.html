@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
-<title>APP COCHO CENTRAL V6.4.2 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=6.4.2.1">
+<title>APP COCHO CENTRAL V6.5 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=6.5">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060}
@@ -21,18 +21,18 @@ label{display:block;font-size:12px;font-weight:900;color:#234b36;margin:4px 0}in
 button{border:0;border-radius:12px;padding:10px 12px;font-weight:900;background:var(--g2);color:#fff;margin:4px 4px 4px 0}button.blue{background:var(--b)}button.gray{background:#6c757d}button.warn{background:#f0ad00;color:#222}button.red{background:var(--r)}button:disabled{opacity:.55}
 .small{font-size:12px;color:var(--muted)}.okbox{background:#e7f6eb;border:1px solid #b8dfc1;border-radius:12px;padding:10px;margin:8px 0}.warnbox{background:#fff3cd;border:1px solid #ffe08a;border-radius:12px;padding:10px;margin:8px 0}
 pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:auto;white-space:pre-wrap;font-size:12px;min-height:44px}table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{border-bottom:1px solid #e7efe9;padding:8px;text-align:left;font-size:13px}th{background:#edf7ef;color:#1c5135;font-weight:900}
-.hidden{display:none}.footer{text-align:center;color:#607060;font-size:12px;margin:18px 0}.sessionbar{background:#dff3e5;border:1px solid #b9dfc3;border-radius:14px;padding:10px;margin:8px 0;font-size:13px}.sessionbar b{color:#0f5132}.kpirow{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}.kpi b{font-size:18px}.gpsok{color:#0f5132;font-weight:900}.gpsbad{color:#842029;font-weight:900}
+.hidden{display:none}.footer{text-align:center;color:#607060;font-size:12px;margin:18px 0}.sessionbar{background:#dff3e5;border:1px solid #b9dfc3;border-radius:14px;padding:10px;margin:8px 0;font-size:13px}.sessionbar b{color:#0f5132}.kpirow{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}.kpi b{font-size:18px}.gpsok{color:#0f5132;font-weight:900}.gpsbad{color:#842029;font-weight:900}.metricGood{color:#0f5132;font-weight:900}.metricWarn{color:#5b4300;font-weight:900}@media(max-width:700px){.kpirow{grid-template-columns:repeat(2,1fr)}th,td{font-size:12px;padding:7px}}
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>APP COCHO CENTRAL V6.4.2 SUPABASE</h1><div class="sub">Histórico GPS • Produto/operador • Dentro/Fora do Raio</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
+<header><div class="top"><div><h1>APP COCHO CENTRAL V6.5 SUPABASE</h1><div class="sub">Histórico GPS • Relatório por Cocho • Consumo kg/animal/dia</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
-<button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
+<button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="relatorios" onclick="showTab('relatorios')">Relatórios</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
 </nav>
 <div class="sessionbar" id="sessionCompact"><b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button></div>
 
-<div id="view-painel" class="view"><div class="card"><h2>Painel V6.4.2 — Histórico GPS + Botões Fix</h2><p>Mantém a base aprovada e aprimora o histórico: nomes de cocho/produto/operador, distância GPS do lançamento até o cocho e classificação dentro/fora do raio.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
+<div id="view-painel" class="view"><div class="card"><h2>Painel V6.5 — Relatório por Cocho e Consumo</h2><p>Mantém a base aprovada e acrescenta relatório por cocho, produto, período e consumo kg/animal/dia com 4 casas decimais.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
 
 <div id="view-config" class="view hidden"><div class="card"><h2>Config Supabase</h2><div class="warnbox">Use apenas Project URL e Publishable Key / anon public. Nunca cole secret key ou service_role.</div><label>SUPABASE_URL</label><input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodbf.supabase.co"><label>SUPABASE_PUBLISHABLE_KEY</label><textarea id="supabaseKey" placeholder="sb_publishable_..."></textarea><button onclick="saveConfig()">Salvar Config</button><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button class="gray" onclick="clearConfig()">Limpar</button><pre id="configOut">Cole a publishable key completa e teste.</pre></div></div>
 
@@ -98,17 +98,46 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
     </div>
   </div>
   <div class="card tablewrap"><h3>Detalhamento</h3><div id="histTable"></div></div>
+
+</div>
+
+<div id="view-relatorios" class="view hidden">
+  <div class="card">
+    <h2>Relatórios por Cocho e Consumo</h2>
+    <div class="okbox">Calcula consumo por cocho no período. O consumo kg/animal/dia usa o lote vinculado ao cocho e mostra 4 casas decimais.</div>
+    <div class="grid">
+      <div class="col-3"><label>Data inicial</label><input id="rel_ini" type="date"></div>
+      <div class="col-3"><label>Data final</label><input id="rel_fim" type="date"></div>
+      <div class="col-3"><label>Cocho</label><select id="rel_cocho"><option value="">Todos os cochos</option></select></div>
+      <div class="col-3"><label>Produto</label><select id="rel_produto"><option value="">Todos os produtos</option></select></div>
+    </div>
+    <button class="blue" onclick="gerarRelatorioConsumo(this)">Gerar Relatório</button>
+    <button onclick="exportarRelatorioConsumoCSV()">Exportar CSV</button>
+    <pre id="relOut">Sem relatório.</pre>
+  </div>
+  <div class="card">
+    <h3>Resumo do Período</h3>
+    <div class="kpirow">
+      <div class="kpi"><b id="relKgTotal">0</b><br><span class="small">Kg total</span></div>
+      <div class="kpi"><b id="relLanc">0</b><br><span class="small">Lançamentos</span></div>
+      <div class="kpi"><b id="relCochos">0</b><br><span class="small">Cochos</span></div>
+      <div class="kpi"><b id="relAnimais">0</b><br><span class="small">Animais vinculados</span></div>
+      <div class="kpi"><b id="relDias">0</b><br><span class="small">Dias analisados</span></div>
+      <div class="kpi"><b id="relConsumoMedio">0,0000</b><br><span class="small">Kg/animal/dia</span></div>
+    </div>
+  </div>
+  <div class="card tablewrap"><h3>Consumo por Cocho</h3><div id="relTable"></div></div>
 </div>
 
 <div id="view-campo" class="view hidden"><div class="card"><h2>Base para App Campo V1.0</h2><p class="small">Mostra o que o App Campo deverá baixar antes do serviço para funcionar offline.</p><div class="sessionbar"><b>Propriedade ativa:</b> <span id="campoPropAtiva">-</span><br><b>Chave:</b> <span id="campoChave">-</span><br><b>Última atualização:</b> <span id="campoAtualizacao">-</span></div><div class="kpirow"><div class="kpi"><b id="bcUsuarios">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="bcProdutos">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="bcLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="bcCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="bcAreas">0</b><br><span class="small">Áreas</span></div><div class="kpi"><b id="bcStatus">-</b><br><span class="small">Status</span></div></div><button class="blue" onclick="montarBaseCampo(this)">Montar Base Campo</button><button onclick="baixarBaseCampo()">Baixar JSON da Base</button><button class="gray" onclick="limparBaseCampo()">Limpar Base Local</button><pre id="campoOut">Monte a base depois de ativar uma propriedade.</pre></div></div>
 
 <div id="view-diagnostico" class="view hidden"><div class="card"><h2>Diagnóstico</h2><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button onclick="diagnostico()">Diagnóstico completo</button><button class="gray" onclick="downloadLocalState()">Baixar estado local</button><pre id="diagOut">Sem diagnóstico.</pre></div></div>
-<div class="footer">APP COCHO CENTRAL V6.4.2 SUPABASE — Botões Fix • HTML single-file • GitHub Pages • Supabase</div>
+<div class="footer">APP COCHO CENTRAL V6.5 SUPABASE — Botões Fix • HTML single-file • GitHub Pages • Supabase</div>
 </main>
 <script>
 (function(){
 'use strict';
-var APP_VERSION='APP COCHO CENTRAL V6.4.2 SUPABASE — BOTÕES FIX';
+var APP_VERSION='APP COCHO CENTRAL V6.5 SUPABASE — BOTÕES FIX';
 var DEFAULT_URL='https://wxnsyozjiosbdwxpodbf.supabase.co';
 var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
 var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
@@ -161,6 +190,7 @@ window.showTab=function(tab){
   document.querySelector('[data-tab="'+tab+'"]').classList.add('active');
   if(tab==='cochos'){listarLotesParaSelect();}
   if(tab==='lancamentos'||tab==='historico'){carregarSelectsLancamento();}
+  if(tab==='relatorios'){getBaseEntidades(function(ctx){montarSelectRelatorios(ctx);});}
   updateBadges();
 };
 function loadConfig(){var c=cfg();$('supabaseUrl').value=c.url||DEFAULT_URL;$('supabaseKey').value=c.key||'';}
@@ -474,6 +504,116 @@ window.consultarHistorico=function(btn){
   }).catch(function(e){setOut('histOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
 };
 
+
+var _relatorioConsumoRows=[];
+function numeroAnimaisLote(l){
+  if(!l){return 0;}
+  var campos=['quantidade_animais','qtd_animais','numero_animais','animais','quantidade','qtd'];
+  for(var i=0;i<campos.length;i++){var n=Number(l[campos[i]]||0); if(n>0){return n;}}
+  return 0;
+}
+function dtLanc(x){
+  var v=x.data_hora_iso||x.created_at||x.data_hora_brasilia||'';
+  var d=new Date(v);
+  if(!isNaN(d.getTime())){return d;}
+  return null;
+}
+function diasEntreDatas(ini,fim,rows){
+  if(ini&&fim){
+    var d1=new Date(ini+'T00:00:00'), d2=new Date(fim+'T00:00:00');
+    var n=Math.floor((d2-d1)/86400000)+1;
+    return n>0?n:1;
+  }
+  var min=null,max=null;
+  (rows||[]).forEach(function(x){var d=dtLanc(x); if(d){if(!min||d<min){min=d;} if(!max||d>max){max=d;}}});
+  if(min&&max){return Math.max(1,Math.floor((max-min)/86400000)+1);}
+  return 1;
+}
+function montarSelectRelatorios(ctx){
+  var hc='<option value="">Todos os cochos</option>';
+  (ctx.cochos||[]).forEach(function(c){hc+='<option value="'+esc(c.id)+'">'+esc(nomeCochoObj(c))+'</option>';});
+  if($('rel_cocho')&&!$('rel_cocho').dataset.loaded){$('rel_cocho').innerHTML=hc;$('rel_cocho').dataset.loaded='1';}
+  var hp='<option value="">Todos os produtos</option>';
+  (ctx.produtos||[]).forEach(function(p){hp+='<option value="'+esc(p.id)+'">'+esc(nomeProdutoObj(p))+'</option>';});
+  if($('rel_produto')&&!$('rel_produto').dataset.loaded){$('rel_produto').innerHTML=hp;$('rel_produto').dataset.loaded='1';}
+}
+function fmt4(n){return Number(n||0).toFixed(4).replace('.',',');}
+function fmt3(n){return Number(n||0).toFixed(3).replace('.',',');}
+function csvCell(v){v=(v===null||v===undefined)?'':String(v);return '"'+v.replace(/"/g,'""')+'"';}
+window.gerarRelatorioConsumo=function(btn){
+  if(!propRequired('relOut')){return;}
+  btnLock(btn,'Gerando...');
+  var sb=getClient(),pid=session.propriedade.id;
+  Promise.all([
+    sb.from('cochos').select('*').eq('propriedade_id',pid),
+    sb.from('produtos').select('*').eq('propriedade_id',pid),
+    sb.from('usuarios_app').select('*').eq('propriedade_id',pid),
+    sb.from('lotes').select('*').eq('propriedade_id',pid)
+  ]).then(function(ent){
+    var ctx={cochos:[],produtos:[],usuarios:[],lotes:[]};
+    ctx.cochos=(ent[0]&&!ent[0].error)?(ent[0].data||[]):[];
+    ctx.produtos=(ent[1]&&!ent[1].error)?(ent[1].data||[]):[];
+    ctx.usuarios=(ent[2]&&!ent[2].error)?(ent[2].data||[]):[];
+    ctx.lotes=(ent[3]&&!ent[3].error)?(ent[3].data||[]):[];
+    montarSelectRelatorios(ctx);
+    var q=sb.from('lancamentos_cocho').select('*').eq('propriedade_id',pid).order('created_at',{ascending:false}).limit(2000);
+    if($('rel_ini').value){q=q.gte('created_at',$('rel_ini').value+'T00:00:00');}
+    if($('rel_fim').value){q=q.lte('created_at',$('rel_fim').value+'T23:59:59');}
+    if($('rel_cocho').value){q=q.eq('cocho_id',$('rel_cocho').value);}
+    if($('rel_produto').value){q=q.eq('produto_id',$('rel_produto').value);}
+    return withTimeout(q,45000).then(function(r){
+      if(r.error){throw r.error;}
+      var rows=r.data||[], cochos=mapaPorId(ctx.cochos), produtos=mapaPorId(ctx.produtos), lotes=mapaPorId(ctx.lotes);
+      var dias=diasEntreDatas($('rel_ini').value,$('rel_fim').value,rows);
+      var grupos={};
+      rows.forEach(function(x){
+        var k=x.cocho_id||'SEM_COCHO';
+        if(!grupos[k]){grupos[k]={cocho_id:k,kg:0,lanc:0,produtos:{},dentro:0,fora:0,sem:0,impreciso:0,cocho_sem_gps:0};}
+        var g=grupos[k], c=cochos[x.cocho_id], cls=classificarGpsLancamento(x,c);
+        g.kg+=Number(x.quantidade_kg||0); g.lanc++;
+        if(x.produto_id){g.produtos[x.produto_id]=true;}
+        if(cls.status==='DENTRO_DO_RAIO'){g.dentro++;}
+        else if(cls.status==='FORA_DO_RAIO'){g.fora++;}
+        else if(cls.status==='GPS_IMPRECISO'){g.impreciso++;}
+        else if(cls.status==='COCHO_SEM_GPS'){g.cocho_sem_gps++;}
+        else{g.sem++;}
+      });
+      var out=[],totalKg=0,totalLanc=0,totalAnimais=0,cochosCount=0;
+      Object.keys(grupos).forEach(function(k){
+        var g=grupos[k], c=cochos[g.cocho_id], lote=c?lotes[c.lote_id]:null, animais=numeroAnimaisLote(lote);
+        var consumo=(animais>0&&dias>0)?(g.kg/animais/dias):0;
+        totalKg+=g.kg; totalLanc+=g.lanc; cochosCount++; totalAnimais+=animais;
+        var prods=Object.keys(g.produtos).map(function(pid){return nomeProdutoObj(produtos[pid]);}).join(' / ');
+        out.push({cocho:nomeCochoObj(c),lote:lote?(lote.nome_lote||''):'',animais:animais,dias:dias,kg_total:g.kg,lancamentos:g.lanc,media_kg_lanc:g.lanc?(g.kg/g.lanc):0,kg_animal_dia:consumo,produtos:prods,dentro:g.dentro,fora:g.fora,sem_gps:g.sem,gps_impreciso:g.impreciso,cocho_sem_gps:g.cocho_sem_gps});
+      });
+      out.sort(function(a,b){return b.kg_total-a.kg_total;});
+      _relatorioConsumoRows=out;
+      var consumoMedio=(totalAnimais>0&&dias>0)?(totalKg/totalAnimais/dias):0;
+      setTxt('relKgTotal',fmt3(totalKg)); setTxt('relLanc',totalLanc); setTxt('relCochos',cochosCount); setTxt('relAnimais',totalAnimais); setTxt('relDias',dias); setTxt('relConsumoMedio',fmt4(consumoMedio));
+      renderRelatorioConsumo(out);
+      setOut('relOut',{ok:true,total_lancamentos:totalLanc,total_kg:totalKg,cochos:cochosCount,animais_vinculados:totalAnimais,dias_analisados:dias,kg_animal_dia:Number(consumoMedio.toFixed(4)),observacao:'Consumo usa animais do lote vinculado ao cocho. Se não houver lote/quantidade, consumo fica 0.'});
+    });
+  }).catch(function(e){setOut('relOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
+};
+function renderRelatorioConsumo(rows){
+  var h='<table><tr><th>Cocho</th><th>Lote</th><th>Animais</th><th>Dias</th><th>Kg total</th><th>Lanç.</th><th>Kg/lanç.</th><th>Kg/animal/dia</th><th>Produtos</th><th>GPS raio</th></tr>';
+  rows.forEach(function(x){
+    var gps='Dentro: '+x.dentro+' | Fora: '+x.fora+' | Sem: '+x.sem_gps+' | Impreciso: '+x.gps_impreciso;
+    h+='<tr><td>'+esc(x.cocho)+'</td><td>'+esc(x.lote||'-')+'</td><td>'+esc(x.animais)+'</td><td>'+esc(x.dias)+'</td><td>'+esc(fmt3(x.kg_total))+'</td><td>'+esc(x.lancamentos)+'</td><td>'+esc(fmt3(x.media_kg_lanc))+'</td><td><b>'+esc(fmt4(x.kg_animal_dia))+'</b></td><td>'+esc(x.produtos||'-')+'</td><td>'+esc(gps)+'</td></tr>';
+  });
+  setHTML('relTable',h+'</table>');
+}
+window.exportarRelatorioConsumoCSV=function(){
+  if(!_relatorioConsumoRows||!_relatorioConsumoRows.length){setOut('relOut',{ok:false,erro:'GERAR_RELATORIO_ANTES'});return;}
+  var head=['Cocho','Lote','Animais','Dias','Kg total','Lançamentos','Kg por lançamento','Kg animal dia','Produtos','Dentro raio','Fora raio','Sem GPS','GPS impreciso','Cocho sem GPS'];
+  var linhas=[head.map(csvCell).join(';')];
+  _relatorioConsumoRows.forEach(function(x){
+    linhas.push([x.cocho,x.lote,x.animais,x.dias,fmt3(x.kg_total),x.lancamentos,fmt3(x.media_kg_lanc),fmt4(x.kg_animal_dia),x.produtos,x.dentro,x.fora,x.sem_gps,x.gps_impreciso,x.cocho_sem_gps].map(csvCell).join(';'));
+  });
+  var blob=new Blob([linhas.join('\n')],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='relatorio_consumo_cocho_v6_5.csv'; a.click();
+};
+
 function renderBaseCampo(b){
   b=b||{};
   setTxt('campoPropAtiva',(b.propriedade&&b.propriedade.nome_fazenda)||((session.propriedade&&session.propriedade.nome_fazenda)||'-'));
@@ -502,7 +642,7 @@ window.preencherTesteProduto=function(){$('prod_nome').value='SAL MINERAL TESTE 
 window.preencherTesteLote=function(){$('l_nome').value='LOTE TESTE 01';$('l_cat').value='VACAS';$('l_qtd').value='30';$('l_area').value='PASTO TESTE 01';$('l_status').value='ATIVO';};
 window.preencherTesteCocho=function(){$('c_nome').value='COCHO TESTE 01';$('c_codigo').value='CCH-01';$('c_tipo').value='COCHO_SAL';$('c_area').value='PASTO TESTE 01';$('c_resp').value='MARCELO';$('c_status').value='ATIVO';};
 window.diagnostico=function(){setOut('diagOut',{app:APP_VERSION,config:cfg(),session:session,data_hora_brasilia:nowBR()});};
-window.downloadLocalState=function(){var data={config:cfg(),session:session,base_campo:JSON.parse(localStorage.getItem(BASE_CAMPO_LS)||'{}'),app:APP_VERSION};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='app_cocho_v6_3_1_estado_local.json';a.click();};
+window.downloadLocalState=function(){var data={config:cfg(),session:session,base_campo:JSON.parse(localStorage.getItem(BASE_CAMPO_LS)||'{}'),app:APP_VERSION};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='app_cocho_v6_5_estado_local.json';a.click();};
 function loadSession(){try{session=JSON.parse(localStorage.getItem(LS_SESSION)||'{}')||{};}catch(e){session={};}}
 loadConfig();loadSession();updateBadges();setInterval(updateBadges,10000);window.addEventListener('online',updateBadges);window.addEventListener('offline',updateBadges);
 })();
