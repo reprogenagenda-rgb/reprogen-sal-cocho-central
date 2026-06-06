@@ -1,44 +1,35 @@
-# APP COCHO CENTRAL V6.4.1 SUPABASE — Histórico GPS Raio CORRIGIDO
+# APP COCHO CENTRAL V6.4.2 SUPABASE — Botões Fix
 
 ## Correção
-O pacote anterior de V6.4 saiu com index.html ainda marcado como V6.3.1.  
-Este pacote corrige o index.html e exibe corretamente V6.4.1.
+A V6.4.1 abriu com botões sem funcionar por erro de sintaxe JavaScript no bloco de entidades do histórico.
 
-## Base preservada
-Evolução sobre a V6.3.1 aprovada:
-- Supabase OK
-- Propriedade ativa
-- Lote
-- Cocho com GPS
-- Campo V1.0 sincronizando
-- Histórico por cocho funcionando
+Erro corrigido:
+`produtos:(res[1]&&!res[1].error)?res[1].data||[],`
 
-## O que muda
-- Histórico mostra nome do cocho, produto e operador quando possível.
-- Calcula distância entre GPS do lançamento e GPS do cocho.
-- Classifica:
-  - DENTRO_DO_RAIO
-  - FORA_DO_RAIO
-  - SEM_GPS
-  - GPS_IMPRECISO
-  - COCHO_SEM_GPS
+Agora o JavaScript foi validado com `node --check`.
 
 ## SUPABASE
-Não precisa rodar SQL novo.
+Não mexer no Supabase.
+Não rodar SQL.
+Não alterar tabela.
 
-## GITHUB
-Substituir principalmente:
+## GITHUB — subir
+Substituir:
 - index.html
 - manifest.json
 - service-worker.js
 - README.md
 
 Mensagem de commit:
-`Corrige index Central Cocho V6.4.1 Historico GPS Raio`
+`Corrige botoes Central Cocho V6.4.2`
 
 Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.4.1-corrigido`
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.4.2-botoes-fix`
 
-## Conferência
-Dentro do index.html precisa aparecer:
-`APP COCHO CENTRAL V6.4.1 SUPABASE`
+## Teste
+1. Abrir V6.4.2.
+2. Clicar em Config.
+3. Testar Supabase.
+4. Abrir Histórico.
+5. Consultar Histórico.
+6. Conferir distância e status raio.
