@@ -1,32 +1,32 @@
-# APP COCHO CENTRAL V6.5.1 SUPABASE — Consumo Animais Fix
+# APP COCHO CENTRAL V6.6 SUPABASE — Fechamento de Consumo por Período
 
-## Diagnóstico
-A V6.5 calculou corretamente 930 kg e 8 lançamentos, mas mostrou:
-`animais_vinculados: 0`
-`kg_animal_dia: 0`
+## Base preservada
+Evolução sobre a Central V6.5.1 aprovada:
+- Relatório por cocho funcionando.
+- 930 kg, 8 lançamentos, 30 animais e 31,0000 kg/animal/dia validados.
+- Campo V1.1.7 preservado.
 
-Isso ocorreu porque o relatório não encontrou o vínculo explícito cocho → lote/quantidade de animais.
+## O que entrou
+Nova aba **Fechamento**:
+- data inicial e final;
+- quantidade de animais manual opcional;
+- preço R$/kg opcional;
+- consumo mínimo e máximo para alerta;
+- kg total;
+- lançamentos;
+- kg/animal/dia;
+- custo total;
+- alerta OK / BAIXO / ALTO;
+- fechamento por produto;
+- exportação CSV.
 
-## Correção
-A V6.5.1 melhora o cálculo:
-- lê vários possíveis nomes de vínculo do cocho com lote: lote_id, id_lote, lote_atual_id, lote_vinculado_id;
-- se houver apenas 1 lote na fazenda, usa fallback seguro `FALLBACK_LOTE_UNICO`;
-- adiciona campo manual opcional `Qtd. animais manual`;
-- exibe origem dos animais e origem do lote no relatório;
-- exporta essas informações no CSV.
-
-## Como testar no banco atual
-Como a Fazenda Teste tem 1 lote e 1 cocho, o relatório deve conseguir usar fallback do lote único.
-Se ainda aparecer 0, informe manualmente `30` no campo Qtd. animais manual.
-
-## Regra de cálculo
+## Regra
 `kg/animal/dia = kg total / animais / dias`
 
-Exemplo:
-`930 kg / 30 animais / 1 dia = 31,0000 kg/animal/dia`
+`custo total = kg total * preço R$/kg`
 
 ## SUPABASE
-Não precisa rodar SQL novo.
+Não precisa rodar SQL.
 
 ## GITHUB
 Substituir no repositório da Central:
@@ -38,10 +38,20 @@ Substituir no repositório da Central:
 - icons/icon-512.png
 
 Mensagem de commit:
-`Corrige consumo animais Central Cocho V6.5.1`
+`Atualiza Central Cocho V6.6 fechamento consumo`
 
 Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.5.1-consumo-animais-fix`
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=6.6-fechamento-consumo`
+
+## Teste
+1. Abrir Central V6.6.
+2. Ativar Fazenda Teste.
+3. Ir em Fechamento.
+4. Gerar sem data e sem preço.
+5. Deve calcular 930 kg / 30 animais / 1 dia = 31,0000.
+6. Informar preço R$/kg e gerar novamente.
+7. Conferir custo total.
+8. Exportar CSV.
 
 ## Validação técnica
 JS validado com node --check: True
