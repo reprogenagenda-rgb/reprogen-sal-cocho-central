@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
-<title>APP COCHO CENTRAL V6.6 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=6.6">
+<title>APP COCHO CENTRAL V6.7 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=6.7">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060}
@@ -25,14 +25,14 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>APP COCHO CENTRAL V6.6 SUPABASE</h1><div class="sub">Histórico GPS • Fechamento por período • Consumo • Alertas</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
+<header><div class="top"><div><h1>APP COCHO CENTRAL V6.7 SUPABASE</h1><div class="sub">Histórico GPS • Fechamento • Custo por produto • R$/animal/dia</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
 <button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="relatorios" onclick="showTab('relatorios')">Relatórios</button><button class="tab" data-tab="fechamento" onclick="showTab('fechamento')">Fechamento</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
 </nav>
 <div class="sessionbar" id="sessionCompact"><b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button></div>
 
-<div id="view-painel" class="view"><div class="card"><h2>Painel V6.5 — Relatório por Cocho e Consumo</h2><p>Mantém a base aprovada e acrescenta relatório por cocho, produto, período e consumo kg/animal/dia com 4 casas decimais.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
+<div id="view-painel" class="view"><div class="card"><h2>Painel V6.7 — Custo do Produto</h2><p>Mantém a base aprovada e acrescenta preço por produto, custo total e custo R$/animal/dia no fechamento.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
 
 <div id="view-config" class="view hidden"><div class="card"><h2>Config Supabase</h2><div class="warnbox">Use apenas Project URL e Publishable Key / anon public. Nunca cole secret key ou service_role.</div><label>SUPABASE_URL</label><input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodbf.supabase.co"><label>SUPABASE_PUBLISHABLE_KEY</label><textarea id="supabaseKey" placeholder="sb_publishable_..."></textarea><button onclick="saveConfig()">Salvar Config</button><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button class="gray" onclick="clearConfig()">Limpar</button><pre id="configOut">Cole a publishable key completa e teste.</pre></div></div>
 
@@ -40,7 +40,10 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 
 <div id="view-usuarios" class="view hidden"><div class="card"><h2>Usuários da Propriedade Ativa</h2><div class="small">Propriedade ativa: <b id="u_prop_ativa">-</b></div><div class="grid"><div class="col-6"><label>Nome do usuário</label><input id="u_nome" placeholder="MARCELO"></div><div class="col-6"><label>Login</label><input id="u_login" placeholder="marcelo"></div><div class="col-4"><label>PIN</label><input id="u_pin" placeholder="5544"></div><div class="col-4"><label>Perfil</label><select id="u_perfil"><option>FUNCIONARIO_CAMPO</option><option>PROPRIETARIO</option><option>ADMIN_CONSULTORIA</option></select></div><div class="col-4"><label>Status</label><select id="u_status"><option>ATIVO</option><option>INATIVO</option></select></div></div><button onclick="criarUsuario(this)">Criar Usuário</button><button class="blue" onclick="listarUsuarios(this)">Listar Usuários</button><button class="warn" onclick="preencherTesteUser()">Preencher Teste</button><pre id="userOut">Sem operação.</pre></div><div class="card tablewrap"><h3>Usuários</h3><div id="userTable"></div></div></div>
 
-<div id="view-produtos" class="view hidden"><div class="card"><h2>Produtos da Propriedade Ativa</h2><div class="small">Propriedade ativa: <b id="pr_prop_ativa">-</b></div><div class="grid"><div class="col-6"><label>Nome do produto</label><input id="prod_nome" placeholder="SAL MINERAL TESTE 01"></div><div class="col-6"><label>Tipo</label><select id="prod_tipo"><option>SAL_MINERAL</option><option>SUPLEMENTO</option><option>CONCENTRADO</option><option>FORRAGEM</option><option>OUTRO</option></select></div><div class="col-4"><label>Fabricante</label><input id="prod_fab" placeholder="opcional"></div><div class="col-4"><label>Unidade padrão</label><input id="prod_un" value="SACO"></div><div class="col-2"><label>Kg por unidade</label><input id="prod_kg" type="number" step="0.001" value="30"></div><div class="col-2"><label>Saldo mínimo kg</label><input id="prod_min" type="number" step="0.001" value="60"></div></div><button onclick="criarProduto(this)">Criar Produto</button><button class="blue" onclick="listarProdutos(this)">Listar Produtos</button><button class="warn" onclick="preencherTesteProduto()">Preencher Teste</button><pre id="prodOut">Sem operação.</pre></div><div class="card tablewrap"><h3>Produtos</h3><div id="prodTable"></div></div></div>
+<div id="view-produtos" class="view hidden"><div class="card"><h2>Produtos da Propriedade Ativa</h2><div class="small">Propriedade ativa: <b id="pr_prop_ativa">-</b></div><div class="grid"><div class="col-6"><label>Nome do produto</label><input id="prod_nome" placeholder="SAL MINERAL TESTE 01"></div><div class="col-6"><label>Tipo</label><select id="prod_tipo"><option>SAL_MINERAL</option><option>SUPLEMENTO</option><option>CONCENTRADO</option><option>FORRAGEM</option><option>OUTRO</option></select></div><div class="col-4"><label>Fabricante</label><input id="prod_fab" placeholder="opcional"></div><div class="col-4"><label>Unidade padrão</label><input id="prod_un" value="SACO"></div><div class="col-2"><label>Kg por unidade</label><input id="prod_kg" type="number" step="0.001" value="30"></div>
+<div class="col-2"><label>Preço/unidade R$</label><input id="prod_preco_un" type="number" step="0.01" placeholder="ex.: 135"></div>
+<div class="col-2"><label>Preço/kg R$</label><input id="prod_preco_kg" type="number" step="0.0001" placeholder="auto/opcional"></div>
+<div class="col-2"><label>Saldo mínimo kg</label><input id="prod_min" type="number" step="0.001" value="60"></div></div><button onclick="criarProduto(this)">Criar Produto</button><button class="blue" onclick="listarProdutos(this)">Listar Produtos</button><button class="warn" onclick="preencherTesteProduto()">Preencher Teste</button><pre id="prodOut">Sem operação.</pre></div><div class="card tablewrap"><h3>Produtos</h3><div id="prodTable"></div></div></div>
 
 
 <div id="view-lotes" class="view hidden"><div class="card"><h2>Lotes da Propriedade Ativa</h2><div class="small">Propriedade ativa: <b id="l_prop_ativa">-</b></div><div class="grid"><div class="col-6"><label>Nome do lote</label><input id="l_nome" placeholder="LOTE TESTE 01"></div><div class="col-3"><label>Categoria</label><select id="l_cat"><option>VACAS</option><option>NOVILHAS</option><option>BEZERROS</option><option>BEZERRAS</option><option>GARROTES</option><option>OUTRO</option></select></div><div class="col-3"><label>Quantidade de animais</label><input id="l_qtd" type="number" value="0"></div><div class="col-6"><label>Área/Pasto</label><input id="l_area" placeholder="PASTO 01"></div><div class="col-6"><label>Status</label><select id="l_status"><option>ATIVO</option><option>INATIVO</option></select></div><div class="col-12"><label>Observação</label><input id="l_obs" placeholder="opcional"></div></div><button onclick="criarLote(this)">Criar Lote</button><button class="blue" onclick="listarLotes(this)">Listar Lotes</button><button class="warn" onclick="preencherTesteLote()">Preencher Teste</button><pre id="loteOut">Sem operação.</pre></div><div class="card tablewrap"><h3>Lotes</h3><div id="loteTable"></div></div></div>
@@ -156,7 +159,7 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
       <div class="kpi"><b id="fecAnimais">0</b><br><span class="small">Animais</span></div>
       <div class="kpi"><b id="fecDias">0</b><br><span class="small">Dias</span></div>
       <div class="kpi"><b id="fecConsumo">0,0000</b><br><span class="small">Kg/animal/dia</span></div>
-      <div class="kpi"><b id="fecCusto">R$ 0,00</b><br><span class="small">Custo total</span></div>
+      <div class="kpi"><b id="fecCusto">R$ 0,00</b><br><span class="small">Custo total</span></div><div class="kpi"><b id="fecCustoAnimal">R$ 0,00</b><br><span class="small">R$/animal/dia</span></div>
     </div>
   </div>
   <div class="card tablewrap"><h3>Detalhe do Fechamento</h3><div id="fecTable"></div></div>
@@ -165,12 +168,12 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <div id="view-campo" class="view hidden"><div class="card"><h2>Base para App Campo V1.0</h2><p class="small">Mostra o que o App Campo deverá baixar antes do serviço para funcionar offline.</p><div class="sessionbar"><b>Propriedade ativa:</b> <span id="campoPropAtiva">-</span><br><b>Chave:</b> <span id="campoChave">-</span><br><b>Última atualização:</b> <span id="campoAtualizacao">-</span></div><div class="kpirow"><div class="kpi"><b id="bcUsuarios">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="bcProdutos">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="bcLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="bcCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="bcAreas">0</b><br><span class="small">Áreas</span></div><div class="kpi"><b id="bcStatus">-</b><br><span class="small">Status</span></div></div><button class="blue" onclick="montarBaseCampo(this)">Montar Base Campo</button><button onclick="baixarBaseCampo()">Baixar JSON da Base</button><button class="gray" onclick="limparBaseCampo()">Limpar Base Local</button><pre id="campoOut">Monte a base depois de ativar uma propriedade.</pre></div></div>
 
 <div id="view-diagnostico" class="view hidden"><div class="card"><h2>Diagnóstico</h2><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button onclick="diagnostico()">Diagnóstico completo</button><button class="gray" onclick="downloadLocalState()">Baixar estado local</button><pre id="diagOut">Sem diagnóstico.</pre></div></div>
-<div class="footer">APP COCHO CENTRAL V6.6 SUPABASE — Botões Fix • HTML single-file • GitHub Pages • Supabase</div>
+<div class="footer">APP COCHO CENTRAL V6.7 SUPABASE — Botões Fix • HTML single-file • GitHub Pages • Supabase</div>
 </main>
 <script>
 (function(){
 'use strict';
-var APP_VERSION='APP COCHO CENTRAL V6.6 SUPABASE — BOTÕES FIX';
+var APP_VERSION='APP COCHO CENTRAL V6.7 SUPABASE — BOTÕES FIX';
 var DEFAULT_URL='https://wxnsyozjiosbdwxpodbf.supabase.co';
 var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
 var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
@@ -291,15 +294,44 @@ window.listarUsuarios=function(btn){
     if(r.error){throw r.error;}$('kUsers').textContent=(r.data||[]).length;var h='<table><tr><th>Nome</th><th>Login</th><th>Perfil</th><th>PIN</th><th>Status</th></tr>';(r.data||[]).forEach(function(x){h+='<tr><td>'+esc(x.nome_usuario)+'</td><td>'+esc(x.login_usuario)+'</td><td>'+esc(x.perfil_usuario)+'</td><td>'+esc(x.pin_mascarado)+'</td><td>'+esc(x.status_usuario)+'</td></tr>';});$('userTable').innerHTML=h+'</table>';setOut('userOut',{ok:true,total:(r.data||[]).length,usuarios:r.data});
   }).catch(function(e){setOut('userOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
 };
+
+function precoKgProduto(p){
+  if(!p){return 0;}
+  var direto=Number(p.preco_kg||p.preco_por_kg||p.valor_kg||0);
+  if(direto>0){return direto;}
+  var un=Number(p.preco_unidade||p.valor_unidade||p.preco_saco||0);
+  var kg=Number(p.kg_por_unidade||0);
+  if(un>0&&kg>0){return un/kg;}
+  return 0;
+}
+function lerPrecoProdutoForm(){
+  var kg=Number($('prod_kg').value||0);
+  var precoUn=Number(String(($('prod_preco_un')&&$('prod_preco_un').value)||'0').replace(',','.'))||0;
+  var precoKg=Number(String(($('prod_preco_kg')&&$('prod_preco_kg').value)||'0').replace(',','.'))||0;
+  if(!precoKg && precoUn>0 && kg>0){precoKg=precoUn/kg;}
+  return {preco_unidade:precoUn,preco_kg:precoKg};
+}
+
 window.criarProduto=function(btn){
   if(!propRequired('prodOut')){return;}btnLock(btn,'Criando...');
-  var d={propriedade_id:session.propriedade.id,nome_produto:$('prod_nome').value.trim(),tipo_produto:$('prod_tipo').value,fabricante:$('prod_fab').value.trim(),unidade_padrao:$('prod_un').value.trim()||'SACO',kg_por_unidade:Number($('prod_kg').value||0),saldo_minimo_kg:Number($('prod_min').value||0),status_produto:'ATIVO'};
-  withTimeout(getClient().from('produtos').insert(d).select('id,nome_produto,tipo_produto,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto').single(),30000).then(function(r){if(r.error){throw r.error;}setOut('prodOut',{ok:true,mensagem:'Produto criado.',produto:r.data});listarProdutos();}).catch(function(e){var m=String(e.message||e),dup=m.indexOf('duplicate')>=0||m.indexOf('unique')>=0;setOut('prodOut',{ok:false,duplicado:dup,erro:dup?'PRODUTO_DUPLICADO':m,mensagem:dup?'Produto já existe nesta propriedade.':m});}).finally(function(){btnUnlock(btn);});
+  var pr=lerPrecoProdutoForm();var d={propriedade_id:session.propriedade.id,nome_produto:$('prod_nome').value.trim(),tipo_produto:$('prod_tipo').value,fabricante:$('prod_fab').value.trim(),unidade_padrao:$('prod_un').value.trim()||'SACO',kg_por_unidade:Number($('prod_kg').value||0),preco_unidade:pr.preco_unidade,preco_kg:pr.preco_kg,saldo_minimo_kg:Number($('prod_min').value||0),status_produto:'ATIVO'};
+  withTimeout(getClient().from('produtos').insert(d).select('id,nome_produto,tipo_produto,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto').single(),30000).then(function(r){if(r.error){throw r.error;}setOut('prodOut',{ok:true,mensagem:'Produto criado.',produto:r.data});listarProdutos();}).catch(function(e){
+    var m=String(e.message||e),dup=m.indexOf('duplicate')>=0||m.indexOf('unique')>=0;
+    if(m.indexOf('preco_unidade')>=0||m.indexOf('preco_kg')>=0||m.indexOf('column')>=0){
+      delete d.preco_unidade; delete d.preco_kg;
+      return withTimeout(getClient().from('produtos').insert(d).select('id,nome_produto,tipo_produto,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto').single(),30000).then(function(r2){
+        if(r2.error){throw r2.error;}
+        setOut('prodOut',{ok:true,alerta:'COLUNAS_PRECO_AUSENTES_NO_SUPABASE',mensagem:'Produto criado sem salvar preço no banco. Use preço manual no fechamento ou rode SQL futuro para preço.',produto:r2.data});
+        listarProdutos();
+      });
+    }
+    setOut('prodOut',{ok:false,duplicado:dup,erro:dup?'PRODUTO_DUPLICADO':m,mensagem:dup?'Produto já existe nesta propriedade.':m});
+  }).finally(function(){btnUnlock(btn);});
 };
 window.listarProdutos=function(btn){
   if(!propRequired('prodOut')){return;}btnLock(btn,'Listando...');
-  withTimeout(getClient().from('produtos').select('id,nome_produto,tipo_produto,fabricante,unidade_padrao,kg_por_unidade,saldo_minimo_kg,status_produto,created_at').eq('propriedade_id',session.propriedade.id).order('created_at',{ascending:false}),30000).then(function(r){
-    if(r.error){throw r.error;}$('kProd').textContent=(r.data||[]).length;var h='<table><tr><th>Produto</th><th>Tipo</th><th>Unidade</th><th>Kg/un</th><th>Mínimo kg</th><th>Status</th></tr>';(r.data||[]).forEach(function(x){h+='<tr><td>'+esc(x.nome_produto)+'</td><td>'+esc(x.tipo_produto)+'</td><td>'+esc(x.unidade_padrao)+'</td><td>'+esc(x.kg_por_unidade)+'</td><td>'+esc(x.saldo_minimo_kg)+'</td><td>'+esc(x.status_produto)+'</td></tr>';});$('prodTable').innerHTML=h+'</table>';setOut('prodOut',{ok:true,total:(r.data||[]).length,produtos:r.data});
+  withTimeout(getClient().from('produtos').select('*').eq('propriedade_id',session.propriedade.id).order('created_at',{ascending:false}),30000).then(function(r){
+    if(r.error){throw r.error;}$('kProd').textContent=(r.data||[]).length;var h='<table><tr><th>Produto</th><th>Tipo</th><th>Unidade</th><th>Kg/un</th><th>R$/kg</th><th>Mínimo kg</th><th>Status</th></tr>';(r.data||[]).forEach(function(x){h+='<tr><td>'+esc(x.nome_produto)+'</td><td>'+esc(x.tipo_produto)+'</td><td>'+esc(x.unidade_padrao)+'</td><td>'+esc(x.kg_por_unidade)+'</td><td>'+esc(precoKgProduto(x).toFixed(4).replace('.',','))+'</td><td>'+esc(x.saldo_minimo_kg)+'</td><td>'+esc(x.status_produto)+'</td></tr>';});$('prodTable').innerHTML=h+'</table>';setOut('prodOut',{ok:true,total:(r.data||[]).length,produtos:r.data});
   }).catch(function(e){setOut('prodOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
 };
 
@@ -695,7 +727,7 @@ window.gerarFechamentoConsumo=function(btn){
     var dias=diasEntreDatas(ini,fim,rows);
     var cochoMap=mapaPorId(cochos), prodMap=mapaPorId(produtos);
     var animaisManual=Number($('fec_animais_manual').value||0);
-    var precoKg=Number(String($('fec_preco_kg').value||'0').replace(',','.'))||0;
+    var precoKgManual=Number(String($('fec_preco_kg').value||'0').replace(',','.'))||0;
     var min=Number(String($('fec_min').value||'0').replace(',','.'))||0;
     var max=Number(String($('fec_max').value||'0').replace(',','.'))||0;
     var grupos={};
@@ -721,7 +753,7 @@ window.gerarFechamentoConsumo=function(btn){
     var out=[];
     Object.keys(grupos).forEach(function(k){
       var g=grupos[k], consumo=(totalAnimais>0&&dias>0)?(g.kg/totalAnimais/dias):0;
-      var custo=precoKg>0?g.kg*precoKg:0;
+      var pk=precoKgManual>0?precoKgManual:precoKgProduto(prodMap[g.produto_id]); var custo=pk>0?g.kg*pk:0;
       var al=alertaConsumo(consumo,min,max);
       totalKg+=g.kg; totalLanc+=g.lanc;
       out.push({produto:nomeProdutoObj(prodMap[g.produto_id]),kg:g.kg,lancamentos:g.lanc,cochos:Object.keys(g.cochos).length,animais:totalAnimais,dias:dias,kg_animal_dia:consumo,custo:custo,alerta:al,dentro:g.dentro,fora:g.fora,sem:g.sem});
@@ -729,18 +761,20 @@ window.gerarFechamentoConsumo=function(btn){
     out.sort(function(a,b){return b.kg-a.kg;});
     _fechamentoRows=out;
     var consumoGeral=(totalAnimais>0&&dias>0)?(totalKg/totalAnimais/dias):0;
+    var custoTotal=0; out.forEach(function(x){custoTotal+=Number(x.custo||0);});
+    var custoAnimalDia=(totalAnimais>0&&dias>0)?(custoTotal/totalAnimais/dias):0;
     setTxt('fecKg',fmt3(totalKg));
     setTxt('fecLanc',totalLanc);
     setTxt('fecAnimais',totalAnimais);
     setTxt('fecDias',dias);
     setTxt('fecConsumo',fmt4(consumoGeral));
-    setTxt('fecCusto',moneyBR(precoKg>0?totalKg*precoKg:0));
+    setTxt('fecCusto',moneyBR(custoTotal)); setTxt('fecCustoAnimal',moneyBR(custoAnimalDia));
     renderFechamento(out);
-    setOut('fecOut',{ok:true,total_kg:totalKg,total_lancamentos:totalLanc,animais:totalAnimais,origem_animais:origemAnimais,dias:dias,kg_animal_dia:Number(consumoGeral.toFixed(4)),custo_total:precoKg>0?Number((totalKg*precoKg).toFixed(2)):0,alerta:alertaConsumo(consumoGeral,min,max)});
+    setOut('fecOut',{ok:true,total_kg:totalKg,total_lancamentos:totalLanc,animais:totalAnimais,origem_animais:origemAnimais,dias:dias,kg_animal_dia:Number(consumoGeral.toFixed(4)),custo_total:Number(custoTotal.toFixed(2)),custo_animal_dia:Number(custoAnimalDia.toFixed(2)),alerta:alertaConsumo(consumoGeral,min,max)});
   }).catch(function(e){setOut('fecOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
 };
 function renderFechamento(rows){
-  var h='<table><tr><th>Produto</th><th>Kg</th><th>Lanç.</th><th>Cochos</th><th>Animais</th><th>Dias</th><th>Kg/animal/dia</th><th>Custo</th><th>Alerta</th><th>GPS</th></tr>';
+  var h='<table><tr><th>Produto</th><th>Kg</th><th>Lanç.</th><th>Cochos</th><th>Animais</th><th>Dias</th><th>Kg/animal/dia</th><th>Custo</th><th>R$/animal/dia</th><th>Alerta</th><th>GPS</th></tr>';
   rows.forEach(function(x){
     h+='<tr><td>'+esc(x.produto||'-')+'</td><td>'+esc(fmt3(x.kg))+'</td><td>'+esc(x.lancamentos)+'</td><td>'+esc(x.cochos)+'</td><td>'+esc(x.animais)+'</td><td>'+esc(x.dias)+'</td><td><b>'+esc(fmt4(x.kg_animal_dia))+'</b></td><td>'+esc(moneyBR(x.custo))+'</td><td><b class="'+classeAlerta(x.alerta)+'">'+esc(x.alerta)+'</b></td><td>'+esc('Dentro: '+x.dentro+' | Fora: '+x.fora+' | Sem: '+x.sem)+'</td></tr>';
   });
@@ -748,10 +782,10 @@ function renderFechamento(rows){
 }
 window.exportarFechamentoCSV=function(){
   if(!_fechamentoRows||!_fechamentoRows.length){setOut('fecOut',{ok:false,erro:'GERAR_FECHAMENTO_ANTES'});return;}
-  var head=['Produto','Kg','Lancamentos','Cochos','Animais','Dias','Kg animal dia','Custo','Alerta','Dentro raio','Fora raio','Sem GPS'];
+  var head=['Produto','Kg','Lancamentos','Cochos','Animais','Dias','Kg animal dia','Custo','R$ animal dia','Alerta','Dentro raio','Fora raio','Sem GPS'];
   var linhas=[head.map(csvCell).join(';')];
   _fechamentoRows.forEach(function(x){
-    linhas.push([x.produto,fmt3(x.kg),x.lancamentos,x.cochos,x.animais,x.dias,fmt4(x.kg_animal_dia),moneyBR(x.custo),x.alerta,x.dentro,x.fora,x.sem].map(csvCell).join(';'));
+    linhas.push([x.produto,fmt3(x.kg),x.lancamentos,x.cochos,x.animais,x.dias,fmt4(x.kg_animal_dia),moneyBR(x.custo),moneyBR((x.animais>0&&x.dias>0)?(x.custo/x.animais/x.dias):0),x.alerta,x.dentro,x.fora,x.sem].map(csvCell).join(';'));
   });
   var blob=new Blob([linhas.join('\n')],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');
   a.href=URL.createObjectURL(blob); a.download='fechamento_consumo_cocho_v6_6.csv'; a.click();
