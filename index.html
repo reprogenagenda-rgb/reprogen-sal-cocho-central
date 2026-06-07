@@ -28,7 +28,7 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <header><div class="top"><div><h1>APP COCHO CENTRAL V6.9 SUPABASE</h1><div class="sub">Histórico GPS • Relatório Gerencial • Consumo • Custo • Estoque • GPS</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
-<button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="estoque" onclick="showTab('estoque')">Estoque</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="relatorios" onclick="showTab('relatorios')">Relatórios</button><button class="tab" data-tab="fechamento" onclick="showTab('fechamento')">Fechamento</button><button class="tab" data-tab="gerencial" onclick="showTab('gerencial')">Gerencial</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
+<button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="estoque" onclick="showTab('estoque')">Estoque</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="cochosprov" onclick="showTab('cochosprov')">Cochos Provisórios</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="relatorios" onclick="showTab('relatorios')">Relatórios</button><button class="tab" data-tab="fechamento" onclick="showTab('fechamento')">Fechamento</button><button class="tab" data-tab="gerencial" onclick="showTab('gerencial')">Gerencial</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
 </nav>
 <div class="sessionbar" id="sessionCompact"><b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button></div>
 
@@ -80,6 +80,22 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 
 <div id="view-cochos" class="view hidden"><div class="card"><h2>Cochos com GPS</h2><div class="small">Propriedade ativa: <b id="c_prop_ativa">-</b></div><div class="grid"><div class="col-6"><label>Nome do cocho</label><input id="c_nome" placeholder="COCHO TESTE 01"></div><div class="col-3"><label>Código</label><input id="c_codigo" placeholder="CCH-01"></div><div class="col-3"><label>Tipo</label><select id="c_tipo"><option>COCHO_SAL</option><option>COCHO_MINERAL</option><option>COCHO_PROTEINADO</option><option>COCHO_RACAO</option><option>BEBEDOURO</option><option>OUTRO</option></select></div><div class="col-6"><label>Lote vinculado</label><select id="c_lote"><option value="">Sem lote</option></select></div><div class="col-6"><label>Área/Pasto</label><input id="c_area" placeholder="PASTO 01"></div><div class="col-4"><label>Latitude</label><input id="c_lat" placeholder="-1.234567"></div><div class="col-4"><label>Longitude</label><input id="c_lng" placeholder="-47.123456"></div><div class="col-4"><label>Precisão GPS (m)</label><input id="c_acc" placeholder="opcional"></div><div class="col-6"><label>Responsável GPS</label><input id="c_resp" placeholder="MARCELO"></div><div class="col-6"><label>Status</label><select id="c_status"><option>ATIVO</option><option>INATIVO</option></select></div><div class="col-12"><label>Observação</label><input id="c_obs" placeholder="opcional"></div></div><button class="blue" onclick="capturarGPSCocho(this)">Capturar GPS atual</button><button onclick="criarCocho(this)">Criar Cocho</button><button class="blue" onclick="listarCochos(this)">Listar Cochos</button><button class="warn" onclick="preencherTesteCocho()">Preencher Teste</button><pre id="cochoOut">Sem operação.</pre></div><div class="card tablewrap"><h3>Cochos</h3><div id="cochoTable"></div></div></div>
 
+<div id="view-cochosprov" class="view hidden">
+<div class="card"><h2>Confirmar Cochos Provisórios</h2><div class="okbox">Cochos provisórios vêm do Campo. A Central revisa, confirma, ou marca possível duplicidade.</div><button class="blue" onclick="listarCochosProvisorios(this)">Listar Provisórios</button><button onclick="limparEditorCochoProv()">Limpar editor</button><pre id="provOut">Sem consulta.</pre></div>
+<div class="card tablewrap"><h3>Provisórios encontrados</h3><div id="provTable"></div></div>
+<div class="card"><h3>Revisar e confirmar</h3><div class="grid">
+<div class="col-6"><label>ID provisório</label><input id="prov_id" readonly></div>
+<div class="col-3"><label>Distância oficial próximo</label><input id="prov_dist" readonly></div>
+<div class="col-3"><label>Status revisão</label><input id="prov_status" readonly></div>
+<div class="col-6"><label>Nome oficial</label><input id="prov_nome_oficial" placeholder="COCHO PASTO 02"></div>
+<div class="col-3"><label>Código oficial</label><input id="prov_codigo_oficial" placeholder="CCH-02"></div>
+<div class="col-3"><label>Lote vinculado</label><select id="prov_lote_oficial"><option value="">Sem lote</option></select></div>
+<div class="col-3"><label>Latitude</label><input id="prov_lat" readonly></div>
+<div class="col-3"><label>Longitude</label><input id="prov_lng" readonly></div>
+<div class="col-3"><label>Precisão GPS</label><input id="prov_acc" readonly></div>
+<div class="col-3"><label>Raio aceito m</label><input id="prov_raio" type="number" value="50"></div>
+<div class="col-12"><label>Observação</label><input id="prov_obs_confirm" placeholder="confirmado pela Central"></div>
+</div><button class="blue" onclick="confirmarCochoProvisorio(this)">Confirmar como cocho oficial</button><button class="warn" onclick="marcarProvisorioDuplicado(this)">Marcar possível duplicado</button></div></div>
 
 <div id="view-lancamentos" class="view hidden">
   <div class="card">
@@ -286,6 +302,7 @@ window.showTab=function(tab){
   $('view-'+tab).classList.remove('hidden');
   document.querySelector('[data-tab="'+tab+'"]').classList.add('active');
   if(tab==='cochos'){listarLotesParaSelect();}
+  if(tab==='cochosprov'){carregarLotesConfirmacao();}
   if(tab==='estoque'){carregarSelectEstoque();}
   if(tab==='lancamentos'||tab==='historico'){carregarSelectsLancamento();}
   if(tab==='relatorios'){getBaseEntidades(function(ctx){montarSelectRelatorios(ctx);});}
@@ -575,17 +592,61 @@ window.capturarGPSCocho=function(btn){
   },function(err){setOut('cochoOut',{ok:false,erro:'GPS_FALHOU',codigo:err.code,mensagem:err.message,orientacao:'Permita localização no navegador ou digite latitude/longitude manualmente.'}); btnUnlock(btn);},{enableHighAccuracy:true,timeout:20000,maximumAge:0});
 };
 window.criarCocho=function(btn){
-  if(!propRequired('cochoOut')){return;} btnLock(btn,'Criando...'); var lat=$('c_lat').value.trim(),lng=$('c_lng').value.trim();
-  var d={propriedade_id:session.propriedade.id,nome_cocho:$('c_nome').value.trim(),codigo_cocho:$('c_codigo').value.trim(),tipo_cocho:$('c_tipo').value,lote_id:$('c_lote').value||null,area_pasto:$('c_area').value.trim(),gps_lat:lat?Number(lat):null,gps_lng:lng?Number(lng):null,gps_precisao_m:$('c_acc').value?Number($('c_acc').value):null,gps_data_hora:new Date().toISOString(),responsavel_gps:$('c_resp').value.trim(),status_cocho:$('c_status').value,observacoes:$('c_obs').value.trim(),raio_aceito_m:50};
-  if(!d.nome_cocho){setOut('cochoOut',{ok:false,erro:'NOME_COCHO_OBRIGATORIO'});btnUnlock(btn);return;} if(d.gps_lat===null||d.gps_lng===null){setOut('cochoOut',{ok:false,erro:'GPS_OBRIGATORIO_OU_DIGITAR_COORDENADAS'});btnUnlock(btn);return;}
-  withTimeout(getClient().from('cochos').insert(d).select('*').single(),30000).then(function(r){if(r.error){throw r.error;} setOut('cochoOut',{ok:true,mensagem:'Cocho criado com GPS.',cocho:r.data}); listarCochos();}).catch(function(e){setOut('cochoOut',{ok:false,erro:String(e.message||e),orientacao:'Se aparecer coluna inexistente, rode o SQL opcional da V6.2.'});}).finally(function(){btnUnlock(btn);});
+  if(!propRequired('cochoOut')){return;}
+  btnLock(btn,'Criando...');
+  var d=montarPayloadCocho();
+  if(!d.nome_cocho){setOut('cochoOut',{ok:false,erro:'NOME_COCHO_OBRIGATORIO'});btnUnlock(btn);return;}
+  if(d.gps_lat===null||d.gps_lng===null){setOut('cochoOut',{ok:false,erro:'GPS_DO_COCHO_OBRIGATORIO',mensagem:'O GPS do cocho é obrigatório porque ele é o ponto físico fixo. Foto e dimensões são opcionais.'});btnUnlock(btn);return;}
+  withTimeout(getClient().from('cochos').insert(d).select('*').single(),30000).then(function(r){
+    if(r.error){throw r.error;}
+    setOut('cochoOut',{ok:true,mensagem:'Cocho criado com GPS e cadastro técnico.',cocho:r.data});
+    listarCochos();
+  }).catch(function(e){
+    var msg=String(e.message||e);
+    if(msg.indexOf('comprimento_m')>=0||msg.indexOf('largura_boca_m')>=0||msg.indexOf('area_boca_m2')>=0||msg.indexOf('foto_')>=0||msg.indexOf('column')>=0){
+      var basic=payloadCochoBasico(d);
+      return withTimeout(getClient().from('cochos').insert(basic).select('*').single(),30000).then(function(r2){
+        if(r2.error){throw r2.error;}
+        setOut('cochoOut',{ok:true,alerta:'COLUNAS_TECNICAS_AUSENTES',mensagem:'Cocho criado com GPS obrigatório. Foto/dimensões não foram salvas no Supabase porque faltam colunas técnicas. Rode SQL V7.0 quando quiser persistir esses campos.',cocho:r2.data,cadastro_tecnico_local:{comprimento_m:d.comprimento_m,largura_boca_m:d.largura_boca_m,area_boca_m2:d.area_boca_m2,foto_nome:d.foto_nome}});
+        listarCochos();
+      });
+    }
+    setOut('cochoOut',{ok:false,erro:msg,orientacao:'GPS é obrigatório. Se a falha for coluna técnica ausente, rode SQL opcional V7.0.'});
+  }).finally(function(){btnUnlock(btn);});
 };
 window.listarCochos=function(btn){
   if(!propRequired('cochoOut')){return;} btnLock(btn,'Listando...');
   withTimeout(getClient().from('cochos').select('*').eq('propriedade_id',session.propriedade.id).order('created_at',{ascending:false}),30000).then(function(r){if(r.error){throw r.error;} window._cochos=r.data||[]; if($('kCochos')){$('kCochos').textContent=window._cochos.length;} renderCochos(window._cochos); setOut('cochoOut',{ok:true,total:window._cochos.length,cochos:window._cochos});}).catch(function(e){setOut('cochoOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
 };
-function renderCochos(rows){var h='<table><tr><th>Cocho</th><th>Código</th><th>Tipo</th><th>GPS</th><th>Precisão</th><th>Raio</th><th>Status</th></tr>';rows.forEach(function(x){var gps=(x.gps_lat&&x.gps_lng)?('<span class="gpsok">'+esc(x.gps_lat)+', '+esc(x.gps_lng)+'</span>'):'<span class="gpsbad">SEM GPS</span>';h+='<tr><td>'+esc(x.nome_cocho)+'</td><td>'+esc(x.codigo_cocho)+'</td><td>'+esc(x.tipo_cocho)+'</td><td>'+gps+'</td><td>'+esc(x.gps_precisao_m||'')+'</td><td>'+esc(x.raio_aceito_m||50)+' m</td><td>'+esc(x.status_cocho)+'</td></tr>';});$('cochoTable').innerHTML=h+'</table>';}
+function renderCochos(rows){
+  var h='<table><tr><th>Cocho</th><th>Código</th><th>Tipo</th><th>GPS</th><th>Dimensões</th><th>Foto</th><th>Precisão</th><th>Raio</th><th>Status</th></tr>';
+  rows.forEach(function(x){
+    var gps=(x.gps_lat&&x.gps_lng)?('<span class="gpsok">'+esc(x.gps_lat)+', '+esc(x.gps_lng)+'</span>'):'<span class="gpsbad">SEM GPS</span>';
+    var dim=(x.comprimento_m||x.largura_boca_m)?((x.comprimento_m||'-')+' m x '+(x.largura_boca_m||'-')+' m'):'opcional';
+    var foto=x.foto_base64?'<span class="gpsok">COM FOTO</span>':(x.foto_nome?esc(x.foto_nome):'opcional');
+    h+='<tr><td>'+esc(x.nome_cocho)+'</td><td>'+esc(x.codigo_cocho)+'</td><td>'+esc(x.tipo_cocho)+'</td><td>'+gps+'</td><td>'+esc(dim)+'</td><td>'+foto+'</td><td>'+esc(x.gps_precisao_m||'')+'</td><td>'+esc(x.raio_aceito_m||50)+' m</td><td>'+esc(x.status_cocho)+'</td></tr>';
+  });
+  $('cochoTable').innerHTML=h+'</table>';
+}
 
+
+
+var _provisoriosCentral=[];
+function setVal(id,v){var el=$(id);if(el){el.value=(v===null||v===undefined)?'':v;}}
+function isProvId(id){return String(id||'').indexOf('PROV-COCHO-')===0;}
+function snapProv(x){var s=x.cocho_provisorio_snapshot||{};if(typeof s==='string'){try{s=JSON.parse(s);}catch(e){s={};}}return s||{};}
+function isProvLanc(x){return !!(x&&(x.cocho_provisorio===true||x.requer_confirmacao_central===true||isProvId(x.cocho_id)||x.cocho_provisorio_snapshot));}
+function gpsProv(x){var s=snapProv(x);return {lat:Number(s.gps_lat||x.gps_lat||0)||null,lng:Number(s.gps_lng||x.gps_lng||0)||null,acc:Number(s.gps_precisao_m||x.gps_precisao_m||0)||null};}
+function oficiais(cochos){return (cochos||[]).filter(function(c){return !(isProvId(c.id)||c.status_cadastro==='COCHO_PROVISORIO'||c.status_cocho==='PROVISORIO_PENDENTE_CONFIRMACAO');});}
+function oficialProximo(lat,lng,cochos){var best=null;oficiais(cochos).forEach(function(c){if(!c.gps_lat||!c.gps_lng)return;var d=distanciaMetros(lat,lng,c.gps_lat,c.gps_lng);if(d!==null&&(!best||d<best.dist))best={cocho:c,dist:d};});return best;}
+function carregarLotesConfirmacao(){if(!session.propriedade||!session.propriedade.id)return;getClient().from('lotes').select('*').eq('propriedade_id',session.propriedade.id).order('nome_lote',{ascending:true}).then(function(r){var h='<option value="">Sem lote</option>';(r.data||[]).forEach(function(l){h+='<option value="'+esc(l.id)+'">'+esc(l.nome_lote||l.nome||l.id)+'</option>';});setHTML('prov_lote_oficial',h);});}
+window.listarCochosProvisorios=function(btn){if(!propRequired('provOut'))return;btnLock(btn,'Listando...');carregarLotesConfirmacao();var sb=getClient(),pid=session.propriedade.id;Promise.all([sb.from('lancamentos_cocho').select('*').eq('propriedade_id',pid).order('created_at',{ascending:false}).limit(5000),sb.from('cochos').select('*').eq('propriedade_id',pid).limit(2000)]).then(function(res){if(res[0].error)throw res[0].error;if(res[1].error)throw res[1].error;var map={},cochos=res[1].data||[];(res[0].data||[]).forEach(function(x){if(!isProvLanc(x))return;var sp=snapProv(x),id=sp.id||x.cocho_id||('PROV-LANC-'+x.id);if(!map[id]){var g=gpsProv(x),p=(g.lat&&g.lng)?oficialProximo(g.lat,g.lng,cochos):null;map[id]={id:id,nome:sp.nome_cocho||x.cocho_nome||'COCHO PROVISÓRIO',codigo:sp.codigo_cocho||'',lote_id:sp.lote_id||'',lat:g.lat,lng:g.lng,acc:g.acc,lanc:0,kg:0,prox:p,snap:sp};}map[id].lanc++;map[id].kg+=Number(x.quantidade_kg||0);});_provisoriosCentral=Object.keys(map).map(function(k){return map[k];});renderProvCentral(_provisoriosCentral);setOut('provOut',{ok:true,total_provisorios:_provisoriosCentral.length,provisorios:_provisoriosCentral.map(function(x){return {id:x.id,nome:x.nome,lancamentos:x.lanc,kg:x.kg,distancia_oficial_m:x.prox?Number(x.prox.dist.toFixed(1)):null};})});}).catch(function(e){setOut('provOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});};
+function renderProvCentral(rows){var h='<table><tr><th>Ação</th><th>Provisório</th><th>GPS</th><th>Lanç.</th><th>Kg</th><th>Oficial próximo</th><th>Status</th></tr>';rows.forEach(function(x,i){var prox=x.prox?(esc(x.prox.cocho.nome_cocho||'Cocho')+'<br>'+Number(x.prox.dist).toFixed(1)+' m'):'sem oficial próximo';var st=x.prox&&x.prox.dist<=30?'POSSÍVEL_DUPLICADO_ATE_30M':(x.prox&&x.prox.dist<=50?'ATENÇÃO_ATE_50M':'PODE_CONFIRMAR');h+='<tr><td><button onclick="selecionarProvisorioCentral('+i+')">Selecionar</button></td><td>'+esc(x.nome)+'<br><span class="small">'+esc(x.codigo||x.id)+'</span></td><td>'+esc(x.lat||'-')+', '+esc(x.lng||'-')+'</td><td>'+esc(x.lanc)+'</td><td>'+esc(fmt3(x.kg))+'</td><td>'+prox+'</td><td>'+esc(st)+'</td></tr>';});setHTML('provTable',h+'</table>');}
+window.selecionarProvisorioCentral=function(i){var x=_provisoriosCentral[i];if(!x)return;setVal('prov_id',x.id);setVal('prov_nome_oficial',String(x.nome||'').replace('PROVISÓRIO','').trim()||x.nome);setVal('prov_codigo_oficial','');setVal('prov_lat',x.lat||'');setVal('prov_lng',x.lng||'');setVal('prov_acc',x.acc||'');setVal('prov_raio',50);if($('prov_lote_oficial'))$('prov_lote_oficial').value=x.lote_id||'';setVal('prov_dist',x.prox?Number(x.prox.dist).toFixed(1)+' m':'-');setVal('prov_status',x.prox&&x.prox.dist<=30?'POSSÍVEL DUPLICADO':(x.prox&&x.prox.dist<=50?'ATENÇÃO':'OK PARA CONFIRMAR'));setOut('provOut',{ok:true,selecionado:x});};
+function provSelecionado(){var id=$('prov_id')?$('prov_id').value:'';for(var i=0;i<_provisoriosCentral.length;i++){if(_provisoriosCentral[i].id===id)return _provisoriosCentral[i];}return null;}
+window.confirmarCochoProvisorio=function(btn){var x=provSelecionado();if(!x){setOut('provOut',{ok:false,erro:'SELECIONE_PROVISORIO'});return;}var nome=$('prov_nome_oficial').value.trim();if(!nome){setOut('provOut',{ok:false,erro:'NOME_OFICIAL_OBRIGATORIO'});return;}if(!x.lat||!x.lng){setOut('provOut',{ok:false,erro:'GPS_PROVISORIO_AUSENTE'});return;}btnLock(btn,'Confirmando...');var d={propriedade_id:session.propriedade.id,nome_cocho:nome,codigo_cocho:$('prov_codigo_oficial').value.trim()||('CCH-'+Date.now().toString().slice(-5)),tipo_cocho:'COCHO_SAL',lote_id:$('prov_lote_oficial').value||null,area_pasto:'',gps_lat:Number(x.lat),gps_lng:Number(x.lng),gps_precisao_m:x.acc?Number(x.acc):null,gps_data_hora:new Date().toISOString(),responsavel_gps:'CENTRAL',status_cocho:'ATIVO',observacoes:($('prov_obs_confirm').value.trim()||'Confirmado a partir de cocho provisório')+' | origem_provisoria='+x.id,raio_aceito_m:Number($('prov_raio').value||50)};getClient().from('cochos').insert(d).select('*').single().then(function(r){if(r.error)throw r.error;setOut('provOut',{ok:true,mensagem:'Cocho provisório confirmado como oficial.',cocho_oficial:r.data,provisorio_origem:x.id});listarCochosProvisorios();listarCochos();}).catch(function(e){setOut('provOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});};
+window.marcarProvisorioDuplicado=function(btn){var x=provSelecionado();if(!x){setOut('provOut',{ok:false,erro:'SELECIONE_PROVISORIO'});return;}setOut('provOut',{ok:true,status:'MARCADO_COMO_POSSIVEL_DUPLICADO',provisorio:x.id,oficial_proximo:x.prox?{id:x.prox.cocho.id,nome:x.prox.cocho.nome_cocho,distancia_m:Number(x.prox.dist.toFixed(1))}:null});};
+window.limparEditorCochoProv=function(){['prov_id','prov_dist','prov_status','prov_nome_oficial','prov_codigo_oficial','prov_lat','prov_lng','prov_acc','prov_obs_confirm'].forEach(function(id){setVal(id,'');});if($('prov_lote_oficial'))$('prov_lote_oficial').value='';};
 
 function genOperacaoCliente(){
   var d=new Date();
