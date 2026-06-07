@@ -4,84 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
-<title>APP COCHO CENTRAL V7.2.4.1 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=7.2.4.1">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-/* V7.2.4 — diagnóstico independente da aba, sem depender do estado interno */
-window.diagnosticoCochosIndependente = function(ev){
-  if(ev && ev.preventDefault){ev.preventDefault();}
-  var out=document.getElementById('higieneOut');
-  if(!out){alert('higieneOut não encontrado');return false;}
-  function write(obj){out.textContent=JSON.stringify(obj,null,2);}
-  write({ok:true,fase:'BOTAO_EXECUTOU',mensagem:'Botão executou. Consultando Supabase...'});
-  try{
-    if(!window.supabase){write({ok:false,erro:'BIBLIOTECA_SUPABASE_NAO_CARREGOU'});return false;}
-    var url=(localStorage.getItem('COCHO_SUPABASE_URL')||localStorage.getItem('supabase_url')||document.querySelector('[id*="url" i]')?.value||'').trim();
-    var key=(localStorage.getItem('COCHO_SUPABASE_KEY')||localStorage.getItem('supabase_key')||document.querySelector('[id*="key" i]')?.value||'').trim();
-    try{
-      var cfg=JSON.parse(localStorage.getItem('cocho_supabase_config')||'{}');
-      url=url||cfg.url||cfg.supabase_url||'';
-      key=key||cfg.key||cfg.supabase_key||cfg.anon||'';
-    }catch(e){}
-    if(typeof getCfg==='function'){
-      try{var gc=getCfg();url=url||gc.url||'';key=key||gc.key||'';}catch(e){}
-    }
-    if(typeof getClient==='function'){
-      var sb=getClient();
-    }else{
-      if(!url||!key){write({ok:false,erro:'CONFIG_SUPABASE_NAO_ENCONTRADA',orientacao:'Volte em Config Supabase, salve URL e publishable key, depois retorne.'});return false;}
-      var sb=window.supabase.createClient(url,key);
-    }
-    var prop=null;
-    try{prop=JSON.parse(localStorage.getItem('cocho_session')||'{}').propriedade||null;}catch(e){}
-    if(!prop && typeof session!=='undefined' && session && session.propriedade){prop=session.propriedade;}
-    if(!prop || !prop.id){write({ok:false,erro:'SEM_PROPRIEDADE_ATIVA',orientacao:'A sessão não trouxe propriedade ativa. Limpe sessão e ative a fazenda novamente.'});return false;}
-    sb.from('cochos').select('*').eq('propriedade_id',prop.id).limit(5000).then(function(r){
-      if(r.error){write({ok:false,erro:r.error.message||String(r.error),fase:'ERRO_SUPABASE_SELECT_COCHOS'});return;}
-      var rows=r.data||[];
-      var pares=[];
-      function dist(lat1,lon1,lat2,lon2){
-        lat1=Number(lat1);lon1=Number(lon1);lat2=Number(lat2);lon2=Number(lon2);
-        if(!isFinite(lat1)||!isFinite(lon1)||!isFinite(lat2)||!isFinite(lon2))return null;
-        var R=6371000, toRad=function(x){return x*Math.PI/180;};
-        var dLat=toRad(lat2-lat1), dLon=toRad(lon2-lon1);
-        var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)*Math.sin(dLon/2);
-        return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-      }
-      for(var i=0;i<rows.length;i++){
-        for(var j=i+1;j<rows.length;j++){
-          var d=dist(rows[i].gps_lat,rows[i].gps_lng,rows[j].gps_lat,rows[j].gps_lng);
-          if(d!==null && d<=300){
-            pares.push({
-              a:(rows[i].nome_cocho||'')+' | '+(rows[i].codigo_cocho||''),
-              b:(rows[j].nome_cocho||'')+' | '+(rows[j].codigo_cocho||''),
-              distancia_m:Number(d.toFixed(1)),
-              status_a:rows[i].status_cocho||'',
-              status_b:rows[j].status_cocho||''
-            });
-          }
-        }
-      }
-      pares.sort(function(a,b){return a.distancia_m-b.distancia_m;});
-      write({
-        ok:true,
-        consulta:'DIAGNOSTICO_INDEPENDENTE_V7_2_4',
-        propriedade:prop.nome_propriedade||prop.nome||prop.id,
-        total_cochos_puxados:rows.length,
-        com_gps:rows.filter(function(c){return c.gps_lat&&c.gps_lng;}).length,
-        pares_ate_300m:pares.slice(0,20),
-        primeiros_cochos:rows.slice(0,10).map(function(c){return {nome:c.nome_cocho,codigo:c.codigo_cocho,tipo:c.tipo_cocho,status:c.status_cocho,gps:String(c.gps_lat)+','+String(c.gps_lng),id:c.id};})
-      });
-    }).catch(function(e){write({ok:false,erro:String(e.message||e),fase:'EXCEPTION_SELECT'});});
-  }catch(e){write({ok:false,erro:String(e.message||e),fase:'EXCEPTION_GERAL'});}
-  return false;
-};
-document.addEventListener('DOMContentLoaded',function(){
-  var b=document.getElementById('btnDiagCochosIndependente');
-  if(b){b.addEventListener('click',window.diagnosticoCochosIndependente);}
-});
-
-</script>
+<title>APP COCHO CENTRAL V7.2.5 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=7.2.5">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
@@ -100,14 +25,14 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>APP COCHO CENTRAL V7.2.4.1 SUPABASE</h1><div class="sub">Histórico GPS • Diagnóstico independente • Cochos • GPS</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
+<header><div class="top"><div><h1>APP COCHO CENTRAL V7.2.5 SUPABASE</h1><div class="sub">Histórico GPS • Diagnóstico cochos • Sessão corrigida • GPS</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
 <button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="estoque" onclick="showTab('estoque')">Estoque</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="higiene" onclick="showTab('higiene')">Higienizar Cochos</button><button class="tab" data-tab="cochosprov" onclick="showTab('cochosprov')">Cochos Provisórios</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="relatorios" onclick="showTab('relatorios')">Relatórios</button><button class="tab" data-tab="fechamento" onclick="showTab('fechamento')">Fechamento</button><button class="tab" data-tab="gerencial" onclick="showTab('gerencial')">Gerencial</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
 </nav>
 <div class="sessionbar" id="sessionCompact"><b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button></div>
 
-<div id="view-painel" class="view"><div class="card"><h2>Painel V7.2.4.1 — Higienização Ampliada</h2><p>Mantém a base aprovada e acrescenta revisão/confirmação dos cochos provisórios vindos do Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
+<div id="view-painel" class="view"><div class="card"><h2>Painel V7.2.5 — Higienização Ampliada</h2><p>Mantém a base aprovada e acrescenta revisão/confirmação dos cochos provisórios vindos do Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
 
 <div id="view-config" class="view hidden"><div class="card"><h2>Config Supabase</h2><div class="warnbox">Use apenas Project URL e Publishable Key / anon public. Nunca cole secret key ou service_role.</div><label>SUPABASE_URL</label><input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodbf.supabase.co"><label>SUPABASE_PUBLISHABLE_KEY</label><textarea id="supabaseKey" placeholder="sb_publishable_..."></textarea><button onclick="saveConfig()">Salvar Config</button><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button class="gray" onclick="clearConfig()">Limpar</button><pre id="configOut">Cole a publishable key completa e teste.</pre></div></div>
 
@@ -167,10 +92,10 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
       <div class="col-4"><label>Quais cochos analisar?</label><select id="h_incluir_prov"><option value="OFICIAIS">Oficiais ativos</option><option value="TODOS">Todos não arquivados</option><option value="PROVISORIOS">Somente provisórios</option></select></div>
       <div class="col-4"><label>Modo</label><select id="h_modo"><option value="GPS">GPS até raio</option><option value="PROXIMOS">Mostrar próximos até 200 m</option><option value="NOME_CODIGO_GPS">Nome/Código/GPS</option></select></div>
     </div>
-    <button id="btnDiagCochosIndependente" class="blue" onclick="diagnosticoCochosIndependente(event)">Puxar cochos agora</button>
+    <button class="blue" onclick="diagnosticoCochosSeguro(this)">Puxar cochos agora</button>
     <button class="green" onclick="listarDuplicadosCochos(this)">Listar duplicados</button>
     <button onclick="limparHigieneCochos()">Limpar</button>
-    <pre id="higieneOut">Sem consulta.</pre><div class="small">Na V7.2.4 a consulta roda automaticamente ao abrir a aba. Se continuar “Sem consulta”, o JS não executou.</div>
+    <pre id="higieneOut">Sem consulta.</pre><div class="small">Na V7.2.5 a consulta roda automaticamente ao abrir a aba. Se continuar “Sem consulta”, o JS não executou.</div>
   </div>
   <div class="card tablewrap">
     <h3>Grupos suspeitos</h3>
@@ -353,12 +278,12 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <div id="view-campo" class="view hidden"><div class="card"><h2>Base para App Campo V1.0</h2><p class="small">Mostra o que o App Campo deverá baixar antes do serviço para funcionar offline.</p><div class="sessionbar"><b>Propriedade ativa:</b> <span id="campoPropAtiva">-</span><br><b>Chave:</b> <span id="campoChave">-</span><br><b>Última atualização:</b> <span id="campoAtualizacao">-</span></div><div class="kpirow"><div class="kpi"><b id="bcUsuarios">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="bcProdutos">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="bcLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="bcCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="bcAreas">0</b><br><span class="small">Áreas</span></div><div class="kpi"><b id="bcStatus">-</b><br><span class="small">Status</span></div></div><button class="blue" onclick="montarBaseCampo(this)">Montar Base Campo</button><button onclick="baixarBaseCampo()">Baixar JSON da Base</button><button class="gray" onclick="limparBaseCampo()">Limpar Base Local</button><pre id="campoOut">Monte a base depois de ativar uma propriedade.</pre></div></div>
 
 <div id="view-diagnostico" class="view hidden"><div class="card"><h2>Diagnóstico</h2><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button onclick="diagnostico()">Diagnóstico completo</button><button class="gray" onclick="downloadLocalState()">Baixar estado local</button><pre id="diagOut">Sem diagnóstico.</pre></div></div>
-<div class="footer">APP COCHO CENTRAL V7.2.4.1 SUPABASE — Listar Provisórios Cloud Fix • HTML single-file • GitHub Pages • Supabase</div>
+<div class="footer">APP COCHO CENTRAL V7.2.5 SUPABASE — Listar Provisórios Cloud Fix • HTML single-file • GitHub Pages • Supabase</div>
 </main>
 <script>
 (function(){
 'use strict';
-var APP_VERSION='APP COCHO CENTRAL V7.2.4.1 SUPABASE — BOTÕES FIX';
+var APP_VERSION='APP COCHO CENTRAL V7.2.5 SUPABASE — BOTÕES FIX';
 var DEFAULT_URL='https://wxnsyozjiosbdwxpodbf.supabase.co';
 var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
 var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
@@ -419,7 +344,7 @@ window.showTab=function(tab){
     setTimeout(function(){
       try{
         if($('higieneOut')){
-          diagnosticarCochosHigiene();
+          diagnosticoCochosSeguro();
         }
       }catch(e){setOut('higieneOut',{ok:false,erro:String(e.message||e),fase:'AUTO_DIAGNOSTICO'});}
     },300);
@@ -1698,54 +1623,35 @@ window.preencherTesteLote=function(){$('l_nome').value='LOTE TESTE 01';$('l_cat'
 window.preencherTesteCocho=function(){$('c_nome').value='COCHO TESTE 01';$('c_codigo').value='CCH-01';$('c_tipo').value='COCHO_SAL';$('c_area').value='PASTO TESTE 01';$('c_resp').value='MARCELO';$('c_status').value='ATIVO';};
 window.diagnostico=function(){setOut('diagOut',{app:APP_VERSION,config:cfg(),session:session,data_hora_brasilia:nowBR()});};
 window.downloadLocalState=function(){var data={config:cfg(),session:session,base_campo:JSON.parse(localStorage.getItem(BASE_CAMPO_LS)||'{}'),app:APP_VERSION};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='app_cocho_v6_5_estado_local.json';a.click();};
-function loadSession(){try{session=JSON.parse(localStorage.getItem(LS_SESSION)||'{}')||{};}catch(e){session={};}}
-loadConfig();loadSession();updateBadges();setInterval(updateBadges,10000);window.addEventListener('online',updateBadges);window.addEventListener('offline',updateBadges);
-})();
 
-/* V7.2.4 — diagnóstico independente da aba, sem depender do estado interno */
-window.diagnosticoCochosIndependente = function(ev){
-  if(ev && ev.preventDefault){ev.preventDefault();}
-  var out=document.getElementById('higieneOut');
-  if(!out){alert('higieneOut não encontrado');return false;}
-  function write(obj){out.textContent=JSON.stringify(obj,null,2);}
-  write({ok:true,fase:'BOTAO_EXECUTOU',mensagem:'Botão executou. Consultando Supabase...'});
+window.diagnosticoCochosSeguro=function(btn){
+  var out='higieneOut';
+  setOut(out,{ok:true,fase:'BOTAO_EXECUTOU',mensagem:'Botão executou dentro da sessão da Central. Consultando cochos...'});
+  btnLock(btn,'Puxando...');
   try{
-    if(!window.supabase){write({ok:false,erro:'BIBLIOTECA_SUPABASE_NAO_CARREGOU'});return false;}
-    var url=(localStorage.getItem('COCHO_SUPABASE_URL')||localStorage.getItem('supabase_url')||document.querySelector('[id*="url" i]')?.value||'').trim();
-    var key=(localStorage.getItem('COCHO_SUPABASE_KEY')||localStorage.getItem('supabase_key')||document.querySelector('[id*="key" i]')?.value||'').trim();
-    try{
-      var cfg=JSON.parse(localStorage.getItem('cocho_supabase_config')||'{}');
-      url=url||cfg.url||cfg.supabase_url||'';
-      key=key||cfg.key||cfg.supabase_key||cfg.anon||'';
-    }catch(e){}
-    if(typeof getCfg==='function'){
-      try{var gc=getCfg();url=url||gc.url||'';key=key||gc.key||'';}catch(e){}
+    if((!session || !session.propriedade || !session.propriedade.id) && typeof loadSession==='function'){
+      loadSession();
     }
-    if(typeof getClient==='function'){
-      var sb=getClient();
-    }else{
-      if(!url||!key){write({ok:false,erro:'CONFIG_SUPABASE_NAO_ENCONTRADA',orientacao:'Volte em Config Supabase, salve URL e publishable key, depois retorne.'});return false;}
-      var sb=window.supabase.createClient(url,key);
+    if(!session || !session.propriedade || !session.propriedade.id){
+      setOut(out,{ok:false,erro:'SEM_PROPRIEDADE_ATIVA',orientacao:'A badge mostra fazenda, mas a sessão interna não carregou. Clique em Propriedades > Listar > Ativar Fazenda e volte aqui.'});
+      btnUnlock(btn);return;
     }
-    var prop=null;
-    try{prop=JSON.parse(localStorage.getItem('cocho_session')||'{}').propriedade||null;}catch(e){}
-    if(!prop && typeof session!=='undefined' && session && session.propriedade){prop=session.propriedade;}
-    if(!prop || !prop.id){write({ok:false,erro:'SEM_PROPRIEDADE_ATIVA',orientacao:'A sessão não trouxe propriedade ativa. Limpe sessão e ative a fazenda novamente.'});return false;}
-    sb.from('cochos').select('*').eq('propriedade_id',prop.id).limit(5000).then(function(r){
-      if(r.error){write({ok:false,erro:r.error.message||String(r.error),fase:'ERRO_SUPABASE_SELECT_COCHOS'});return;}
+    var sb=getClient();
+    var pid=session.propriedade.id;
+    sb.from('cochos').select('*').eq('propriedade_id',pid).limit(5000).then(function(r){
+      if(r.error){throw r.error;}
       var rows=r.data||[];
-      var pares=[];
-      function dist(lat1,lon1,lat2,lon2){
-        lat1=Number(lat1);lon1=Number(lon1);lat2=Number(lat2);lon2=Number(lon2);
-        if(!isFinite(lat1)||!isFinite(lon1)||!isFinite(lat2)||!isFinite(lon2))return null;
-        var R=6371000, toRad=function(x){return x*Math.PI/180;};
-        var dLat=toRad(lat2-lat1), dLon=toRad(lon2-lon1);
-        var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)*Math.sin(dLon/2);
-        return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-      }
+      var status={}, tipos={}, pares=[];
+      rows.forEach(function(c){
+        var st=String(c.status_cocho||c.status_cadastro||'SEM_STATUS').toUpperCase();
+        var tp=String(c.tipo_cocho||'SEM_TIPO').toUpperCase();
+        status[st]=(status[st]||0)+1;
+        tipos[tp]=(tipos[tp]||0)+1;
+      });
       for(var i=0;i<rows.length;i++){
         for(var j=i+1;j<rows.length;j++){
-          var d=dist(rows[i].gps_lat,rows[i].gps_lng,rows[j].gps_lat,rows[j].gps_lng);
+          if(!rows[i].gps_lat||!rows[i].gps_lng||!rows[j].gps_lat||!rows[j].gps_lng){continue;}
+          var d=distanciaMetros(rows[i].gps_lat,rows[i].gps_lng,rows[j].gps_lat,rows[j].gps_lng);
           if(d!==null && d<=300){
             pares.push({
               a:(rows[i].nome_cocho||'')+' | '+(rows[i].codigo_cocho||''),
@@ -1758,24 +1664,37 @@ window.diagnosticoCochosIndependente = function(ev){
         }
       }
       pares.sort(function(a,b){return a.distancia_m-b.distancia_m;});
-      write({
+      var html='<table><tr><th>Cocho</th><th>Tipo</th><th>Status</th><th>GPS</th></tr>';
+      rows.forEach(function(c){
+        html+='<tr><td>'+esc((c.nome_cocho||'')+' | '+(c.codigo_cocho||''))+'<br><span class="small">'+esc(c.id)+'</span></td><td>'+esc(c.tipo_cocho||'')+'</td><td>'+esc(c.status_cocho||'')+'</td><td>'+esc(c.gps_lat||'')+', '+esc(c.gps_lng||'')+'</td></tr>';
+      });
+      html+='</table>';
+      setHTML('higieneTable',html);
+      setOut(out,{
         ok:true,
-        consulta:'DIAGNOSTICO_INDEPENDENTE_V7_2_4',
-        propriedade:prop.nome_propriedade||prop.nome||prop.id,
+        consulta:'DIAGNOSTICO_COCHOS_SEGURO_V7_2_5',
+        propriedade:session.propriedade.nome_fazenda||session.propriedade.nome_propriedade||session.propriedade.id,
+        propriedade_id:pid,
         total_cochos_puxados:rows.length,
         com_gps:rows.filter(function(c){return c.gps_lat&&c.gps_lng;}).length,
+        sem_gps:rows.filter(function(c){return !c.gps_lat||!c.gps_lng;}).length,
+        por_status:status,
+        por_tipo:tipos,
         pares_ate_300m:pares.slice(0,20),
-        primeiros_cochos:rows.slice(0,10).map(function(c){return {nome:c.nome_cocho,codigo:c.codigo_cocho,tipo:c.tipo_cocho,status:c.status_cocho,gps:String(c.gps_lat)+','+String(c.gps_lng),id:c.id};})
+        primeiros_cochos:rows.slice(0,10).map(function(c){return {id:c.id,nome:c.nome_cocho,codigo:c.codigo_cocho,tipo:c.tipo_cocho,status:c.status_cocho,gps:String(c.gps_lat)+','+String(c.gps_lng)};})
       });
-    }).catch(function(e){write({ok:false,erro:String(e.message||e),fase:'EXCEPTION_SELECT'});});
-  }catch(e){write({ok:false,erro:String(e.message||e),fase:'EXCEPTION_GERAL'});}
-  return false;
+    }).catch(function(e){
+      setOut(out,{ok:false,erro:String(e.message||e),fase:'ERRO_SELECT_COCHOS'});
+    }).finally(function(){btnUnlock(btn);});
+  }catch(e){
+    setOut(out,{ok:false,erro:String(e.message||e),fase:'ERRO_GERAL_DIAGNOSTICO_SEGURO'});
+    btnUnlock(btn);
+  }
 };
-document.addEventListener('DOMContentLoaded',function(){
-  var b=document.getElementById('btnDiagCochosIndependente');
-  if(b){b.addEventListener('click',window.diagnosticoCochosIndependente);}
-});
 
+function loadSession(){try{session=JSON.parse(localStorage.getItem(LS_SESSION)||'{}')||{};}catch(e){session={};}}
+loadConfig();loadSession();updateBadges();setInterval(updateBadges,10000);window.addEventListener('online',updateBadges);window.addEventListener('offline',updateBadges);
+})();
 </script>
 </body>
 </html>
