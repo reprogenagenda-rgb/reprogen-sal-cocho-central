@@ -1,38 +1,11 @@
-# APP COCHO CENTRAL V7.1.1 SUPABASE — Confirmar Cochos Provisórios
+# APP COCHO CENTRAL V7.1.2 — Listar Provisórios Cloud Fix
 
-## Correção
-O pacote anterior da V7.1 manteve rótulos internos como V6.9 no `index.html`.
-Esta V7.1.1 corrige título, cabeçalho, manifest e cache.
+Corrige a listagem dos cochos provisórios criados pelo Campo V1.2.3. Agora a Central busca primeiro na tabela `cochos` e usa lançamentos apenas como fallback.
 
-## Função da versão
-Nova aba **Cochos Provisórios** para:
-- listar cochos provisórios vindos do Campo;
-- ver GPS, kg e lançamentos;
-- comparar com cochos oficiais próximos;
-- alertar possível duplicidade;
-- confirmar como cocho oficial;
-- marcar como possível duplicado.
+Não precisa rodar SQL novo.
 
-## GitHub
-Substituir no repositório da Central:
-- index.html
-- manifest.json
-- service-worker.js
-- README.md
-- icons/icon-192.png
-- icons/icon-512.png
+Commit: `Corrige Central Cocho V7.1.2 listar provisorios cloud`
 
-Mensagem de commit:
-`Corrige Central Cocho V7.1.1 confirmar provisorios`
+Abrir: `https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.1.2-listar-provisorios-cloud-fix`
 
-Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.1.1-confirmar-provisorios`
-
-## Conferência obrigatória
-Ao abrir, o cabeçalho precisa mostrar:
-
-`APP COCHO CENTRAL V7.1.1 SUPABASE`
-
-E deve existir a aba:
-
-`Cochos Provisórios`
+JS validado: True
