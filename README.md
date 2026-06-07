@@ -1,28 +1,21 @@
-# APP COCHO CENTRAL V7.2 — Higienizar Cochos Duplicados
+# APP COCHO CENTRAL V7.2.1 — Higienização Ampliada
 
-## Objetivo
-Depois dos testes, alguns cochos oficiais podem ter nascido duplicados no mesmo ponto. Esta versão adiciona uma aba para mesclar duplicados sem apagar histórico.
+## Correção
+A V7.2 podia não listar duplicados porque analisava apenas cochos com status exatamente ATIVO e por raio curto.
 
-## Nova aba
-**Higienizar Cochos**
-
-## O que faz
-1. Lista cochos oficiais ativos duplicados por GPS.
-2. Usa raio configurável, padrão 15 m.
-3. Sugere um cocho principal.
-4. Transfere lançamentos dos duplicados para o principal.
-5. Marca duplicados como `DUPLICADO_ARQUIVADO`.
-
-## Regra de segurança
-Nada é deletado. O histórico é preservado e os duplicados ficam arquivados.
+## O que mudou
+A aba Higienizar Cochos agora:
+- permite analisar oficiais ativos, provisórios ou todos não arquivados;
+- tem modo GPS até raio;
+- tem modo PROXIMOS até 200 m;
+- agrupa também coordenadas arredondadas em 5 casas;
+- mostra total de cochos analisados e pares detectados.
 
 ## SUPABASE
-Não precisa SQL novo se as políticas permitem update em:
-- cochos
-- lancamentos_cocho
+Não precisa SQL novo.
 
 ## GitHub
-Substituir no repositório da Central:
+Substituir:
 - index.html
 - manifest.json
 - service-worker.js
@@ -31,17 +24,15 @@ Substituir no repositório da Central:
 - icons/icon-512.png
 
 Commit:
-`Adiciona Central Cocho V7.2 higienizar duplicados`
+`Corrige Central Cocho V7.2.1 higienizacao ampliada`
 
 Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.2-higienizar-duplicados`
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.2.1-higienizacao-ampliada`
 
-## Teste
-1. Abrir Central V7.2.
-2. Ir em Higienizar Cochos.
-3. Raio 15 m.
+## Teste recomendado
+1. Abrir Higienizar Cochos.
+2. Selecionar: Todos não arquivados.
+3. Modo: Mostrar próximos até 200 m.
 4. Clicar Listar duplicados.
-5. Selecionar grupo.
-6. Clicar Mesclar duplicados no principal.
-7. Conferir em Cochos GPS se duplicados ficaram como DUPLICADO_ARQUIVADO.
-8. Conferir em Histórico se os lançamentos ficaram no cocho principal.
+5. Se aparecer grupo, selecionar e mesclar.
+6. Depois testar Oficiais ativos + GPS até raio 15 m.
