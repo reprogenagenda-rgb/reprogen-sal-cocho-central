@@ -1,15 +1,21 @@
-# APP COCHO CENTRAL V7.2.6 — Mesclagem Manual Segura
+# APP COCHO CENTRAL V7.3 — Mapa de Cochos
 
 ## Objetivo
-Como os cochos já aparecem no diagnóstico, esta versão permite higienizar manualmente os duplicados sem depender do agrupamento automático.
+Avaliação visual dos cochos no mapa para validar posição, duplicidade e detalhes do ponto físico.
 
-## O que faz
-- Carrega todos os cochos da propriedade ativa.
-- Permite marcar um cocho principal.
-- Permite marcar cochos duplicados.
-- Transfere lançamentos dos duplicados para o principal.
-- Marca duplicados como `DUPLICADO_ARQUIVADO`.
-- Não apaga nenhum registro.
+## Nova aba
+Mapa de Cochos
+
+## Funcionalidades
+- Mostra cochos oficiais, provisórios e arquivados.
+- Cores por status: ativo, provisório, arquivado e alerta de duplicidade.
+- Alterna mapa padrão e satélite.
+- Mostra raio do cocho quando cadastrado.
+- Ao tocar no ponto, mostra detalhes e permite usar como principal ou marcar duplicado.
+- Integra com a Mesclagem Manual Segura da V7.2.6.
+
+## Interface
+A Central é para decisão do gestor no mapa. O App Campo deve continuar simples para o vaqueiro.
 
 ## GitHub
 Substituir:
@@ -21,7 +27,7 @@ Substituir:
 - icons/icon-512.png
 
 Commit:
-`Adiciona Central Cocho V7.2.6 mesclagem manual segura`
+`Adiciona Central Cocho V7.3 mapa de cochos`
 
 Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.2.6-mesclagem-manual-segura`
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.3-mapa-cochos`
