@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
-<title>APP COCHO CENTRAL V7.1.7 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=7.1.7.1">
+<title>APP COCHO CENTRAL V7.2 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=7.2.1">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060}
@@ -25,14 +25,14 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>APP COCHO CENTRAL V7.1.7 SUPABASE</h1><div class="sub">Histórico GPS • Cochos provisórios • Seleção persistente • Transferir histórico</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
+<header><div class="top"><div><h1>APP COCHO CENTRAL V7.2 SUPABASE</h1><div class="sub">Histórico GPS • Higienização de cochos • Duplicados GPS • Transferir histórico</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
-<button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="estoque" onclick="showTab('estoque')">Estoque</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="cochosprov" onclick="showTab('cochosprov')">Cochos Provisórios</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="relatorios" onclick="showTab('relatorios')">Relatórios</button><button class="tab" data-tab="fechamento" onclick="showTab('fechamento')">Fechamento</button><button class="tab" data-tab="gerencial" onclick="showTab('gerencial')">Gerencial</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
+<button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="estoque" onclick="showTab('estoque')">Estoque</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="higiene" onclick="showTab('higiene')">Higienizar Cochos</button><button class="tab" data-tab="cochosprov" onclick="showTab('cochosprov')">Cochos Provisórios</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="relatorios" onclick="showTab('relatorios')">Relatórios</button><button class="tab" data-tab="fechamento" onclick="showTab('fechamento')">Fechamento</button><button class="tab" data-tab="gerencial" onclick="showTab('gerencial')">Gerencial</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
 </nav>
 <div class="sessionbar" id="sessionCompact"><b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button></div>
 
-<div id="view-painel" class="view"><div class="card"><h2>Painel V7.1.7 — Seleção Persistente Fix</h2><p>Mantém a base aprovada e acrescenta revisão/confirmação dos cochos provisórios vindos do Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
+<div id="view-painel" class="view"><div class="card"><h2>Painel V7.2 — Higienizar Cochos Duplicados</h2><p>Mantém a base aprovada e acrescenta revisão/confirmação dos cochos provisórios vindos do Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
 
 <div id="view-config" class="view hidden"><div class="card"><h2>Config Supabase</h2><div class="warnbox">Use apenas Project URL e Publishable Key / anon public. Nunca cole secret key ou service_role.</div><label>SUPABASE_URL</label><input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodbf.supabase.co"><label>SUPABASE_PUBLISHABLE_KEY</label><textarea id="supabaseKey" placeholder="sb_publishable_..."></textarea><button onclick="saveConfig()">Salvar Config</button><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button class="gray" onclick="clearConfig()">Limpar</button><pre id="configOut">Cole a publishable key completa e teste.</pre></div></div>
 
@@ -79,6 +79,38 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <div id="view-lotes" class="view hidden"><div class="card"><h2>Lotes da Propriedade Ativa</h2><div class="small">Propriedade ativa: <b id="l_prop_ativa">-</b></div><div class="grid"><div class="col-6"><label>Nome do lote</label><input id="l_nome" placeholder="LOTE TESTE 01"></div><div class="col-3"><label>Categoria</label><select id="l_cat"><option>VACAS</option><option>NOVILHAS</option><option>BEZERROS</option><option>BEZERRAS</option><option>GARROTES</option><option>OUTRO</option></select></div><div class="col-3"><label>Quantidade de animais</label><input id="l_qtd" type="number" value="0"></div><div class="col-6"><label>Área/Pasto</label><input id="l_area" placeholder="PASTO 01"></div><div class="col-6"><label>Status</label><select id="l_status"><option>ATIVO</option><option>INATIVO</option></select></div><div class="col-12"><label>Observação</label><input id="l_obs" placeholder="opcional"></div></div><button onclick="criarLote(this)">Criar Lote</button><button class="blue" onclick="listarLotes(this)">Listar Lotes</button><button class="warn" onclick="preencherTesteLote()">Preencher Teste</button><pre id="loteOut">Sem operação.</pre></div><div class="card tablewrap"><h3>Lotes</h3><div id="loteTable"></div></div></div>
 
 <div id="view-cochos" class="view hidden"><div class="card"><h2>Cochos com GPS</h2><div class="small">Propriedade ativa: <b id="c_prop_ativa">-</b></div><div class="grid"><div class="col-6"><label>Nome do cocho</label><input id="c_nome" placeholder="COCHO TESTE 01"></div><div class="col-3"><label>Código</label><input id="c_codigo" placeholder="CCH-01"></div><div class="col-3"><label>Tipo</label><select id="c_tipo"><option>COCHO_SAL</option><option>COCHO_MINERAL</option><option>COCHO_PROTEINADO</option><option>COCHO_RACAO</option><option>BEBEDOURO</option><option>OUTRO</option></select></div><div class="col-6"><label>Lote vinculado</label><select id="c_lote"><option value="">Sem lote</option></select></div><div class="col-6"><label>Área/Pasto</label><input id="c_area" placeholder="PASTO 01"></div><div class="col-4"><label>Latitude</label><input id="c_lat" placeholder="-1.234567"></div><div class="col-4"><label>Longitude</label><input id="c_lng" placeholder="-47.123456"></div><div class="col-4"><label>Precisão GPS (m)</label><input id="c_acc" placeholder="opcional"></div><div class="col-6"><label>Responsável GPS</label><input id="c_resp" placeholder="MARCELO"></div><div class="col-6"><label>Status</label><select id="c_status"><option>ATIVO</option><option>INATIVO</option></select></div><div class="col-12"><label>Observação</label><input id="c_obs" placeholder="opcional"></div></div><button class="blue" onclick="capturarGPSCocho(this)">Capturar GPS atual</button><button onclick="criarCocho(this)">Criar Cocho</button><button class="blue" onclick="listarCochos(this)">Listar Cochos</button><button class="warn" onclick="preencherTesteCocho()">Preencher Teste</button><pre id="cochoOut">Sem operação.</pre></div><div class="card tablewrap"><h3>Cochos</h3><div id="cochoTable"></div></div></div>
+
+
+<div id="view-higiene" class="view hidden">
+  <div class="card">
+    <h2>Higienizar Cochos Duplicados</h2>
+    <div class="okbox">
+      Usa o GPS para encontrar cochos oficiais ativos duplicados no mesmo ponto. Não apaga histórico: transfere lançamentos para o cocho principal e arquiva os duplicados.
+    </div>
+    <div class="grid">
+      <div class="col-4"><label>Raio para considerar duplicado (m)</label><input id="h_raio" type="number" value="15"></div>
+      <div class="col-4"><label>Incluir provisórios?</label><select id="h_incluir_prov"><option value="NAO">Não</option><option value="SIM">Sim</option></select></div>
+      <div class="col-4"><label>Modo</label><select id="h_modo"><option value="GPS">GPS até raio</option><option value="NOME_CODIGO_GPS">Nome/Código/GPS</option></select></div>
+    </div>
+    <button class="blue" onclick="listarDuplicadosCochos(this)">Listar duplicados</button>
+    <button onclick="limparHigieneCochos()">Limpar</button>
+    <pre id="higieneOut">Sem consulta.</pre>
+  </div>
+  <div class="card tablewrap">
+    <h3>Grupos suspeitos</h3>
+    <div id="higieneTable"></div>
+  </div>
+  <div class="card">
+    <h3>Conferência antes de mesclar</h3>
+    <div class="grid">
+      <div class="col-6"><label>Cocho principal</label><input id="h_keep_nome" readonly></div>
+      <div class="col-6"><label>ID principal</label><input id="h_keep_id" readonly></div>
+      <div class="col-12"><label>Duplicados que serão arquivados</label><input id="h_dup_ids" readonly></div>
+      <div class="col-12"><label>Motivo/auditoria</label><input id="h_motivo" value="Mesclagem por GPS duplicado em teste/produção"></div>
+    </div>
+    <button class="warn" onclick="mesclarDuplicadosSelecionados(this)">Mesclar duplicados no principal</button>
+  </div>
+</div>
 
 <div id="view-cochosprov" class="view hidden">
 <div class="card"><h2>Listar Provisórios Cloud Fix</h2><div class="okbox">Cochos provisórios vêm do Campo. A Central confirma como oficial, consolida duplicados por código/GPS e transfere todo o histórico para o cocho oficial.</div><button class="blue" onclick="listarCochosProvisorios(this)">Listar Provisórios</button><button onclick="limparEditorCochoProv()">Limpar editor</button><pre id="provOut">Sem consulta.</pre></div>
@@ -245,12 +277,12 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <div id="view-campo" class="view hidden"><div class="card"><h2>Base para App Campo V1.0</h2><p class="small">Mostra o que o App Campo deverá baixar antes do serviço para funcionar offline.</p><div class="sessionbar"><b>Propriedade ativa:</b> <span id="campoPropAtiva">-</span><br><b>Chave:</b> <span id="campoChave">-</span><br><b>Última atualização:</b> <span id="campoAtualizacao">-</span></div><div class="kpirow"><div class="kpi"><b id="bcUsuarios">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="bcProdutos">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="bcLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="bcCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="bcAreas">0</b><br><span class="small">Áreas</span></div><div class="kpi"><b id="bcStatus">-</b><br><span class="small">Status</span></div></div><button class="blue" onclick="montarBaseCampo(this)">Montar Base Campo</button><button onclick="baixarBaseCampo()">Baixar JSON da Base</button><button class="gray" onclick="limparBaseCampo()">Limpar Base Local</button><pre id="campoOut">Monte a base depois de ativar uma propriedade.</pre></div></div>
 
 <div id="view-diagnostico" class="view hidden"><div class="card"><h2>Diagnóstico</h2><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button onclick="diagnostico()">Diagnóstico completo</button><button class="gray" onclick="downloadLocalState()">Baixar estado local</button><pre id="diagOut">Sem diagnóstico.</pre></div></div>
-<div class="footer">APP COCHO CENTRAL V7.1.7 SUPABASE — Listar Provisórios Cloud Fix • HTML single-file • GitHub Pages • Supabase</div>
+<div class="footer">APP COCHO CENTRAL V7.2 SUPABASE — Listar Provisórios Cloud Fix • HTML single-file • GitHub Pages • Supabase</div>
 </main>
 <script>
 (function(){
 'use strict';
-var APP_VERSION='APP COCHO CENTRAL V7.1.7 SUPABASE — BOTÕES FIX';
+var APP_VERSION='APP COCHO CENTRAL V7.2 SUPABASE — BOTÕES FIX';
 var DEFAULT_URL='https://wxnsyozjiosbdwxpodbf.supabase.co';
 var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
 var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
@@ -860,6 +892,95 @@ window.confirmarCochoProvisorio=function(btn){
 };
 window.marcarProvisorioDuplicado=function(btn){var x=provSelecionado();if(!x){setOut('provOut',{ok:false,erro:'SELECIONE_PROVISORIO'});return;}setOut('provOut',{ok:true,status:'MARCADO_COMO_POSSIVEL_DUPLICADO',provisorio:x.id,oficial_proximo:x.prox?{id:x.prox.cocho.id,nome:x.prox.cocho.nome_cocho,distancia_m:Number(x.prox.dist.toFixed(1))}:null});};
 window.limparEditorCochoProv=function(){['prov_id','prov_dist','prov_status','prov_nome_oficial','prov_codigo_oficial','prov_lat','prov_lng','prov_acc','prov_obs_confirm'].forEach(function(id){setVal(id,'');});if($('prov_lote_oficial'))$('prov_lote_oficial').value='';};
+
+
+var _gruposDuplicadosCochos=[];
+function ehProvisorioCocho(c){
+  var tipo=String(c.tipo_cocho||'').toUpperCase();
+  var st=String(c.status_cocho||c.status_cadastro||'').toUpperCase();
+  return (tipo.indexOf('PROVISORIO')>=0 || st.indexOf('PROVISORIO')>=0 || isProvId(c.id));
+}
+function ehCochoAtivo(c){return String(c.status_cocho||'').toUpperCase()==='ATIVO';}
+function nomeCochoLegivel(c){return (c.nome_cocho||'')+(c.codigo_cocho?' | '+c.codigo_cocho:'');}
+function listarDuplicadosCochos(btn){
+  if(!propRequired('higieneOut'))return;
+  btnLock(btn,'Listando...');
+  var raio=Number(($('h_raio')&&$('h_raio').value)||15);
+  var incluirProv=($('h_incluir_prov')&&$('h_incluir_prov').value)==='SIM';
+  var modo=($('h_modo')&&$('h_modo').value)||'GPS';
+  getClient().from('cochos').select('*').eq('propriedade_id',session.propriedade.id).limit(5000).then(function(r){
+    if(r.error)throw r.error;
+    var all=(r.data||[]).filter(function(c){
+      if(!ehCochoAtivo(c))return false;
+      if(!incluirProv && ehProvisorioCocho(c))return false;
+      return !!(c.gps_lat&&c.gps_lng);
+    });
+    var usados={}, grupos=[];
+    for(var i=0;i<all.length;i++){
+      var a=all[i];
+      if(usados[a.id])continue;
+      var grupo=[a];
+      for(var j=i+1;j<all.length;j++){
+        var b=all[j];
+        if(usados[b.id])continue;
+        var d=distanciaMetros(a.gps_lat,a.gps_lng,b.gps_lat,b.gps_lng);
+        var mesmoGps=(d!==null && d<=raio);
+        var mesmoNome=String(a.nome_cocho||'').toUpperCase()===String(b.nome_cocho||'').toUpperCase() && !!a.nome_cocho;
+        var mesmoCodigo=String(a.codigo_cocho||'').toUpperCase()===String(b.codigo_cocho||'').toUpperCase() && !!a.codigo_cocho;
+        var dup=(modo==='GPS')?mesmoGps:(mesmoGps||mesmoNome||mesmoCodigo);
+        if(dup){grupo.push(b);usados[b.id]=true;}
+      }
+      if(grupo.length>1){grupo.forEach(function(g){usados[g.id]=true;});grupos.push(grupo);}
+    }
+    _gruposDuplicadosCochos=grupos.map(function(g){
+      g.sort(function(a,b){
+        // principal preferido: não provisório, com mais nome/código, mais antigo
+        var pa=ehProvisorioCocho(a)?1:0, pb=ehProvisorioCocho(b)?1:0;
+        if(pa!==pb)return pa-pb;
+        return String(a.created_at||'').localeCompare(String(b.created_at||''));
+      });
+      return {keep:g[0],dups:g.slice(1),todos:g};
+    });
+    renderDuplicadosCochos();
+    setOut('higieneOut',{ok:true,total_grupos:_gruposDuplicadosCochos.length,raio_m:raio,grupos:_gruposDuplicadosCochos.map(function(g){return {principal:nomeCochoLegivel(g.keep),duplicados:g.dups.map(nomeCochoLegivel)};})});
+  }).catch(function(e){setOut('higieneOut',{ok:false,erro:String(e.message||e)});}).finally(function(){btnUnlock(btn);});
+}
+function renderDuplicadosCochos(){
+  var h='<table><tr><th>Ação</th><th>Principal sugerido</th><th>Duplicados</th><th>Distâncias</th></tr>';
+  _gruposDuplicadosCochos.forEach(function(g,i){
+    var ds=g.dups.map(function(d){var m=distanciaMetros(g.keep.gps_lat,g.keep.gps_lng,d.gps_lat,d.gps_lng);return nomeCochoLegivel(d)+': '+(m===null?'-':m.toFixed(1)+' m');}).join('<br>');
+    h+='<tr><td><button onclick="selecionarGrupoDuplicadoCocho('+i+')">Selecionar</button></td><td>'+esc(nomeCochoLegivel(g.keep))+'<br><span class="small">'+esc(g.keep.id)+'</span></td><td>'+g.dups.map(function(d){return esc(nomeCochoLegivel(d));}).join('<br>')+'</td><td>'+ds+'</td></tr>';
+  });
+  setHTML('higieneTable',h+'</table>');
+}
+function selecionarGrupoDuplicadoCocho(i){
+  var g=_gruposDuplicadosCochos[i];if(!g)return;
+  setVal('h_keep_nome',nomeCochoLegivel(g.keep));
+  setVal('h_keep_id',g.keep.id);
+  setVal('h_dup_ids',g.dups.map(function(d){return d.id;}).join(','));
+  setOut('higieneOut',{ok:true,grupo_selecionado:{principal:g.keep,duplicados:g.dups}});
+}
+function mesclarDuplicadosSelecionados(btn){
+  var keepId=($('h_keep_id')&&$('h_keep_id').value)||'';
+  var ids=(($('h_dup_ids')&&$('h_dup_ids').value)||'').split(',').map(function(x){return x.trim();}).filter(Boolean);
+  if(!keepId||!ids.length){setOut('higieneOut',{ok:false,erro:'SELECIONE_GRUPO_DUPLICADO'});return;}
+  btnLock(btn,'Mesclando...');
+  var motivo=($('h_motivo')&&$('h_motivo').value)||'Mesclagem de cochos duplicados';
+  var sb=getClient();
+  var tasks=[];
+  ids.forEach(function(idp){
+    tasks.push(sb.from('lancamentos_cocho').update({cocho_id:keepId,observacoes:'Transferido por mesclagem de cocho duplicado '+idp+' para '+keepId+' | '+motivo}).eq('propriedade_id',session.propriedade.id).eq('cocho_id',idp));
+    tasks.push(sb.from('cochos').update({status_cocho:'DUPLICADO_ARQUIVADO',observacoes:'Arquivado por duplicidade GPS. Mesclado em '+keepId+' | '+motivo}).eq('id',idp));
+  });
+  Promise.all(tasks).then(function(results){
+    var erro=null;results.forEach(function(r){if(r&&r.error)erro=r.error;});
+    if(erro)throw erro;
+    setOut('higieneOut',{ok:true,mensagem:'Duplicados mesclados no cocho principal.',cocho_principal:keepId,duplicados_arquivados:ids});
+    listarDuplicadosCochos();
+    listarCochos();
+  }).catch(function(e){setOut('higieneOut',{ok:false,erro:String(e.message||e),orientacao:'Se falhar, conferir permissão de update em cochos e lancamentos_cocho.'});}).finally(function(){btnUnlock(btn);});
+}
+function limparHigieneCochos(){_gruposDuplicadosCochos=[];setHTML('higieneTable','');setOut('higieneOut',{ok:true,mensagem:'Higienização limpa.'});['h_keep_nome','h_keep_id','h_dup_ids'].forEach(function(id){setVal(id,'');});}
 
 function genOperacaoCliente(){
   var d=new Date();
