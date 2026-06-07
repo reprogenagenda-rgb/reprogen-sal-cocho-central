@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
-<title>APP COCHO CENTRAL V7.1.4 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=7.1.4.1">
+<title>APP COCHO CENTRAL V7.1.6 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=7.1.6.1">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060}
@@ -25,14 +25,14 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>APP COCHO CENTRAL V7.1.4 SUPABASE</h1><div class="sub">Histórico GPS • Cochos provisórios • Consolidar duplicados • Transferir histórico</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
+<header><div class="top"><div><h1>APP COCHO CENTRAL V7.1.6 SUPABASE</h1><div class="sub">Histórico GPS • Cochos provisórios • Bloquear duplicado GPS • Transferir histórico</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
 <button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="estoque" onclick="showTab('estoque')">Estoque</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="cochosprov" onclick="showTab('cochosprov')">Cochos Provisórios</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="relatorios" onclick="showTab('relatorios')">Relatórios</button><button class="tab" data-tab="fechamento" onclick="showTab('fechamento')">Fechamento</button><button class="tab" data-tab="gerencial" onclick="showTab('gerencial')">Gerencial</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
 </nav>
 <div class="sessionbar" id="sessionCompact"><b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button></div>
 
-<div id="view-painel" class="view"><div class="card"><h2>Painel V7.1.4 — Consolidar Provisório Duplicado</h2><p>Mantém a base aprovada e acrescenta revisão/confirmação dos cochos provisórios vindos do Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
+<div id="view-painel" class="view"><div class="card"><h2>Painel V7.1.6 — Bloqueio Oficial Duplicado GPS</h2><p>Mantém a base aprovada e acrescenta revisão/confirmação dos cochos provisórios vindos do Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
 
 <div id="view-config" class="view hidden"><div class="card"><h2>Config Supabase</h2><div class="warnbox">Use apenas Project URL e Publishable Key / anon public. Nunca cole secret key ou service_role.</div><label>SUPABASE_URL</label><input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodbf.supabase.co"><label>SUPABASE_PUBLISHABLE_KEY</label><textarea id="supabaseKey" placeholder="sb_publishable_..."></textarea><button onclick="saveConfig()">Salvar Config</button><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button class="gray" onclick="clearConfig()">Limpar</button><pre id="configOut">Cole a publishable key completa e teste.</pre></div></div>
 
@@ -95,7 +95,7 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <div class="col-3"><label>Precisão GPS</label><input id="prov_acc" readonly></div>
 <div class="col-3"><label>Raio aceito m</label><input id="prov_raio" type="number" value="50"></div>
 <div class="col-12"><label>Observação</label><input id="prov_obs_confirm" placeholder="confirmado pela Central"></div>
-</div><div class="okbox"><b>Importante:</b> ao confirmar, os lançamentos vinculados ao provisório selecionado e aos provisórios duplicados do mesmo código/GPS serão transferidos para o novo cocho oficial.</div><button class="blue" onclick="confirmarCochoProvisorio(this)">Confirmar oficial + consolidar duplicados</button><button class="warn" onclick="marcarProvisorioDuplicado(this)">Marcar possível duplicado</button></div></div>
+</div><div class="okbox"><b>Importante:</b> ao confirmar, se já existir cocho oficial com mesmo nome, código ou GPS próximo, a Central usa o existente; só cria novo se não houver duplicidade.</div><button class="blue" onclick="confirmarCochoProvisorio(this)">Confirmar/usar oficial + transferir histórico</button><button class="warn" onclick="marcarProvisorioDuplicado(this)">Marcar possível duplicado</button></div></div>
 
 <div id="view-lancamentos" class="view hidden">
   <div class="card">
@@ -245,12 +245,12 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <div id="view-campo" class="view hidden"><div class="card"><h2>Base para App Campo V1.0</h2><p class="small">Mostra o que o App Campo deverá baixar antes do serviço para funcionar offline.</p><div class="sessionbar"><b>Propriedade ativa:</b> <span id="campoPropAtiva">-</span><br><b>Chave:</b> <span id="campoChave">-</span><br><b>Última atualização:</b> <span id="campoAtualizacao">-</span></div><div class="kpirow"><div class="kpi"><b id="bcUsuarios">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="bcProdutos">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="bcLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="bcCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="bcAreas">0</b><br><span class="small">Áreas</span></div><div class="kpi"><b id="bcStatus">-</b><br><span class="small">Status</span></div></div><button class="blue" onclick="montarBaseCampo(this)">Montar Base Campo</button><button onclick="baixarBaseCampo()">Baixar JSON da Base</button><button class="gray" onclick="limparBaseCampo()">Limpar Base Local</button><pre id="campoOut">Monte a base depois de ativar uma propriedade.</pre></div></div>
 
 <div id="view-diagnostico" class="view hidden"><div class="card"><h2>Diagnóstico</h2><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button onclick="diagnostico()">Diagnóstico completo</button><button class="gray" onclick="downloadLocalState()">Baixar estado local</button><pre id="diagOut">Sem diagnóstico.</pre></div></div>
-<div class="footer">APP COCHO CENTRAL V7.1.4 SUPABASE — Listar Provisórios Cloud Fix • HTML single-file • GitHub Pages • Supabase</div>
+<div class="footer">APP COCHO CENTRAL V7.1.6 SUPABASE — Listar Provisórios Cloud Fix • HTML single-file • GitHub Pages • Supabase</div>
 </main>
 <script>
 (function(){
 'use strict';
-var APP_VERSION='APP COCHO CENTRAL V7.1.4 SUPABASE — BOTÕES FIX';
+var APP_VERSION='APP COCHO CENTRAL V7.1.6 SUPABASE — BOTÕES FIX';
 var DEFAULT_URL='https://wxnsyozjiosbdwxpodbf.supabase.co';
 var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
 var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
@@ -684,22 +684,7 @@ window.confirmarCochoProvisorio=function(btn){
   if(!x.lat||!x.lng){setOut('provOut',{ok:false,erro:'GPS_PROVISORIO_AUSENTE'});return;}
   btnLock(btn,'Consolidando...');
   var sb=getClient();
-  var d={
-    propriedade_id:session.propriedade.id,
-    nome_cocho:nome,
-    codigo_cocho:$('prov_codigo_oficial').value.trim()||('CCH-'+Date.now().toString().slice(-5)),
-    tipo_cocho:'COCHO_SAL',
-    lote_id:$('prov_lote_oficial').value||null,
-    area_pasto:'',
-    gps_lat:Number(x.lat),
-    gps_lng:Number(x.lng),
-    gps_precisao_m:x.acc?Number(x.acc):null,
-    gps_data_hora:new Date().toISOString(),
-    responsavel_gps:'CENTRAL',
-    status_cocho:'ATIVO',
-    observacoes:($('prov_obs_confirm').value.trim()||'Confirmado e consolidado a partir de cocho provisório')+' | origem_provisoria='+x.id,
-    raio_aceito_m:Number($('prov_raio').value||50)
-  };
+  var codigoOficial=$('prov_codigo_oficial').value.trim()||('CCH-'+Date.now().toString().slice(-5));
 
   function mesmaFamiliaProv(a,b){
     var ca=String(a.codigo||a.codigo_cocho||'').toUpperCase();
@@ -714,52 +699,116 @@ window.confirmarCochoProvisorio=function(btn){
 
   var familia=_provisoriosCentral.filter(function(p){return mesmaFamiliaProv(p,x);});
   var idsCloud=familia.filter(function(p){return p.cloud;}).map(function(p){return p.id;});
-  var codigos=familia.map(function(p){return p.codigo||'';}).filter(function(v){return !!v;});
   var codigoPrincipal=x.codigo||'';
 
-  sb.from('cochos').insert(d).select('*').single().then(function(r){
-    if(r.error){throw r.error;}
-    var oficial=r.data;
-    var tasks=[];
+  function buscarOuCriarOficial(){
+    // Regra profissional: cocho é ponto fixo. Não criar oficial se já existir oficial ativo com mesmo nome, código ou GPS até 15 m.
+    return sb.from('cochos').select('*')
+      .eq('propriedade_id',session.propriedade.id)
+      .eq('status_cocho','ATIVO')
+      .limit(5000)
+      .then(function(r){
+        if(r.error){throw r.error;}
+        var oficiais=(r.data||[]);
+        var alvoLat=Number(x.lat), alvoLng=Number(x.lng);
 
+        var porNomeCodigo=null;
+        for(var i=0;i<oficiais.length;i++){
+          var c=oficiais[i];
+          if(String(c.nome_cocho||'').toUpperCase()===String(nome).toUpperCase() || String(c.codigo_cocho||'').toUpperCase()===String(codigoOficial).toUpperCase()){
+            porNomeCodigo=c; break;
+          }
+        }
+        if(porNomeCodigo){return {oficial:porNomeCodigo,criado:false,alerta:'OFICIAL_EXISTENTE_NOME_CODIGO'};}
+
+        var porGps=null, menorDist=null;
+        for(var j=0;j<oficiais.length;j++){
+          var g=oficiais[j];
+          if(!g.gps_lat||!g.gps_lng){continue;}
+          var dGps=distanciaMetros(alvoLat,alvoLng,g.gps_lat,g.gps_lng);
+          if(dGps!==null && (menorDist===null || dGps<menorDist)){menorDist=dGps;porGps=g;}
+        }
+        if(porGps && menorDist!==null && menorDist<=15){
+          return {oficial:porGps,criado:false,alerta:'OFICIAL_EXISTENTE_GPS_ATE_15M',distancia_m:Number(menorDist.toFixed(1))};
+        }
+
+        var d={
+          propriedade_id:session.propriedade.id,
+          nome_cocho:nome,
+          codigo_cocho:codigoOficial,
+          tipo_cocho:'COCHO_SAL',
+          lote_id:$('prov_lote_oficial').value||null,
+          area_pasto:'',
+          gps_lat:alvoLat,
+          gps_lng:alvoLng,
+          gps_precisao_m:x.acc?Number(x.acc):null,
+          gps_data_hora:new Date().toISOString(),
+          responsavel_gps:'CENTRAL',
+          status_cocho:'ATIVO',
+          observacoes:($('prov_obs_confirm').value.trim()||'Confirmado e consolidado a partir de cocho provisório')+' | origem_provisoria='+x.id,
+          raio_aceito_m:Number($('prov_raio').value||50)
+        };
+        return sb.from('cochos').insert(d).select('*').single().then(function(ins){
+          if(ins.error){
+            var msg=String(ins.error.message||ins.error);
+            if(msg.indexOf('duplicate key')>=0 || msg.indexOf('ux_cochos_ativos_nome')>=0){
+              return sb.from('cochos').select('*')
+                .eq('propriedade_id',session.propriedade.id)
+                .eq('status_cocho','ATIVO')
+                .eq('nome_cocho',nome)
+                .limit(1)
+                .then(function(r2){
+                  if(r2.error){throw r2.error;}
+                  if(r2.data&&r2.data.length){return {oficial:r2.data[0],criado:false,alerta:'OFICIAL_EXISTENTE_USADO_APOS_DUPLICIDADE'};}
+                  throw ins.error;
+                });
+            }
+            throw ins.error;
+          }
+          return {oficial:ins.data,criado:true};
+        });
+      });
+  }
+
+  buscarOuCriarOficial().then(function(ctx){
+    var oficial=ctx.oficial;
+    var tasks=[];
     idsCloud.forEach(function(idp){
       tasks.push(sb.from('lancamentos_cocho').update({
         cocho_id:oficial.id,
         observacoes:'Transferido de cocho provisório consolidado '+idp+' para cocho oficial '+oficial.codigo_cocho
       }).eq('propriedade_id',session.propriedade.id).eq('cocho_id',idp));
-
       tasks.push(sb.from('cochos').update({
         status_cocho:'PROVISORIO_CONFIRMADO',
         observacoes:'Provisório consolidado e confirmado como '+oficial.id
       }).eq('id',idp));
     });
-
-    // Fallback adicional: alguns lançamentos podem ter ficado com observação/código provisório, mas outro UUID.
     if(codigoPrincipal){
       tasks.push(sb.from('lancamentos_cocho').update({
         cocho_id:oficial.id,
         observacoes:'Transferido por consolidação do código provisório '+codigoPrincipal+' para cocho oficial '+oficial.codigo_cocho
       }).eq('propriedade_id',session.propriedade.id).ilike('observacoes','%'+codigoPrincipal+'%'));
     }
-
     return Promise.all(tasks).then(function(results){
       var erro=null;
       results.forEach(function(rr){if(rr&&rr.error){erro=rr.error;}});
       if(erro){throw erro;}
       setOut('provOut',{
         ok:true,
-        mensagem:'Cocho provisório confirmado, duplicados consolidados e histórico transferido.',
+        mensagem:ctx.criado?'Cocho oficial criado, duplicados consolidados e histórico transferido.':'Cocho oficial existente usado, duplicados consolidados e histórico transferido.',
+        alerta:ctx.alerta||null,
+        distancia_oficial_existente_m:ctx.distancia_m||null,
         cocho_oficial:oficial,
+        cocho_oficial_criado:ctx.criado,
         provisorio_origem:x.id,
         familia_consolidada:familia.map(function(p){return {id:p.id,codigo:p.codigo,kg:p.kg,lancamentos:p.lanc,cloud:p.cloud};}),
-        provisores_cloud_confirmados:idsCloud.length,
-        codigos_consolidados:codigos
+        provisores_cloud_confirmados:idsCloud.length
       });
       listarCochosProvisorios();
       listarCochos();
     });
   }).catch(function(e){
-    setOut('provOut',{ok:false,erro:String(e.message||e),orientacao:'Se o oficial foi criado mas a consolidação falhou, conferir permissão de update em lancamentos_cocho e cochos.'});
+    setOut('provOut',{ok:false,erro:String(e.message||e),orientacao:'A Central agora tenta usar cocho oficial existente quando houver duplicidade de nome/código. Se persistir, envie este erro.'});
   }).finally(function(){btnUnlock(btn);});
 };
 window.marcarProvisorioDuplicado=function(btn){var x=provSelecionado();if(!x){setOut('provOut',{ok:false,erro:'SELECIONE_PROVISORIO'});return;}setOut('provOut',{ok:true,status:'MARCADO_COMO_POSSIVEL_DUPLICADO',provisorio:x.id,oficial_proximo:x.prox?{id:x.prox.cocho.id,nome:x.prox.cocho.nome_cocho,distancia_m:Number(x.prox.dist.toFixed(1))}:null});};
