@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5132">
-<title>APP COCHO CENTRAL V7.2.1.1 SUPABASE</title>
-<link rel="manifest" href="./manifest.json?v=7.2.1.1">
+<title>APP COCHO CENTRAL V7.2.2.1 SUPABASE</title>
+<link rel="manifest" href="./manifest.json?v=7.2.2.1">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--g:#0f5132;--g2:#198754;--bg:#eef6ef;--card:#fff;--line:#cfe3d2;--ink:#10291c;--r:#dc3545;--b:#0d6efd;--am:#ffc107;--muted:#607060}
@@ -25,14 +25,14 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>APP COCHO CENTRAL V7.2.1.1 SUPABASE</h1><div class="sub">Histórico GPS • Higienização ampliada • GPS próximo • Mesclar histórico</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
+<header><div class="top"><div><h1>APP COCHO CENTRAL V7.2.2.1 SUPABASE</h1><div class="sub">Histórico GPS • Diagnóstico de cochos • GPS • Duplicados</div></div><div class="badges"><span id="netBadge" class="badge">Online?</span><span id="cloudBadge" class="badge warn">Supabase não testado</span><span id="sessBadge" class="badge blue">Sem propriedade ativa</span><span id="hourBadge" class="badge">Brasília</span></div></div></header>
 <main>
 <nav>
 <button class="tab active" data-tab="painel" onclick="showTab('painel')">Painel</button><button class="tab" data-tab="config" onclick="showTab('config')">Config Supabase</button><button class="tab" data-tab="propriedades" onclick="showTab('propriedades')">Propriedades</button><button class="tab" data-tab="usuarios" onclick="showTab('usuarios')">Usuários</button><button class="tab" data-tab="produtos" onclick="showTab('produtos')">Produtos</button><button class="tab" data-tab="estoque" onclick="showTab('estoque')">Estoque</button><button class="tab" data-tab="lotes" onclick="showTab('lotes')">Lotes</button><button class="tab" data-tab="cochos" onclick="showTab('cochos')">Cochos GPS</button><button class="tab" data-tab="higiene" onclick="showTab('higiene')">Higienizar Cochos</button><button class="tab" data-tab="cochosprov" onclick="showTab('cochosprov')">Cochos Provisórios</button><button class="tab" data-tab="lancamentos" onclick="showTab('lancamentos')">Lançamentos</button><button class="tab" data-tab="historico" onclick="showTab('historico')">Histórico</button><button class="tab" data-tab="relatorios" onclick="showTab('relatorios')">Relatórios</button><button class="tab" data-tab="fechamento" onclick="showTab('fechamento')">Fechamento</button><button class="tab" data-tab="gerencial" onclick="showTab('gerencial')">Gerencial</button><button class="tab" data-tab="campo" onclick="showTab('campo')">Base Campo</button><button class="tab" data-tab="diagnostico" onclick="showTab('diagnostico')">Diagnóstico</button>
 </nav>
 <div class="sessionbar" id="sessionCompact"><b>Sessão:</b> sem propriedade ativa. <button class="gray" onclick="limparSessao()" style="padding:6px 9px;font-size:12px">Limpar sessão local</button></div>
 
-<div id="view-painel" class="view"><div class="card"><h2>Painel V7.2.1.1 — Higienização Ampliada</h2><p>Mantém a base aprovada e acrescenta revisão/confirmação dos cochos provisórios vindos do Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
+<div id="view-painel" class="view"><div class="card"><h2>Painel V7.2.2.1 — Higienização Ampliada</h2><p>Mantém a base aprovada e acrescenta revisão/confirmação dos cochos provisórios vindos do Campo.</p><div class="kpirow"><div class="kpi"><b id="kProps">0</b><br><span class="small">Propriedades</span></div><div class="kpi"><b id="kUsers">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="kProd">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="kLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="kCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="kLanc">0</b><br><span class="small">Lançamentos</span></div></div><button class="blue" onclick="testSupabase(this)">Testar Supabase</button><button onclick="listarPropriedades(this)">Listar Propriedades</button><pre id="painelOut">Aguardando teste...</pre></div></div>
 
 <div id="view-config" class="view hidden"><div class="card"><h2>Config Supabase</h2><div class="warnbox">Use apenas Project URL e Publishable Key / anon public. Nunca cole secret key ou service_role.</div><label>SUPABASE_URL</label><input id="supabaseUrl" value="https://wxnsyozjiosbdwxpodbf.supabase.co"><label>SUPABASE_PUBLISHABLE_KEY</label><textarea id="supabaseKey" placeholder="sb_publishable_..."></textarea><button onclick="saveConfig()">Salvar Config</button><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button class="gray" onclick="clearConfig()">Limpar</button><pre id="configOut">Cole a publishable key completa e teste.</pre></div></div>
 
@@ -93,6 +93,7 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
       <div class="col-4"><label>Modo</label><select id="h_modo"><option value="GPS">GPS até raio</option><option value="PROXIMOS">Mostrar próximos até 200 m</option><option value="NOME_CODIGO_GPS">Nome/Código/GPS</option></select></div>
     </div>
     <button class="blue" onclick="listarDuplicadosCochos(this)">Listar duplicados</button>
+    <button class="green" onclick="diagnosticarCochosHigiene(this)">Diagnosticar cochos</button>
     <button onclick="limparHigieneCochos()">Limpar</button>
     <pre id="higieneOut">Sem consulta.</pre>
   </div>
@@ -277,12 +278,12 @@ pre{background:#07120d;color:#d9ffe4;border-radius:12px;padding:12px;overflow:au
 <div id="view-campo" class="view hidden"><div class="card"><h2>Base para App Campo V1.0</h2><p class="small">Mostra o que o App Campo deverá baixar antes do serviço para funcionar offline.</p><div class="sessionbar"><b>Propriedade ativa:</b> <span id="campoPropAtiva">-</span><br><b>Chave:</b> <span id="campoChave">-</span><br><b>Última atualização:</b> <span id="campoAtualizacao">-</span></div><div class="kpirow"><div class="kpi"><b id="bcUsuarios">0</b><br><span class="small">Usuários</span></div><div class="kpi"><b id="bcProdutos">0</b><br><span class="small">Produtos</span></div><div class="kpi"><b id="bcLotes">0</b><br><span class="small">Lotes</span></div><div class="kpi"><b id="bcCochos">0</b><br><span class="small">Cochos</span></div><div class="kpi"><b id="bcAreas">0</b><br><span class="small">Áreas</span></div><div class="kpi"><b id="bcStatus">-</b><br><span class="small">Status</span></div></div><button class="blue" onclick="montarBaseCampo(this)">Montar Base Campo</button><button onclick="baixarBaseCampo()">Baixar JSON da Base</button><button class="gray" onclick="limparBaseCampo()">Limpar Base Local</button><pre id="campoOut">Monte a base depois de ativar uma propriedade.</pre></div></div>
 
 <div id="view-diagnostico" class="view hidden"><div class="card"><h2>Diagnóstico</h2><button class="blue" onclick="testSupabase(this)">Testar conexão</button><button onclick="diagnostico()">Diagnóstico completo</button><button class="gray" onclick="downloadLocalState()">Baixar estado local</button><pre id="diagOut">Sem diagnóstico.</pre></div></div>
-<div class="footer">APP COCHO CENTRAL V7.2.1.1 SUPABASE — Listar Provisórios Cloud Fix • HTML single-file • GitHub Pages • Supabase</div>
+<div class="footer">APP COCHO CENTRAL V7.2.2.1 SUPABASE — Listar Provisórios Cloud Fix • HTML single-file • GitHub Pages • Supabase</div>
 </main>
 <script>
 (function(){
 'use strict';
-var APP_VERSION='APP COCHO CENTRAL V7.2.1.1 SUPABASE — BOTÕES FIX';
+var APP_VERSION='APP COCHO CENTRAL V7.2.2.1 SUPABASE — BOTÕES FIX';
 var DEFAULT_URL='https://wxnsyozjiosbdwxpodbf.supabase.co';
 var LS_CFG='APP_COCHO_SUPABASE_CFG_V1';
 var LS_SESSION='APP_COCHO_SUPABASE_SESSION_V1';
@@ -902,6 +903,66 @@ function ehProvisorioCocho(c){
 }
 function ehCochoAtivo(c){return String(c.status_cocho||'').toUpperCase()==='ATIVO';}
 function nomeCochoLegivel(c){return (c.nome_cocho||'')+(c.codigo_cocho?' | '+c.codigo_cocho:'');}
+
+function diagnosticarCochosHigiene(btn){
+  if(!propRequired('higieneOut'))return;
+  btnLock(btn,'Diagnosticando...');
+  getClient().from('cochos').select('*').eq('propriedade_id',session.propriedade.id).limit(5000).then(function(r){
+    if(r.error)throw r.error;
+    var rows=r.data||[];
+    var porStatus={}, porTipo={}, comGps=0, semGps=0, ativos=0, arquivados=0, provis=0;
+    rows.forEach(function(c){
+      var st=String(c.status_cocho||c.status_cadastro||'SEM_STATUS').toUpperCase();
+      var tp=String(c.tipo_cocho||'SEM_TIPO').toUpperCase();
+      porStatus[st]=(porStatus[st]||0)+1;
+      porTipo[tp]=(porTipo[tp]||0)+1;
+      if(c.gps_lat&&c.gps_lng){comGps++;}else{semGps++;}
+      if(st==='ATIVO'){ativos++;}
+      if(st.indexOf('ARQUIVADO')>=0){arquivados++;}
+      if(ehProvisorioCocho(c)){provis++;}
+    });
+    var pares=[];
+    for(var i=0;i<rows.length;i++){
+      for(var j=i+1;j<rows.length;j++){
+        var a=rows[i], b=rows[j];
+        if(!a.gps_lat||!a.gps_lng||!b.gps_lat||!b.gps_lng)continue;
+        var d=distanciaMetros(a.gps_lat,a.gps_lng,b.gps_lat,b.gps_lng);
+        if(d!==null && d<=300){
+          pares.push({
+            a:nomeCochoLegivel(a),
+            b:nomeCochoLegivel(b),
+            status_a:a.status_cocho||'',
+            status_b:b.status_cocho||'',
+            distancia_m:Number(d.toFixed(1)),
+            gps_a:String(a.gps_lat)+','+String(a.gps_lng),
+            gps_b:String(b.gps_lat)+','+String(b.gps_lng)
+          });
+        }
+      }
+    }
+    pares.sort(function(a,b){return a.distancia_m-b.distancia_m;});
+    var h='<table><tr><th>Cocho</th><th>Tipo</th><th>Status</th><th>GPS</th><th>Raio</th></tr>';
+    rows.forEach(function(c){
+      h+='<tr><td>'+esc(nomeCochoLegivel(c))+'<br><span class="small">'+esc(c.id)+'</span></td><td>'+esc(c.tipo_cocho||'')+'</td><td>'+esc(c.status_cocho||c.status_cadastro||'')+'</td><td>'+esc(c.gps_lat||'')+', '+esc(c.gps_lng||'')+'</td><td>'+esc(c.raio_aceito_m||'')+'</td></tr>';
+    });
+    setHTML('higieneTable',h+'</table>');
+    setOut('higieneOut',{
+      ok:true,
+      consulta:'diagnostico_cochos_brutos',
+      total_cochos_puxados:rows.length,
+      ativos:ativos,
+      provisorios:provis,
+      arquivados:arquivados,
+      com_gps:comGps,
+      sem_gps:semGps,
+      por_status:porStatus,
+      por_tipo:porTipo,
+      pares_ate_300m:pares.slice(0,20),
+      orientacao:rows.length===0?'A Central não puxou nenhum cocho da fazenda ativa. Verificar propriedade_id/sessão.':'A Central puxou os cochos. Se pares_ate_300m vier vazio, não encontrou cochos próximos pelo GPS.'
+    });
+  }).catch(function(e){setOut('higieneOut',{ok:false,erro:String(e.message||e),consulta:'diagnostico_cochos_brutos'});}).finally(function(){btnUnlock(btn);});
+}
+
 function listarDuplicadosCochos(btn){
   if(!propRequired('higieneOut'))return;
   btnLock(btn,'Listando...');

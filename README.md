@@ -1,15 +1,24 @@
-# APP COCHO CENTRAL V7.2.1 — Higienização Ampliada
+# APP COCHO CENTRAL V7.2.2 — Diagnóstico Cochos
 
-## Correção
-A V7.2 podia não listar duplicados porque analisava apenas cochos com status exatamente ATIVO e por raio curto.
+## Objetivo
+Separar se o problema é:
+1. a Central não está puxando os cochos do Supabase; ou
+2. está puxando, mas não encontra duplicados.
 
-## O que mudou
-A aba Higienizar Cochos agora:
-- permite analisar oficiais ativos, provisórios ou todos não arquivados;
-- tem modo GPS até raio;
-- tem modo PROXIMOS até 200 m;
-- agrupa também coordenadas arredondadas em 5 casas;
-- mostra total de cochos analisados e pares detectados.
+## Nova função
+Na aba **Higienizar Cochos**, usar o botão:
+
+`Diagnosticar cochos`
+
+Ele mostra:
+- total de cochos puxados;
+- ativos;
+- provisórios;
+- arquivados;
+- com GPS;
+- sem GPS;
+- status encontrados;
+- pares de cochos até 300 m.
 
 ## SUPABASE
 Não precisa SQL novo.
@@ -24,15 +33,13 @@ Substituir:
 - icons/icon-512.png
 
 Commit:
-`Corrige Central Cocho V7.2.1 higienizacao ampliada`
+`Adiciona Central Cocho V7.2.2 diagnostico cochos`
 
 Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.2.1-higienizacao-ampliada`
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.2.2-diagnostico-cochos`
 
-## Teste recomendado
+## Teste
 1. Abrir Higienizar Cochos.
-2. Selecionar: Todos não arquivados.
-3. Modo: Mostrar próximos até 200 m.
-4. Clicar Listar duplicados.
-5. Se aparecer grupo, selecionar e mesclar.
-6. Depois testar Oficiais ativos + GPS até raio 15 m.
+2. Clicar Diagnosticar cochos.
+3. Enviar o print do quadro preto.
+4. Depois clicar Listar duplicados.
