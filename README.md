@@ -1,18 +1,19 @@
-# APP COCHO CENTRAL V7.1.6 — Bloqueio Oficial Duplicado por GPS
+# APP COCHO CENTRAL V7.1.7 — Seleção Persistente Fix
 
 ## Correção
-A versão anterior evitava duplicidade por nome/código, mas ainda podia criar dois cochos oficiais nas mesmas coordenadas.
+A tela mostrava o ID provisório preenchido, mas ao confirmar retornava:
+`SELECIONE_PROVISORIO`
 
-## Regra nova
-Antes de criar cocho oficial, a Central procura:
-1. cocho oficial ativo com mesmo nome;
-2. cocho oficial ativo com mesmo código;
-3. cocho oficial ativo com GPS até 15 m.
+## Causa
+A lista interna `_provisoriosCentral` podia perder estado ao rolar, recarregar ou trocar de aba. O campo visual continuava preenchido, mas o objeto interno selecionado não existia mais.
 
-Se encontrar, usa o cocho oficial existente e transfere o histórico para ele. Só cria novo se realmente não houver cocho oficial compatível.
-
-## Por que isso é importante
-O cocho é objeto fixo. GPS é mais importante que nome/código para evitar duplicidade física.
+## O que a V7.1.7 faz
+- Aceita o ID provisório preenchido na tela.
+- Se a lista interna perdeu estado, busca o provisório novamente no Supabase pela tabela `cochos`.
+- Mantém as regras da V7.1.6:
+  - não cria cocho oficial duplicado por nome/código;
+  - não cria cocho oficial duplicado por GPS até 15 m;
+  - transfere histórico para o cocho oficial existente.
 
 ## SUPABASE
 Não precisa SQL novo.
@@ -27,15 +28,7 @@ Substituir no repositório da Central:
 - icons/icon-512.png
 
 Commit:
-`Corrige Central Cocho V7.1.6 bloqueio duplicado GPS`
+`Corrige Central Cocho V7.1.7 selecao persistente`
 
 Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.1.6-bloqueio-duplicado-gps`
-
-## Teste
-1. Abrir Central V7.1.6.
-2. Cochos Provisórios → Listar.
-3. Selecionar provisório em coordenada onde já existe cocho oficial.
-4. Confirmar/usar oficial + transferir histórico.
-5. Conferir se não cria novo cocho oficial duplicado.
-6. Conferir se histórico foi transferido para o cocho oficial existente.
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.1.7-selecao-persistente-fix`
