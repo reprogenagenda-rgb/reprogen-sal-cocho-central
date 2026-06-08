@@ -1,21 +1,24 @@
-# APP COCHO CENTRAL V7.3 — Mapa de Cochos
+# APP COCHO CENTRAL V7.4 — Cochos / Mapa Integrado
 
 ## Objetivo
-Avaliação visual dos cochos no mapa para validar posição, duplicidade e detalhes do ponto físico.
+Unificar mapa, cadastro, edição, arquivamento, mesclagem e histórico do cocho em uma tela mais intuitiva.
 
 ## Nova aba
-Mapa de Cochos
+Cochos / Mapa
 
-## Funcionalidades
-- Mostra cochos oficiais, provisórios e arquivados.
-- Cores por status: ativo, provisório, arquivado e alerta de duplicidade.
-- Alterna mapa padrão e satélite.
-- Mostra raio do cocho quando cadastrado.
-- Ao tocar no ponto, mostra detalhes e permite usar como principal ou marcar duplicado.
-- Integra com a Mesclagem Manual Segura da V7.2.6.
+## Fluxo
+1. Carregar cochos.
+2. Selecionar no mapa ou na lista.
+3. Conferir ficha.
+4. Editar, arquivar, reativar, marcar principal/duplicado ou ver histórico.
+5. Mesclar sem apagar histórico.
 
-## Interface
-A Central é para decisão do gestor no mapa. O App Campo deve continuar simples para o vaqueiro.
+## Regras
+- GPS do cocho é obrigatório.
+- Foto, comprimento e largura da boca são opcionais.
+- Não há exclusão definitiva como ação principal.
+- Arquivamento preserva histórico.
+- Diagnóstico técnico fica oculto por padrão.
 
 ## GitHub
 Substituir:
@@ -27,7 +30,7 @@ Substituir:
 - icons/icon-512.png
 
 Commit:
-`Adiciona Central Cocho V7.3 mapa de cochos`
+`Adiciona Central Cocho V7.4 cochos mapa integrado`
 
 Abrir:
-`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.3-mapa-cochos`
+`https://reprogenagenda-rgb.github.io/reprogen-sal-cocho-central/index.html?v=7.4-cochos-mapa-integrado`
